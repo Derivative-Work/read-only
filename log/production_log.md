@@ -385,3 +385,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - `node overlays/render.mjs`
 - **Checked:** stills of each overlay, and S10, S16, S20 and S30 rendered with their screens.
 - **Next:** the Act 1 render (final profile, S02–S39e, frames 435–4120), running.
+
+## 2026-10-30T08:31:00-04:00 — M4 lip sync: Rhubarb Lip Sync itself
+
+- **Why:** the human allowed Rhubarb (human_interventions, 08:22, R3).
+- **What:** `scripts/rhubarb_visemes.py` cuts each of the 62 sung lines from its stem (padded 0.25 s, 16 kHz mono), runs Rhubarb 1.14.0 on it with the line's text as the dialog file (PocketSphinx, extended shapes GHX), and writes the cues in song seconds to `timing/visemes.json`. Same format, so `gb.mouth()` is unchanged.
+- **Rhubarb:** https://github.com/DanielSWolf/rhubarb-lip-sync/releases/download/v1.14.0/Rhubarb-Lip-Sync-1.14.0-Linux.zip, SHA-256 a9a9074862cff47b2d59b8bf399a678a3b0b74f9452ad6ad94cb292913dd8667, unpacked to `tools/` (git-ignored, never archived).
+- **Superseded:** the MMS_FA mapping's output → `archive/timing/visemes_mms_superseded.json`. `scripts/visemes.py` stays as the record of how it was made.
+- **Command:** `.venv/bin/python -I scripts/rhubarb_visemes.py` (7 min).
+- **Act 1 render** (`renders/m4/act1/frames`, 3,686 frames) finished with the old mouths and before the detail note; it serves as the survey for the detail pass and will be re-rendered after it.

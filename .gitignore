@@ -53,3 +53,6 @@ assets/textures/*/
 
 # The grunge pass's decals: regenerable with scripts/gen_grunge_decals.py (fixed seed).
 assets/gen/grunge/
+
+# Third-party tools, fetched (URL and SHA-256 in the production log): never archived.
+tools/

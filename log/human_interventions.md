@@ -74,3 +74,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "Go ahead, just make sure it's grungy"
 - **Rule:** R1 (approval of the look test, with a creative note given in words). The agent makes the grunge pass itself (production log, same time).
+
+## 2026-10-30T08:22 — Rhubarb allowed; "more detail" note on the scenes — R3, R1
+
+- **Note from the human:** "Yes, use real Rhubarb. It seems that pretty much all of the scenes need more detail"
+- **Rule:**
+  - **R3:** this session's permissions had blocked fetching Rhubarb Lip Sync's binary (a technical failure the agent couldn't fix itself); the human allowed it. The agent fetched and ran it (production log, same time).
+  - **R1:** a creative note on the M4 look, given in words. The agent makes the detail pass itself.
