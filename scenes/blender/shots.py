@@ -383,6 +383,7 @@ def stage(S):
     cam("S24", [(0, (9, 1.0, 1.7), (9, 10.5, 1.6)), (1, (9, 2.5, 1.7), (9, 10.5, 1.6))], lens=30)
     a, b = SP["S25"]
     gb.keys(S["littledoor"], "location", [(0, 10.0 - 0.5 - 0.0), (F(a), 10.0), (F(a + 0.4), 10.0 - 0.6)], index=1)
+    gb.show_from(S["littledoor"], SP["S24"][0])  # it belongs to the wall: unseen until the wall goes up
     c25 = only(B.ceo((9.8, 9.3, 0.16), name="ceo25"), "S25")
     v25 = only(B.vip((9.8, 8.0, 0.16), 30, rot_z=math.pi), "S25")
     case = only(gb.box("case25", (9.8, 8.6, 0.9), (0.4, 0.1, 0.3), B.M("ink")), "S25")

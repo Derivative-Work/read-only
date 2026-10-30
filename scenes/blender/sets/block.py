@@ -189,7 +189,7 @@ def shopfront(S, i, xw, sign, kind, north=False):
     if kind == "pawn":
         gb_.box("pawn.led", (x, FRONT + 0.25, 4.6), (2.6, 0.2, 0.6), M("ink"))
         gb_.text("pawn.led.txt", "48:00:00", 0.4, M("rec", emit=8.0), (x, FRONT + 0.36, 4.6), facing="+Y", mono=True)
-    if i in (2, 6):  # graffiti on piers and plywood
+    if i in (2, 6) and not FINAL:  # graffiti on piers and plywood (the final look has grunge.py's tags instead)
         gb_.plane(f"shop{i}.graf", (x - 2.6, FRONT + 0.01, 1.2), (0.9, 1.1), M("graffiti1" if i == 2 else "graffiti2"),
                  facing="+Y")
     if i == 7:  # scaffolding on the upper storeys
@@ -341,6 +341,24 @@ def tower(S):
         (3000, 12, (1, 0.97, 0.9))
     lobj = gb.link(__import__("bpy").data.objects.new("lobby.light", lo))
     lobj.location = (cx, y0 + 6, 5.8)
+    if FINAL:  # the lobby furnished: clean, cold and expensive (style spec: the one clean place on the street)
+        white, fin = gb.mat("lobby.white", "#eef1f4", rough=0.25), gb.mat("lobby.fin", "#d5dbe2", rough=0.3)
+        strip = gb.mat("lobby.strip", "#e6f2ff", emit=8.0)
+        for k, x in enumerate(np.arange(x0 + 0.8, x1 - 0.5, 1.2)):  # vertical fins on the back wall, around the screen
+            if not LOBBY_DOOR_X - 4.6 < x < LOBBY_DOOR_X + 4.6:
+                gb.box(f"lobby.fin{k}", (x, y1 - 6.25, 3.0), (0.12, 0.2, 5.8), fin)
+        for y in (y0 + 2.5, y0 + 6.5, y0 + 10.5):  # light strips in the ceiling
+            gb.box(f"lobby.strip{y:.0f}", (cx, y, 5.88), (x1 - x0 - 2, 0.12, 0.04), strip)
+        for s_ in (-1, 1):  # planters either side of the throne, clipped round
+            px = LOBBY_DOOR_X + s_ * 3.4
+            gb.box(f"lobby.planter{s_}", (px, y0 + 7.0, 0.5), (0.9, 0.9, 0.7), white)
+            gb.sphere(f"lobby.topiary{s_}", (px, y0 + 7.0, 1.35), 0.55, gb.mat("lobby.leaf", "#2c4a35", rough=0.7))
+        gb.box("lobby.desk", (LOBBY_DOOR_X + 8.5, y0 + 4.0, 0.55), (4.0, 0.9, 1.1), white)  # reception, unstaffed
+        gb.box("lobby.desk.strip", (LOBBY_DOOR_X + 8.5, y0 + 3.54, 0.25), (3.8, 0.02, 0.05), strip)
+        for k in range(4):  # the security gates
+            gb.box(f"lobby.gate{k}", (LOBBY_DOOR_X - 7.5 + k * 1.1, y0 + 4.0, 0.5), (0.18, 1.2, 1.0), white)
+            gb.box(f"lobby.gateglass{k}", (LOBBY_DOOR_X - 6.95 + k * 1.1, y0 + 4.0, 0.7), (0.9, 0.02, 0.6),
+                   gb.mat("glass_lobby", C["glass"], rough=0.02, alpha=0.06))
     # the lobby screen on the back wall (S05, S10, S20): one text object whose body changes per shot
     gb.box("lobby.screen", (LOBBY_DOOR_X, y1 - 6.2, 3.6), (8, 0.1, 3.4), M("ink"))
     S["screen_text"] = gb.text("lobby.screen.t", "", 0.9, M("screen", emit=4.0), (LOBBY_DOOR_X, y1 - 6.28, 3.6),

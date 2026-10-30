@@ -347,3 +347,19 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **On the figures:** `gb.mouth` keys the jaw's width and opening per shape in the final look. The grey-box keeps the loudness drive.
 - **Command:** `.venv/bin/python -I scripts/visemes.py`
 - **Checked:** S04 stills 0.2 s apart show closed, round and open mouths in time with the line.
+
+## 2026-10-30T06:51:20-04:00 — M4: weak spots: the lobby, the little door, interior grime
+
+- **The lobby** (final look only), still clean and cold:
+  - fins on the back wall around the screen, and light strips in the ceiling;
+  - clipped topiary in white planters either side of the throne;
+  - an unstaffed reception desk, and glass security gates.
+- **The little door (S25)** stood in front of the lobby all night as a black box. It's now hidden until the wall goes up in S24, since it belongs to the wall. This is a bug fix; S24 and S25's framing are unchanged.
+- **The grey-box's flat graffiti squares** (shops 2 and 6) are left out of the final look; the grunge pass's tags replace them.
+- **Stucco grime** is at 0.7: the Dev's back wall read as mould at 0.85.
+- **Checked:** S05, S10, S18 and S20 stills.
+- **Still open:**
+  - S01a shows no daylight (the eatery's door is solid);
+  - the sign bands are boards, now grimy.
+
+  Both are left for M6, when the pre-roll and bookends are made.
