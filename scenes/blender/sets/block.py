@@ -501,14 +501,32 @@ def park(S):
     n_side_x, n_side_y = 761, 191  # 145,351 slots; the first 144,926 are used
     xs = np.linspace(-31.2, -17.0, n_side_x)
     ys = np.linspace(22.2, 26.6, n_side_y)
+    if FINAL:  # blocks of markers with narrow aisles between, so the field reads as rows from a low camera
+        def aisled(a, b, n, per, gap):
+            k = np.arange(n)
+            blocks = k // per
+            nb = blocks.max()
+            step = (b - a - nb * gap) / (n - 1)
+            return a + k * step + blocks * gap
+        xs = aisled(-31.2, -17.0, n_side_x, 64, 0.14)
+        ys = aisled(22.2, 26.6, n_side_y, 24, 0.12)
     gx, gy = np.meshgrid(xs, ys)
     gx, gy = gx.ravel()[:144926], gy.ravel()[:144926]
     w, h = 0.008, 0.028
+    hh = np.full_like(gx, h)
+    lean = np.zeros_like(gx)
+    if FINAL:  # so the field reads as markers, not a slab: each a little taller or shorter, nudged and leaning
+        rng = np.random.default_rng(144926)
+        gx = gx + rng.uniform(-0.006, 0.006, len(gx))
+        gy = gy + rng.uniform(-0.008, 0.008, len(gy))
+        hh = h * rng.uniform(0.6, 1.5, len(gx))
+        w = 0.0045
+        lean = rng.uniform(-0.006, 0.006, len(gx))
     v = np.zeros((len(gx) * 4, 3), np.float32)
     v[0::4] = np.c_[gx - w, gy, np.full_like(gx, 0.04)]
     v[1::4] = np.c_[gx + w, gy, np.full_like(gx, 0.04)]
-    v[2::4] = np.c_[gx + w, gy, np.full_like(gx, 0.04 + h)]
-    v[3::4] = np.c_[gx - w, gy, np.full_like(gx, 0.04 + h)]
+    v[2::4] = np.c_[gx + w + lean, gy, 0.04 + hh]
+    v[3::4] = np.c_[gx - w + lean, gy, 0.04 + hh]
     import bpy
     me = bpy.data.meshes.new("markers")
     me.vertices.add(len(v))
@@ -519,7 +537,7 @@ def park(S):
     me.polygons.add(nf)
     me.polygons.foreach_set("loop_start", np.arange(0, nf * 4, 4, dtype=np.int32))
     me.update(calc_edges=True)
-    me.materials.append(M("stone"))
+    me.materials.append(gb.mat("markers.final", "#c9c4ba", rough=0.9) if FINAL else M("stone"))
     gb.link(bpy.data.objects.new("markers", me))
     S["park"] = (x0, x1, y0, y1)
     if FINAL:  # moonlight over the park and cemetery: a big, cool, soft area light, so the stones read at night

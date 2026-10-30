@@ -559,6 +559,7 @@ def lanterns():
 
 
 def shovel():
+    obj("shovel").location.z = 0.3  # stuck in the south end of the spoil heap (parkdress)
     h = obj("shovel.handle")
     kit.swap(h, "rusted_spade_01", scale=1.15, offset=(0, 0, -0.7))
     blank(obj("shovel.blade"))

@@ -465,3 +465,24 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Commands:**
   - `.venv/bin/python -I scripts/gen_detail_props.py`
   - `DETAIL_ONLY=props blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/detail_props/vN --profile draft720 --look final --times …`
+
+## 2026-10-30T10:55:00-04:00 — M4 detail pass: the park and the cemetery
+
+- **What** (`scenes/blender/sets/parkdress.py`; built by a sub-agent of this session, and checked here):
+  - **Ground:** a lumpy lawn with worn paths, a trampled ring round the coffin and bare patches; about 50k grass tufts, longer at the edges; pebbles; leaves drifted against the walls.
+  - **Iron:** pickets with spear finials on the fence, and an open double gate. Pickets are lost in front of the doghouse, so S38 reads BOT DEFENSE. An old railing with a gate stands by the plots.
+  - **Planting:** hedges, bushes, weed clumps, and three thinned late-autumn trees (CC0 `tree_small_02`, with 22% of their leaves kept).
+  - **Furniture:** two iron benches, a bin, and one sodium park lamp (160 W).
+  - **The cemetery:**
+    - an old brick wall with piers on three sides;
+    - 16 weathered blank stones, an obelisk, an urn, a kerbed grave and a ledger;
+    - real earth mounds on the plots;
+    - the open grave dark and edged with a board, with a spoil heap.
+  - **Kept readable:** every inscribed stone, and nothing new carries text.
+- **Here:**
+  - **The 144,926 markers** (`block.py`, final look) read as one pale slab. They are now laid in blocks with narrow aisles, each a little taller or shorter and leaning, so the field reads as rows of tiny markers.
+  - **The shovel** stands in the spoil heap.
+- **Timing (measured by the sub-agent):** about +0.45 s/frame at the final profile, the trees most of it.
+- **Checked:**
+  - the sub-agent's `renders/m4/detail_park/v9`, `v10`;
+  - with the props: `renders/m4/detail_park/mine1..3` (S35, S39a, S39c, S39e).
