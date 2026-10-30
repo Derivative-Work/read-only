@@ -69,3 +69,56 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **For M3:** S26 ("Hook 2: reuse S14–S17") reuses S16's 48-hour countdown and S17's meter, which are cued to Hook 1's last two lines. Hook 2 ends on the "guard dog" lines instead, so those two reuses need new cues or new dressing.
   - Not changed: the Reference Guide's "Final hook" row (it explains the lines, which are still sung in Hook 2).
 - **Why:** The human's decision (human_interventions, 00:00).
+
+## 2026-10-30T00:50:00-04:00 — M2: as-sung lyrics, word alignment, beats and bars, the timing map and its ear check
+
+- **What:**
+  - Transcribed both vocal stems. Drafted the as-sung lyrics and aligned every word.
+  - Built the beat grid and 4/4 bars, the vocal envelopes and the drum drop-outs.
+  - Built the timing map with all 61 shot IDs resolved: 51 timed, 4 pre-roll, 3 after the audio, 1 retired (S46).
+  - Built a click-track ear check (Share the Shares' review format, which the human approved there) and checked the master's offset.
+- **Commands** (all `.venv/bin/python -I`, in order):
+  - `scripts/first_pass.py`: faster-whisper large-v3, float16, on the RTX 5090. The pip wheels' cuBLAS and cuDNN aren't on the loader path, so the script preloads them.
+  - Windowed re-runs (4–6 s windows, same model; a scratch script, outputs quoted in `lyrics/as_sung_draft.txt`'s notes): 0–20 s, 40–62 s and 138–196 s of the lead stem, and 0–12 s and 162–196 s of the backing stem.
+  - `scripts/align_words.py` (torchaudio MMS_FA, from Share the Shares; per-line windows for Hook 1 and the outro)
+  - `scripts/beats_beat_this.py`, then `scripts/meter.py` (both from Share the Shares, run on CUDA)
+  - `scripts/stem_envelopes.py` (adds the drum drop-outs)
+  - `scripts/timing_map.py` (rewritten for this brief's six-column shot tables and cue wording)
+  - `scripts/m2_clicks.py` (from Share the Shares' `c3_clicks.py`, with this song's sync points)
+  - Master offset: an inline cross-correlation of 60–80 s, mix against master
+- **Outputs:** `lyrics/as_sung_draft.txt`; `timing/{first_pass_lead,first_pass_backing,words,beat_this,beats,drum_onsets,timing_map}.json`, `timing/envelopes/{lead,backing}.npy`, `timing/timing_map.md`, `timing/m2_review.md`; `config/{meter,shot_anchors}.json`; `scripts/{song,first_pass,align_words,beats_beat_this,meter,stem_envelopes,timing_map,m2_clicks}.py`; `renders/m2/m2_clicks.{wav,mp3,md}`
+- **Findings:**
+  - **Tempo and bars:** 90.9 bpm, rigidly steady (p5–p95 90.9–90.9), against the prompt's 92. 76 bars, all 4 beats except two 2-beat bars at 2:17.54 and 2:42.60. Both fall on a lyric "(beat)" pause, so they are probably real. Bar phase checked on the drum stem: the kick is on beat 1, the snare on beats 2 and 4.
+  - **Intro:** piano and synth from 0:00.14, a drum hit at 2.46 s, a fill from 7.1 s, the full beat from 9.70 s. The first word ("Yeah, hello?") is at 3.08 s. So the music doesn't start on "Yeah, hello?", as the brief's S01e has it.
+  - **Sections:**
+
+    | Section | Start | End |
+    | --- | --- | --- |
+    | Intro | 0:03.08 | 0:09.60 |
+    | Verse 1 | 0:20.62 | 0:47.90 |
+    | Hook 1 | 0:47.70 | 1:00.46 |
+    | Verse 2 | 1:00.62 | 1:28.96 |
+    | Hook 2 | 1:29.64 | 1:39.88 |
+    | Verse 3 | 1:40.18 | 2:03.89 |
+    | Eulogy | 2:04.00 | 2:20.94 |
+    | Replies | 2:20.92 | 2:33.10 |
+    | Verse 4 | 2:33.68 | 2:48.96 |
+    | Outro | 2:52.12 | 3:06.38 |
+
+    The piano tail runs to 3:16.16.
+  - **Suno's changes to the sung words** (for the ear check, `timing/m2_review.md`), logged as AI changes:
+    - stage directions sung as words: "hype man" twice, and "downvote" for the sound effects;
+    - a stutter on "This, this call";
+    - six "yeah"s before Hook 1, and no "(read-only!)" echo;
+    - about 18 "good bot"s, one per beat (the human: 2:20–2:33);
+    - the outro line sung three times, stuttered and scratched;
+    - vocal chops under the intro beat.
+  - **Suno's arrangement changes** (by stem energy, to confirm by ear): drums under the eulogy (the prompt asked for the beat to drop to a music box), and the full band under Verse 4 (it asked for a single piano loop).
+  - **Alignment:** all 62 lines aligned. Low-confidence words are listed in `timing/timing_map.md`; most are in the Auto-Tuned Verse 2, the double-time Verse 3 and the replies. The whole-stem pass looped on "good bot" from 2:22 to 2:46 and dropped Verse 4, so that stretch was re-transcribed in windows.
+  - **Shots:**
+    - All cues resolve. S20 and S40 match on their first phrase (each cue spans two lines).
+    - S39b–S39e split the replies into equal runs of beats: about 2.5 s a shot.
+    - Timing issues for M3 are in `timing/m2_review.md` section 4: S03 runs 12.9 s; S48 gets 1.06 s, against S47's 13.2 s; S48a holds over a 9.8 s piano tail, not silence.
+  - **Master offset:** 0 samples against the mix (normalised correlation 1.000), as expected.
+- **Why:** Brief M2: "Timing map from the locked track; add timestamps to every shot". The brief names librosa and WhisperX; this uses beat_this and MMS_FA instead, as the sibling projects did. Adding the timestamps to the brief's shot tables waits for the human's ear check, so the doc changes once, not twice.
+- **Status:** **M2 is ready for review.** The agent stops here.

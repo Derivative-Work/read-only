@@ -1,0 +1,32 @@
+{
+ "_doc": "Beats and 4/4 bars (scripts/meter.py): beat_this activations, a tempo prior from beat_this's median beat, DP beat tracking, DP bar choice. Bars that are not 4 beats are listed for the ear check.",
+ "tempo_prior_bpm": 90.91,
+ "from_beat_this_beats": 297,
+ "tightness": 400,
+ "beats": 297,
+ "beat_bpm_median": 90.91,
+ "beat_bpm_p5_p95": [
+  90.9,
+  90.9
+ ],
+ "beats_on_activation": 0.997,
+ "bars": 76,
+ "bar_lengths": {
+  "4": 73,
+  "2": 2
+ },
+ "irregular_bars": [
+  {
+   "bar": 53,
+   "beat": 208,
+   "t": 137.54,
+   "beats": 2
+  },
+  {
+   "bar": 63,
+   "beat": 246,
+   "t": 162.6,
+   "beats": 2
+  }
+ ]
+}

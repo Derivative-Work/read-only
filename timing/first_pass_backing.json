@@ -1,0 +1,297 @@
+{
+ "model": "faster-whisper large-v3 float16",
+ "stem": "Backing Vocals",
+ "segments": [
+  {
+   "start": 6.8,
+   "end": 9.4,
+   "text": "This call may be recorded.",
+   "words": [
+    {
+     "w": "This",
+     "start": 6.8,
+     "end": 7.62,
+     "p": 0.34
+    },
+    {
+     "w": "call",
+     "start": 7.62,
+     "end": 8.44,
+     "p": 0.91
+    },
+    {
+     "w": "may",
+     "start": 8.44,
+     "end": 8.74,
+     "p": 0.98
+    },
+    {
+     "w": "be",
+     "start": 8.74,
+     "end": 8.92,
+     "p": 1.0
+    },
+    {
+     "w": "recorded.",
+     "start": 8.92,
+     "end": 9.4,
+     "p": 0.96
+    }
+   ]
+  },
+  {
+   "start": 55.7,
+   "end": 58.5,
+   "text": "Thank you.",
+   "words": [
+    {
+     "w": "Thank",
+     "start": 55.7,
+     "end": 57.1,
+     "p": 0.01
+    },
+    {
+     "w": "you.",
+     "start": 57.1,
+     "end": 58.5,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 75.12,
+   "end": 76.72,
+   "text": "Downvote, and it went downvote wrong.",
+   "words": [
+    {
+     "w": "Downvote,",
+     "start": 75.12,
+     "end": 75.52,
+     "p": 0.52
+    },
+    {
+     "w": "and",
+     "start": 75.54,
+     "end": 75.7,
+     "p": 0.75
+    },
+    {
+     "w": "it",
+     "start": 75.7,
+     "end": 75.8,
+     "p": 0.99
+    },
+    {
+     "w": "went",
+     "start": 75.8,
+     "end": 75.96,
+     "p": 1.0
+    },
+    {
+     "w": "downvote",
+     "start": 75.96,
+     "end": 76.48,
+     "p": 0.96
+    },
+    {
+     "w": "wrong.",
+     "start": 76.48,
+     "end": 76.72,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 163.6,
+   "end": 166.4,
+   "text": "Thank you.",
+   "words": [
+    {
+     "w": "Thank",
+     "start": 163.6,
+     "end": 165.0,
+     "p": 0.07
+    },
+    {
+     "w": "you.",
+     "start": 165.0,
+     "end": 166.4,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 166.72,
+   "end": 167.9,
+   "text": "Aight, aight, man.",
+   "words": [
+    {
+     "w": "Aight,",
+     "start": 166.72,
+     "end": 167.36,
+     "p": 0.29
+    },
+    {
+     "w": "aight,",
+     "start": 167.38,
+     "end": 167.72,
+     "p": 0.85
+    },
+    {
+     "w": "man.",
+     "start": 167.72,
+     "end": 167.9,
+     "p": 0.96
+    }
+   ]
+  },
+  {
+   "start": 169.1,
+   "end": 174.6,
+   "text": "This, this, this, this, this call was recorded.",
+   "words": [
+    {
+     "w": "This,",
+     "start": 169.1,
+     "end": 169.8,
+     "p": 0.35
+    },
+    {
+     "w": "this,",
+     "start": 172.26,
+     "end": 172.52,
+     "p": 0.92
+    },
+    {
+     "w": "this,",
+     "start": 172.64,
+     "end": 173.06,
+     "p": 0.94
+    },
+    {
+     "w": "this,",
+     "start": 173.12,
+     "end": 173.42,
+     "p": 0.96
+    },
+    {
+     "w": "this",
+     "start": 173.42,
+     "end": 173.56,
+     "p": 0.96
+    },
+    {
+     "w": "call",
+     "start": 173.56,
+     "end": 173.78,
+     "p": 0.69
+    },
+    {
+     "w": "was",
+     "start": 173.78,
+     "end": 174.14,
+     "p": 0.99
+    },
+    {
+     "w": "recorded.",
+     "start": 174.14,
+     "end": 174.6,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 177.22,
+   "end": 179.34,
+   "text": "This call was recorded.",
+   "words": [
+    {
+     "w": "This",
+     "start": 177.22,
+     "end": 177.92,
+     "p": 0.59
+    },
+    {
+     "w": "call",
+     "start": 177.92,
+     "end": 178.62,
+     "p": 0.97
+    },
+    {
+     "w": "was",
+     "start": 178.62,
+     "end": 178.8,
+     "p": 0.99
+    },
+    {
+     "w": "recorded.",
+     "start": 178.8,
+     "end": 179.34,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 180.3,
+   "end": 184.48,
+   "text": "This call was recorded.",
+   "words": [
+    {
+     "w": "This",
+     "start": 180.3,
+     "end": 181.0,
+     "p": 0.82
+    },
+    {
+     "w": "call",
+     "start": 181.0,
+     "end": 181.46,
+     "p": 0.2
+    },
+    {
+     "w": "was",
+     "start": 181.46,
+     "end": 181.68,
+     "p": 1.0
+    },
+    {
+     "w": "recorded.",
+     "start": 181.68,
+     "end": 184.48,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 184.8,
+   "end": 186.12,
+   "text": "So was everything else.",
+   "words": [
+    {
+     "w": "So",
+     "start": 184.8,
+     "end": 185.3,
+     "p": 0.62
+    },
+    {
+     "w": "was",
+     "start": 185.3,
+     "end": 185.48,
+     "p": 0.89
+    },
+    {
+     "w": "everything",
+     "start": 185.48,
+     "end": 185.76,
+     "p": 0.98
+    },
+    {
+     "w": "else.",
+     "start": 185.76,
+     "end": 186.12,
+     "p": 1.0
+    }
+   ]
+  }
+ ]
+}

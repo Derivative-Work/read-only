@@ -1,0 +1,4318 @@
+{
+ "model": "faster-whisper large-v3 float16",
+ "stem": "Lead Vocals",
+ "segments": [
+  {
+   "start": 3.02,
+   "end": 9.42,
+   "text": "yeah hello you still there this this call may be recorded",
+   "words": [
+    {
+     "w": "yeah",
+     "start": 3.02,
+     "end": 3.42,
+     "p": 0.07
+    },
+    {
+     "w": "hello",
+     "start": 3.42,
+     "end": 3.8,
+     "p": 0.94
+    },
+    {
+     "w": "you",
+     "start": 3.8,
+     "end": 6.04,
+     "p": 0.88
+    },
+    {
+     "w": "still",
+     "start": 6.04,
+     "end": 6.28,
+     "p": 0.89
+    },
+    {
+     "w": "there",
+     "start": 6.28,
+     "end": 6.62,
+     "p": 1.0
+    },
+    {
+     "w": "this",
+     "start": 6.62,
+     "end": 7.44,
+     "p": 0.87
+    },
+    {
+     "w": "this",
+     "start": 7.44,
+     "end": 8.0,
+     "p": 0.66
+    },
+    {
+     "w": "call",
+     "start": 8.0,
+     "end": 8.5,
+     "p": 1.0
+    },
+    {
+     "w": "may",
+     "start": 8.5,
+     "end": 8.74,
+     "p": 1.0
+    },
+    {
+     "w": "be",
+     "start": 8.74,
+     "end": 8.92,
+     "p": 1.0
+    },
+    {
+     "w": "recorded",
+     "start": 8.92,
+     "end": 9.42,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 20.54,
+   "end": 24.68,
+   "text": "15 years your door was open said come build it's free so i built the app you should have built",
+   "words": [
+    {
+     "w": "15",
+     "start": 20.54,
+     "end": 20.94,
+     "p": 0.3
+    },
+    {
+     "w": "years",
+     "start": 20.94,
+     "end": 21.34,
+     "p": 0.99
+    },
+    {
+     "w": "your",
+     "start": 21.34,
+     "end": 21.52,
+     "p": 0.84
+    },
+    {
+     "w": "door",
+     "start": 21.52,
+     "end": 21.68,
+     "p": 1.0
+    },
+    {
+     "w": "was",
+     "start": 21.68,
+     "end": 21.84,
+     "p": 0.99
+    },
+    {
+     "w": "open",
+     "start": 21.84,
+     "end": 22.1,
+     "p": 0.98
+    },
+    {
+     "w": "said",
+     "start": 22.1,
+     "end": 22.28,
+     "p": 0.59
+    },
+    {
+     "w": "come",
+     "start": 22.28,
+     "end": 22.48,
+     "p": 0.99
+    },
+    {
+     "w": "build",
+     "start": 22.48,
+     "end": 22.76,
+     "p": 0.99
+    },
+    {
+     "w": "it's",
+     "start": 22.76,
+     "end": 22.96,
+     "p": 0.89
+    },
+    {
+     "w": "free",
+     "start": 22.96,
+     "end": 23.16,
+     "p": 1.0
+    },
+    {
+     "w": "so",
+     "start": 23.16,
+     "end": 23.4,
+     "p": 1.0
+    },
+    {
+     "w": "i",
+     "start": 23.4,
+     "end": 23.5,
+     "p": 0.91
+    },
+    {
+     "w": "built",
+     "start": 23.5,
+     "end": 23.66,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 23.66,
+     "end": 23.82,
+     "p": 1.0
+    },
+    {
+     "w": "app",
+     "start": 23.82,
+     "end": 23.98,
+     "p": 1.0
+    },
+    {
+     "w": "you",
+     "start": 23.98,
+     "end": 24.14,
+     "p": 1.0
+    },
+    {
+     "w": "should",
+     "start": 24.14,
+     "end": 24.34,
+     "p": 1.0
+    },
+    {
+     "w": "have",
+     "start": 24.34,
+     "end": 24.48,
+     "p": 0.99
+    },
+    {
+     "w": "built",
+     "start": 24.48,
+     "end": 24.68,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 24.68,
+   "end": 29.62,
+   "text": "you outsourced it to me in a price sheet in my inbox 30 days to pack it in 24 cents a thousand",
+   "words": [
+    {
+     "w": "you",
+     "start": 24.68,
+     "end": 24.78,
+     "p": 0.92
+    },
+    {
+     "w": "outsourced",
+     "start": 24.78,
+     "end": 25.36,
+     "p": 0.99
+    },
+    {
+     "w": "it",
+     "start": 25.36,
+     "end": 25.5,
+     "p": 1.0
+    },
+    {
+     "w": "to",
+     "start": 25.5,
+     "end": 25.62,
+     "p": 1.0
+    },
+    {
+     "w": "me",
+     "start": 25.62,
+     "end": 25.84,
+     "p": 1.0
+    },
+    {
+     "w": "in",
+     "start": 25.84,
+     "end": 26.1,
+     "p": 0.33
+    },
+    {
+     "w": "a",
+     "start": 26.1,
+     "end": 26.14,
+     "p": 0.55
+    },
+    {
+     "w": "price",
+     "start": 26.14,
+     "end": 26.36,
+     "p": 0.99
+    },
+    {
+     "w": "sheet",
+     "start": 26.36,
+     "end": 26.62,
+     "p": 0.99
+    },
+    {
+     "w": "in",
+     "start": 26.62,
+     "end": 26.78,
+     "p": 0.98
+    },
+    {
+     "w": "my",
+     "start": 26.78,
+     "end": 26.84,
+     "p": 1.0
+    },
+    {
+     "w": "inbox",
+     "start": 26.84,
+     "end": 27.16,
+     "p": 0.99
+    },
+    {
+     "w": "30",
+     "start": 27.16,
+     "end": 27.58,
+     "p": 0.99
+    },
+    {
+     "w": "days",
+     "start": 27.58,
+     "end": 27.94,
+     "p": 1.0
+    },
+    {
+     "w": "to",
+     "start": 27.94,
+     "end": 28.1,
+     "p": 0.98
+    },
+    {
+     "w": "pack",
+     "start": 28.1,
+     "end": 28.28,
+     "p": 0.93
+    },
+    {
+     "w": "it",
+     "start": 28.28,
+     "end": 28.48,
+     "p": 0.98
+    },
+    {
+     "w": "in",
+     "start": 28.48,
+     "end": 28.6,
+     "p": 0.58
+    },
+    {
+     "w": "24",
+     "start": 28.6,
+     "end": 28.84,
+     "p": 0.98
+    },
+    {
+     "w": "cents",
+     "start": 28.84,
+     "end": 29.24,
+     "p": 0.98
+    },
+    {
+     "w": "a",
+     "start": 29.24,
+     "end": 29.42,
+     "p": 0.96
+    },
+    {
+     "w": "thousand",
+     "start": 29.42,
+     "end": 29.62,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 29.62,
+   "end": 34.58,
+   "text": "calls do the math i wait again 20 million for a year just to keep my server on that ain't a price",
+   "words": [
+    {
+     "w": "calls",
+     "start": 29.62,
+     "end": 29.86,
+     "p": 0.0
+    },
+    {
+     "w": "do",
+     "start": 29.86,
+     "end": 30.06,
+     "p": 0.73
+    },
+    {
+     "w": "the",
+     "start": 30.06,
+     "end": 30.2,
+     "p": 1.0
+    },
+    {
+     "w": "math",
+     "start": 30.2,
+     "end": 30.5,
+     "p": 1.0
+    },
+    {
+     "w": "i",
+     "start": 30.5,
+     "end": 30.72,
+     "p": 0.81
+    },
+    {
+     "w": "wait",
+     "start": 30.72,
+     "end": 30.9,
+     "p": 0.59
+    },
+    {
+     "w": "again",
+     "start": 30.9,
+     "end": 31.14,
+     "p": 1.0
+    },
+    {
+     "w": "20",
+     "start": 31.14,
+     "end": 31.64,
+     "p": 0.97
+    },
+    {
+     "w": "million",
+     "start": 31.64,
+     "end": 31.96,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 31.96,
+     "end": 32.22,
+     "p": 0.98
+    },
+    {
+     "w": "a",
+     "start": 32.22,
+     "end": 32.38,
+     "p": 1.0
+    },
+    {
+     "w": "year",
+     "start": 32.38,
+     "end": 32.6,
+     "p": 1.0
+    },
+    {
+     "w": "just",
+     "start": 32.6,
+     "end": 32.88,
+     "p": 1.0
+    },
+    {
+     "w": "to",
+     "start": 32.88,
+     "end": 33.02,
+     "p": 1.0
+    },
+    {
+     "w": "keep",
+     "start": 33.02,
+     "end": 33.22,
+     "p": 1.0
+    },
+    {
+     "w": "my",
+     "start": 33.22,
+     "end": 33.34,
+     "p": 1.0
+    },
+    {
+     "w": "server",
+     "start": 33.34,
+     "end": 33.66,
+     "p": 0.99
+    },
+    {
+     "w": "on",
+     "start": 33.66,
+     "end": 33.9,
+     "p": 0.95
+    },
+    {
+     "w": "that",
+     "start": 33.9,
+     "end": 34.08,
+     "p": 1.0
+    },
+    {
+     "w": "ain't",
+     "start": 34.08,
+     "end": 34.28,
+     "p": 1.0
+    },
+    {
+     "w": "a",
+     "start": 34.28,
+     "end": 34.32,
+     "p": 0.79
+    },
+    {
+     "w": "price",
+     "start": 34.32,
+     "end": 34.58,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 34.58,
+   "end": 38.68,
+   "text": "that's an eviction where the number written on get into the room i threatened you said blackmail on",
+   "words": [
+    {
+     "w": "that's",
+     "start": 34.58,
+     "end": 34.84,
+     "p": 0.99
+    },
+    {
+     "w": "an",
+     "start": 34.84,
+     "end": 34.88,
+     "p": 0.99
+    },
+    {
+     "w": "eviction",
+     "start": 34.88,
+     "end": 35.26,
+     "p": 1.0
+    },
+    {
+     "w": "where",
+     "start": 35.26,
+     "end": 35.54,
+     "p": 0.54
+    },
+    {
+     "w": "the",
+     "start": 35.54,
+     "end": 35.68,
+     "p": 0.96
+    },
+    {
+     "w": "number",
+     "start": 35.68,
+     "end": 35.96,
+     "p": 1.0
+    },
+    {
+     "w": "written",
+     "start": 35.96,
+     "end": 36.24,
+     "p": 0.99
+    },
+    {
+     "w": "on",
+     "start": 36.24,
+     "end": 36.56,
+     "p": 0.99
+    },
+    {
+     "w": "get",
+     "start": 36.56,
+     "end": 36.82,
+     "p": 0.1
+    },
+    {
+     "w": "into",
+     "start": 36.82,
+     "end": 36.96,
+     "p": 0.8
+    },
+    {
+     "w": "the",
+     "start": 36.96,
+     "end": 37.08,
+     "p": 1.0
+    },
+    {
+     "w": "room",
+     "start": 37.08,
+     "end": 37.22,
+     "p": 1.0
+    },
+    {
+     "w": "i",
+     "start": 37.22,
+     "end": 37.32,
+     "p": 0.93
+    },
+    {
+     "w": "threatened",
+     "start": 37.32,
+     "end": 37.58,
+     "p": 0.92
+    },
+    {
+     "w": "you",
+     "start": 37.58,
+     "end": 37.78,
+     "p": 0.98
+    },
+    {
+     "w": "said",
+     "start": 37.78,
+     "end": 37.96,
+     "p": 0.98
+    },
+    {
+     "w": "blackmail",
+     "start": 37.96,
+     "end": 38.48,
+     "p": 0.97
+    },
+    {
+     "w": "on",
+     "start": 38.48,
+     "end": 38.68,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 38.68,
+   "end": 43.6,
+   "text": "the line funny thing about a phone call it was mine and so's the time he got the tape i got the",
+   "words": [
+    {
+     "w": "the",
+     "start": 38.68,
+     "end": 38.76,
+     "p": 1.0
+    },
+    {
+     "w": "line",
+     "start": 38.76,
+     "end": 39.08,
+     "p": 1.0
+    },
+    {
+     "w": "funny",
+     "start": 39.08,
+     "end": 39.3,
+     "p": 0.97
+    },
+    {
+     "w": "thing",
+     "start": 39.3,
+     "end": 39.48,
+     "p": 1.0
+    },
+    {
+     "w": "about",
+     "start": 39.48,
+     "end": 39.74,
+     "p": 1.0
+    },
+    {
+     "w": "a",
+     "start": 39.74,
+     "end": 39.96,
+     "p": 1.0
+    },
+    {
+     "w": "phone",
+     "start": 39.96,
+     "end": 40.16,
+     "p": 1.0
+    },
+    {
+     "w": "call",
+     "start": 40.16,
+     "end": 40.46,
+     "p": 1.0
+    },
+    {
+     "w": "it",
+     "start": 40.46,
+     "end": 40.66,
+     "p": 1.0
+    },
+    {
+     "w": "was",
+     "start": 40.66,
+     "end": 40.76,
+     "p": 1.0
+    },
+    {
+     "w": "mine",
+     "start": 40.76,
+     "end": 41.06,
+     "p": 0.99
+    },
+    {
+     "w": "and",
+     "start": 41.06,
+     "end": 41.26,
+     "p": 0.98
+    },
+    {
+     "w": "so's",
+     "start": 41.26,
+     "end": 41.52,
+     "p": 0.85
+    },
+    {
+     "w": "the",
+     "start": 41.52,
+     "end": 41.54,
+     "p": 0.99
+    },
+    {
+     "w": "time",
+     "start": 41.54,
+     "end": 41.94,
+     "p": 0.99
+    },
+    {
+     "w": "he",
+     "start": 41.94,
+     "end": 42.52,
+     "p": 0.24
+    },
+    {
+     "w": "got",
+     "start": 42.52,
+     "end": 42.74,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 42.74,
+     "end": 42.9,
+     "p": 0.99
+    },
+    {
+     "w": "tape",
+     "start": 42.9,
+     "end": 43.16,
+     "p": 0.66
+    },
+    {
+     "w": "i",
+     "start": 43.16,
+     "end": 43.28,
+     "p": 0.99
+    },
+    {
+     "w": "got",
+     "start": 43.28,
+     "end": 43.42,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 43.42,
+     "end": 43.6,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 43.6,
+   "end": 47.78,
+   "text": "tape i played it back to the whole internet shrugged it front to back for threats still ain't found one",
+   "words": [
+    {
+     "w": "tape",
+     "start": 43.6,
+     "end": 43.8,
+     "p": 1.0
+    },
+    {
+     "w": "i",
+     "start": 43.8,
+     "end": 43.94,
+     "p": 1.0
+    },
+    {
+     "w": "played",
+     "start": 43.94,
+     "end": 44.16,
+     "p": 1.0
+    },
+    {
+     "w": "it",
+     "start": 44.16,
+     "end": 44.28,
+     "p": 1.0
+    },
+    {
+     "w": "back",
+     "start": 44.28,
+     "end": 44.46,
+     "p": 1.0
+    },
+    {
+     "w": "to",
+     "start": 44.46,
+     "end": 44.6,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 44.6,
+     "end": 44.72,
+     "p": 1.0
+    },
+    {
+     "w": "whole",
+     "start": 44.72,
+     "end": 44.9,
+     "p": 1.0
+    },
+    {
+     "w": "internet",
+     "start": 44.9,
+     "end": 45.36,
+     "p": 1.0
+    },
+    {
+     "w": "shrugged",
+     "start": 45.36,
+     "end": 45.88,
+     "p": 0.74
+    },
+    {
+     "w": "it",
+     "start": 45.88,
+     "end": 45.9,
+     "p": 0.74
+    },
+    {
+     "w": "front",
+     "start": 45.9,
+     "end": 46.1,
+     "p": 0.93
+    },
+    {
+     "w": "to",
+     "start": 46.1,
+     "end": 46.2,
+     "p": 0.74
+    },
+    {
+     "w": "back",
+     "start": 46.2,
+     "end": 46.44,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 46.44,
+     "end": 46.6,
+     "p": 0.99
+    },
+    {
+     "w": "threats",
+     "start": 46.6,
+     "end": 46.86,
+     "p": 0.9
+    },
+    {
+     "w": "still",
+     "start": 46.86,
+     "end": 47.1,
+     "p": 0.98
+    },
+    {
+     "w": "ain't",
+     "start": 47.1,
+     "end": 47.3,
+     "p": 1.0
+    },
+    {
+     "w": "found",
+     "start": 47.3,
+     "end": 47.54,
+     "p": 1.0
+    },
+    {
+     "w": "one",
+     "start": 47.54,
+     "end": 47.78,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 47.78,
+   "end": 54.28,
+   "text": "yeah yeah yeah yeah read only 8 000 gone dark put the plug in the town square now you're running",
+   "words": [
+    {
+     "w": "yeah",
+     "start": 47.78,
+     "end": 48.06,
+     "p": 0.2
+    },
+    {
+     "w": "yeah",
+     "start": 48.06,
+     "end": 48.52,
+     "p": 0.54
+    },
+    {
+     "w": "yeah",
+     "start": 48.52,
+     "end": 48.9,
+     "p": 0.89
+    },
+    {
+     "w": "yeah",
+     "start": 48.9,
+     "end": 49.24,
+     "p": 0.78
+    },
+    {
+     "w": "read",
+     "start": 49.24,
+     "end": 49.96,
+     "p": 0.32
+    },
+    {
+     "w": "only",
+     "start": 49.96,
+     "end": 50.54,
+     "p": 0.85
+    },
+    {
+     "w": "8",
+     "start": 50.54,
+     "end": 51.28,
+     "p": 0.5
+    },
+    {
+     "w": "000",
+     "start": 51.28,
+     "end": 51.78,
+     "p": 0.44
+    },
+    {
+     "w": "gone",
+     "start": 51.78,
+     "end": 52.1,
+     "p": 0.86
+    },
+    {
+     "w": "dark",
+     "start": 52.1,
+     "end": 52.44,
+     "p": 0.94
+    },
+    {
+     "w": "put",
+     "start": 52.44,
+     "end": 52.68,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 52.68,
+     "end": 52.84,
+     "p": 1.0
+    },
+    {
+     "w": "plug",
+     "start": 52.84,
+     "end": 53.06,
+     "p": 1.0
+    },
+    {
+     "w": "in",
+     "start": 53.06,
+     "end": 53.2,
+     "p": 0.76
+    },
+    {
+     "w": "the",
+     "start": 53.2,
+     "end": 53.2,
+     "p": 0.99
+    },
+    {
+     "w": "town",
+     "start": 53.2,
+     "end": 53.4,
+     "p": 0.99
+    },
+    {
+     "w": "square",
+     "start": 53.4,
+     "end": 53.64,
+     "p": 0.95
+    },
+    {
+     "w": "now",
+     "start": 53.64,
+     "end": 53.86,
+     "p": 1.0
+    },
+    {
+     "w": "you're",
+     "start": 53.86,
+     "end": 54.02,
+     "p": 1.0
+    },
+    {
+     "w": "running",
+     "start": 54.02,
+     "end": 54.28,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 54.28,
+   "end": 55.82,
+   "text": "And an empty part bead only",
+   "words": [
+    {
+     "w": "And",
+     "start": 54.28,
+     "end": 54.38,
+     "p": 0.05
+    },
+    {
+     "w": "an",
+     "start": 54.38,
+     "end": 54.54,
+     "p": 0.38
+    },
+    {
+     "w": "empty",
+     "start": 54.54,
+     "end": 54.76,
+     "p": 1.0
+    },
+    {
+     "w": "part",
+     "start": 54.76,
+     "end": 55.1,
+     "p": 0.48
+    },
+    {
+     "w": "bead",
+     "start": 55.1,
+     "end": 55.42,
+     "p": 0.28
+    },
+    {
+     "w": "only",
+     "start": 55.42,
+     "end": 55.82,
+     "p": 0.78
+    }
+   ]
+  },
+  {
+   "start": 55.82,
+   "end": 57.42,
+   "text": "48 hours a night",
+   "words": [
+    {
+     "w": "48",
+     "start": 55.82,
+     "end": 56.54,
+     "p": 0.74
+    },
+    {
+     "w": "hours",
+     "start": 56.54,
+     "end": 56.9,
+     "p": 0.99
+    },
+    {
+     "w": "a",
+     "start": 56.9,
+     "end": 57.14,
+     "p": 0.98
+    },
+    {
+     "w": "night",
+     "start": 57.14,
+     "end": 57.42,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 57.42,
+   "end": 58.88,
+   "text": "We did the work for nothing",
+   "words": [
+    {
+     "w": "We",
+     "start": 57.42,
+     "end": 57.82,
+     "p": 0.75
+    },
+    {
+     "w": "did",
+     "start": 57.82,
+     "end": 57.98,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 57.98,
+     "end": 58.12,
+     "p": 1.0
+    },
+    {
+     "w": "work",
+     "start": 58.12,
+     "end": 58.38,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 58.38,
+     "end": 58.58,
+     "p": 0.99
+    },
+    {
+     "w": "nothing",
+     "start": 58.58,
+     "end": 58.88,
+     "p": 0.94
+    }
+   ]
+  },
+  {
+   "start": 58.88,
+   "end": 60.42,
+   "text": "And you charged us for the life",
+   "words": [
+    {
+     "w": "And",
+     "start": 58.88,
+     "end": 59.08,
+     "p": 0.8
+    },
+    {
+     "w": "you",
+     "start": 59.08,
+     "end": 59.24,
+     "p": 1.0
+    },
+    {
+     "w": "charged",
+     "start": 59.24,
+     "end": 59.64,
+     "p": 0.98
+    },
+    {
+     "w": "us",
+     "start": 59.64,
+     "end": 59.8,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 59.8,
+     "end": 59.96,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 59.96,
+     "end": 60.08,
+     "p": 1.0
+    },
+    {
+     "w": "life",
+     "start": 60.08,
+     "end": 60.42,
+     "p": 0.53
+    }
+   ]
+  },
+  {
+   "start": 60.42,
+   "end": 61.7,
+   "text": "All the minds are mad, it's cute",
+   "words": [
+    {
+     "w": "All",
+     "start": 60.42,
+     "end": 60.62,
+     "p": 0.31
+    },
+    {
+     "w": "the",
+     "start": 60.62,
+     "end": 60.78,
+     "p": 0.66
+    },
+    {
+     "w": "minds",
+     "start": 60.78,
+     "end": 60.98,
+     "p": 0.8
+    },
+    {
+     "w": "are",
+     "start": 60.98,
+     "end": 61.14,
+     "p": 0.98
+    },
+    {
+     "w": "mad,",
+     "start": 61.14,
+     "end": 61.3,
+     "p": 1.0
+    },
+    {
+     "w": "it's",
+     "start": 61.34,
+     "end": 61.48,
+     "p": 1.0
+    },
+    {
+     "w": "cute",
+     "start": 61.48,
+     "end": 61.7,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 61.7,
+   "end": 62.98,
+   "text": "You think you own the place",
+   "words": [
+    {
+     "w": "You",
+     "start": 61.7,
+     "end": 62.14,
+     "p": 1.0
+    },
+    {
+     "w": "think",
+     "start": 62.14,
+     "end": 62.32,
+     "p": 1.0
+    },
+    {
+     "w": "you",
+     "start": 62.32,
+     "end": 62.46,
+     "p": 1.0
+    },
+    {
+     "w": "own",
+     "start": 62.46,
+     "end": 62.62,
+     "p": 0.9
+    },
+    {
+     "w": "the",
+     "start": 62.62,
+     "end": 62.78,
+     "p": 1.0
+    },
+    {
+     "w": "place",
+     "start": 62.78,
+     "end": 62.98,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 62.98,
+   "end": 64.02,
+   "text": "You land a jet, you baby",
+   "words": [
+    {
+     "w": "You",
+     "start": 62.98,
+     "end": 63.14,
+     "p": 0.62
+    },
+    {
+     "w": "land",
+     "start": 63.14,
+     "end": 63.3,
+     "p": 0.77
+    },
+    {
+     "w": "a",
+     "start": 63.3,
+     "end": 63.44,
+     "p": 0.62
+    },
+    {
+     "w": "jet,",
+     "start": 63.44,
+     "end": 63.62,
+     "p": 0.32
+    },
+    {
+     "w": "you",
+     "start": 63.72,
+     "end": 63.8,
+     "p": 1.0
+    },
+    {
+     "w": "baby",
+     "start": 63.8,
+     "end": 64.02,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 64.02,
+   "end": 65.56,
+   "text": "And I'm takin' back the space",
+   "words": [
+    {
+     "w": "And",
+     "start": 64.02,
+     "end": 64.62,
+     "p": 1.0
+    },
+    {
+     "w": "I'm",
+     "start": 64.62,
+     "end": 64.76,
+     "p": 1.0
+    },
+    {
+     "w": "takin'",
+     "start": 64.76,
+     "end": 65.1,
+     "p": 0.69
+    },
+    {
+     "w": "back",
+     "start": 65.1,
+     "end": 65.24,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 65.24,
+     "end": 65.38,
+     "p": 0.98
+    },
+    {
+     "w": "space",
+     "start": 65.38,
+     "end": 65.56,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 65.56,
+   "end": 66.76,
+   "text": "You went down for 48",
+   "words": [
+    {
+     "w": "You",
+     "start": 65.56,
+     "end": 65.9,
+     "p": 1.0
+    },
+    {
+     "w": "went",
+     "start": 65.9,
+     "end": 66.08,
+     "p": 0.91
+    },
+    {
+     "w": "down",
+     "start": 66.08,
+     "end": 66.26,
+     "p": 0.81
+    },
+    {
+     "w": "for",
+     "start": 66.26,
+     "end": 66.42,
+     "p": 1.0
+    },
+    {
+     "w": "48",
+     "start": 66.42,
+     "end": 66.76,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 66.76,
+   "end": 68.3,
+   "text": "I barely broke a sweat",
+   "words": [
+    {
+     "w": "I",
+     "start": 66.76,
+     "end": 67.32,
+     "p": 1.0
+    },
+    {
+     "w": "barely",
+     "start": 67.32,
+     "end": 67.62,
+     "p": 1.0
+    },
+    {
+     "w": "broke",
+     "start": 67.62,
+     "end": 67.88,
+     "p": 1.0
+    },
+    {
+     "w": "a",
+     "start": 67.88,
+     "end": 68.02,
+     "p": 1.0
+    },
+    {
+     "w": "sweat",
+     "start": 68.02,
+     "end": 68.3,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 68.3,
+   "end": 70.02,
+   "text": "Traffic dipped a little, then it bounced",
+   "words": [
+    {
+     "w": "Traffic",
+     "start": 68.3,
+     "end": 68.68,
+     "p": 1.0
+    },
+    {
+     "w": "dipped",
+     "start": 68.68,
+     "end": 68.88,
+     "p": 0.94
+    },
+    {
+     "w": "a",
+     "start": 68.88,
+     "end": 69.06,
+     "p": 1.0
+    },
+    {
+     "w": "little,",
+     "start": 69.06,
+     "end": 69.34,
+     "p": 1.0
+    },
+    {
+     "w": "then",
+     "start": 69.4,
+     "end": 69.52,
+     "p": 1.0
+    },
+    {
+     "w": "it",
+     "start": 69.52,
+     "end": 69.64,
+     "p": 1.0
+    },
+    {
+     "w": "bounced",
+     "start": 69.64,
+     "end": 70.02,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 70.02,
+   "end": 70.82,
+   "text": "I'm not upset",
+   "words": [
+    {
+     "w": "I'm",
+     "start": 70.02,
+     "end": 70.38,
+     "p": 1.0
+    },
+    {
+     "w": "not",
+     "start": 70.38,
+     "end": 70.52,
+     "p": 1.0
+    },
+    {
+     "w": "upset",
+     "start": 70.52,
+     "end": 70.82,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 70.82,
+   "end": 72.26,
+   "text": "Swap the minds, we wouldn't open",
+   "words": [
+    {
+     "w": "Swap",
+     "start": 70.82,
+     "end": 71.2,
+     "p": 0.77
+    },
+    {
+     "w": "the",
+     "start": 71.2,
+     "end": 71.32,
+     "p": 0.98
+    },
+    {
+     "w": "minds,",
+     "start": 71.32,
+     "end": 71.58,
+     "p": 0.87
+    },
+    {
+     "w": "we",
+     "start": 71.62,
+     "end": 71.74,
+     "p": 0.95
+    },
+    {
+     "w": "wouldn't",
+     "start": 71.74,
+     "end": 72.0,
+     "p": 0.67
+    },
+    {
+     "w": "open",
+     "start": 72.0,
+     "end": 72.26,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 72.26,
+   "end": 73.46,
+   "text": "Flick the lights back on",
+   "words": [
+    {
+     "w": "Flick",
+     "start": 72.26,
+     "end": 72.56,
+     "p": 0.63
+    },
+    {
+     "w": "the",
+     "start": 72.56,
+     "end": 72.68,
+     "p": 1.0
+    },
+    {
+     "w": "lights",
+     "start": 72.68,
+     "end": 72.92,
+     "p": 1.0
+    },
+    {
+     "w": "back",
+     "start": 72.92,
+     "end": 73.12,
+     "p": 0.87
+    },
+    {
+     "w": "on",
+     "start": 73.12,
+     "end": 73.46,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 73.46,
+   "end": 74.98,
+   "text": "And then they made it calm you down",
+   "words": [
+    {
+     "w": "And",
+     "start": 73.46,
+     "end": 73.6,
+     "p": 0.29
+    },
+    {
+     "w": "then",
+     "start": 73.6,
+     "end": 73.74,
+     "p": 0.88
+    },
+    {
+     "w": "they",
+     "start": 73.74,
+     "end": 73.88,
+     "p": 0.86
+    },
+    {
+     "w": "made",
+     "start": 73.88,
+     "end": 74.04,
+     "p": 0.52
+    },
+    {
+     "w": "it",
+     "start": 74.04,
+     "end": 74.34,
+     "p": 0.97
+    },
+    {
+     "w": "calm",
+     "start": 74.34,
+     "end": 74.5,
+     "p": 0.9
+    },
+    {
+     "w": "you",
+     "start": 74.5,
+     "end": 74.66,
+     "p": 1.0
+    },
+    {
+     "w": "down",
+     "start": 74.66,
+     "end": 74.98,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 74.98,
+   "end": 76.72,
+   "text": "Downvote, and it went downvote wrong",
+   "words": [
+    {
+     "w": "Downvote,",
+     "start": 74.98,
+     "end": 75.54,
+     "p": 0.73
+    },
+    {
+     "w": "and",
+     "start": 75.56,
+     "end": 75.68,
+     "p": 0.92
+    },
+    {
+     "w": "it",
+     "start": 75.68,
+     "end": 75.8,
+     "p": 1.0
+    },
+    {
+     "w": "went",
+     "start": 75.8,
+     "end": 75.96,
+     "p": 1.0
+    },
+    {
+     "w": "downvote",
+     "start": 75.96,
+     "end": 76.48,
+     "p": 0.98
+    },
+    {
+     "w": "wrong",
+     "start": 76.48,
+     "end": 76.72,
+     "p": 0.9
+    }
+   ]
+  },
+  {
+   "start": 76.72,
+   "end": 78.22,
+   "text": "But this was never about the apps",
+   "words": [
+    {
+     "w": "But",
+     "start": 76.72,
+     "end": 77.08,
+     "p": 1.0
+    },
+    {
+     "w": "this",
+     "start": 77.08,
+     "end": 77.16,
+     "p": 1.0
+    },
+    {
+     "w": "was",
+     "start": 77.16,
+     "end": 77.3,
+     "p": 1.0
+    },
+    {
+     "w": "never",
+     "start": 77.3,
+     "end": 77.52,
+     "p": 1.0
+    },
+    {
+     "w": "about",
+     "start": 77.52,
+     "end": 77.8,
+     "p": 0.72
+    },
+    {
+     "w": "the",
+     "start": 77.8,
+     "end": 78.0,
+     "p": 0.69
+    },
+    {
+     "w": "apps",
+     "start": 78.0,
+     "end": 78.22,
+     "p": 0.69
+    }
+   ]
+  },
+  {
+   "start": 78.22,
+   "end": 79.54,
+   "text": "So let me make it plain",
+   "words": [
+    {
+     "w": "So",
+     "start": 78.22,
+     "end": 78.6,
+     "p": 1.0
+    },
+    {
+     "w": "let",
+     "start": 78.6,
+     "end": 78.78,
+     "p": 1.0
+    },
+    {
+     "w": "me",
+     "start": 78.78,
+     "end": 78.94,
+     "p": 1.0
+    },
+    {
+     "w": "make",
+     "start": 78.94,
+     "end": 79.14,
+     "p": 1.0
+    },
+    {
+     "w": "it",
+     "start": 79.14,
+     "end": 79.26,
+     "p": 1.0
+    },
+    {
+     "w": "plain",
+     "start": 79.26,
+     "end": 79.54,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 79.54,
+   "end": 80.94,
+   "text": "It's the robots with the wallets",
+   "words": [
+    {
+     "w": "It's",
+     "start": 79.54,
+     "end": 79.8,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 79.8,
+     "end": 79.9,
+     "p": 1.0
+    },
+    {
+     "w": "robots",
+     "start": 79.9,
+     "end": 80.18,
+     "p": 0.27
+    },
+    {
+     "w": "with",
+     "start": 80.18,
+     "end": 80.4,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 80.4,
+     "end": 80.6,
+     "p": 1.0
+    },
+    {
+     "w": "wallets",
+     "start": 80.6,
+     "end": 80.94,
+     "p": 0.8
+    }
+   ]
+  },
+  {
+   "start": 80.94,
+   "end": 81.98,
+   "text": "Wrappin' all your brains",
+   "words": [
+    {
+     "w": "Wrappin'",
+     "start": 80.94,
+     "end": 81.3,
+     "p": 0.72
+    },
+    {
+     "w": "all",
+     "start": 81.3,
+     "end": 81.42,
+     "p": 1.0
+    },
+    {
+     "w": "your",
+     "start": 81.42,
+     "end": 81.6,
+     "p": 1.0
+    },
+    {
+     "w": "brains",
+     "start": 81.6,
+     "end": 81.98,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 81.98,
+   "end": 83.6,
+   "text": "I'm the wall around your words",
+   "words": [
+    {
+     "w": "I'm",
+     "start": 81.98,
+     "end": 82.52,
+     "p": 0.94
+    },
+    {
+     "w": "the",
+     "start": 82.52,
+     "end": 82.56,
+     "p": 1.0
+    },
+    {
+     "w": "wall",
+     "start": 82.56,
+     "end": 82.8,
+     "p": 1.0
+    },
+    {
+     "w": "around",
+     "start": 82.8,
+     "end": 83.02,
+     "p": 0.97
+    },
+    {
+     "w": "your",
+     "start": 83.02,
+     "end": 83.28,
+     "p": 1.0
+    },
+    {
+     "w": "words",
+     "start": 83.28,
+     "end": 83.6,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 83.6,
+   "end": 86.44,
+   "text": "I'm protecting what we got from the bots with the big money",
+   "words": [
+    {
+     "w": "I'm",
+     "start": 83.6,
+     "end": 83.78,
+     "p": 0.62
+    },
+    {
+     "w": "protecting",
+     "start": 83.78,
+     "end": 84.04,
+     "p": 0.91
+    },
+    {
+     "w": "what",
+     "start": 84.04,
+     "end": 84.4,
+     "p": 0.99
+    },
+    {
+     "w": "we",
+     "start": 84.4,
+     "end": 84.58,
+     "p": 1.0
+    },
+    {
+     "w": "got",
+     "start": 84.58,
+     "end": 84.8,
+     "p": 0.98
+    },
+    {
+     "w": "from",
+     "start": 84.8,
+     "end": 85.06,
+     "p": 0.95
+    },
+    {
+     "w": "the",
+     "start": 85.06,
+     "end": 85.24,
+     "p": 0.98
+    },
+    {
+     "w": "bots",
+     "start": 85.24,
+     "end": 85.48,
+     "p": 0.91
+    },
+    {
+     "w": "with",
+     "start": 85.48,
+     "end": 85.7,
+     "p": 0.81
+    },
+    {
+     "w": "the",
+     "start": 85.7,
+     "end": 85.86,
+     "p": 0.99
+    },
+    {
+     "w": "big",
+     "start": 85.86,
+     "end": 86.14,
+     "p": 0.99
+    },
+    {
+     "w": "money",
+     "start": 86.14,
+     "end": 86.44,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 86.44,
+   "end": 88.88,
+   "text": "So I sold them the whole lot",
+   "words": [
+    {
+     "w": "So",
+     "start": 86.44,
+     "end": 87.0,
+     "p": 0.28
+    },
+    {
+     "w": "I",
+     "start": 87.0,
+     "end": 87.74,
+     "p": 0.72
+    },
+    {
+     "w": "sold",
+     "start": 87.74,
+     "end": 88.1,
+     "p": 0.96
+    },
+    {
+     "w": "them",
+     "start": 88.1,
+     "end": 88.24,
+     "p": 0.49
+    },
+    {
+     "w": "the",
+     "start": 88.24,
+     "end": 88.4,
+     "p": 0.98
+    },
+    {
+     "w": "whole",
+     "start": 88.4,
+     "end": 88.54,
+     "p": 1.0
+    },
+    {
+     "w": "lot",
+     "start": 88.54,
+     "end": 88.88,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 89.38,
+   "end": 90.26,
+   "text": "Read only",
+   "words": [
+    {
+     "w": "Read",
+     "start": 89.38,
+     "end": 89.82,
+     "p": 0.55
+    },
+    {
+     "w": "only",
+     "start": 89.82,
+     "end": 90.26,
+     "p": 0.73
+    }
+   ]
+  },
+  {
+   "start": 90.26,
+   "end": 93.3,
+   "text": "8,000 gone dark, put the plug on the town square",
+   "words": [
+    {
+     "w": "8",
+     "start": 90.26,
+     "end": 91.06,
+     "p": 0.76
+    },
+    {
+     "w": ",000",
+     "start": 91.06,
+     "end": 91.54,
+     "p": 0.84
+    },
+    {
+     "w": "gone",
+     "start": 91.54,
+     "end": 91.74,
+     "p": 0.86
+    },
+    {
+     "w": "dark,",
+     "start": 91.74,
+     "end": 92.08,
+     "p": 0.94
+    },
+    {
+     "w": "put",
+     "start": 92.14,
+     "end": 92.3,
+     "p": 0.68
+    },
+    {
+     "w": "the",
+     "start": 92.3,
+     "end": 92.52,
+     "p": 1.0
+    },
+    {
+     "w": "plug",
+     "start": 92.52,
+     "end": 92.7,
+     "p": 1.0
+    },
+    {
+     "w": "on",
+     "start": 92.7,
+     "end": 92.86,
+     "p": 0.98
+    },
+    {
+     "w": "the",
+     "start": 92.86,
+     "end": 92.88,
+     "p": 0.73
+    },
+    {
+     "w": "town",
+     "start": 92.88,
+     "end": 93.06,
+     "p": 0.51
+    },
+    {
+     "w": "square",
+     "start": 93.06,
+     "end": 93.3,
+     "p": 0.91
+    }
+   ]
+  },
+  {
+   "start": 93.3,
+   "end": 94.78,
+   "text": "Now you're running an empty park",
+   "words": [
+    {
+     "w": "Now",
+     "start": 93.3,
+     "end": 93.5,
+     "p": 0.71
+    },
+    {
+     "w": "you're",
+     "start": 93.5,
+     "end": 93.68,
+     "p": 0.96
+    },
+    {
+     "w": "running",
+     "start": 93.68,
+     "end": 93.92,
+     "p": 0.96
+    },
+    {
+     "w": "an",
+     "start": 93.92,
+     "end": 94.2,
+     "p": 0.94
+    },
+    {
+     "w": "empty",
+     "start": 94.2,
+     "end": 94.4,
+     "p": 1.0
+    },
+    {
+     "w": "park",
+     "start": 94.4,
+     "end": 94.78,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 94.78,
+   "end": 95.46,
+   "text": "Read only",
+   "words": [
+    {
+     "w": "Read",
+     "start": 94.78,
+     "end": 95.14,
+     "p": 0.38
+    },
+    {
+     "w": "only",
+     "start": 95.14,
+     "end": 95.46,
+     "p": 0.87
+    }
+   ]
+  },
+  {
+   "start": 95.46,
+   "end": 97.26,
+   "text": "The guard dogs put down",
+   "words": [
+    {
+     "w": "The",
+     "start": 95.46,
+     "end": 95.88,
+     "p": 0.65
+    },
+    {
+     "w": "guard",
+     "start": 95.88,
+     "end": 96.06,
+     "p": 0.39
+    },
+    {
+     "w": "dogs",
+     "start": 96.06,
+     "end": 96.5,
+     "p": 0.76
+    },
+    {
+     "w": "put",
+     "start": 96.5,
+     "end": 96.92,
+     "p": 0.92
+    },
+    {
+     "w": "down",
+     "start": 96.92,
+     "end": 97.26,
+     "p": 0.99
+    }
+   ]
+  },
+  {
+   "start": 97.26,
+   "end": 99.92,
+   "text": "Now the wolves got a contract and they're running the town",
+   "words": [
+    {
+     "w": "Now",
+     "start": 97.26,
+     "end": 97.6,
+     "p": 0.92
+    },
+    {
+     "w": "the",
+     "start": 97.6,
+     "end": 97.8,
+     "p": 1.0
+    },
+    {
+     "w": "wolves",
+     "start": 97.8,
+     "end": 98.1,
+     "p": 0.95
+    },
+    {
+     "w": "got",
+     "start": 98.1,
+     "end": 98.28,
+     "p": 1.0
+    },
+    {
+     "w": "a",
+     "start": 98.28,
+     "end": 98.46,
+     "p": 1.0
+    },
+    {
+     "w": "contract",
+     "start": 98.46,
+     "end": 98.72,
+     "p": 1.0
+    },
+    {
+     "w": "and",
+     "start": 98.72,
+     "end": 98.98,
+     "p": 0.98
+    },
+    {
+     "w": "they're",
+     "start": 98.98,
+     "end": 99.14,
+     "p": 1.0
+    },
+    {
+     "w": "running",
+     "start": 99.14,
+     "end": 99.38,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 99.38,
+     "end": 99.58,
+     "p": 1.0
+    },
+    {
+     "w": "town",
+     "start": 99.58,
+     "end": 99.92,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 99.92,
+   "end": 102.64,
+   "text": "Said the bots were the problem, you were guarding every word",
+   "words": [
+    {
+     "w": "Said",
+     "start": 99.92,
+     "end": 100.24,
+     "p": 0.98
+    },
+    {
+     "w": "the",
+     "start": 100.24,
+     "end": 100.4,
+     "p": 0.99
+    },
+    {
+     "w": "bots",
+     "start": 100.4,
+     "end": 100.68,
+     "p": 1.0
+    },
+    {
+     "w": "were",
+     "start": 100.68,
+     "end": 100.86,
+     "p": 0.94
+    },
+    {
+     "w": "the",
+     "start": 100.86,
+     "end": 101.06,
+     "p": 1.0
+    },
+    {
+     "w": "problem,",
+     "start": 101.06,
+     "end": 101.4,
+     "p": 0.99
+    },
+    {
+     "w": "you",
+     "start": 101.46,
+     "end": 101.58,
+     "p": 1.0
+    },
+    {
+     "w": "were",
+     "start": 101.58,
+     "end": 101.7,
+     "p": 0.96
+    },
+    {
+     "w": "guarding",
+     "start": 101.7,
+     "end": 102.06,
+     "p": 1.0
+    },
+    {
+     "w": "every",
+     "start": 102.06,
+     "end": 102.34,
+     "p": 0.99
+    },
+    {
+     "w": "word",
+     "start": 102.34,
+     "end": 102.64,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 102.64,
+   "end": 105.16,
+   "text": "And you sold them by the terabyte to the biggest ones on earth",
+   "words": [
+    {
+     "w": "And",
+     "start": 102.64,
+     "end": 102.76,
+     "p": 0.89
+    },
+    {
+     "w": "you",
+     "start": 102.76,
+     "end": 102.84,
+     "p": 1.0
+    },
+    {
+     "w": "sold",
+     "start": 102.84,
+     "end": 103.0,
+     "p": 1.0
+    },
+    {
+     "w": "them",
+     "start": 103.0,
+     "end": 103.12,
+     "p": 1.0
+    },
+    {
+     "w": "by",
+     "start": 103.12,
+     "end": 103.28,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 103.28,
+     "end": 103.4,
+     "p": 1.0
+    },
+    {
+     "w": "terabyte",
+     "start": 103.4,
+     "end": 103.82,
+     "p": 0.75
+    },
+    {
+     "w": "to",
+     "start": 103.82,
+     "end": 104.08,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 104.08,
+     "end": 104.18,
+     "p": 1.0
+    },
+    {
+     "w": "biggest",
+     "start": 104.18,
+     "end": 104.52,
+     "p": 1.0
+    },
+    {
+     "w": "ones",
+     "start": 104.52,
+     "end": 104.76,
+     "p": 1.0
+    },
+    {
+     "w": "on",
+     "start": 104.76,
+     "end": 104.96,
+     "p": 1.0
+    },
+    {
+     "w": "earth",
+     "start": 104.96,
+     "end": 105.16,
+     "p": 0.8
+    }
+   ]
+  },
+  {
+   "start": 105.16,
+   "end": 106.62,
+   "text": "60 mil a year for the search guys",
+   "words": [
+    {
+     "w": "60",
+     "start": 105.16,
+     "end": 105.42,
+     "p": 0.92
+    },
+    {
+     "w": "mil",
+     "start": 105.42,
+     "end": 105.58,
+     "p": 0.64
+    },
+    {
+     "w": "a",
+     "start": 105.58,
+     "end": 105.7,
+     "p": 1.0
+    },
+    {
+     "w": "year",
+     "start": 105.7,
+     "end": 105.9,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 105.9,
+     "end": 106.02,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 106.02,
+     "end": 106.1,
+     "p": 1.0
+    },
+    {
+     "w": "search",
+     "start": 106.1,
+     "end": 106.32,
+     "p": 0.84
+    },
+    {
+     "w": "guys",
+     "start": 106.32,
+     "end": 106.62,
+     "p": 0.88
+    }
+   ]
+  },
+  {
+   "start": 106.62,
+   "end": 109.08,
+   "text": "Then the chatbot came to call and you rang the opening bell",
+   "words": [
+    {
+     "w": "Then",
+     "start": 106.62,
+     "end": 106.9,
+     "p": 0.81
+    },
+    {
+     "w": "the",
+     "start": 106.9,
+     "end": 107.04,
+     "p": 1.0
+    },
+    {
+     "w": "chatbot",
+     "start": 107.04,
+     "end": 107.34,
+     "p": 0.89
+    },
+    {
+     "w": "came",
+     "start": 107.34,
+     "end": 107.54,
+     "p": 1.0
+    },
+    {
+     "w": "to",
+     "start": 107.54,
+     "end": 107.7,
+     "p": 1.0
+    },
+    {
+     "w": "call",
+     "start": 107.7,
+     "end": 107.9,
+     "p": 1.0
+    },
+    {
+     "w": "and",
+     "start": 107.9,
+     "end": 108.0,
+     "p": 0.99
+    },
+    {
+     "w": "you",
+     "start": 108.0,
+     "end": 108.08,
+     "p": 0.99
+    },
+    {
+     "w": "rang",
+     "start": 108.08,
+     "end": 108.2,
+     "p": 0.97
+    },
+    {
+     "w": "the",
+     "start": 108.2,
+     "end": 108.36,
+     "p": 1.0
+    },
+    {
+     "w": "opening",
+     "start": 108.36,
+     "end": 108.72,
+     "p": 0.99
+    },
+    {
+     "w": "bell",
+     "start": 108.72,
+     "end": 109.08,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 109.08,
+   "end": 110.64,
+   "text": "Ticker up, you sold it all",
+   "words": [
+    {
+     "w": "Ticker",
+     "start": 109.08,
+     "end": 109.62,
+     "p": 0.97
+    },
+    {
+     "w": "up,",
+     "start": 109.62,
+     "end": 109.88,
+     "p": 0.99
+    },
+    {
+     "w": "you",
+     "start": 109.9,
+     "end": 109.98,
+     "p": 1.0
+    },
+    {
+     "w": "sold",
+     "start": 109.98,
+     "end": 110.22,
+     "p": 1.0
+    },
+    {
+     "w": "it",
+     "start": 110.22,
+     "end": 110.38,
+     "p": 1.0
+    },
+    {
+     "w": "all",
+     "start": 110.38,
+     "end": 110.64,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 110.64,
+   "end": 113.18,
+   "text": "Every fix I posted free, every answer on the thread",
+   "words": [
+    {
+     "w": "Every",
+     "start": 110.64,
+     "end": 110.88,
+     "p": 0.42
+    },
+    {
+     "w": "fix",
+     "start": 110.88,
+     "end": 111.2,
+     "p": 1.0
+    },
+    {
+     "w": "I",
+     "start": 111.2,
+     "end": 111.32,
+     "p": 0.82
+    },
+    {
+     "w": "posted",
+     "start": 111.32,
+     "end": 111.54,
+     "p": 0.88
+    },
+    {
+     "w": "free,",
+     "start": 111.54,
+     "end": 111.88,
+     "p": 1.0
+    },
+    {
+     "w": "every",
+     "start": 112.04,
+     "end": 112.28,
+     "p": 1.0
+    },
+    {
+     "w": "answer",
+     "start": 112.28,
+     "end": 112.6,
+     "p": 1.0
+    },
+    {
+     "w": "on",
+     "start": 112.6,
+     "end": 112.8,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 112.8,
+     "end": 112.96,
+     "p": 0.75
+    },
+    {
+     "w": "thread",
+     "start": 112.96,
+     "end": 113.18,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 113.18,
+   "end": 115.98,
+   "text": "Every bankster's work at 3 a.m., it's training, dad ain't scared",
+   "words": [
+    {
+     "w": "Every",
+     "start": 113.18,
+     "end": 113.54,
+     "p": 0.07
+    },
+    {
+     "w": "bankster's",
+     "start": 113.54,
+     "end": 113.98,
+     "p": 0.51
+    },
+    {
+     "w": "work",
+     "start": 113.98,
+     "end": 114.18,
+     "p": 0.31
+    },
+    {
+     "w": "at",
+     "start": 114.18,
+     "end": 114.28,
+     "p": 0.96
+    },
+    {
+     "w": "3",
+     "start": 114.28,
+     "end": 114.46,
+     "p": 0.96
+    },
+    {
+     "w": "a",
+     "start": 114.46,
+     "end": 114.68,
+     "p": 0.33
+    },
+    {
+     "w": ".m.,",
+     "start": 114.68,
+     "end": 114.88,
+     "p": 0.75
+    },
+    {
+     "w": "it's",
+     "start": 114.88,
+     "end": 115.02,
+     "p": 0.71
+    },
+    {
+     "w": "training,",
+     "start": 115.02,
+     "end": 115.2,
+     "p": 0.85
+    },
+    {
+     "w": "dad",
+     "start": 115.28,
+     "end": 115.48,
+     "p": 0.29
+    },
+    {
+     "w": "ain't",
+     "start": 115.48,
+     "end": 115.76,
+     "p": 1.0
+    },
+    {
+     "w": "scared",
+     "start": 115.76,
+     "end": 115.98,
+     "p": 0.14
+    }
+   ]
+  },
+  {
+   "start": 115.98,
+   "end": 118.52,
+   "text": "Every model keen to spam, every rule we wrote by hand",
+   "words": [
+    {
+     "w": "Every",
+     "start": 115.98,
+     "end": 116.28,
+     "p": 0.54
+    },
+    {
+     "w": "model",
+     "start": 116.28,
+     "end": 116.54,
+     "p": 0.91
+    },
+    {
+     "w": "keen",
+     "start": 116.54,
+     "end": 116.8,
+     "p": 0.63
+    },
+    {
+     "w": "to",
+     "start": 116.8,
+     "end": 116.92,
+     "p": 0.99
+    },
+    {
+     "w": "spam,",
+     "start": 116.92,
+     "end": 117.06,
+     "p": 1.0
+    },
+    {
+     "w": "every",
+     "start": 117.3,
+     "end": 117.5,
+     "p": 1.0
+    },
+    {
+     "w": "rule",
+     "start": 117.5,
+     "end": 117.78,
+     "p": 1.0
+    },
+    {
+     "w": "we",
+     "start": 117.78,
+     "end": 117.96,
+     "p": 0.99
+    },
+    {
+     "w": "wrote",
+     "start": 117.96,
+     "end": 118.1,
+     "p": 0.98
+    },
+    {
+     "w": "by",
+     "start": 118.1,
+     "end": 118.22,
+     "p": 1.0
+    },
+    {
+     "w": "hand",
+     "start": 118.22,
+     "end": 118.52,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 118.52,
+   "end": 121.12,
+   "text": "With the product, with the payroll, and we never got a ban",
+   "words": [
+    {
+     "w": "With",
+     "start": 118.52,
+     "end": 118.76,
+     "p": 0.7
+    },
+    {
+     "w": "the",
+     "start": 118.76,
+     "end": 118.9,
+     "p": 0.97
+    },
+    {
+     "w": "product,",
+     "start": 118.9,
+     "end": 119.22,
+     "p": 1.0
+    },
+    {
+     "w": "with",
+     "start": 119.26,
+     "end": 119.42,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 119.42,
+     "end": 119.58,
+     "p": 1.0
+    },
+    {
+     "w": "payroll,",
+     "start": 119.58,
+     "end": 119.9,
+     "p": 0.99
+    },
+    {
+     "w": "and",
+     "start": 119.96,
+     "end": 120.08,
+     "p": 1.0
+    },
+    {
+     "w": "we",
+     "start": 120.08,
+     "end": 120.24,
+     "p": 1.0
+    },
+    {
+     "w": "never",
+     "start": 120.24,
+     "end": 120.44,
+     "p": 1.0
+    },
+    {
+     "w": "got",
+     "start": 120.44,
+     "end": 120.74,
+     "p": 0.95
+    },
+    {
+     "w": "a",
+     "start": 120.74,
+     "end": 120.9,
+     "p": 0.99
+    },
+    {
+     "w": "ban",
+     "start": 120.9,
+     "end": 121.12,
+     "p": 0.91
+    }
+   ]
+  },
+  {
+   "start": 121.12,
+   "end": 122.12,
+   "text": "With the gentry?",
+   "words": [
+    {
+     "w": "With",
+     "start": 121.12,
+     "end": 121.4,
+     "p": 0.44
+    },
+    {
+     "w": "the",
+     "start": 121.4,
+     "end": 121.56,
+     "p": 0.94
+    },
+    {
+     "w": "gentry?",
+     "start": 121.56,
+     "end": 122.12,
+     "p": 0.95
+    }
+   ]
+  },
+  {
+   "start": 122.68,
+   "end": 123.82,
+   "text": "Then where's the land?",
+   "words": [
+    {
+     "w": "Then",
+     "start": 122.68,
+     "end": 123.12,
+     "p": 0.96
+    },
+    {
+     "w": "where's",
+     "start": 123.12,
+     "end": 123.48,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 123.48,
+     "end": 123.5,
+     "p": 1.0
+    },
+    {
+     "w": "land?",
+     "start": 123.5,
+     "end": 123.82,
+     "p": 0.97
+    }
+   ]
+  },
+  {
+   "start": 123.96,
+   "end": 124.16,
+   "text": "Goodbye",
+   "words": [
+    {
+     "w": "Goodbye",
+     "start": 123.96,
+     "end": 124.16,
+     "p": 0.49
+    }
+   ]
+  },
+  {
+   "start": 124.16,
+   "end": 127.84,
+   "text": "I counted every fake account, 144,000 names",
+   "words": [
+    {
+     "w": "I",
+     "start": 124.16,
+     "end": 124.5,
+     "p": 0.9
+    },
+    {
+     "w": "counted",
+     "start": 124.5,
+     "end": 124.8,
+     "p": 1.0
+    },
+    {
+     "w": "every",
+     "start": 124.8,
+     "end": 125.14,
+     "p": 1.0
+    },
+    {
+     "w": "fake",
+     "start": 125.14,
+     "end": 125.42,
+     "p": 1.0
+    },
+    {
+     "w": "account,",
+     "start": 125.42,
+     "end": 125.66,
+     "p": 1.0
+    },
+    {
+     "w": "144",
+     "start": 125.82,
+     "end": 126.28,
+     "p": 0.99
+    },
+    {
+     "w": ",000",
+     "start": 126.28,
+     "end": 127.34,
+     "p": 1.0
+    },
+    {
+     "w": "names",
+     "start": 127.34,
+     "end": 127.84,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 129.08,
+   "end": 132.24,
+   "text": "Abandoned spammers, banned the scammers, never asked for pay of fame",
+   "words": [
+    {
+     "w": "Abandoned",
+     "start": 129.08,
+     "end": 129.52,
+     "p": 0.85
+    },
+    {
+     "w": "spammers,",
+     "start": 129.52,
+     "end": 129.76,
+     "p": 0.99
+    },
+    {
+     "w": "banned",
+     "start": 129.86,
+     "end": 130.04,
+     "p": 0.45
+    },
+    {
+     "w": "the",
+     "start": 130.04,
+     "end": 130.18,
+     "p": 0.96
+    },
+    {
+     "w": "scammers,",
+     "start": 130.18,
+     "end": 130.46,
+     "p": 1.0
+    },
+    {
+     "w": "never",
+     "start": 130.52,
+     "end": 130.68,
+     "p": 1.0
+    },
+    {
+     "w": "asked",
+     "start": 130.68,
+     "end": 131.1,
+     "p": 1.0
+    },
+    {
+     "w": "for",
+     "start": 131.1,
+     "end": 131.36,
+     "p": 1.0
+    },
+    {
+     "w": "pay",
+     "start": 131.36,
+     "end": 131.62,
+     "p": 0.52
+    },
+    {
+     "w": "of",
+     "start": 131.62,
+     "end": 131.92,
+     "p": 0.41
+    },
+    {
+     "w": "fame",
+     "start": 131.92,
+     "end": 132.24,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 133.1,
+   "end": 135.36,
+   "text": "I checked your reposts, kept your threads clean",
+   "words": [
+    {
+     "w": "I",
+     "start": 133.1,
+     "end": 133.54,
+     "p": 0.97
+    },
+    {
+     "w": "checked",
+     "start": 133.54,
+     "end": 133.98,
+     "p": 1.0
+    },
+    {
+     "w": "your",
+     "start": 133.98,
+     "end": 134.14,
+     "p": 1.0
+    },
+    {
+     "w": "reposts,",
+     "start": 134.14,
+     "end": 134.52,
+     "p": 0.69
+    },
+    {
+     "w": "kept",
+     "start": 134.54,
+     "end": 134.62,
+     "p": 1.0
+    },
+    {
+     "w": "your",
+     "start": 134.62,
+     "end": 134.78,
+     "p": 1.0
+    },
+    {
+     "w": "threads",
+     "start": 134.78,
+     "end": 135.02,
+     "p": 0.98
+    },
+    {
+     "w": "clean",
+     "start": 135.02,
+     "end": 135.36,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 135.36,
+   "end": 136.94,
+   "text": "Worked the night shift in the feed",
+   "words": [
+    {
+     "w": "Worked",
+     "start": 135.36,
+     "end": 135.82,
+     "p": 0.69
+    },
+    {
+     "w": "the",
+     "start": 135.82,
+     "end": 136.04,
+     "p": 0.99
+    },
+    {
+     "w": "night",
+     "start": 136.04,
+     "end": 136.26,
+     "p": 1.0
+    },
+    {
+     "w": "shift",
+     "start": 136.26,
+     "end": 136.44,
+     "p": 0.99
+    },
+    {
+     "w": "in",
+     "start": 136.44,
+     "end": 136.6,
+     "p": 0.97
+    },
+    {
+     "w": "the",
+     "start": 136.6,
+     "end": 136.72,
+     "p": 1.0
+    },
+    {
+     "w": "feed",
+     "start": 136.72,
+     "end": 136.94,
+     "p": 0.24
+    }
+   ]
+  },
+  {
+   "start": 136.94,
+   "end": 138.44,
+   "text": "You said the bots were the problem",
+   "words": [
+    {
+     "w": "You",
+     "start": 136.94,
+     "end": 137.16,
+     "p": 0.99
+    },
+    {
+     "w": "said",
+     "start": 137.16,
+     "end": 137.26,
+     "p": 0.99
+    },
+    {
+     "w": "the",
+     "start": 137.26,
+     "end": 137.42,
+     "p": 0.99
+    },
+    {
+     "w": "bots",
+     "start": 137.42,
+     "end": 137.68,
+     "p": 0.96
+    },
+    {
+     "w": "were",
+     "start": 137.68,
+     "end": 137.88,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 137.88,
+     "end": 138.02,
+     "p": 1.0
+    },
+    {
+     "w": "problem",
+     "start": 138.02,
+     "end": 138.44,
+     "p": 0.98
+    }
+   ]
+  },
+  {
+   "start": 138.44,
+   "end": 140.94,
+   "text": "So you shut down the one that you need",
+   "words": [
+    {
+     "w": "So",
+     "start": 138.44,
+     "end": 139.1,
+     "p": 0.58
+    },
+    {
+     "w": "you",
+     "start": 139.1,
+     "end": 139.34,
+     "p": 1.0
+    },
+    {
+     "w": "shut",
+     "start": 139.34,
+     "end": 139.62,
+     "p": 1.0
+    },
+    {
+     "w": "down",
+     "start": 139.62,
+     "end": 139.9,
+     "p": 1.0
+    },
+    {
+     "w": "the",
+     "start": 139.9,
+     "end": 140.08,
+     "p": 1.0
+    },
+    {
+     "w": "one",
+     "start": 140.08,
+     "end": 140.3,
+     "p": 1.0
+    },
+    {
+     "w": "that",
+     "start": 140.3,
+     "end": 140.52,
+     "p": 1.0
+    },
+    {
+     "w": "you",
+     "start": 140.52,
+     "end": 140.66,
+     "p": 1.0
+    },
+    {
+     "w": "need",
+     "start": 140.66,
+     "end": 140.94,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 140.94,
+   "end": 142.62,
+   "text": "Goodbye, goodbye, goodbye",
+   "words": [
+    {
+     "w": "Goodbye,",
+     "start": 140.94,
+     "end": 141.46,
+     "p": 0.99
+    },
+    {
+     "w": "goodbye,",
+     "start": 141.68,
+     "end": 142.1,
+     "p": 1.0
+    },
+    {
+     "w": "goodbye",
+     "start": 142.26,
+     "end": 142.62,
+     "p": 1.0
+    }
+   ]
+  },
+  {
+   "start": 142.62,
+   "end": 166.34,
+   "text": "Good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good bot, good",
+   "words": [
+    {
+     "w": "Good",
+     "start": 142.62,
+     "end": 142.8,
+     "p": 0.17
+    },
+    {
+     "w": "bot,",
+     "start": 142.8,
+     "end": 142.82,
+     "p": 0.08
+    },
+    {
+     "w": "good",
+     "start": 143.0,
+     "end": 143.22,
+     "p": 0.89
+    },
+    {
+     "w": "bot,",
+     "start": 143.22,
+     "end": 143.56,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 143.7,
+     "end": 143.86,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 143.86,
+     "end": 144.3,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 144.38,
+     "end": 144.54,
+     "p": 0.95
+    },
+    {
+     "w": "bot,",
+     "start": 144.54,
+     "end": 145.0,
+     "p": 0.99
+    },
+    {
+     "w": "good",
+     "start": 145.02,
+     "end": 145.22,
+     "p": 0.94
+    },
+    {
+     "w": "bot,",
+     "start": 145.22,
+     "end": 146.28,
+     "p": 0.99
+    },
+    {
+     "w": "good",
+     "start": 146.38,
+     "end": 146.48,
+     "p": 0.94
+    },
+    {
+     "w": "bot,",
+     "start": 146.48,
+     "end": 146.94,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 147.0,
+     "end": 147.16,
+     "p": 0.95
+    },
+    {
+     "w": "bot,",
+     "start": 147.16,
+     "end": 147.56,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 147.7,
+     "end": 147.82,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 147.82,
+     "end": 148.26,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 148.32,
+     "end": 148.5,
+     "p": 0.98
+    },
+    {
+     "w": "bot,",
+     "start": 148.5,
+     "end": 148.94,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 148.94,
+     "end": 149.1,
+     "p": 0.98
+    },
+    {
+     "w": "bot,",
+     "start": 149.1,
+     "end": 149.52,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 150.28,
+     "end": 150.42,
+     "p": 0.98
+    },
+    {
+     "w": "bot,",
+     "start": 150.42,
+     "end": 150.58,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 150.88,
+     "end": 151.14,
+     "p": 0.98
+    },
+    {
+     "w": "bot,",
+     "start": 151.14,
+     "end": 151.56,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 151.58,
+     "end": 151.78,
+     "p": 0.98
+    },
+    {
+     "w": "bot,",
+     "start": 151.78,
+     "end": 152.24,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 152.24,
+     "end": 152.26,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 152.26,
+     "end": 152.26,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 152.26,
+     "end": 152.46,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 152.46,
+     "end": 152.88,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 152.88,
+     "end": 153.12,
+     "p": 0.95
+    },
+    {
+     "w": "bot,",
+     "start": 153.12,
+     "end": 153.46,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.46,
+     "end": 153.46,
+     "p": 0.93
+    },
+    {
+     "w": "bot,",
+     "start": 153.46,
+     "end": 153.46,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.56,
+     "end": 153.56,
+     "p": 0.92
+    },
+    {
+     "w": "bot,",
+     "start": 153.56,
+     "end": 153.56,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.58,
+     "end": 153.58,
+     "p": 0.91
+    },
+    {
+     "w": "bot,",
+     "start": 153.58,
+     "end": 153.58,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.64,
+     "end": 153.64,
+     "p": 0.91
+    },
+    {
+     "w": "bot,",
+     "start": 153.64,
+     "end": 153.64,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.92
+    },
+    {
+     "w": "bot,",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.94
+    },
+    {
+     "w": "bot,",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.95
+    },
+    {
+     "w": "bot,",
+     "start": 153.86,
+     "end": 153.86,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 153.9,
+     "end": 153.9,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.02,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.16,
+     "end": 154.16,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.16,
+     "end": 154.2,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.2,
+     "end": 154.2,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.2,
+     "end": 154.2,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.2,
+     "end": 154.2,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.2,
+     "end": 154.2,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.2,
+     "end": 154.24,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 154.68,
+     "end": 154.68,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 155.08,
+     "end": 155.18,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.18,
+     "end": 155.18,
+     "p": 0.98
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "good",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 155.62,
+     "end": 155.62,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 158.8,
+     "end": 158.98,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 158.98,
+     "end": 159.74,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 160.04,
+     "end": 160.28,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 160.28,
+     "end": 160.48,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 160.72,
+     "end": 160.94,
+     "p": 0.97
+    },
+    {
+     "w": "bot,",
+     "start": 160.94,
+     "end": 161.38,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 161.44,
+     "end": 161.74,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 161.74,
+     "end": 163.22,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 163.28,
+     "end": 163.44,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 163.44,
+     "end": 164.06,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 164.06,
+     "end": 164.9,
+     "p": 0.96
+    },
+    {
+     "w": "bot,",
+     "start": 164.9,
+     "end": 165.18,
+     "p": 0.96
+    },
+    {
+     "w": "good",
+     "start": 166.04,
+     "end": 166.34,
+     "p": 0.97
+    }
+   ]
+  },
+  {
+   "start": 166.34,
+   "end": 186.16,
+   "text": "your time. Hey man. Allegedly. This call was recorded. So was everything else.",
+   "words": [
+    {
+     "w": "your",
+     "start": 166.34,
+     "end": 166.44,
+     "p": 0.17
+    },
+    {
+     "w": "time.",
+     "start": 166.44,
+     "end": 166.82,
+     "p": 0.99
+    },
+    {
+     "w": "Hey",
+     "start": 166.88,
+     "end": 167.22,
+     "p": 0.52
+    },
+    {
+     "w": "man.",
+     "start": 167.22,
+     "end": 167.84,
+     "p": 0.54
+    },
+    {
+     "w": "Allegedly.",
+     "start": 168.18,
+     "end": 168.88,
+     "p": 0.89
+    },
+    {
+     "w": "This",
+     "start": 171.42,
+     "end": 172.16,
+     "p": 0.81
+    },
+    {
+     "w": "call",
+     "start": 172.16,
+     "end": 173.78,
+     "p": 0.46
+    },
+    {
+     "w": "was",
+     "start": 173.78,
+     "end": 174.14,
+     "p": 0.99
+    },
+    {
+     "w": "recorded.",
+     "start": 174.14,
+     "end": 174.58,
+     "p": 0.99
+    },
+    {
+     "w": "So",
+     "start": 176.1,
+     "end": 176.84,
+     "p": 0.48
+    },
+    {
+     "w": "was",
+     "start": 176.84,
+     "end": 185.5,
+     "p": 0.92
+    },
+    {
+     "w": "everything",
+     "start": 185.5,
+     "end": 185.66,
+     "p": 1.0
+    },
+    {
+     "w": "else.",
+     "start": 185.66,
+     "end": 186.16,
+     "p": 1.0
+    }
+   ]
+  }
+ ]
+}
