@@ -115,3 +115,16 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "yes, fix those too" (the agent had offered S07's running total, S09's eviction notice and S13's magnifying glass).
 - **Rule:** R1 (a creative go-ahead). The agent re-staged S07–S09 and S13 (production log, same time).
+
+## 2026-10-30T19:15:53-04:00 — M4 v3 section clips: notes — R1
+
+- **Notes from the human:**
+  - "S03: the tape is colliding with the phone"
+  - "still seeing flicker due to overlapping surfaces on the buildings"
+  - "S07: the receipt is not flowing out of the register correctly,  it clips into the table, it goes under the road"
+  - "S19: the mods are clipping into the sidewalk"
+  - "S20: is the CEO supposed to be dribbling the ball? it's bouncing for no visible reason"
+  - "S28: it's not clear what the crates are or where they're going"
+  - "S29: the truck labels are barely visible"
+  - "S31: \"UNDER NEW MANAGEMENT\" is incorrectly on top of the post-its -- just move one so that they're not on top of each other"
+- **Rule:** R1 (creative and technical notes on the M4 clips; not a section-by-section verdict). The agent fixes them (production log, following entries).
