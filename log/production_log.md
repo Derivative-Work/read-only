@@ -25,7 +25,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Why:** Brief, "Production rules and logging" (log from the first action) and "Inputs the human supplies"; Not Yet's step 1 (layout, the 50 MiB check before the first commit, mirrored brief).
 - **Environment:** Claude Code (Opus 5.5) on the RTX 5090 box (32 GB, driver 595.99.02); Blender 5.2.3 LTS; ffmpeg 8.0.1; Python 3.14.4 (system), 3.12 venv via uv 0.13.0; Node v24.22.0; git. Disk: 130 GB free.
 
-## 2026-10-29T23:40:00-04:00 — Step 2: Suno take and planning chat logged; the Reference Guide found
+## 2026-10-29T23:29:41-04:00 — Step 2: Suno take and planning chat logged; the Reference Guide found
 
 - **What:** Fetched Suno's share page and the planning chat's share page with Not Yet's scripts. Extracted the take's metadata and submitted lyrics, and wrote `log/prompts/suno/takes.md`. Converted the chat to Markdown. Read the chat in full. It links the brief's companion doc, the Reference Guide ("Read-Only / We Hear You: Reference Guide", https://claude.ai/artifact/5KCzixyz4DRBiT9wqovwkW, project `22ef55b7-1ab8-421a-84d2-cadb2c12121b`, rev 10), which I read with the docs tools.
 - **Commands:**
@@ -47,9 +47,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **Reference Guide:** a background timeline, a lyric-by-lyric reference table for both songs (Read-Only and the unmade boy-band version "We Hear You"), the visual references by shot, facts to verify, and sources. It says "other dates and figures here are from memory and approximate". The brief makes it the fact source for the end card, so it gets checked at M8. Not mirrored yet; it gets mirrored to `docs/` when the end card starts.
 - **Why:** Brief, "Production rules and logging": every prompt sent to any model, verbatim, with its outputs (the Suno prompt and lyrics). Not Yet's step 2: log the audio retroactively and archive the planning chat.
 
-## 2026-10-29T23:55:00-04:00 — The human's answers (M1 locked); reference photos filed
+## 2026-10-29T23:41:56-04:00 — The human's answers (M1 locked); reference photos filed
 
-- **What:** Logged the human's answers to step 2's open questions (human_interventions, 23:50). Copied the seven reference files from `~/Downloads/read-only-references/` to `reference/private/` (git-ignored, not in the manifest) and the plate photo to `assets/real/plate.jpg`. Checked all against their sources by SHA-256 (7/7, plus the plate copy). Viewed each one (previews in the session scratchpad only). Wrote `reference/README.md`: what each file is, what it's used for, and the eatery's and the props' look, without the private details.
+- **What:** Logged the human's answers to step 2's open questions (human_interventions, 23:41). Copied the seven reference files from `~/Downloads/read-only-references/` to `reference/private/` (git-ignored, not in the manifest) and the plate photo to `assets/real/plate.jpg`. Checked all against their sources by SHA-256 (7/7, plus the plate copy). Viewed each one (previews in the session scratchpad only). Wrote `reference/README.md`: what each file is, what it's used for, and the eatery's and the props' look, without the private details.
 - **Commands:** `cp -p ~/Downloads/read-only-references/* reference/private/`; `cp -p …/breakfast-plate.jpg assets/real/plate.jpg`; `sha256sum` + `cmp`; EXIF via Pillow; `pdftoppm -r 60` for a preview of the scan; `.gitignore` gains `reference/private/`; `scripts/manifest.sh` (still 16 files)
 - **Outputs:** `reference/README.md`; `reference/private/` (local only); `assets/real/plate.jpg` (local only, SHA-256 73a0d5f5…)
 - **Findings:**
@@ -60,7 +60,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **The master stands:** music-deslop hasn't changed since the first of these videos (the human), so the 2026-10-18 batch is the current chain. Step 1's open question is closed.
 - **Why:** Brief, "Inputs the human supplies" (`assets/real/`), "Content guardrails" and "Open checks"; the human's answers.
 
-## 2026-10-30T00:05:00-04:00 — Brief: S46 retired into S48; lyric block matches the take
+## 2026-10-29T23:44:35-04:00 — Brief: S46 retired into S48; lyric block matches the take
 
 - **What:** On the human's decision ("fold S46 into S48"), edited the brief (Claude Doc rev 57 → 65). S46's cue now reads "Retired: the take has no final hook. Folded into S48." and its shot is "None"; the ID stays (retired, not removed). S48's shot gains S46's imagery: the crane rises over the photoreal block with a VIP bot in every doorway and "Log in to continue" keypads on the shutters, as well as the red REC lights. The lyric block now matches what the human gave Suno: `[Hook]` became `[Hook 2]` written out with the "guard dog" lines, and the `[Final hook]` block is gone (the human, 23:50). S46's other two mentions (the login-gags open check, the `badge_vip.png` input row) now name S48. Re-exported `docs/brief.md`; lyric block saved as `lyrics/locked_brief_rev65.txt`.
 - **Commands:** Docs connector `update` on node `a990c55c-da10` (find-targeted text ops: one `delete`, six `replace`; then one fix-up `replace`, because "S46, S48" → "S48" had dropped the S48 entry from the open check); `python3 -I scripts/doc_to_md.py <read result> docs/brief.md`
@@ -68,9 +68,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - `lyrics/locked_brief_rev65.txt` now differs from Suno's page lyrics only in curly quotes, section-tag wording, "(downvote)" vs "(downvote sound)", and the eulogy's arrangement note.
   - **For M3:** S26 ("Hook 2: reuse S14–S17") reuses S16's 48-hour countdown and S17's meter, which are cued to Hook 1's last two lines. Hook 2 ends on the "guard dog" lines instead, so those two reuses need new cues or new dressing.
   - Not changed: the Reference Guide's "Final hook" row (it explains the lines, which are still sung in Hook 2).
-- **Why:** The human's decision (human_interventions, 00:00).
+- **Why:** The human's decision (human_interventions, 23:44).
 
-## 2026-10-30T00:50:00-04:00 — M2: as-sung lyrics, word alignment, beats and bars, the timing map and its ear check
+## 2026-10-29T23:51:35-04:00 — M2: as-sung lyrics, word alignment, beats and bars, the timing map and its ear check
 
 - **What:**
   - Transcribed both vocal stems. Drafted the as-sung lyrics and aligned every word.
@@ -124,16 +124,20 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Fix after the commit:** the ported script still wrote `renders/m2/c3_clicks.*`; renamed in the script and re-run. The misnamed copies (same content) are archived as `archive/renders/m2/m2_clicks_superseded_misnamed-c3.*`.
 - **Status:** **M2 is ready for review.** The agent stops here.
 
-## 2026-10-30T01:10:00-04:00 — S01e cut on the first piano chord; stage directions kept for now
+## 2026-10-29T23:57:57-04:00 — S01e cut on the first piano chord; stage directions kept for now
 
 - **What:** On the human's decision, S01e (the match cut) and S02 now start on the first piano chord, 0:00.14. `config/shot_holds.json` (new) holds both, and "Yeah, hello?" falls 2.9 s into S02. In the brief, S01e's cue now reads "The first piano chord, 2.9 s before "Yeah, hello?"" (doc rev 65 → 66); its overlay note "Music starts on the cut" stands. Re-exported `docs/brief.md`, and rebuilt the timing map and the click track. The click track's first two tones are now the cut (0:00.14) and "Yeah, hello?" (0:03.08).
 - **Commands:** Docs connector `update` on node `a990c55c-da10` (a find within table `mh1vfytf976.2893`, row 5, col 2); `python3 -I scripts/doc_to_md.py …`; `.venv/bin/python -I scripts/timing_map.py`; `.venv/bin/python -I scripts/m2_clicks.py`
 - **Findings:** S02 now runs 7.61 s (0:00.14–0:07.75).
 - **Stage directions:** the sung "hype man" (twice) and "downvote" stay in the track for now. The human may revisit replacing them from the stems later. That would be an audio edit, made by the agent and logged. Open item.
-- **Why:** The human's decisions (human_interventions, 01:05).
+- **Why:** The human's decisions (human_interventions, 23:57).
 
-## 2026-10-30T01:40:00-04:00 — M2 approved; timestamps written into the brief
+## 2026-10-30T00:02:55-04:00 — M2 approved; timestamps written into the brief
 
 - **What:** The human approved the click track (M2 gate). In the brief's two shot tables, added a "Start" column after "Cue" with each shot's start from `timing/timing_map.json` (m:ss.ss of the Suno mix): "Pre-roll" for S01a–S01d, "Retired" for S46, "After the audio" for S48b. The bookends table (S49, S50) has no cue column and is left alone; both come after the audio. Ticked two open checks: "Lock the track and timing map, then add timestamps to every shot" and "Check the plate photo's date" (EXIF, logged 2026-10-29). Doc rev 66 → 129. Re-exported `docs/brief.md`. `scripts/timing_map.py` reads the new seven-column rows; re-running it changes no time, and every brief Start matches the map.
 - **Commands:** Docs connector `update` on node `a990c55c-da10`: an `insert` with `each` (a "TBD" cell after the Cue cell of all 61 rows), then 61 cell-scoped find/replace ops, then two `set checked` ops. `python3 -I scripts/doc_to_md.py …`; `.venv/bin/python -I scripts/timing_map.py`, and a check that the brief's Start column equals the map.
-- **Why:** Brief M2 ("add timestamps to every shot") and its gate; the human's approval (human_interventions, 01:35).
+- **Why:** Brief M2 ("add timestamps to every shot") and its gate; the human's approval (human_interventions, 00:02).
+
+## 2026-10-30T00:20:00-04:00 — Correction: log timestamps
+
+- **What:** The headings of the six entries from step 2 through "M2 approved" carried guessed times, 10 to 98 minutes late. They are now the times of each step's commit (`git log --date=iso-strict`), and the cross-references to human_interventions now match. Content unchanged. From here on, every heading takes `date -Iseconds` at the time of writing.

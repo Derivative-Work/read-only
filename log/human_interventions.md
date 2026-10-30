@@ -20,7 +20,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Why:** Inputs listed in the brief.
 - **Rule:** R4 for the Suno stem export; supplying inputs is not a touch on the work. Logged for completeness.
 
-## 2026-10-29T23:50 — Answers on the take; track locked; reference photos supplied — R1, inputs
+## 2026-10-29T23:41 (by the agent's commit) — Answers on the take; track locked; reference photos supplied — R1, inputs
 
 - **What:** The human answered step 2's open questions and supplied reference photos.
 - **Note from the human:** "\"good bot\" is from 2:20 to 2:33 -- Suno repeated it more than requested; that's where I got the idea from. The final hook was removed -- some of those lines got moved to the previous hook. Track is locked, and music-deslop has not changed since I started making any of these videos. Reference photos are in ~/Downloads/read-only-references. I included photos of the restaurant for reference but in case it isn't clear: it is *extremely* informal, a hole-in-the-wall, with a cafeteria-style layout of food (a Filipino would call it a \"turo-turo\"), and a line of tables. It is as clean as one might expect of the area without being out-of-place, and very much not polished."
@@ -31,19 +31,19 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - **AI change, logged:** the extra "good bot" repeats are Suno's.
   - **Human change before generation (logged):** removing the final hook. It's the human's lyric edit to what Suno was given, made before the take existed. The brief's lyric block was never updated to match.
 
-## 2026-10-30T00:00 — S46 folded into S48; go-ahead for M2 — R1
+## 2026-10-29T23:44 (by the agent's commit) — S46 folded into S48; go-ahead for M2 — R1
 
 - **Note from the human:** "fold S46 into S48 and go ahead with M2"
-- **Rule:** R1 (approving a plan the agent proposed). The agent made the brief edit (production log, 00:05).
+- **Rule:** R1 (approving a plan the agent proposed). The agent made the brief edit (production log, 23:44).
 
-## 2026-10-30T01:05 — S01e on the first piano chord; sung stage directions kept for now — R2, R1
+## 2026-10-29T23:57 (by the agent's commit) — S01e on the first piano chord; sung stage directions kept for now — R2, R1
 
 - **Note from the human:** "cut S01e on the first piano chord. I'm good with the stage directions landing in here for now -- we can revisit replacing them using the stems later"
 - **Rule:**
   - **R2:** placing a cut point. The agent proposed it and made the change.
   - **R1:** accepting Suno's sung stage directions ("hype man", "downvote") as they are, for now.
 
-## 2026-10-30T01:35 — M2 approved — R1, R2
+## 2026-10-30T00:02 (by the agent's commit) — M2 approved — R1, R2
 
 - **Note from the human:** "clicks are good, go ahead with M3"
 - **Rule:**
