@@ -75,10 +75,10 @@ def ass(w, h, SP, t0=0.0, drawn=False):
          "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, "
          "Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, "
          "MarginR, MarginV, Encoding",
-         "Style: Cap,Inter,20,&H00B0E3FF,&H80B0B0B0,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,1.2,0,2,20,20,14,1",
-         "Style: Id,JetBrains Mono,13,&H009AE35F,&H009AE35F,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,1,0,9,10,10,8,1",
-         "Style: Note,Inter,12,&H00D8E8F0,&H00D8E8F0,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,1,0,7,10,10,8,1",
-         "Style: Card,Inter,22,&H00F1F4EE,&H00F1F4EE,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,30,30,30,1",
+         "Style: Cap,Inter Medium Flat,20,&H00B0E3FF,&H80B0B0B0,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,1.2,0,2,20,20,14,1",
+         "Style: Id,JetBrains Mono SemiBold Flat,13,&H009AE35F,&H009AE35F,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,1,0,9,10,10,8,1",
+         "Style: Note,Inter Medium Flat,12,&H00D8E8F0,&H00D8E8F0,&H00000000,&H64000000,0,1,0,0,100,100,0,0,1,1,0,7,10,10,8,1",
+         "Style: Card,Inter Medium Flat,22,&H00F1F4EE,&H00F1F4EE,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,30,30,30,1",
          "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
     for ln in TM["lines"]:
         a, b = ln["start"] - 0.4, ln["end"] + 0.6
@@ -146,7 +146,7 @@ def main():
                 if top.size != im.size:
                     top = top.resize(im.size, Image.LANCZOS)
                 im.alpha_composite(top)
-                im.convert("RGB").save(td / f"{i:05d}.png", compress_level=1)
+                im.save(td / f"{i:05d}.png", compress_level=1)  # RGBA like the renders: a format change restarts libass
             else:
                 os.symlink(src.resolve(), td / f"{i:05d}.png")
         (td / "caps.ass").write_text(ass(w, h, SP, t0=c0 / FPS, drawn=ov is not None))

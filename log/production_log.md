@@ -592,3 +592,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Why:** the human approved the detail pass and the figures (human_interventions, 13:45, R1). Review renders stay at 720p (human_interventions, 09:40).
 - **What:** S02–S39e (song 0.14–153.68), `draft720` profile, final look, into `renders/m4/act1_v2/frames`. The first Act 1 render (`renders/m4/act1/frames`, before the detail pass) is superseded. Frame sequences are never archived; it stays where it is until it's cleaned up.
 - **Command:** `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v2/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`
+
+## 2026-10-30T13:26:00-04:00 — M4: Act 1 render v2 done; section clips cut for the gate
+
+- **Render:** 3,686 frames (f_00435–f_04119), 1280×720, about 3.0 s a frame, 10:11–13:17. Two "Failed to create GPU texture from Blender image" errors in the log (before the first frame, and at f_01769). The frames either side match and nothing visible is missing; watch for a blank texture in review.
+- **Correction:** the two 13:45 stamps above (production_log and human_interventions, "detail pass approved") should read about 10:10. The commit ed29777 is 10:10:26 and the first frame was written 10:11:58. They're left as written; this entry corrects them.
+- **Assembler fix (`scripts/animatic_assemble.py`):** the full-act cut failed about 47 s in with ffmpeg error -28 ("No space left on device"); /tmp and the disk both had space. The cause: overlay composites were saved as RGB and the renders are RGBA, so every switch between them rebuilt the filter graph and restarted libass, and the ninth restart failed. Composites are now saved as RGBA. The section clips, which were shorter, hadn't hit it.
+- **Caption fonts:** the ASS styles named "Inter" and "JetBrains Mono", but the vendored files are "Inter Medium Flat" and "JetBrains Mono SemiBold Flat", so libass fell back to Noto Sans (since M3). The styles now name the vendored families. These are review captions only.
+- **Clips:** `renders/m4/sections/1_intro … 7_goodbot.mp4` (the shots/m4_review.md table) and `renders/m4/m4_act1.mp4` (153.5 s), each `--overlay renders/overlays/act1` (1080p overlays scaled to 720p).
+- **Also committed:** `shots/m4_review.md` (720p, the detail pass, Rhubarb) and `archive/timing/visemes_mms_superseded.json` (the MMS visemes, superseded by Rhubarb).
+- **QC:** stills at 10, 35, 55, 75, 95, 112, 128 and 145 s. The overlays and the karaoke captions are present. S22's CEO still reads small on the balcony (a known weak spot).
