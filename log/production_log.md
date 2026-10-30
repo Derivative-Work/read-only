@@ -272,3 +272,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - `archive/renders/m3/m3_sheet_{a,b,c}_v1_superseded.jpg`
   - `renders/m3/anchors_v6` (check stills of a state that was never rendered) deleted, as were the v1 frames in the scratchpad: both regenerable.
 - **Status:** **M3 v2 is ready for review.**
+
+## 2026-10-30T01:33:03-04:00 — M3 approved
+
+- **What:** The human approved M3 v2 (`renders/m3/m3_animatic_v2.mp4`) and said to continue (human_interventions, same time). The grey-box framing and timing, `config/bookends.json` and `config/replies_split.json` stand. Next: M4, starting with a look test for approval before the Act 1 renders, as in the sibling projects' C1.

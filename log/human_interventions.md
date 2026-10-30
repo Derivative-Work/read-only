@@ -62,3 +62,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Notes from the human:** "did these subreddits participate in the blackout"; then "go with your swaps, Sourdough for Breadit, Cooking for Aquariums".
 - **Rule:** R1 (choosing between the agent's proposals). r/Aquariums and r/Breadit were the brief's own examples; the human chose their replacements. The agent made the change (production log, 00:58).
+
+## 2026-10-30T01:33 — M3 approved; go-ahead for M4 — R1, R2
+
+- **Note from the human:** "this is great, keep going"
+- **Rule:**
+  - **R2:** framing and timing (the M3 gate).
+  - **R1:** the go-ahead for M4.
