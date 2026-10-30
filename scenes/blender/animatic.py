@@ -44,6 +44,7 @@ def build(size, samples, look="greybox", mb_steps=1):
     sc.render.film_transparent = False
     if look == "final":  # the M4 look (style/style_spec.md, config/look.json)
         block.FINAL = True
+        gb.LOOK["_final"] = True  # gb.mouth uses the viseme shapes
         block.look_colours()
         sc.view_settings.look = gb.LOOK["agx_look"]
         sc.view_settings.exposure = gb.LOOK["exposure"]

@@ -338,3 +338,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/grunge_v4 --profile draft720 --look final --times -15.5 3.5 43.6 51.6 61.8 101.5 125.0 144.5 58.5 104.0`
   - `.venv/bin/python -I scripts/look_sheet.py renders/m4/grunge_v4 renders/m4/m4_grunge_v4.jpg <labels>`
 - **Status:** the grunge pass is done. Next: the weak spots (lobby, S01a daylight), Rhubarb lip sync, then the Act 1 renders by section.
+
+## 2026-10-30T06:50:59-04:00 — M4: lip sync (mouth shapes from the aligner; Rhubarb blocked)
+
+- **What:** Act 1's singing mouths now take shapes: Rhubarb Lip Sync's mouth set, A–H and X.
+  - **Rhubarb wasn't run.** The session's permission check blocked downloading and running its release binary (v1.14.0 from GitHub), so it's left for the human to allow (R3) if wanted.
+  - **The shapes:** `scripts/visemes.py` re-aligns each sung line with the M2 aligner (torchaudio MMS_FA), keeps every letter's span, and maps letters and digraphs onto Rhubarb's shapes, resting where the stem is quiet. The result is `timing/visemes.json`, with 62 lines.
+  - **On the figures:** `gb.mouth` keys the jaw's width and opening per shape in the final look. The grey-box keeps the loudness drive.
+- **Command:** `.venv/bin/python -I scripts/visemes.py`
+- **Checked:** S04 stills 0.2 s apart show closed, round and open mouths in time with the line.

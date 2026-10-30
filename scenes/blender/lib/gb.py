@@ -440,9 +440,37 @@ def envelope(tag):
     return np.load(ROOT / "timing" / "envelopes" / f"{tag}.npy")
 
 
+VISEMES = ROOT / "timing" / "visemes.json"
+SHAPE = {  # Rhubarb's mouth shapes as the jaw box's (x, z) scale: width, opening (closed 0.05)
+    "A": (0.9, 0.05), "B": (1.0, 0.3), "C": (1.0, 0.65), "D": (1.15, 1.0), "E": (0.85, 0.75), "F": (0.55, 0.55),
+    "G": (0.95, 0.15), "H": (0.95, 0.5), "X": (0.9, 0.05)}
+STEM_TAG = {"lead": "Lead Vocals", "backing": "Backing Vocals"}
+
+
 def mouth(jaw, t0, t1, tag="lead", step=2, gain=0.25):
-    """Grey-box lip sync: the jaw box's z-scale follows the vocal stem's envelope between song times t0 and t1
-    (closed outside). Envelope frames are song frames at FPS; timeline frames are offset by the pre-roll."""
+    """Lip sync between song times t0 and t1 (closed outside). In the final look, Rhubarb-style mouth shapes from
+    timing/visemes.json (scripts/visemes.py), each held until the next; in the grey-box (or with no shapes for the
+    span), the jaw box's z-scale follows the vocal stem's envelope. Envelope frames are song frames at FPS; timeline
+    frames are offset by the pre-roll."""
+    if LOOK.get("_final") and VISEMES.exists():
+        cues = [(t, s) for ln in json.loads(VISEMES.read_text())["lines"] if ln["stem"] == STEM_TAG[tag]
+                for t, s in ln["cues"] if t0 <= t < t1]
+        if cues:
+            xs, zs = [(F(t0) - 2, 0.9)], [(F(t0) - 2, 0.05)]
+            for k, (t, s) in enumerate(cues):
+                f = F(t)
+                if f <= xs[-1][0]:
+                    continue
+                nxt = F(cues[k + 1][0]) if k + 1 < len(cues) else F(t1)
+                for pts, v in ((xs, SHAPE[s][0]), (zs, SHAPE[s][1])):
+                    pts.append((f, v))
+                    if nxt - 1 > f:
+                        pts.append((nxt - 1, v))
+            xs.append((max(F(t1), xs[-1][0] + 1), 0.9))
+            zs.append((max(F(t1), zs[-1][0] + 1), 0.05))
+            keys(jaw, "scale", xs, index=0)
+            keys(jaw, "scale", zs, index=2)
+            return
     env = envelope(tag)
     pts = [(F(t0) - 2, 0.05)]
     for k in range(max(0, int(t0 * FPS)), min(len(env), int(t1 * FPS)), step):
