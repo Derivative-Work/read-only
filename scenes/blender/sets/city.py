@@ -3,3 +3,7 @@
 
 def build(S):
     pass
+
+
+def sky(world):
+    pass

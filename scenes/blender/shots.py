@@ -145,6 +145,8 @@ def light(S, final=False):
         vol = w.node_tree.nodes.new("ShaderNodeVolumePrincipled")  # the haze, so lamp cones and neon read in the air
         vol.inputs["Density"].default_value = gb.LOOK["haze_density"]
         w.node_tree.links.new(vol.outputs[0], w.node_tree.nodes["World Output"].inputs["Volume"])
+        import detail
+        detail.sky(w)
     gb.keys(moon, "energy", [(0, 0.0, "CONSTANT"), (F(0.14), moon_e, "CONSTANT")], interp="CONSTANT")
     # by day the street lamps, upper windows and neon are off; the shops' interiors are lit
     for ctl, lo in S["lamps"]:

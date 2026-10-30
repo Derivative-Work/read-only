@@ -17,6 +17,13 @@ SET = ("city", "street", "interiors", "parkdress")
 STAGED = ("props",)
 
 
+def sky(world):
+    """The city glow in the night sky (city.sky), called by shots.light() once it has made the world."""
+    only = os.environ.get("DETAIL_ONLY")
+    if not only or "city" in only.split(","):
+        importlib.import_module("city").sky(world)
+
+
 def run(names, *args):
     only = os.environ.get("DETAIL_ONLY")
     for n in names:

@@ -412,3 +412,56 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Commands:**
   - `.venv/bin/python -I scripts/fetch_models.py`
   - contact render: an inline Blender script (`kit.place` per model).
+
+## 2026-10-30T10:20:00-04:00 — M4 detail pass: the gags' props and the figures
+
+- **Props** (`scenes/blender/sets/props.py`, called after `shots.stage()`). Each grey-box object keeps its name, keys and visibility and takes a modelled mesh (`scenes/blender/lib/mk.py`, a procedural builder) or a CC0 one (`kit.swap`):
+  - **Verse 1:**
+    - the adding machine (keys, crank, paper roll);
+    - the tear-off calendar, JUNE 1 to 28, over a board with the 30th ringed;
+    - the envelope ("IMPORTANT: NEW PRICING");
+    - S09's notice, as strips of tape: "0.24 +" down the columns, 20,000,000.00 at the foot, stapled;
+    - the cassette, labelled "phone call / do not tape over";
+    - the boombox and the magnifying glass (CC0).
+  - **Verse 2:**
+    - the locksmith van;
+    - generic down arrows, pale grey, not the site's colours;
+    - ribbed vacuum hoses from the VIP bots' backs into the mail slots;
+    - S24's brick wall, laid in ten bands, not a stretched box;
+    - the briefcase, with gold latches.
+  - **Verse 3:**
+    - box trucks and the archive van, lettered on both sides (the cameras see some from the far side);
+    - slatted crates;
+    - a cast bell on an iron yoke;
+    - a white lectern with a mic;
+    - the banner's rods;
+    - sticky notes reading "thanks, this worked";
+    - a steel funnel;
+    - the brooms (CC0) standing in a crate;
+    - the PAYROLL envelope;
+    - the rubber band;
+    - a chalk outline round YOUR LAND.
+  - **The eulogy:**
+    - the shoebox coffin with tissue, its lid propped, on two slatted crates, and the tiny robot with its eyes closed;
+    - the "good bot" notes;
+    - a gabled doghouse with an empty bowl;
+    - frames round the lanterns;
+    - the shovel (CC0).
+  - **The balcony** (S22, S23, S30 were near black):
+    - its opaque rail is now clear glass between steel posts;
+    - a cold spot from the tower lights it, all night.
+- **Printed and handwritten surfaces:** `scripts/gen_detail_props.py` → `assets/gen/detail/props/` (git-ignored). The handwriting is Oooh Baby (OFL), vendored from Not Yet into `assets/fonts/` and added to `SHA256SUMS`.
+- **The figures** (`scenes/blender/sets/chars.py`). The lip-sync mouths are unchanged.
+  - **On everyone:** a neck, ears, a nose, brows, catchlights in the eyes, hair (crop, bun, beanie, curls, cap or bald, seeded by name) and white soles.
+  - **The Dev:** curls, the hoodie's drawstrings, a canvas apron with a pocket and neck strap (it read as a box).
+  - **The CEO:** in S10, on the phone.
+  - **The mods:** reflective tape on the vests; real brooms (CC0).
+  - **S21's mannequins:** faceless, in plastic white.
+  - **The bouncer:** shaved head, dark glasses.
+  - **The VIP bots:** shoulder pads, lapels, ear bolts, a mouth grille, latches on the briefcases.
+  - **The good bots:** each one different (a claw arm, a patch, wheels).
+- **Checked:** stills of S06–S13, S21–S25, S28–S39a and S04–S27's figures, built alone (`DETAIL_ONLY=props`) in `renders/m4/detail_props/v1..v5`.
+- **Fixed on the way:** the doghouse roof's slopes ran the wrong way.
+- **Commands:**
+  - `.venv/bin/python -I scripts/gen_detail_props.py`
+  - `DETAIL_ONLY=props blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/detail_props/vN --profile draft720 --look final --times …`
