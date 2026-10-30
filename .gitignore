@@ -43,3 +43,7 @@ deliverables/*.mp4
 # published; each one's hash goes in its human_interventions entry.
 assets/real/*
 !assets/real/README.md
+
+# The human's private reference photos and scans (real names, faces, logos, other people's photos): kept locally,
+# never published, never hashed into the manifest. reference/README.md (in git) describes them without the details.
+reference/private/

@@ -19,3 +19,14 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** A human exported the 10-stem archive from Suno (2026-10-29 23:18) and placed it in `~/Downloads` beside the mix and the post-filter batch. They pointed the agent at the brief, the planning chat's share link, the Suno take and the sibling projects. They named Not Yet as the latest published video.
 - **Why:** Inputs listed in the brief.
 - **Rule:** R4 for the Suno stem export; supplying inputs is not a touch on the work. Logged for completeness.
+
+## 2026-10-29T23:50 — Answers on the take; track locked; reference photos supplied — R1, inputs
+
+- **What:** The human answered step 2's open questions and supplied reference photos.
+- **Note from the human:** "\"good bot\" is from 2:20 to 2:33 -- Suno repeated it more than requested; that's where I got the idea from. The final hook was removed -- some of those lines got moved to the previous hook. Track is locked, and music-deslop has not changed since I started making any of these videos. Reference photos are in ~/Downloads/read-only-references. I included photos of the restaurant for reference but in case it isn't clear: it is *extremely* informal, a hole-in-the-wall, with a cafeteria-style layout of food (a Filipino would call it a \"turo-turo\"), and a line of tables. It is as clean as one might expect of the area without being out-of-place, and very much not polished."
+- **Rule:**
+  - **R1:** locking the track closes gate M1.
+  - **Inputs:** the plate photo is the brief's listed input. SHA-256 73a0d5f5…, `assets/real/plate.jpg`.
+  - **Not a touch on the work:** the other six files are reference material, and the restaurant description is a creative note given in words.
+  - **AI change, logged:** the extra "good bot" repeats are Suno's.
+  - **Human change before generation (logged):** removing the final hook. It's the human's lyric edit to what Suno was given, made before the take existed. The brief's lyric block was never updated to match.
