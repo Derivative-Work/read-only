@@ -573,4 +573,9 @@ def build(S, SP):
     brickwall(SP)
     brooms(SP)
     chalk(S, SP)
+    import os
+    only = os.environ.get("DETAIL_ONLY")
+    if not only or "interiors" in only.split(","):  # the lobby's display by the glass replaces shots.stage()'s boxes
+        import interiors
+        interiors.staged(S, SP)
     shots.inherit_visibility()

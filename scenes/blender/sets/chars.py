@@ -137,6 +137,14 @@ def dev(loc, rot_z=0.0, name="dev"):
 
 def ceo(loc, rot_z=0.0, name="ceo"):
     root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3")
+    if name == "ceo18":  # S18: seated on the server-rack throne (the grey-box's figure stood on the seat)
+        for s_ in (-1, 1):
+            leg, shoe, sole = (bpy.data.objects[f"{name}.{p}{s_}"] for p in ("leg", "shoe", "sole"))
+            leg.location, leg.scale = (s_ * 0.1, -0.2, 0.7), (0.095, 0.24, 0.095)  # thigh, forward on the seat
+            shin = ellipsoid(f"{name}.shin{s_}", (s_ * 0.1, -0.42, 0.38), (0.085, 0.085, 0.3), M("jeans"), root)
+            shoe.location = (s_ * 0.1, -0.47, 0.04)
+            sole.location = (s_ * 0.1, -0.47, 0.012)
+        root.location.z = 0.12
     if name == "ceo10":  # on the phone (S10): right hand up at the ear, holding it
         hand, arm = bpy.data.objects[f"{name}.hand1"], bpy.data.objects[f"{name}.arm1"]
         hand.location = (0.22, -0.04, 1.42)

@@ -498,3 +498,33 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
     - There is no black lettering any more.
 - **Cost:** about 40 s more to build, and none per frame. Evaluating the Boolean every frame had quadrupled the time per still.
 - **Checked:** S36, S39b, S39d and S39e (`renders/m4/detail_park/stones5`; sheet `renders/m4/stones_engraved.jpg`).
+
+## 2026-10-30T11:40:00-04:00 — M4 detail pass: the interiors
+
+- **What** (`scenes/blender/sets/interiors.py`, `scripts/gen_detail_interiors.py` → `assets/gen/detail/interiors/`; built by a sub-agent of this session, and checked here). Each room is merged into one mesh. Its fluorescents, cooler, TV, case lights and backlit window signs are driven from the shop's own light, so they go dark with it at S15.
+  - **The Dev's shop:**
+    - stocked steel shelving, with his six boxed apps (made-up names), repair kits, parts bins, tablets and cables;
+    - a workbench under a pegboard;
+    - the register, a phone case, the price list and the framed first dollar (June 2008);
+    - "WE FIX APPS" and "SCREEN REPAIR" in the window, and an OPEN sign.
+  - **The eatery:**
+    - six pans of food in the steam table;
+    - stockpots, the rice cooker and trays;
+    - a chalk menu (a made-up turo-turo list) with numbered dish cards;
+    - real ladder-back chairs and tables, with condiment caddies (the breakfast table stays clear);
+    - a cooler, a water dispenser, the TV, ceiling fans, a calendar, a rice-terrace print, paper-star garlands and a parol;
+    - nothing taken from the real restaurant.
+  - **The pawn shop:** lit jewellery cases, guitars, TVs, cameras, clocks, and bars inside the window.
+  - **The other shops** are each themed to their name. FOR LEASE stays empty.
+  - **The lobby:**
+    - server racks with bezels, vents, blinking blue, white and green LEDs, and draped cables;
+    - a white display of blank "OFFICIAL" boxes (the Dev's apps with the names taken off), with the placard "Now with fewer features.";
+    - real plants, two lounge groups, and monitors on the desk.
+- **Here:**
+  - `props.build()` calls `interiors.staged()`, which hides the grey-box display that `shots.stage()` makes by the glass.
+  - **S18:** the CEO now sits on the throne. He had stood on its seat. He sits with thighs forward and shins down, and his root is lowered (`chars.py`).
+- **Left as they are:**
+  - small red parts on the CC0 pliers and desk lamp, and a fictional maker's plate on the register;
+  - the S05 Dev standing out of frame. That's as it was at M3.
+- **Timing:** not yet measured, because the GPU was shared by the sub-agents. To be measured on the combined build.
+- **Checked:** the sub-agent's `renders/m4/detail_interiors/v1..v7`, and `renders/m4/detail_interiors/mine1` (S01a, S04, S05, S07, S18, S20).
