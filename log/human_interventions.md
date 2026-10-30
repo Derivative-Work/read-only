@@ -69,3 +69,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Rule:**
   - **R2:** framing and timing (the M3 gate).
   - **R1:** the go-ahead for M4.
+
+## 2026-10-30T06:29 — M4 look test approved, with a note — R1
+
+- **Note from the human:** "Go ahead, just make sure it's grungy"
+- **Rule:** R1 (approval of the look test, with a creative note given in words). The agent makes the grunge pass itself (production log, same time).

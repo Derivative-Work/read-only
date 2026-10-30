@@ -306,3 +306,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - the S01a morning shows no daylight outside;
   - the sign bands are plain boards.
 - **Status:** **The look test is ready for review**, before the Act 1 renders.
+
+## 2026-10-30T06:29:44-04:00 — M4 look test approved; grunge pass next
+
+- **What:** The human approved the look test (`renders/m4/m4_look_v5.jpg`, `style/style_spec.md`) with one note: "make sure it's grungy" (human_interventions, same time). Next, before the Act 1 renders: a grunge pass on the set (stains, grime, litter, tags, worn signs), then the known weak spots, then Rhubarb lip sync.
