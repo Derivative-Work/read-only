@@ -141,3 +141,52 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-10-30T00:20:00-04:00 — Correction: log timestamps
 
 - **What:** The headings of the six entries from step 2 through "M2 approved" carried guessed times, 10 to 98 minutes late. They are now the times of each step's commit (`git log --date=iso-strict`), and the cross-references to human_interventions now match. Content unchanged. From here on, every heading takes `date -Iseconds` at the time of writing.
+
+## 2026-10-30T00:44:00-04:00 — M3: the grey-box set and the animatic
+
+- **What:** Built the brief's four sets in one grey-box Blender scene, staged every shot ID with its own camera, rendered the whole edit at 640×360 and assembled it with the post-filtered master and burned-in review captions.
+- **The set** (`scenes/blender/sets/block.py`, flat colours only):
+  - **The block:** ten shopfronts with roll-down shutters, neon "READ-ONLY" signs, padlocks, "UNDER NEW MANAGEMENT" and "Log in to continue" keypads. Upper windows each carry a REC light.
+  - **The eatery:** a turo-turo interior after the human's note and `reference/README.md` (steam table, menu board, one line of tables). It copies nothing from the real restaurant.
+  - **The Dev's shop:** its interior; the trade sign "Third-Party App Repair est. 2008".
+  - **The corner:** the payphone with its REC light, and the streetlight with its coin meter.
+  - **The tower:** lobby, throne, screen, brick wall, balcony with bell and podium, ticker band, rooftop billboard.
+  - **The pocket park:** the coffin, the doghouse, good bots with lanterns, all 15 headstones from the brief's table with their inscriptions, and one mesh of 144,926 markers.
+  - **Stand-ins:** the Dev, the CEO, mods, VIP bots and good bots as coloured primitives; their mouths follow the lead stem's envelope.
+- **The shots** (`scenes/blender/shots.py`):
+  - 62 cameras on timeline markers: every timed ID, plus one camera per line of S26.
+  - Staging and gags are keyed from `timing/timing_map.json`:
+    - shutters slam east to west across S14, the eatery last, with each neon on as its shutter lands;
+    - the block goes dark at S15, the corner lamp flickers back at S17;
+    - one arrow per sung "downvote";
+    - the bell swings on the beat;
+    - the ban stones multiply through S35, and the lanterns go out one by one in S37;
+    - notes land on the coffin in S39a.
+  - Morning light in the pre-roll, night from the S01e cut.
+- **Assembly** (`scripts/animatic_assemble.py`):
+  - an 18 s pre-roll (`config/bookends.json`, a proposal), then the master;
+  - S40's freeze (0.4 s) and rewind, built from the rendered frames;
+  - captions: the lyrics word by word, shot ID and pipeline code, the brief's overlay note for JS/F/Real/LS shots, an "Act 2 at M5" note, and placeholder cards for S01b's photo, S48b, S49 and S50.
+- **Iterations:**
+  - Anchor stills v1–v4 and their contact sheets found about 15 bad frames. Cameras sat inside a building (S15, S30), a coffin stand (S36), a headstone (S39c) or behind a figure (S05, S11). The lobby doors were opaque (S10, S18, S20). The S05 view to the lobby needed a glass shop door. The hype man stood behind a closed door and shutter (S45). Trucks' lettering showed outside their shot (a child-visibility bug).
+  - Cameras now track keyed target empties, so long moves don't flip.
+  - Superseded stills and sheets are archived in `archive/renders/m3/`.
+- **Commands:**
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m3/anchors_v5 --anchors` (62 stills, 17 s)
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m3/frames_v1` (5,669 frames in 25 min, 0.26 s/frame, Eevee at 8 samples on the RTX 5090)
+  - `.venv/bin/python -I scripts/animatic_assemble.py renders/m3/frames_v1 renders/m3/m3_animatic.mp4`
+  - `.venv/bin/python -I scripts/contact_sheet.py renders/m3/anchors_v5 renders/m3/m3_sheet_{a,b,c}.jpg 4 <IDs>`
+- **Outputs:**
+  - Code and config: `scenes/blender/{animatic,shots}.py`, `scenes/blender/lib/gb.py`, `scenes/blender/sets/block.py`, `scripts/{animatic_assemble,contact_sheet}.py`, `config/bookends.json`
+  - Fonts: `assets/fonts/` (Inter and JetBrains Mono, OFL, from Not Yet with their checksums)
+  - Renders: `renders/m3/m3_animatic.mp4` (3:56.17, 640×360, 24 fps, H.264 + AAC), `renders/m3/m3_sheet_{a,b,c}.jpg`, `renders/m3/anchors_v5/`, `renders/m3/frames_v1/` (not in the manifest)
+  - Review notes: `shots/m3_review.md`
+- **Findings for the review** (`shots/m3_review.md`):
+  - S39a–S39e get about 2.5 s each;
+  - S48's crane has 1.06 s against S47's 13.2 s;
+  - S03 holds the REC light for 12.9 s;
+  - Hook 2's last two lines don't match S16 and S17's reused gags.
+  - Each comes with a proposal.
+- **Not in M3:** overlays (M4), the real photo (M6), the photoreal Act 2 and lip-sync (M5), and proper Act 1 lip-sync (Rhubarb, M4).
+- **Why:** Brief M3: "Grey-box Blender set and an animatic of every shot at low resolution, cut to the track"; gate: "Approve framing and timing". The anchor-sheet loop is Not Yet's C4.
+- **Status:** **M3 is ready for review.** The agent stops here.

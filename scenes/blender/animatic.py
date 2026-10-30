@@ -1,0 +1,93 @@
+"""M3 animatic (brief: "Grey-box Blender set and an animatic of every shot at low resolution, cut to the track"):
+the grey-box block (sets/block.py), every shot's camera, stand-ins and gags (shots.py), rendered with Eevee at low
+resolution and few samples. Cameras switch on timeline markers, one per shot (brief: "one camera per shot ID").
+After Not Yet's scenes/blender/animatic.py.
+
+Timeline frame f shows song time f / FPS - PRE (pre-roll before the track; see lib/gb.py).
+
+Modes:
+  --anchors   one still per shot, a third of the way in -> <out>/anchor_<ID>.png, for the contact sheet
+  default     every --step'th frame from --from to --to (song seconds) -> <out>/f_<frame>.png
+
+Usage: blender -b --factory-startup --python scenes/blender/animatic.py -- --out DIR [--profile NAME] [--step K]
+       [--from S] [--to S] [--anchors] [--only ID ...]
+"""
+import argparse
+import json
+import sys
+import time
+from pathlib import Path
+
+import bpy
+
+HERE = Path(__file__).resolve().parent
+sys.path[:0] = [str(HERE / "lib"), str(HERE / "sets"), str(HERE)]
+import block  # noqa: E402
+import gb  # noqa: E402
+import shots  # noqa: E402
+
+PROFILES = json.loads((HERE.parents[1] / "config" / "render_profiles.json").read_text())
+
+
+def build(size, samples):
+    t = time.time()
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    sc = bpy.context.scene
+    sc.render.engine = "BLENDER_EEVEE"
+    sc.render.resolution_x, sc.render.resolution_y = size
+    sc.render.resolution_percentage = 100
+    sc.render.fps = gb.FPS
+    sc.eevee.taa_render_samples = samples
+    sc.eevee.use_shadows = True
+    sc.eevee.use_raytracing = False
+    sc.view_settings.view_transform = "AgX"
+    sc.render.film_transparent = False
+    S = block.build()
+    shots.light(S)
+    SP = shots.stage(S)
+    sc.frame_start = 0
+    sc.frame_end = gb.F(max(b for _, b in SP.values()))
+    print(f"built in {time.time() - t:.1f} s; {len(bpy.data.objects)} objects; {len(shots.CAMS)} cameras; "
+          f"frames 0..{sc.frame_end}", flush=True)
+    return sc, SP
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--profile", default="animatic", choices=[k for k in PROFILES if not k.startswith("_") and k != "fps"])
+    ap.add_argument("--step", type=int, default=1)
+    ap.add_argument("--from", dest="t0", type=float)
+    ap.add_argument("--to", dest="t1", type=float)
+    ap.add_argument("--anchors", action="store_true")
+    ap.add_argument("--only", nargs="*")
+    ap.add_argument("--resume", action="store_true")
+    args = ap.parse_args(sys.argv[sys.argv.index("--") + 1:])
+    prof = PROFILES[args.profile]
+    sc, SP = build(prof["size"], prof["samples"])
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    sc.render.image_settings.file_format = "PNG"
+    t_start = time.time()
+    if args.anchors:
+        for sid, (a, b) in SP.items():
+            if args.only and sid not in args.only:
+                continue
+            sc.frame_set(gb.F(a + (b - a) / 3))
+            sc.render.filepath = str(out / f"anchor_{sid}.png")
+            bpy.ops.render.render(write_still=True)
+    else:
+        f0 = 0 if args.t0 is None else gb.F(args.t0)
+        f1 = sc.frame_end if args.t1 is None else gb.F(args.t1)
+        n = 0
+        for f in range(f0, f1 + 1, args.step):
+            p = out / f"f_{f:05d}.png"
+            if args.resume and p.exists():
+                continue
+            sc.frame_set(f)
+            sc.render.filepath = str(p)
+            bpy.ops.render.render(write_still=True)
+            n += 1
+            if n % 200 == 0:
+                print(f"{n} frames, {(time.time() - t_start) / n:.2f} s/frame", flush=True)
+    print(f"rendered in {time.time() - t_start:.0f} s", flush=True)

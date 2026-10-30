@@ -1,0 +1,5 @@
+{
+  "_doc": "M3 proposal: lengths of the shots outside the song (the brief gives them no timing). Pre-roll runs before the track (song time is negative there; the track starts at 0); post-roll runs after the audio ends (196.16 s). Seconds.",
+  "preroll": {"S01a": 5.0, "S01b": 4.0, "S01c": 4.0, "S01d": 5.0},
+  "postroll": {"S48b": 4.0, "S49": 8.0, "S50": 10.0}
+}
