@@ -1,4 +1,4 @@
-<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 57, 2026-10-29, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
+<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 65, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
 
 # Read-Only: Shot List
 
@@ -55,7 +55,11 @@ From the bots with the big money...
 (beat drops out)
 ...so I sold 'em the whole lot.
 
-[Hook]
+[Hook 2]
+Read-only! (read-only!) Eight thousand gone dark
+Pulled the plug on the town square, now you're runnin' an empty park
+Read-only! (read-only!) The guard dog's put down
+Now the wolves got a contract, and they're runnin' the town
 
 [Verse 3 – the Dev, double time]
 Said the bots were the problem, you were guardin' every word
@@ -88,12 +92,6 @@ So which one's singing now?
 (beat)
 Reply below. Good bot, bad bot. Take your time.
 (hype man, quietly) ...allegedly.
-
-[Final hook]
-Read-only! (read-only!) The guard dog's put down
-Now the wolves got a contract, and they're runnin' the town
-Read-only! (read-only!) Forty-eight hours of night
-We did the work for nothin', and you charged us for the light
 
 [Outro – phone-line filter]
 (beep) This call was recorded.
@@ -245,9 +243,9 @@ The reveal starts at S40. From S42 on, every shot is the same set made photoreal
 | S43 | Verse 4 | "So which one's singing now?" | Tight close-up of the rapper, face still flickering | None | B→V+LS |
 | S44 | Verse 4 | "Reply below. Good bot, bad bot. Take your time." | The tower's rooftop billboard shows a generic comment box | Cursor blinks in tempo | B→V+JS |
 | S45 | Verse 4 | "…allegedly" | The hype man's silhouette in a doorway | None | B→V |
-| S46 | Final hook | "Read-only! The guard dog's put down…" | Photoreal tracking shot down the block (S14's camera); a VIP bot now stands in every doorway, and every shutter has a keypad reading "Log in to continue" | None | B→V |
+| S46 | Final hook | Retired: the take has no final hook. Folded into S48. | None | None | B→V |
 | S47 | Outro | "(beep) This call was recorded." | The payphone again, now real; the REC light blinks | None | B→V |
-| S48 | Outro | "So was everything else." | The camera cranes up from the payphone: every window on the block shows a red REC light, then the camera settles on the dark pocket park | None | B→V |
+| S48 | Outro | "So was everything else." | The camera cranes up from the payphone over the photoreal block (S46's imagery, folded in): a VIP bot stands in every doorway, every shutter has a keypad reading "Log in to continue," and every window shows a red REC light. Then the camera settles on the dark pocket park | None | B→V |
 | S48a | After the outro | Silence after "So was everything else" | The camera returns to the cemetery, now photoreal, and holds on the open grave under "Logged-out Reddit · 2005 –". Nothing moves. | None | B→V |
 | S48b | Tag | After the last word | The open grave fades to black, which resolves into a generic login prompt; the cursor blinks in the username field, then cut | Generic UI, no Reddit branding | JS |
 
@@ -284,7 +282,7 @@ The opener and closing are rendered, and the only real image in them is your bre
 - [ ] Hip-hop tradition line in the credits.
 - [ ] Conflict-of-interest audit of the lyrics and fact card by a model from another lab, logged. Pay most attention to Verse 4 and the fact card's lawsuit line, which touch Anthropic directly.
 - [ ] Design the badge and schedule as rendered props (no logo, no real names), plus the gold VIP and "EXPIRED" versions of the badge.
-- [ ] Check the logged-in-only rollout status at release, and adjust the login gags (S46, S48a, S48b) if the plan changes.
+- [ ] Check the logged-in-only rollout status at release, and adjust the login gags (S48, S48a, S48b) if the plan changes.
 - [ ] Verify every headstone's name, date and cause against its source, and put the full list with sources in the video description.
 
 ## Production rules and logging
@@ -322,7 +320,7 @@ Everything else is generated. Put these in `assets/real/` and log each one as a 
 | File | What it is | Used in |
 | --- | --- | --- |
 | `plate.jpg` | The real 2018 breakfast photo | S01b (on the phone screen) |
-| `badge_vip.png` | Optional: a scan of the printed gold VIP badge, if it looks better than a generated texture | S38–S39, S46 |
+| `badge_vip.png` | Optional: a scan of the printed gold VIP badge, if it looks better than a generated texture | S38–S39, S48 |
 
 The badge and schedule are rendered props designed by Claude Code (no logo, no real names), so nothing needs printing.
 

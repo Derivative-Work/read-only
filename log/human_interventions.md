@@ -30,3 +30,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - **Not a touch on the work:** the other six files are reference material, and the restaurant description is a creative note given in words.
   - **AI change, logged:** the extra "good bot" repeats are Suno's.
   - **Human change before generation (logged):** removing the final hook. It's the human's lyric edit to what Suno was given, made before the take existed. The brief's lyric block was never updated to match.
+
+## 2026-10-30T00:00 — S46 folded into S48; go-ahead for M2 — R1
+
+- **Note from the human:** "fold S46 into S48 and go ahead with M2"
+- **Rule:** R1 (approving a plan the agent proposed). The agent made the brief edit (production log, 00:05).
