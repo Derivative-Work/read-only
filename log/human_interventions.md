@@ -128,3 +128,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - "S29: the truck labels are barely visible"
   - "S31: \"UNDER NEW MANAGEMENT\" is incorrectly on top of the post-its -- just move one so that they're not on top of each other"
 - **Rule:** R1 (creative and technical notes on the M4 clips; not a section-by-section verdict). The agent fixes them (production log, following entries).
+
+## 2026-10-30T19:59:54-04:00 — The receipt tape still clips — R1
+
+- **Note from the human:** "Look closer at the receipt tape. It's still clipping into the table and floor. It may help to use a cloth simulation or similar"
+- **Rule:** R1 (a creative and technical note). The agent re-checks the tape's draping (production log, following entries).
