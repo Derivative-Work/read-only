@@ -556,3 +556,14 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Checked:**
   - the sub-agent's `renders/m4/detail_city/v4..v8`;
   - the full build in `renders/m4/detail_all/v1` (S01a, S02, S03, S14, S15, S23, S27, S39).
+
+## 2026-10-30T12:50:00-04:00 — M4 detail pass: look test of every Act 1 shot, for review
+
+- **What:** one 720p still from the middle of every shot, S01a and S01e–S40 (46 stills), with all five areas built. Contact sheets: `renders/m4/m4_detail_1..4.jpg`.
+- **Command:** `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/detail_all/survey --profile draft720 --look final --times -15.5 <each shot's middle>`
+- **Timing:** the build takes about 56 s, and each 720p still about 3 s, including motion blur.
+- **Weak spots seen:**
+  - **S22:** the CEO is still hidden at mid-shot behind a falling arrow and the balcony's underside.
+  - **S39e:** the engraving is low-contrast in the open.
+  - **S01a:** the parol's streamers cross the frame.
+- **Next:** the human's review of the sheets, then Act 1 re-rendered at 720p (about 3 h), then the section clips for the M4 gate.
