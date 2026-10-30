@@ -85,8 +85,17 @@ POSES = {  # joint positions (x, y, z), metres at h = 1, figure facing -Y; arms:
     "hold": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S11-S12: the tape held up like evidence
         -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
         1: ((0.2, 0.0, 1.19), (0.3, -0.1, 1.38), (0.24, -0.2, 1.6))}},
+    "dribble": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S20: palm down over the ball
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.3, -0.12, 0.98), (0.32, -0.3, 0.9))}},
+    # S19: on both knees, shins flat behind, soles up; the figure's root goes KNEEL_DROP under the ground
+    "kneel": {"knee": (0.1, -0.1, 0.48), "ankle": (0.1, 0.32, 0.47), "arm": {
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.27, 0.02, 0.95), (0.29, -0.01, 0.73))}},
 }
-HOLD = (0.226, -0.254, 1.745)  # "hold": where the held thing's centre is, figure space (h = 1)
+KNEEL_DROP = 0.4  # "kneel": the ground is this far over the root (h = 1)
+HOLD = (0.226, -0.254, 1.745)
+DRIBBLE = (0.326, -0.355, 0.816)  # "dribble": under the palm (x, y), and the palm's underside (z), figure space  # "hold": where the held thing's centre is, figure space (h = 1)
 
 
 def skin_body(name, verts, edges, radii, m, root, h):
@@ -145,11 +154,14 @@ def base(name, loc, rot_z, top, legs="jeans", skin="skin1", h=1.0, head_r=0.19, 
         gb.sphere(f"{name}.thumb{s}", (hc[0] - s * 0.01 * h, hc[1] - 0.04 * h, hc[2] + 0.015 * h), 0.022 * h, M(skin),
                   parent=root)
     skin_body(f"{name}.torso", tv, te, tr, M(top), root, h)
-    for s in (-1, 1):  # rounded shoes with white soles
-        ellipsoid(f"{name}.shoe{s}", (s * ax * h, (ay - 0.04) * h, 0.05 * h), (0.065 * h, 0.13 * h, 0.055 * h), M("shoe"),
+    kneel = pose == "kneel"
+    g = KNEEL_DROP if kneel else 0.0  # the ground, figure space
+    for s in (-1, 1):  # rounded shoes with white soles (kneeling: lying behind, soles up)
+        fy = ay + 0.09 if kneel else ay - 0.04
+        ellipsoid(f"{name}.shoe{s}", (s * ax * h, fy * h, (g + 0.05) * h), (0.065 * h, 0.13 * h, 0.055 * h), M("shoe"),
                   root)
-        rbox(f"{name}.sole{s}", (s * ax * h, (ay - 0.04) * h, 0.012 * h), (0.13 * h, 0.26 * h, 0.025 * h), M("sole"), root,
-             0.012)
+        rbox(f"{name}.sole{s}", (s * ax * h, fy * h, (g + (0.088 if kneel else 0.012)) * h), (0.13 * h, 0.26 * h, 0.025 * h),
+             M("sole"), root, 0.012)
     gb.cyl(f"{name}.neck", (0, 0, 1.3 * h), 0.06 * h, 0.1 * h, M(skin), parent=root)
     head = gb.sphere(f"{name}.head", (0, 0, 1.47 * h), head_r * h, M(skin), parent=root)
     head.scale = (1.0, 0.96, 1.04)
@@ -208,7 +220,8 @@ def dev(loc, rot_z=0.0, name="dev", pose="stand"):
 
 
 def ceo(loc, rot_z=0.0, name="ceo"):
-    pose = {"ceo18": "sit", "ceo10": "phone"}.get(name, "stand")  # S18 on the throne; S10 on the phone
+    pose = {"ceo18": "sit", "ceo10": "phone", "ceo20": "dribble"}.get(name, "stand")  # S18 on the throne; S10 on the
+    # phone; S20 bouncing the ball
     root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3", pose=pose)
     if pose == "sit":
         root.location.z = 0.0  # hips on the throne's seat
@@ -257,14 +270,17 @@ def ceo(loc, rot_z=0.0, name="ceo"):
     return root
 
 
-def mod(loc, k, rot_z=0.0, broom=True, name=None):
+def mod(loc, k, rot_z=0.0, broom=True, name=None, pose="stand"):
+    """A mod in a MOD vest, with a broom. pose "kneel": loc is still the ground under them."""
     name = name or f"mod{k}"
+    g = KNEEL_DROP if pose == "kneel" else 0.0
+    loc = (loc[0], loc[1], loc[2] - g)
     skin = ("skin1", "skin2", "skin3")[k % 3]
     blank = name.startswith("mannequin")  # S21: identical, faceless mannequins in MOD vests
     style = HAIRS[k % 6]
     root = base(name, loc, rot_z, "mannequin" if blank else "modbody", legs="mannequin" if blank else "jeans",
                 skin="mannequin" if blank else skin, style=style,
-                hair_col=f"knit{k % 3}" if style == "beanie" else f"hair{k % 5}", face=not blank)
+                hair_col=f"knit{k % 3}" if style == "beanie" else f"hair{k % 5}", face=not blank, pose=pose)
     # the vest, shaped to the body: a trunk a little bigger than the top, arm holes left at the shoulders
     vest = skin_body(f"{name}.vest", [(0, 0, 0.76), (0, 0, 0.9), (0, 0, 1.08), (0, 0, 1.2), (0, 0, 1.25)],
               [(0, 1), (1, 2), (2, 3), (3, 4)],
@@ -280,7 +296,7 @@ def mod(loc, k, rot_z=0.0, broom=True, name=None):
             parent=root)
     if broom:
         import kit
-        kit.place(f"{name}.broom", "wooden_broom", (0.315, -0.04, 0.0), rot_z=math.pi / 2, scale=0.93, parent=root)
+        kit.place(f"{name}.broom", "wooden_broom", (0.315, -0.04, g), rot_z=math.pi / 2, scale=0.93, parent=root)
     return root
 
 

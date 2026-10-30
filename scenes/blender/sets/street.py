@@ -470,7 +470,7 @@ def paint():
     P = Batch("street.paint", [paint_mat()])
 
     def bar(cx, cy, sx, sy):
-        P.box((cx, cy, 0.003), (sx, sy, 0.004), bottom=False)
+        P.box((cx, cy, 0.005), (sx, sy, 0.01), bottom=False)  # its top 1 cm up: at 5 mm it flickered in the distance
     # continental crosswalks over the main street, both sides of each cross street
     for cx in (-34.5, -44.5, 46.5, 56.5):
         for y in np.arange(-5.4, 5.5, 1.2):
@@ -528,7 +528,7 @@ def tower_front(rng):
     br.offset = 0.5
     nt.links.new(br.outputs["Color"], b.inputs["Base Color"])
     b.inputs["Roughness"].default_value = 0.3
-    gb.box("plaza", (9.0, 8.32, 0.153), (30.0, 4.36, 0.006), m)
+    gb.box("plaza", (9.0, 8.32, 0.155), (30.0, 4.36, 0.01), m)  # 1 cm over the sidewalk (6 mm flickered)
     # bollards along the glass, clear of the doors and the brick wall's span (x 6.5..12.5)
     steel = gb.mat("st.bollard", "#c4c9cd", rough=0.25, metal=0.9)
     on = city.night_ctl()

@@ -372,13 +372,14 @@ def stage(S):
     held12 = held(d12, (-22.4, -7.4, 0.16))
     cas = S["cassette"]
     a12, b12 = SP["S12"]
-    path = [(F(a), (-31.5, -8.38, 0.88)), (F(a + 0.45), (-31.5, -8.38, 0.88)), (F(tm) - 1, (-31.47, -8.3, 0.98)),
+    rest = B.CASS_REST
+    path = [(F(a), rest), (F(a + 0.45), rest), (F(tm) - 1, (rest[0], rest[1] + 0.12, rest[2] + 0.08)),
             (F(tm), held11), (F(b) - 1, held11), (F(a12), held12), (F(a12 + 1.5), held12),
             (F(a12 + 1.9), (-21.8, -6.6, 0.5)), (F(SP["S13"][0]), (-21.8, -6.6, 0.5))]
     for i in range(3):  # a cut between S11 and S12 (and a hand-off at tm): constant across those
         gb.keys(cas, "location", [(f, v[i], "CONSTANT" if f in (F(tm) - 1, F(b) - 1) else "BEZIER") for f, v in path],
                 index=i, interp="BEZIER")
-    c11 = cam("S11", [(0, (-30.6, -7.1, 1.35), (-31.45, -8.35, 0.95)), (0.33, (-30.6, -7.1, 1.35), (-31.45, -8.35, 0.98)),
+    c11 = cam("S11", [(0, (-30.6, -7.1, 1.35), (-31.42, -8.45, 0.95)), (0.33, (-30.6, -7.1, 1.35), (-31.42, -8.45, 0.98)),
                       (0.5, (-31.0, -6.3, 1.8), held11), (1, (-31.1, -6.15, 1.82), held11)], lens=40)
     gb.keys(c11.data, "lens", [(F(a), 40.0), (F(tm), 40.0), (F(tm + 0.5), 50.0)], interp="BEZIER")
     sing(d12, "S12")
@@ -438,14 +439,21 @@ def stage(S):
     sing(c18, "S18")
     cam("S18", [(0, (9, 1.0, 2.0), (9, 17, 1.9)), (1, (9, 7.5, 2.0), (9, 17, 2.0))], lens=35)
     for k in range(6):
-        m = only(B.mod((-2 + k * 1.6, 7.6, -0.45), 20 + k, rot_z=math.pi, broom=True), "S19")
-    cam("S19", [(0, (3.0, 1.5, 1.4), (4, 9, 1.0)), (1, (6.0, 1.5, 1.6), (6, 9, 1.0))], lens=28)
+        m = only(B.mod((-2 + k * 1.6, 7.6, 0.16), 20 + k, rot_z=math.pi, broom=True, pose="kneel"), "S19")  # on the plaza
+    # low, from the side along the row, so the kneel reads (from behind they looked like short people standing)
+    cam("S19", [(0, (-5.6, 5.6, 0.95), (3.0, 8.0, 0.65)), (1, (-4.6, 5.4, 1.0), (4.0, 8.0, 0.7))], lens=30)
     c20 = only(B.ceo((7.5, 16.0, 0.17), name="ceo20"), "S20")
     sing(c20, "S20")
-    ball = only(gb.sphere("ball", (8.2, 15.6, 0.3), 0.12, B.M("lease")), "S20")
-    gb.keys(ball, "location", [(F(t) + d, z) for t in gb.beats_between(*SP["S20"]) for d, z in ((0, 0.3), (6, 1.1))],
-            index=2, interp="BEZIER")
-    cam("S20", [(0, (8.5, 4.5, 2.0), (8.5, 20, 2.6))], lens=30)
+    # he dribbles it: the floor on each beat, back up to his palm between (the ball bounced 0.7 m off on its own)
+    import chars
+    bx, by, bz = chars.DRIBBLE
+    R = 0.12
+    ball = only(gb.sphere("ball", (7.5 + bx, 16.0 + by, 0.17 + R), R, B.M("lease")), "S20")
+    bt = gb.beats_between(SP["S20"][0] - 1, SP["S20"][1] + 1)
+    gb.keys(ball, "location", [(F(t), 0.17 + R) for t in bt] + [(F((t0 + t1) / 2), 0.17 + bz - R) for t0, t1 in zip(bt, bt[1:])],
+            index=2, interp="LINEAR")
+    cam("S20", [(0, (8.3, 9.6, 1.6), (8.0, 16.5, 1.9)), (1, (8.25, 10.2, 1.6), (8.0, 16.5, 1.9))], lens=30)  # in close
+    # enough that the ball and his hand read, the screen's chart over them
     a, b = SP["S21"]
     van = only(gb.box("van", (-20, -3.6, 1.1), (5.0, 2.1, 2.2), B.M("van")), "S21")
     gb.text("van.t", "LOCKSMITH", 0.4, B.M("ink"), (0, 1.06, 0.2), facing="+Y", parent=van)
@@ -513,20 +521,57 @@ def stage(S):
             gb.box(f"botmod{k}.eye", (0, -0.13, 1.57), (0.12, 0.01, 0.02), B.M("screen", emit=1.5), parent=m)
     cam("S27", [(0, (-28.5, -7.8, 1.6), (-24, -8.4, 1.6)), (1, (-22.5, -7.8, 1.6), (-18, -8.4, 1.6))], lens=26,
         shake=0.06)
+    # S28: the sidewalk auction. The truck at the near curb, its side door rolled up to the sidewalk; a forklift lifts a
+    # pallet of four crates (two on two) and drives it into the hold, then backs off; a second lot waits by the sign
     a, b = SP["S28"]
-    truck = only(gb.box("truck28", (0, 2.0, 1.6), (7, 2.5, 3.2), B.M("truck")), "S28")
-    for k in range(4):
-        cr = only(gb.box(f"crate{k}", (-4 + k * 0.9, -7.5, 0.45), (0.8, 0.8, 0.6), B.M("crate")), "S28")
-        gb.text(f"crate{k}.t", "COMMENTS\n2005–2023", 0.1, B.M("ink"), (0, 0.41, 0), facing="+Y", parent=cr)
-        tk = a + 0.3 + k * 0.4
-        gb.key_vec(cr, "location", [(F(tk), (-4 + k * 0.9, -7.5, 0.45)), (F(tk + 0.4), (-3.4, 0.6, 2.0)),
-                                    (F(tk + 0.5), (-2.5 + k * 0.5, 2.0, 1.0))])
-    cam("S28", [(0, (-9, -3.0, 2.4), (-2.5, -4.5, 0.8))], lens=24)
+    only(gb.box("truck28", (0, -4.7, 1.6), (7, 2.5, 3.2), B.M("truck")), "S28")  # its -Y side at -5.95, the curb -6.0
+    DOOR_X, HOLD_Z, SW = -1.9, 0.86, 0.15  # the door's centre (world x), the hold's floor, the sidewalk
+    y0, y1, y2 = -8.6, -7.05, -7.7  # the forklift's root: start, the pallet all in the hold, backed off
+    fl = only(gb.empty("forklift28", (DOOR_X, y0, SW)), "S28")
+    gb.box("forklift28.body", (0, 0, 0.6), (1.1, 2.0, 1.2), B.M("vest"), parent=fl)
+    car = gb.empty("forklift28.carriage", (0, 1.05, 0.1), parent=fl)
+    gb.box("forklift28.forks", (0, 0.5, 0.03), (0.9, 1.0, 0.05), B.M("trim"), parent=car)
+    t_lift0, t_lift1, t_in, t_set, t_out = a + 0.15, a + 0.75, a + 1.35, a + 1.5, b
+    gb.keys(fl, "location", [(F(a), y0), (F(a + 0.2), y0), (F(t_in), y1, "LINEAR"), (F(t_set + 0.1), y1),
+                             (F(t_out), y2)], index=1, interp="BEZIER")
+    lift = HOLD_Z + 0.04 - SW  # forks just over the hold's floor
+    gb.keys(car, "location", [(F(t_lift0), 0.1), (F(t_lift1), lift), (F(t_in), lift), (F(t_set), lift - 0.04)], index=2,
+            interp="BEZIER")
+    # the pallet rides the forks (the same keys, in the world) and stays in the hold when they back out
+    pal = only(gb.box("pallet28", (DOOR_X, y0 + 1.55, SW + 0.17), (1.6, 0.9, 0.12), B.M("crate")), "S28")
+    py = lambda yr: yr + 1.55
+    pz = lambda zc: SW + zc + 0.055 + 0.06  # on the forks' top
+    gb.keys(pal, "location", [(F(a), py(y0)), (F(a + 0.2), py(y0)), (F(t_in), py(y1), "LINEAR"), (F(t_set + 0.1), py(y1))],
+            index=1, interp="BEZIER")
+    gb.keys(pal, "location", [(F(t_lift0), pz(0.1)), (F(t_lift1), pz(lift)), (F(t_in), pz(lift)),
+                              (F(t_set), pz(lift - 0.04))], index=2, interp="BEZIER")
+    for k in range(6):  # 0-3 on the pallet; 4-5 the next lot, waiting on the sidewalk
+        if k < 4:
+            cr = only(gb.box(f"crate{k}", ((k % 2 - 0.5) * 0.8, 0, 0.06 + 0.3 + (k // 2) * 0.6), (0.8, 0.8, 0.6), B.M("crate")),
+                      "S28")
+            cr.parent = pal
+        else:
+            cr = only(gb.box(f"crate{k}", (-4.55, -6.55 - (k - 4) * 0.84, SW + 0.3), (0.8, 0.8, 0.6), B.M("crate")), "S28")
+        for face, off in (("-X", (-0.41, 0, 0)), ("+X", (0.41, 0, 0)), ("-Y", (0, -0.41, 0)), ("+Y", (0, 0.41, 0))):
+            ox, oy, oz = off
+            gb.plane(f"crate{k}.lbl{face}", (ox, oy, oz), (0.66, 0.36), B.M("sign"), parent=cr, facing=face)
+            gb.text(f"crate{k}.t{face}", "COMMENTS\n2005–2023", 0.115, B.M("ink"),
+                    (ox * 1.025, oy * 1.025, oz), facing=face, parent=cr)
+    sign = only(gb.empty("auction28", (-3.55, -6.55, SW)), "S28")  # an A-frame board, turned to the camera
+    gb.box("auction28.board", (0, 0, 0.55), (0.75, 0.05, 1.1), B.M("sign"), parent=sign)
+    gb.text("auction28.t", "SIDEWALK\nAUCTION\nall data\nmust go", 0.12, B.M("ink"), (0, 0.03, 0.62), facing="+Y",
+            parent=sign)
+    sign.rotation_euler.z = 2.6
+    # from the west, close to the shopfronts: further out, the lamp post at (-5, -6.6) stood in front of it all; from
+    # the east, the truck hid the pallet
+    cam("S28", [(0, (-5.4, -9.75, 2.8), (-2.0, -6.4, 1.0)), (1, (-5.2, -9.75, 2.9), (-1.8, -6.1, 1.2))], lens=28)
     a, b = SP["S29"]
-    for nm, x0, x1, y in (("SEARCH", -20, 4.5, 3.5), ("CHAT", -26, -10, 3.5)):
+    # they pull up and stop, so their names read (driving through at 9 m/s, the blur took them): SEARCH at the door
+    for nm, x0, x1, t1, y in (("SEARCH", -12, 4.5, a + 1.3, 3.5), ("CHAT", -20, -3.5, a + 1.6, 3.5)):
         tr = only(gb.box(f"truck.{nm}", (x0, y, 1.5), (6, 2.4, 3.0), B.M("truck")), "S29")
-        gb.text(f"truck.{nm}.t", nm, 0.7, B.M("ink"), (0, 1.21, 0.3), facing="+Y", parent=tr)
-        gb.keys(tr, "location", [(F(a), x0), (F(b), x1)], index=0)
+        gb.text(f"truck.{nm}.t", nm, 0.85, B.M("ink"), (-1.0, 1.21, 0.35), facing="+Y", parent=tr)  # on the box (x -3..1)
+        gb.keys(tr, "location", [(F(a), x0, "LINEAR"), (F(a + 0.4), x0 + (x1 - x0) * 0.35), (F(t1), x1), (F(b), x1)],
+                index=0, interp="BEZIER")
     av = only(gb.box("archivevan", (12, 3.5, 1.0), (4.0, 2.0, 2.0), B.M("van")), "S29")
     gb.text("archivevan.t", "ARCHIVE", 0.4, B.M("ink"), (0, 1.01, 0.2), facing="+Y", parent=av)
     gb.keys(av, "location", [(F(a), 12.0), (F(a + 1.0), 12.0), (F(b), 20.0)], index=0)
@@ -546,9 +591,12 @@ def stage(S):
     # then up to the billboard, zooming in so its line reads
     a, b = SP["S31"]
     rn = random.Random(31)
+    UNM_CLEAR = {0: (-0.12, 0.0), 1: (0.0, 0.45)}
     mouth = (2.0, -4.6, 4.35)  # over the truck's roof hatch (1 m behind its centre); the truck in the near lane
     for k in range(10):
         p0 = (-4.35 + (k % 5) * 0.68 + rn.uniform(-0.08, 0.08), B.FRONT + 0.175, (2.05 if k < 5 else 1.55) + rn.uniform(-0.07, 0.07))
+        if k in UNM_CLEAR:  # off "UNDER NEW MANAGEMENT" (x -4.33..-3.28, z 1.73..2.07): one above it, one to its side
+            p0 = (p0[0] + UNM_CLEAR[k][0], p0[1], p0[2] + UNM_CLEAR[k][1])
         n = only(gb.plane(f"sticky{k}", p0, (0.3, 0.3), B.M("sign"), facing="+Y"), "S31")
         tk = a + 1.0 + (k * 7 % 10) * 0.16  # not in reading order
         mid = ((p0[0] + mouth[0]) / 2, (p0[1] + mouth[1]) / 2, max(p0[2], mouth[2]) + 0.5)

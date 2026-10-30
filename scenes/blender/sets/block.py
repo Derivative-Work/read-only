@@ -108,7 +108,7 @@ def street(S):
     gb.box("corner.far.n", (-52, 18, 7), (12, 16, 14), M("brick"))
     # sidewalk squares on the south sidewalk (S33 chalks one)
     for i, x in enumerate(np.arange(-32.5, 44, 1.5)):
-        gb.box(f"sq.{i}", (x, -8, 0.152), (0.02, 4, 0.002), M("curb"))
+        gb.box(f"sq.{i}", (x, -8, 0.153), (0.02, 4, 0.006), M("curb"))  # 6 mm proud: at 3 mm they flickered at a distance
     S["chalk_sq"] = (-10.25, -8.75)
 
 
@@ -138,8 +138,10 @@ def shopfront(S, i, xw, sign, kind, north=False):
     gb_.box(f"shop{i}.pierR", (x + w / 2 - 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
     gb_.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w, 0.4, 1.0), M("trim"))
     gb_.box(f"shop{i}.back", (x, FRONT - 6.2, 2.1), (w, 0.2, 4.2), M("stucco"))
-    gb_.box(f"shop{i}.sideL", (x - w / 2 + 0.055, FRONT - 3.105, 2.1), (0.1, 6.19, 4.2), M("stucco"))  # 5 mm inside the pier: no shared faces
-    gb_.box(f"shop{i}.sideR", (x + w / 2 - 0.055, FRONT - 3.105, 2.1), (0.1, 6.19, 4.2), M("stucco"))
+    # behind the piers and lintel (from FRONT - 0.395): running forward inside them, 5 mm under their faces, they
+    # flickered through them from across the street
+    gb_.box(f"shop{i}.sideL", (x - w / 2 + 0.055, FRONT - 3.2975, 2.1), (0.1, 5.805, 4.2), M("stucco"))
+    gb_.box(f"shop{i}.sideR", (x + w / 2 - 0.055, FRONT - 3.2975, 2.1), (0.1, 5.805, 4.2), M("stucco"))
     gb_.box(f"shop{i}.floor", (x, FRONT - 3.1, 0.155), (w, 6.2, 0.01), M("tile" if kind == "eatery" else "curb"))
     gb_.box(f"shop{i}.sill", (x - 0.8, FRONT - 0.1, 0.3), (3.8, 0.3, 0.6), M("trim"))
     glass = gb_.plane(f"shop{i}.glass", (x - 0.8, FRONT + 0.01, 1.85), (3.8, 2.3),
@@ -275,6 +277,9 @@ def dev_interior(S):
     gb.text("dev.est", "est. 2008", 0.2, M("ink"), (x0 - 0.8, FRONT + 0.03, 3.38), facing="+Y")
 
 
+CASS_REST = (-31.37, -8.515, 0.9)  # props.CASS_S's shell is 18 mm deep: its back on the post's face at -8.525
+
+
 def corner(S):
     pp = gb.empty("payphone", (-31.5, -8.6, 0))
     gb.box("payphone.post", (0, 0, 0.9), (0.15, 0.15, 1.8), M("steam", metal=0.7, rough=0.4), parent=pp)
@@ -294,7 +299,8 @@ def corner(S):
     ctl = gb.empty("rec.ctl", (0, 0, 0))
     gb.sphere("handset.rec", (0, 0.04, -0.06), 0.012, gb.glow_mat("rec", C["rec"], 40.0, ctl, "on"), parent=hs)
     S["handset"], S["rec"] = hs, ctl
-    cas = gb.box("cassette", (-31.5, -8.38, 0.88), (0.1, 0.015, 0.065), M("ink"))
+    # taped flat on the post's street face beside the handset (where the handset hangs, it was inside it)
+    cas = gb.box("cassette", CASS_REST, (0.1, 0.015, 0.065), M("ink"))
     S["cassette"] = cas
     # streetlights: the one with the coin meter at the corner, others down the block
     S["lamps"] = []
@@ -330,7 +336,8 @@ def tower(S):
                gb.glow_mat("tower.glass", C["towerglass"], 2.5, ctl, "lit"))
     # the lobby: hollow ground floor with a glass front
     gb.box("lobby.back", (cx, y1 - 6, 3), (x1 - x0, 0.3, 6), M("lobby"))
-    gb.box("lobby.ceiling", (cx, (y0 + y1 - 6) / 2 + 0.005, 6.0), (x1 - x0 - 0.02, y1 - 6 - y0 - 0.01, 0.2), M("lobby"))
+    gb.box("lobby.ceiling", (cx, (y0 + y1 - 6) / 2 + 0.005, 5.945), (x1 - x0 - 0.02, y1 - 6 - y0 - 0.01, 0.09),
+           M("lobby"))  # under the tower (z 6), not into it
     gb.box("lobby.floor", (cx, (y0 + y1 - 6) / 2, 0.16), (x1 - x0, y1 - 6 - y0, 0.02), M("lobby", rough=0.2))
     gb.box("lobby.sideW", (x0, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
     gb.box("lobby.sideE", (x1, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
@@ -629,11 +636,13 @@ def ceo(loc, rot_z=0.0, name="ceo"):
     return person(name, loc, "ceohood", ex, rot_z=rot_z)
 
 
-def mod(loc, k, rot_z=0.0, broom=True, name=None):
+def mod(loc, k, rot_z=0.0, broom=True, name=None, pose="stand"):
     if FINAL:
         import chars
-        return chars.mod(loc, k, rot_z=rot_z, broom=broom, name=name)
+        return chars.mod(loc, k, rot_z=rot_z, broom=broom, name=name, pose=pose)
     name = name or f"mod{k}"
+    if pose == "kneel":  # the grey-box's kneel: sunk to the knees
+        loc = (loc[0], loc[1], loc[2] - 0.45)
 
     def ex(root, n):
         gb.box(f"{n}.vest", (0, 0, 0.95), (0.47, 0.47, 0.5), M("vest"), parent=root)

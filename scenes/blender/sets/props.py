@@ -121,8 +121,11 @@ def notice():
 # below zmax (the counter, the floor, the threshold, the sidewalk, the street); zmax None = the point's own z (in
 # the air, leaving the roll)
 TAPE_W, TAPE_TILE = 0.085, 0.34  # 1.5x a real 57 mm tape (the props' scale), the strip texture's tile length
-TAPE_PATH = [(-20.4, -13.27, None, 1.17), (-20.4, -13.17, None, 1.2), (-20.4, -13.05, 1.2, 0),
-             (-20.35, -12.85, 1.2, 0), (-20.2, -12.4, 0.3, 0), (-19.6, -11.4, 0.3, 0), (-19.0, -10.4, 0.3, 0),
+TAPE_PATH = [(-20.4, -13.27, None, 1.226), (-20.4, -13.23, None, 1.222), (-20.4, -13.19, None, 1.12),  # off the roll's top
+             (-20.4, -13.16, None, 1.004), (-20.4, -13.11, None, 1.004),  # on the counter (its edge at -13.1)
+             (-20.4, -13.094, None, 0.99), (-20.4, -13.092, None, 0.97),  # over the edge
+             (-20.4, -13.08, None, 0.4), (-20.4, -13.05, None, 0.22), (-20.4, -13.0, None, 0.168),  # down its face
+             (-20.38, -12.9, 0.3, 0), (-20.2, -12.4, 0.3, 0), (-19.6, -11.4, 0.3, 0), (-19.0, -10.4, 0.3, 0),
              (-18.94, -9.4, 0.3, 0), (-19.3, -8.2, 0.3, 0), (-20.4, -7.65, 0.3, 0), (-26.4, -7.6, 0.3, 0),
              (-27.2, -7.2, 0.3, 0), (-27.5, -5.6, 0.3, 0), (-27.7, -0.7, 0.3, 0), (-27.9, 4.0, 0.3, 0)]
 # (the sidewalk stretch at y -7.6: at -7.0 it lay beside the curb's painted line and read as another one)
@@ -144,14 +147,15 @@ def tape_points(SP):
             if not hit:
                 return 0.0
             o = ob.original
-            if n.z > 0.7 and not o.hide_render and not o.name.startswith(skip):
-                return loc.z
+            if abs(n.z) > 0.7 and not o.hide_render and not o.name.startswith(skip):  # some floors' faces point down
+                return max(loc.z, 0.0)  # the haze's floor is the road's (z 0): stepping past it skips the road too,
+                # and the ray found the far ground 1 cm under it
             org = loc + d * 1e-4
         return 0.0
     pts, s = [], 0.0
     for (x0, y0, zm0, z0), (x1, y1, zm1, z1) in zip(TAPE_PATH, TAPE_PATH[1:]):
         L = math.hypot(x1 - x0, y1 - y0)
-        n = max(1, int(L / 0.02))
+        n = max(1, int((L if zm0 is not None else math.hypot(L, z1 - z0)) / 0.02))
         for i in range(n):
             u = i / n
             x, y = x0 + (x1 - x0) * u, y0 + (y1 - y0) * u
@@ -169,11 +173,13 @@ def tape_run(S, SP):
     pts = tape_points(SP)
     me = bpy.data.meshes.new("prop.tape.run")
     V, Fc, UV, ARC = [], [], [], []
+    px, py = TAPE_W / 2, 0.0
     for i, (x, y, z, s) in enumerate(pts):
         a, b = pts[max(i - 1, 0)], pts[min(i + 1, len(pts) - 1)]
         dx, dy = b[0] - a[0], b[1] - a[1]
-        L = math.hypot(dx, dy) or 1.0
-        px, py = -dy / L * TAPE_W / 2, dx / L * TAPE_W / 2
+        L = math.hypot(dx, dy)
+        if L > 0.005:  # hanging straight down (over the counter's edge) it keeps the last heading's width
+            px, py = -dy / L * TAPE_W / 2, dx / L * TAPE_W / 2
         V += [(x - px, y - py, z), (x + px, y + py, z)]
         UV += [(0.0, s / TAPE_TILE), (1.0, s / TAPE_TILE)]
         ARC += [(s, 0.0), (s, 0.0)]
@@ -400,7 +406,7 @@ def vehicles():
 
 def crates():
     wood = gb.tex_mat("crate_wood", "plywood")
-    for k in range(4):
+    for k in range(6):
         o = obj(f"crate{k}")
         m = mk.MK()
         w, d, h = 0.8, 0.8, 0.6
@@ -661,6 +667,75 @@ def coffin():
         kit.mesh_swap(n, m.mesh(f"prop.note{k}"))
 
 
+def ball():
+    """S20: a basketball, orange with its black seams (two great circles and the curved pair)."""
+    o = obj("ball")
+    m = mk.MK()
+    R = 0.12
+    m.sphere((0, 0, 0), R, mat("ball.rubber", "#c9622a", rough=0.75), u=32, v=20)
+    seam = mat("ball.seam", "#151515", rough=0.6)
+    m.torus((0, 0, 0), R * 1.004, 0.0035, seam, n=48, k=6)
+    m.torus((0, 0, 0), R * 1.004, 0.0035, seam, rot=(math.pi / 2, 0, 0), n=48, k=6)
+    for s in (-1, 1):  # the curved seams: small circles round each pole of the third axis
+        m.torus((s * R * 0.62, 0, 0), R * 0.79, 0.0035, seam, rot=(0, math.pi / 2, 0), n=40, k=6)
+    kit.mesh_swap(o, m.mesh("prop.ball"))
+
+
+def forklift():
+    """S28: a small warehouse forklift, facing +Y: the body and counterweight, the overhead guard, seat and wheel,
+    four wheels, the mast's two rails at the front; the carriage (its own object, keyed up and down) gets the backrest
+    and the two forks."""
+    body = obj("forklift28.body")
+    m = mk.MK()
+    paint, dark = mat("fl.paint", "#e0a21a", rough=0.5), mat("fl.dark", "#1d1e20", rough=0.6)
+    tyre, steel = mat("veh.tyre", "#141414", rough=0.85), mat("fl.steel", "#6f7378", metal=0.8, rough=0.35)
+    seat = mat("fl.seat", "#121212", rough=0.7)
+    gb.grime(paint, amt=0.4, damp=0.6) if not paint.get("grimed") else None
+    paint["grimed"] = 1
+    m.box((0, -0.15, -0.25), (1.05, 1.5, 0.55), paint, bevel=0.04)  # the body (origin at its box's centre, z 0.6)
+    m.box((0, -0.82, -0.05), (1.05, 0.38, 0.75), dark, bevel=0.06)  # the counterweight at the back
+    m.box((0, 0.35, -0.02), (0.9, 0.5, 0.12), dark)  # the floor plate
+    m.box((0, -0.25, 0.15), (0.5, 0.45, 0.12), seat, bevel=0.03)
+    m.box((0, -0.45, 0.42), (0.5, 0.1, 0.45), seat, bevel=0.03)  # the seat back
+    m.cyl((0, 0.32, 0.62), 0.16, 0.03, dark, rot=(0.9, 0, 0), n=20)  # the steering wheel
+    m.cyl((0, 0.27, 0.45), 0.02, 0.4, dark, rot=(0.9, 0, 0), n=8)
+    for x in (-0.48, 0.48):  # the overhead guard
+        for y in (-0.6, 0.55):
+            m.box((x, y, 0.85), (0.06, 0.06, 1.3), dark)
+    m.box((0, -0.02, 1.5), (1.02, 1.2, 0.05), dark)
+    for k in range(5):
+        m.box((0, -0.5 + k * 0.24, 1.53), (0.98, 0.03, 0.02), dark)
+    for x in (-0.42, 0.42):  # the mast's rails, up the front
+        m.box((x, 1.0, 0.55), (0.08, 0.1, 2.3), steel)
+    m.box((0, 1.0, 1.66), (0.92, 0.1, 0.08), steel)
+    for y, r in ((0.7, 0.3), (-0.7, 0.24)):
+        for x in (-0.52, 0.52):
+            m.cyl((x, y, -0.6 + r), r, 0.22, tyre, axis="X", n=20)
+            m.cyl((x * 1.03, y, -0.6 + r), r * 0.5, 0.02, steel, axis="X", n=14)
+    kit.mesh_swap(body, m.mesh("prop.forklift"))
+    forks = obj("forklift28.forks")  # in the carriage's frame (forks' box centre at y 0.5, z 0.03)
+    m = mk.MK()
+    for x in (-0.3, 0.3):
+        m.box((x, 0.0, 0.0), (0.12, 1.0, 0.05), steel)
+        m.box((x, -0.5, 0.35), (0.12, 0.05, 0.7), steel)  # the fork's heel, up the carriage
+    m.box((0, -0.5, 0.75), (1.0, 0.04, 0.6), dark)  # the load backrest
+    for k in range(4):
+        m.box((0, -0.49, 0.5 + k * 0.17), (0.98, 0.05, 0.03), steel)
+    kit.mesh_swap(forks, m.mesh("prop.forks"))
+
+
+def auction_sign():
+    """S28: the A-frame board, its two legs splayed behind."""
+    o = obj("auction28.board")
+    m = mk.MK()
+    wood, board = mat("aframe.wood", "#5a4630", rough=0.8), mat("aframe.board", "#efe6cf", rough=0.85)
+    m.box((0, 0, 0), (0.75, 0.03, 1.1), board, bevel=0.01)
+    for s in (-1, 1):
+        m.box((s * 0.36, 0.0, 0.0), (0.04, 0.05, 1.14), wood)
+    m.box((0, -0.25, -0.02), (0.75, 0.03, 1.1), wood, rot=(-0.45, 0, 0))  # the back leaf (the lettering's on +Y)
+    kit.mesh_swap(o, m.mesh("prop.aframe"))
+
+
 def doghouse():
     o = obj("doghouse")
     m = mk.MK()
@@ -721,11 +796,10 @@ def shovel():
 
 def build(S, SP):
     for f in (adding_machine, calendar, envelope, notice, cassette, boombox, magnifier, vehicles, crates, arrows,
-              hoses, briefcase, balcony_rail, balcony_light, bell, podium, banner, stickies, funnel, payroll, rubberband, coffin,
+              hoses, ball, forklift, auction_sign, briefcase, balcony_rail, balcony_light, bell, podium, banner, stickies, funnel, payroll, rubberband, coffin,
               doghouse, lanterns, shovel):
         f()
     brickwall(SP)
-    shots.tape_staging(S, SP, tape_run(S, SP))
     brooms(SP)
     chalk(S, SP)
     import os
@@ -733,4 +807,5 @@ def build(S, SP):
     if not only or "interiors" in only.split(","):  # the lobby's display by the glass replaces shots.stage()'s boxes
         import interiors
         interiors.staged(S, SP)
+    shots.tape_staging(S, SP, tape_run(S, SP))  # last: it drapes onto the interiors' floors too
     shots.inherit_visibility()

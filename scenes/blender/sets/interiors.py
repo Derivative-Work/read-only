@@ -312,16 +312,17 @@ def fixtures(mb, light, xs, ys, warm="#fff1d6", along_y=False, k=5.0):
 
 
 def paint(mb, hexcol, name, walls=("back", "west", "east"), grime=0.35, z1=4.19):
+    """The room's painted walls, 1.5 cm proud of the shell's (at 5 mm they flickered seen from the street)."""
     m = pm(f"paint.{name}", hexcol, 0.85)
     if not m.get("grimed"):
         gb.grime(m, amt=grime, streak=0.6, damp=0.8)
         m["grimed"] = 1
     if "back" in walls:
-        mb.box((0, -6.095, (F0 + z1) / 2), (5.78, 0.01, z1 - F0), m)
+        mb.box((0, -6.085, (F0 + z1) / 2), (5.78, 0.01, z1 - F0), m)
     if "west" in walls:
-        mb.box((-2.895, -3.25, (F0 + z1) / 2), (0.01, 5.7, z1 - F0), m)
+        mb.box((-2.88, -3.25, (F0 + z1) / 2), (0.01, 5.7, z1 - F0), m)
     if "east" in walls:
-        mb.box((2.895, -3.25, (F0 + z1) / 2), (0.01, 5.7, z1 - F0), m)
+        mb.box((2.88, -3.25, (F0 + z1) / 2), (0.01, 5.7, z1 - F0), m)
     return m
 
 
@@ -493,7 +494,7 @@ def dev_shop(S):
     for nm, x, z, wd in (("we_fix", -1.7, 2.25, 1.0), ("screen", 0.45, 2.1, 0.62)):
         r = uv("dev", nm)
         mb.quad((x, -0.03, z), (wd, wd / r[4]), backlit, r)
-        mb.box((x, -0.034, z), (wd, 0.002, wd / r[4]), plast, 0, "#e8e2d0")
+        mb.box((x, -0.04, z), (wd, 0.002, wd / r[4]), plast, 0, "#e8e2d0")  # 9 mm behind the print (3 mm flickered)
     r = uv("dev", "open")
     mb.quad((1.9, -0.12, 1.75), (0.42, 0.21), backlit, r)
     mb.tube([(1.75, -0.12, 1.86), (1.9, -0.12, 2.05), (2.05, -0.12, 1.86)], 0.003, plast, "#e8e2cf", n=4)

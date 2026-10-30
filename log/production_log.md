@@ -669,3 +669,33 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **QC, gags:** stills of S06, S07–S09, S11–S12 and S31 checked. One fault: S09's "$20,000,000" at size 190 was wider than the 1000 px receipt texture and ran off both edges ("20,000,00").
 - **Fix:** `scripts/gen_detail_props.py` receipt() now takes the largest size up to 190 that fits inside the ring. The textures were regenerated (git-ignored and regenerable; the others are the same, from the same seed), and S09 (34.03–36.81 s, 67 frames) was re-rendered over its old frames (log `renders/m4/act1_v3/render_s09.log`).
 - **Cut:** the seven section clips in `renders/m4/sections_v3/` and the full act in `renders/m4/m4_act1_v3.mp4` (153.54 s). The v2 clips stay where they were. The first 2_verse1 cut, with the clipped notice, is archived as `archive/renders/m4/sections_v3_superseded/2_verse1_notice_clipped.mp4`.
+
+## 2026-10-30T19:54:40-04:00 — M4: the human's v3 notes fixed (S03, S07–S08, S19, S20, S28, S29, S31, building flicker)
+
+- **Why:** the human's notes on the v3 section clips (human_interventions, same day, R1).
+- **Building flicker:** the first survey skipped overlaps within one object. An extended survey (it counts faces of the same object too, near-parallel faces only, with a gap that grows with distance: 2 mm, or 0.02% of the distance) found these, now spaced apart:
+  - **Shop side walls** ran forward inside the piers and lintel, 5 mm under their faces. They now start behind them (`block.py`).
+  - **Interior paint layers** were 5 mm off the shell walls; now 1.5 cm (`interiors.paint`).
+  - **The Dev's window signs** were 3 mm in front of their plastic backing; now 9 mm.
+  - **Graffiti tags** on the shutters were 2 mm apart from each other; now 6 mm (`grunge.decals`).
+  - **City storefront sign faces** were 5 mm off the sign band; now 15 mm, and the lettering 15 mm more (`city.py`).
+  - **Street paint** is raised from 5 mm to 1 cm; **plaza paving** from 6 mm to 1 cm over the sidewalk; **sidewalk joint lines** from 3 mm to 6 mm.
+  - **The lobby ceiling's** top no longer runs 1 cm into the tower.
+- **S03:** the cassette rested where the handset hangs (the 1.5× cassette was inside the handset). It is now on the post's street face beside the handset (`block.CASS_REST`); S11's grab path and opening framing start from there.
+- **S07–S08, the tape:**
+  - It now leaves the top of the roll, lies on the counter, goes over the edge and hangs down the counter's front to the floor. The first draped point had been past the counter's edge, so the ribbon cut a diagonal through the counter.
+  - Vertical stretches keep the last heading for their width; a straight-down stretch would otherwise be zero-width.
+  - Draping accepts horizontal faces that point down. The road's and the shop floor's do, and the tape went under them.
+  - The haze volume's floor is the road's (z 0): stepping past it skipped the road too, and the tape landed on the far ground 1 cm under. Draped points are now clamped to z ≥ 0.
+  - The tape is built last, after the interiors, so it drapes onto the shop's interior floor.
+- **S19:** the mods were whole standing figures sunk 45 cm into the sidewalk. There's now a real kneel (`chars.POSES["kneel"]`: on both knees, shins flat behind, soles up, brooms planted). The camera moves low and to the side along the row: from behind they read as short people standing.
+- **S20:** the ball bounced 0.7 m from the CEO with nothing touching it. He now dribbles it (`"dribble"` pose: palm down over the ball). It hits the floor on each beat and comes back to his palm between beats. The camera moves in from 11 m to about 6 m. The ball is a basketball with seams (`props.ball`).
+- **S28:** the brief's forklift was never built; the crates flew 6 m through the air into a truck in the far lane. Now:
+  - the truck parks at the near curb, with its side door to the sidewalk;
+  - a forklift (`props.forklift`) lifts a pallet of four crates (two on two) and drives it into the hold, then backs off;
+  - every crate has a white plate, "COMMENTS 2005–2023", on all four sides;
+  - an A-frame reads "SIDEWALK AUCTION / all data must go" (the last line is the agent's wording), and a second lot waits beside it;
+  - the camera is close to the shopfronts on the west: further out, the lamp post at x −5 stood in front of everything; from the east, the truck hid the pallet.
+- **S29:** the trucks drove through at 9 m/s and the blur took their names. SEARCH and CHAT now pull up and stop, SEARCH at the door. Their names are larger, 0.85 m, on the cargo box.
+- **S31:** "UNDER NEW MANAGEMENT" (x −4.33..−3.28, z 1.73..2.07) covered note 1 and the edge of note 0. Note 1 is now above the text and note 0 is 12 cm aside.
+- **Tests:** `renders/m4/notes_v1`…`notes_v6`.

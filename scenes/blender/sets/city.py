@@ -754,10 +754,10 @@ def storefront(name, c, w, facing, rng, sign, lit=True, shutter=False, awning=No
         gb.plane(f"{name}.glass", (-0.75, 0.2, 1.75), (win_w, 2.5), sf_glass(), parent=root, facing="+Y")
     sc = rng.choice(["#d9cfb4", "#2e3b57", "#3d5a4a", "#e6e1d3"])
     ink = "#1b1b1b" if sc in ("#d9cfb4", "#e6e1d3") else "#efe6cf"
-    gb.plane(f"{name}.signface", (0, 0.405, 3.65), (w - 0.2, 0.75),
+    gb.plane(f"{name}.signface", (0, 0.415, 3.65), (w - 0.2, 0.75),  # 15 mm off the band (5 mm flickered far off)
              gb.glow_mat(f"city.sign.{sc}.{lit}", sc, 0.35 if lit else 0.0, on, "on", base=sc), parent=root, facing="+Y")
     gb.text(f"{name}.sign", sign, 0.38 if len(sign) < 12 else 0.28, mat(f"ink{ink}", ink, grime=0.0),
-            (0, 0.41, 3.65), facing="+Y", parent=root)
+            (0, 0.43, 3.65), facing="+Y", parent=root)
     if awning:
         a = gb.box(f"{name}.awning", (-0.3, 0.75, 3.0), (w - 0.6, 1.4, 0.05), mat(f"awn{awning}", awning, grime=0.5),
                    parent=root)

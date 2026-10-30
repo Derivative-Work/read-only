@@ -206,7 +206,7 @@ def decals(S, rng, tags, posters):
             else:
                 w = rng.uniform(1.2, 1.9)
                 c = (rng.uniform(0.4 + w / 2, 2.55 - w / 2 + 0.3), rng.uniform(-2.2, -1.3))
-            decal(f"shop{i}.tag{k}", rng.choice(tags), (c[0], 0.046 + 0.002 * k, c[1]), (w, w / 2), parent=sh,
+            decal(f"shop{i}.tag{k}", rng.choice(tags), (c[0], 0.048 + 0.006 * k, c[1]), (w, w / 2), parent=sh,
                   tilt=rng.uniform(-0.12, 0.12))
     for root in S["shops"]:
         i = int(root.name[4:])
