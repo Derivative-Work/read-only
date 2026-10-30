@@ -1,0 +1,45 @@
+# Large files: excluded from git, hashed in MANIFEST.sha256, the irreplaceable ones published as a GitHub Release.
+audio/track/
+audio/stems/
+audio/master/
+renders/
+takes/
+reference/stills/
+*.wav
+*.mp3
+*.flac
+*.zip
+*.blend
+*.blend1
+*.mp4
+*.mov
+*.mkv
+*.webm
+transcripts/
+
+# Reference material: never published, never hashed into the manifest.
+reference/inspiration/
+
+# Regenerable: never archived; versions and regen commands are logged instead.
+frames/
+**/frames/
+cache/
+**/__pycache__/
+.venv/
+venv/
+node_modules/
+models/
+*.pt
+*.safetensors
+
+# Other publishers' pages saved as fact-check evidence (the human retrieved them, R4): kept locally, never published;
+# reference/sources/*.tsv (in git) lists each one's URL and hash.
+reference/sources/*/
+
+# The upload-ready videos (large; listed in MANIFEST.sha256). The SRTs and thumbnail are small and kept in git.
+deliverables/*.mp4
+
+# The human's real inputs (the plate photo, an optional badge scan): kept locally until the human says what may be
+# published; each one's hash goes in its human_interventions entry.
+assets/real/*
+!assets/real/README.md

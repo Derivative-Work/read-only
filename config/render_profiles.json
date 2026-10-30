@@ -1,0 +1,7 @@
+{
+  "_doc": "Render tiers, from Not Yet's. The brief's deliverable is 1080p at 24 fps (\"Deliverables\"), so final is 1920x1080, not Not Yet's 4K; samples and motion-blur steps are Not Yet's starting values, retuned at C1. Everything runs on the RTX 5090 box (the brief's pipeline is local to it).",
+  "fps": 24,
+  "animatic": {"size": [640, 360], "samples": 8},
+  "draft720": {"size": [1280, 720], "samples": 32, "motion_blur_steps": 2},
+  "final": {"size": [1920, 1080], "samples": 64, "motion_blur_steps": 4}
+}
