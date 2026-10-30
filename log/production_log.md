@@ -121,4 +121,5 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
     - Timing issues for M3 are in `timing/m2_review.md` section 4: S03 runs 12.9 s; S48 gets 1.06 s, against S47's 13.2 s; S48a holds over a 9.8 s piano tail, not silence.
   - **Master offset:** 0 samples against the mix (normalised correlation 1.000), as expected.
 - **Why:** Brief M2: "Timing map from the locked track; add timestamps to every shot". The brief names librosa and WhisperX; this uses beat_this and MMS_FA instead, as the sibling projects did. Adding the timestamps to the brief's shot tables waits for the human's ear check, so the doc changes once, not twice.
+- **Fix after the commit:** the ported script still wrote `renders/m2/c3_clicks.*`; renamed in the script and re-run. The misnamed copies (same content) are archived as `archive/renders/m2/m2_clicks_superseded_misnamed-c3.*`.
 - **Status:** **M2 is ready for review.** The agent stops here.

@@ -1,5 +1,5 @@
 """M2 ear check, by sound only: the Suno mix with a click on every beat (an accent on each downbeat) and a tone at
-each sync point the edit hangs on. From Share the Shares' c3_clicks.py (the human found its lane preview hard to
+each sync point the edit hangs on. From Share the Shares' m2_clicks.py (the human found its lane preview hard to
 read; a click track was approved there).
 Clicks: 3 ms decaying sine bursts, 1.2 kHz on beats, 2 kHz and louder on downbeats. Markers: a 0.25 s 660 Hz
 tone pair (660 then 880 Hz), so they can't be mistaken for clicks. The mix is lowered 6 dB under them.
@@ -55,9 +55,9 @@ def main():
         click[k:k + len(tp)] += tp[:max(0, len(click) - k)]
     out = np.clip(mix + click[:, None], -1, 1)
     OUT.mkdir(parents=True, exist_ok=True)
-    sf.write(OUT / "c3_clicks.wav", out, sr, subtype="PCM_16")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(OUT / "c3_clicks.wav"), "-b:a", "256k",
-                    str(OUT / "c3_clicks.mp3")], check=True)
+    sf.write(OUT / "m2_clicks.wav", out, sr, subtype="PCM_16")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(OUT / "m2_clicks.wav"), "-b:a", "256k",
+                    str(OUT / "m2_clicks.mp3")], check=True)
     L = ["# M2 ear check", "", "`m2_clicks.mp3`: the song 6 dB down, a click on every beat (higher and louder on "
          "beat 1 of each bar), and a two-note tone (low, high) at each of these:", "",
          "| Tone at | What should happen there |", "| --- | --- |"]
@@ -67,7 +67,7 @@ def main():
           "each tone at its moment. Two bars are 2 beats long (both at a \"(beat)\" pause in the lyrics), so the loud click "
           "comes early there: "
           + ", ".join(f"{int(b['start'] // 60)}:{b['start'] % 60:05.2f}" for b in odd) + "."]
-    (OUT / "c3_clicks.md").write_text("\n".join(L) + "\n")
+    (OUT / "m2_clicks.md").write_text("\n".join(L) + "\n")
     print("\n".join(L))
 
 
