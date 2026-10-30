@@ -217,21 +217,21 @@ def decals(S, rng, tags, posters):
             decal(f"shop{i}.walltag", rng.choice(tags), (px, 0.013, rng.uniform(0.35, 0.6)), (0.7, 0.35),
                   parent=root, tilt=rng.uniform(-0.15, 0.15))
         for k in range(rng.randint(1, 4)):  # layered posters, each pasted over the last
-            decal(f"shop{i}.poster{k}", rng.choice(posters), (px + rng.uniform(-0.1, 0.1), 0.015 + 0.002 * k,
+            decal(f"shop{i}.poster{k}", rng.choice(posters), (px + rng.uniform(-0.1, 0.1), 0.018 + 0.005 * k,
                   rng.uniform(1.2, 2.3)), (0.5, 0.667), parent=root, tilt=rng.uniform(-0.08, 0.08))
     lease = bpy.data.objects.get("shop9")
     if lease:
         for k in range(3):
-            decal(f"lease.poster{k}", rng.choice(posters), (-2.3 + k * 1.3 + rng.uniform(-0.2, 0.2), 0.085 + 0.002 * k,
+            decal(f"lease.poster{k}", rng.choice(posters), (-2.3 + k * 1.3 + rng.uniform(-0.2, 0.2), 0.085 + 0.005 * k,
                   rng.uniform(1.4, 2.2)), (0.5, 0.667), parent=lease, tilt=rng.uniform(-0.1, 0.1))
-        decal("lease.tag", rng.choice(tags), (-0.8, 0.095, 1.0), (2.4, 1.2), parent=lease)
+        decal("lease.tag", rng.choice(tags), (-0.8, 0.105, 1.0), (2.4, 1.2), parent=lease)
     # the far corner: a big throw-up and a poster wall
     decal("corner.far.tag", tags[2], (-45.98, -12.0, 1.6), (4.0, 2.0), facing="+X")
     for k in range(6):
-        decal(f"corner.far.poster{k}", posters[k % len(posters)], (-45.97 + 0.002 * k, -17.0 + k * 0.45 + rng.uniform(-0.1, 0.1),
+        decal(f"corner.far.poster{k}", posters[k % len(posters)], (-45.97 + 0.005 * k, -17.0 + k * 0.45 + rng.uniform(-0.1, 0.1),
               1.6 + rng.uniform(-0.3, 0.3)), (0.5, 0.667), facing="+X", tilt=rng.uniform(-0.08, 0.08))
     for k in range(2):  # flyers taped low on the payphone post, below S03's close-up of the handset
-        decal(f"payphone.flyer{k}", rng.choice(posters), (-31.5, -8.52 + 0.002 * k, 0.3 + k * 0.22), (0.14, 0.19),
+        decal(f"payphone.flyer{k}", rng.choice(posters), (-31.5, -8.52 + 0.005 * k, 0.3 + k * 0.22), (0.14, 0.19),
               facing="+Y", tilt=rng.uniform(-0.2, 0.2))
 
 

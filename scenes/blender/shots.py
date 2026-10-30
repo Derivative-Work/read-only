@@ -10,6 +10,7 @@ the assembler burns them in as labelled placeholders.
 Grey-box blocking for the M3 gate ("approve framing and timing"); look comes at M4.
 """
 import math
+import random
 
 import bpy
 import numpy as np
@@ -235,7 +236,8 @@ def stage(S):
     for sid, body in (("S05", "NEW! OUR OWN APP"), ("S10", "BLACKMAIL"), ("S20", "TRAFFIC  \\_/")):
         only(gb.text(f"screen.{sid}", body, 0.8, B.M("screen", emit=4.0), (B.LOBBY_DOOR_X, 23.72, 3.6), facing="-Y"), sid)
     for sid, body in (("S31", "People found this helpful."), ("S44", "Reply below.  |")):
-        only(gb.text(f"billboard.{sid}", body, 1.6, B.M("ink"), (9, 12.1, 76), facing="-Y"), sid)
+        only(gb.text(f"billboard.{sid}", body, 3.0 if sid == "S31" else 1.6, B.M("ink"), (9, B.TOWER_Y[0] + 0.2, 76),
+                     facing="-Y"), sid)
     for j in range(6):  # the lobby's display of worse copies, by the glass (S05)
         gb.box(f"lobby.front_copy{j}", (-3.5 + j * 0.7, 13.0, 1.0), (0.4, 0.25, 0.3), B.M("graffiti2"))
     gb.box("lobby.front_table", (-1.75, 13.0, 0.45), (4.4, 0.8, 0.7), B.M("trim"))
@@ -267,12 +269,17 @@ def stage(S):
     a, b = SP["S06"]
     gb.key_vec(env, "location", [(F(a), (-19.1, -9.9, 1.0)), (F(a + 0.3), (-19.1, -10.3, 1.0)),
                                  (F(a + 0.9), (-19.1, -10.6, 0.18))])
+    # the pages go two at a time, 0.3 s apart, so each date holds 7 frames (JUNE 1, 7, 13, 19, 25), then the
+    # board's ringed 30 holds to the cut; one camera sees the slot and the calendar, pushing in on the calendar
     for k in range(10):
-        pg = only(gb.plane(f"calpage{k}", (-18.08, -13.0, 2.2), (0.6, 0.8), B.M("paper"), facing="-X"), "S06")
-        tk = a + 0.6 + k * (b - a - 0.8) / 10
-        gb.key_vec(pg, "location", [(F(tk), (-18.08, -13.0, 2.2)), (F(tk + 0.5), (-18.3, -12.6, 0.2))])
-    cam("S06", [(0, (-19.6, -13.6, 1.5), (-19.1, -10.1, 0.9)), (0.4, (-19.6, -13.6, 1.5), (-19.1, -10.1, 0.9)),
-                (1, (-20.6, -12.4, 1.8), (-18.1, -13.0, 2.0))], lens=26)
+        pg = only(gb.plane(f"calpage{k}", (-18.14, -13.0, 2.2), (0.6, 0.8), B.M("paper"), facing="-X"), "S06")
+        tk = a + 0.55 + (k // 2) * 0.3 + (k % 2) * 0.04
+        r = 0.35 + 0.25 * (k % 2)  # off to the door side, clear of the next date, and quickly to the floor
+        gb.key_vec(pg, "location", [(F(tk), (-18.14, -13.0, 2.2)), (F(tk + 0.1), (-18.22, -13.0 + r * 0.6, 1.95)),
+                                    (F(tk + 0.4), (-18.4, -13.0 + r * 1.6, 0.2))])
+        gb.key_vec(pg, "rotation_euler", [(F(tk), (0, 0, 0)), (F(tk + 0.4), (-0.9 - r, 0.15, 0.25))])
+    cam("S06", [(0, (-21.3, -14.6, 1.55), (-18.6, -11.6, 1.45)), (0.3, (-21.3, -14.6, 1.55), (-18.6, -11.7, 1.5)),
+                (1, (-20.2, -13.75, 1.95), (-18.1, -13.0, 2.15))], lens=26)
     # S07-S08: the adding machine; the tape spews and runs out the door, down the sidewalk and over the tracks
     d7 = only(B.dev((-20.4, -13.9, 0.16), rot_z=math.pi), "S07")
     sing(d7, "S07")
@@ -293,24 +300,52 @@ def stage(S):
     fig = only(B.ceo((9, 14.0, 0.17), rot_z=math.pi, name="ceo10"), "S10")
     cam("S10", [(0, (9, 4.0, 2.0), (9, 20, 2.5)), (1, (9, 6.0, 2.0), (9, 20, 2.5))], lens=35)
     # S11-S13: the payphone tape
-    d11 = only(B.dev((-31.5, -7.85, 0.16)), "S11")
-    sing(d11, "S11")
+    # S11: he reaches into the handset (1.3 s), pulls the tape and holds it up to us, label out, for the rest of the
+    # line (2 s); S12 opens on it held up close, then pulls back as it goes into the boombox and the windows open
     a, b = SP["S11"]
+    tm = a + 1.3
+    d11 = B.dev((-31.5, -7.85, 0.16), name="dev11", pose="reach")
+    gb.show_between(d11, a, tm)
+    for ch in d11.children_recursive:
+        gb.show_between(ch, a, tm)
+    d11h = B.dev((-31.5, -7.85, 0.16), rot_z=math.pi, name="dev11h", pose="hold")  # turned round to show us
+    gb.show_between(d11h, tm, b)
+    for ch in d11h.children_recursive:
+        gb.show_between(ch, tm, b)
+    sing(d11, "S11")
+    sing(d11h, "S11")
+    def held(fig, loc):  # the tape gripped in the raised mitten, its lower edge in the fist, toward the lens (+Y)
+        h = bpy.data.objects.get(f"{fig.name}.hand1")
+        if h is None:  # grey-box figures have no hands
+            return (loc[0] - 0.226, loc[1] + 0.254, loc[2] + 1.745)
+        bpy.context.view_layer.update()
+        p = h.matrix_world.translation
+        return (p.x, p.y + 0.07, p.z + 0.015)
+    held11 = held(d11h, (-31.5, -7.85, 0.16))
+    d12 = only(B.dev((-22.4, -7.4, 0.16), rot_z=math.pi, name="dev12", pose="hold"), "S12")
+    held12 = held(d12, (-22.4, -7.4, 0.16))
     cas = S["cassette"]
-    gb.key_vec(cas, "location", [(F(a + 0.6), (-31.5, -8.38, 0.88)), (F(b - 0.3), (-31.3, -7.6, 1.5)),
-                                 (F(SP["S12"][0] + 0.5), (-22.4, -7.0, 2.0)), (F(SP["S12"][1]), (-22.4, -7.0, 2.0)),
-                                 (F(SP["S13"][0]), (-21.8, -6.6, 0.5))])
-    cam("S11", [(0, (-28.6, -8.3, 1.4), (-31.5, -8.3, 1.1))], lens=35)
-    d12 = only(B.dev((-22.4, -7.4, 0.16), rot_z=math.pi), "S12")
+    a12, b12 = SP["S12"]
+    path = [(F(a), (-31.5, -8.38, 0.88)), (F(a + 0.45), (-31.5, -8.38, 0.88)), (F(tm) - 1, (-31.47, -8.3, 0.98)),
+            (F(tm), held11), (F(b) - 1, held11), (F(a12), held12), (F(a12 + 1.5), held12),
+            (F(a12 + 1.9), (-21.8, -6.6, 0.5)), (F(SP["S13"][0]), (-21.8, -6.6, 0.5))]
+    for i in range(3):  # a cut between S11 and S12 (and a hand-off at tm): constant across those
+        gb.keys(cas, "location", [(f, v[i], "CONSTANT" if f in (F(tm) - 1, F(b) - 1) else "BEZIER") for f, v in path],
+                index=i, interp="BEZIER")
+    c11 = cam("S11", [(0, (-30.6, -7.1, 1.35), (-31.45, -8.35, 0.95)), (0.33, (-30.6, -7.1, 1.35), (-31.45, -8.35, 0.98)),
+                      (0.5, (-31.0, -6.3, 1.8), held11), (1, (-31.1, -6.15, 1.82), held11)], lens=40)
+    gb.keys(c11.data, "lens", [(F(a), 40.0), (F(tm), 40.0), (F(tm + 0.5), 50.0)], interp="BEZIER")
     sing(d12, "S12")
     a, b = SP["S12"]
     k = 0
-    for i in range(len(S["windows"])):  # windows open up and down the block
-        for (ctl, _), t in zip(S["windows"][i], [a + 0.25 + 0.04 * (i * 6 + j) for j in range(6)]):
+    for i in range(len(S["windows"])):  # windows open up and down the block, once the tape's in the boombox
+        for (ctl, _), t in zip(S["windows"][i], [a + 1.8 + 0.018 * (i * 6 + j) for j in range(6)]):
             if ctl["lit"] < 0.5:
                 gb.keys(ctl, '["lit"]', [(0, 0.0, "CONSTANT"), (F(t), 1.0, "CONSTANT"), (F(SP["S15"][0]), 0.0, "CONSTANT"),
                                          (F(SP["S18"][0]), 1.0, "CONSTANT")], interp="CONSTANT")
-    cam("S12", [(0, (-23.5, -1.0, 1.4), (-22.4, -8.0, 2.4)), (1, (-24.5, 1.0, 1.4), (-21, -9, 4.5))], lens=24)
+    c12 = cam("S12", [(0, (-22.55, -5.85, 1.9), held12), (0.42, (-22.6, -5.6, 1.88), held12),
+                      (0.62, (-23.2, -3.0, 1.5), (-21.9, -7.0, 0.8)), (1, (-24.5, 1.0, 1.4), (-21, -9, 4.5))], lens=50)
+    gb.keys(c12.data, "lens", [(F(a), 50.0), (F(a + 1.3), 50.0), (F(a + 2.0), 24.0)], interp="BEZIER")
     mg = only(gb.cyl("magnifier", (-24, -6.7, 0.35), 0.12, 0.02, B.M("glass"), axis="Y"), "S13")
     a, b = SP["S13"]
     gb.key_vec(mg, "location", [(F(a), (-26.0, -7.0, 0.35)), (F(b), (-19.0, -7.0, 0.35))])
@@ -458,15 +493,38 @@ def stage(S):
     gb.text("banner.t", "IPO", 1.5, B.M("ink"), (B.LOBBY_DOOR_X, 10.5 - 2.6, 5.6), facing="-Y")
     only(bpy.data.objects["banner.t"], "S30", t1=TM["duration_s"])
     cam("S30", [(0, (10, -3.5, 1.8), (12, 9, 10.2)), (1, (9, -5.0, 1.6), (9, 9, 13.0))], lens=24)
+    # S31: the notes are on PAWN's shutter (down since S14) at eye height, close enough to read; they hold 1.2 s,
+    # peel one at a time 0.22 s apart and arc into the funnel on the truck in the near lane, the camera following;
+    # then up to the billboard, zooming in so its line reads
     a, b = SP["S31"]
+    rn = random.Random(31)
+    mouth = (2.0, -4.6, 4.35)  # over the truck's roof hatch (1 m behind its centre); the truck in the near lane
     for k in range(10):
-        n = only(gb.plane(f"sticky{k}", (sh_x[k] - 1.5, B.FRONT + 0.03, 2.4), (0.25, 0.25), B.M("sign"), facing="+Y"), "S31")
-        tk = a + 0.3 + k * (b - a - 0.6) / 10
-        gb.key_vec(n, "location", [(F(tk), (sh_x[k] - 1.5, B.FRONT + 0.03, 2.4)), (F(tk + 0.6), (sh_x[k] - 1.5, 2.0, 3.0))])
-    only(gb.box("funnel", (-1, 1.0, 3.5), (1.4, 1.4, 1.2), B.M("rail", metal=0.7)), "S31")
-    only(gb.box("truck31", (-1, 2.0, 1.5), (7, 2.5, 3.0), B.M("truck")), "S31")
-    cam("S31", [(0, (-2, -3, 1.8), (-4, -10, 2.4)), (0.55, (-2, -3, 1.8), (-1, -9, 2.6)), (1, (-2, -3, 1.8), (9, 12, 76))],
-        lens=24)
+        p0 = (-4.35 + (k % 5) * 0.68 + rn.uniform(-0.08, 0.08), B.FRONT + 0.175, (2.05 if k < 5 else 1.55) + rn.uniform(-0.07, 0.07))
+        n = only(gb.plane(f"sticky{k}", p0, (0.3, 0.3), B.M("sign"), facing="+Y"), "S31")
+        tk = a + 1.0 + (k * 7 % 10) * 0.16  # not in reading order
+        mid = ((p0[0] + mouth[0]) / 2, (p0[1] + mouth[1]) / 2, max(p0[2], mouth[2]) + 0.5)
+        gb.key_vec(n, "location", [(F(tk), p0), (F(tk + 0.15), (p0[0], p0[1] + 0.12, p0[2] + 0.05)),
+                                   (F(tk + 0.9), mid), (F(tk + 1.6), mouth), (F(tk + 1.8), (mouth[0], mouth[1], 3.6))],
+                   interp="BEZIER")
+        gb.key_vec(n, "rotation_euler", [(F(tk), (0, 0, 0)), (F(tk + 0.15), (-0.7, 0, 0)),
+                                         (F(tk + 1.6), (-1.4, rn.uniform(-1, 1), rn.uniform(-2, 2)))])
+        for i in range(3):
+            gb.keys(n, "scale", [(F(tk + 1.6), 1.0), (F(tk + 1.8), 0.0)], index=i)
+    only(gb.box("funnel", (mouth[0], mouth[1], 3.6), (1.4, 1.4, 1.2), B.M("rail", metal=0.7)), "S31")
+    only(gb.box("truck31", (mouth[0] + 1.0, mouth[1], 1.5), (7, 2.5, 3.0), B.M("truck")), "S31")
+    sl = bpy.data.lights.new("S31.notes.light", "SPOT")  # the streetlight's spill on PAWN's shutter, so the notes read
+    sl.energy, sl.spot_size, sl.spot_blend, sl.color = 160.0, math.radians(55), 0.6, (1.0, 0.85, 0.65)
+    lo = gb.link(bpy.data.objects.new("S31.notes.light", sl))
+    lo.location = (-2.4, -6.4, 4.2)
+    lo.rotation_euler = (math.radians(50), 0, math.radians(180 + 8))
+    only(lo, "S31")
+    bb = (9, B.TOWER_Y[0] + 0.2, 76)
+    c31 = cam("S31", [(0, (-2.7, -6.3, 1.75), (-3.0, -9.84, 1.8)), (0.36, (-2.75, -6.6, 1.75), (-3.0, -9.84, 1.8)),
+                      (0.47, (-1.0, -8.6, 4.6), (mouth[0], mouth[1], 3.9)),  # craning up to look into the funnel
+                      (0.66, (-0.9, -8.7, 4.7), (mouth[0], mouth[1], 3.95)), (0.82, (0, -9.0, 4.0), bb),
+                      (1, (0, -9.0, 4.0), bb)], lens=32)
+    gb.keys(c31.data, "lens", [(F(a), 32.0), (F(a + 0.8 * (b - a)), 32.0), (F(a + 0.9 * (b - a)), 110.0)], interp="BEZIER")
     for k in range(5):
         only(gb.cyl(f"broomstack{k}", (-8 + k * 0.1, -6.3, 0.85), 0.02, 1.4, B.M("plywood")), "S32")
     only(gb.box("payroll", (-7.4, -6.6, 0.17), (0.24, 0.12, 0.01), B.M("crate")), "S32")

@@ -108,7 +108,7 @@ def street(S):
     gb.box("corner.far.n", (-52, 18, 7), (12, 16, 14), M("brick"))
     # sidewalk squares on the south sidewalk (S33 chalks one)
     for i, x in enumerate(np.arange(-32.5, 44, 1.5)):
-        gb.box(f"sq.{i}", (x, -8, 0.151), (0.02, 4, 0.002), M("curb"))
+        gb.box(f"sq.{i}", (x, -8, 0.152), (0.02, 4, 0.002), M("curb"))
     S["chalk_sq"] = (-10.25, -8.75)
 
 
@@ -138,8 +138,8 @@ def shopfront(S, i, xw, sign, kind, north=False):
     gb_.box(f"shop{i}.pierR", (x + w / 2 - 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
     gb_.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w, 0.4, 1.0), M("trim"))
     gb_.box(f"shop{i}.back", (x, FRONT - 6.2, 2.1), (w, 0.2, 4.2), M("stucco"))
-    gb_.box(f"shop{i}.sideL", (x - w / 2 + 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
-    gb_.box(f"shop{i}.sideR", (x + w / 2 - 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
+    gb_.box(f"shop{i}.sideL", (x - w / 2 + 0.055, FRONT - 3.105, 2.1), (0.1, 6.19, 4.2), M("stucco"))  # 5 mm inside the pier: no shared faces
+    gb_.box(f"shop{i}.sideR", (x + w / 2 - 0.055, FRONT - 3.105, 2.1), (0.1, 6.19, 4.2), M("stucco"))
     gb_.box(f"shop{i}.floor", (x, FRONT - 3.1, 0.155), (w, 6.2, 0.01), M("tile" if kind == "eatery" else "curb"))
     gb_.box(f"shop{i}.sill", (x - 0.8, FRONT - 0.1, 0.3), (3.8, 0.3, 0.6), M("trim"))
     glass = gb_.plane(f"shop{i}.glass", (x - 0.8, FRONT + 0.01, 1.85), (3.8, 2.3),
@@ -269,7 +269,7 @@ def dev_interior(S):
     gb.box("dev.adder", (x0 + 0.6, FRONT - 3.4, 1.07), (0.35, 0.3, 0.14), M("ceohood"))
     tape = gb.box("dev.tape", (x0 + 0.6, FRONT - 3.2, 1.0), (0.08, 0.01, 0.01), M("tape"))
     S["tape0"] = tape
-    cal = gb.empty("dev.calendar", (x0 + 2.9, FRONT - 3.0, 2.2))
+    cal = gb.empty("dev.calendar", (x0 + 2.86, FRONT - 3.0, 2.2))  # 3 cm off the plaster (-18.11): not in it
     gb.plane("dev.cal.board", (0, 0, 0), (0.6, 0.8), M("paper"), parent=cal, facing="-X")
     S["calendar"] = cal
     gb.text("dev.est", "est. 2008", 0.2, M("ink"), (x0 - 0.8, FRONT + 0.03, 3.38), facing="+Y")
@@ -330,7 +330,7 @@ def tower(S):
                gb.glow_mat("tower.glass", C["towerglass"], 2.5, ctl, "lit"))
     # the lobby: hollow ground floor with a glass front
     gb.box("lobby.back", (cx, y1 - 6, 3), (x1 - x0, 0.3, 6), M("lobby"))
-    gb.box("lobby.ceiling", (cx, (y0 + y1 - 6) / 2, 6.0), (x1 - x0, y1 - 6 - y0, 0.2), M("lobby"))
+    gb.box("lobby.ceiling", (cx, (y0 + y1 - 6) / 2 + 0.005, 6.0), (x1 - x0 - 0.02, y1 - 6 - y0 - 0.01, 0.2), M("lobby"))
     gb.box("lobby.floor", (cx, (y0 + y1 - 6) / 2, 0.16), (x1 - x0, y1 - 6 - y0, 0.02), M("lobby", rough=0.2))
     gb.box("lobby.sideW", (x0, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
     gb.box("lobby.sideE", (x1, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
@@ -398,11 +398,12 @@ def tower(S):
         gb.box(f"ticker.{nm}", (c[0], c[1], 13.6), (s[0], s[1], 1.2), gb.glow_mat("ticker", C["ticker"], 10.0, tk, "on"))
     S["ticker"] = tk
     # the rooftop billboard (S31, S44)
-    gb.box("billboard.frame", (cx, y0 + 2, 76), (24, 0.6, 10), M("trim"))
+    # at the roof's front edge: 2 m back, the roof hid it from the street (S31)
+    gb.box("billboard.frame", (cx, y0 + 0.6, 76), (24, 0.6, 10), M("trim"))
     for k in (-8, 0, 8):
-        gb.box(f"billboard.leg{k}", (cx + k, y0 + 2, 70.5), (0.3, 0.3, 1.5), M("trim"))
-    gb.plane("billboard.face", (cx, y0 + 1.68, 76), (23, 9), M("billboard", emit=1.5), facing="-Y")
-    S["billboard_text"] = gb.text("billboard.t", "", 1.6, M("ink"), (cx, y0 + 1.6, 76), facing="-Y")
+        gb.box(f"billboard.leg{k}", (cx + k, y0 + 0.6, 70.5), (0.3, 0.3, 1.5), M("trim"))
+    gb.plane("billboard.face", (cx, y0 + 0.28, 76), (23, 9), M("billboard", emit=1.5), facing="-Y")
+    S["billboard_text"] = gb.text("billboard.t", "", 1.6, M("ink"), (cx, y0 + 0.2, 76), facing="-Y")
 
 
 TONES = [  # the brief's "Memorial headstones" (shot, inscription)
@@ -432,7 +433,7 @@ def headstone(name, loc, label, size=1.0, m=None):
         k = mk.MK()
         k.prism([(-r, -0.55 * size), (r, -0.55 * size)] + arc, 0.16 * size, m or M("stone"))
         slab.data = k.mesh(f"{name}.stone")
-        top.hide_render = top.hide_viewport = True
+        top.data = mk.empty_mesh(f"{name}.top.none")  # not hide_render: the visibility keys would show it again
     if label:
         # big enough to read on a phone (brief, "Memorial headstones"): ~0.15 m capitals on a 0.9 m stone
         ts = 0.12 * size if label.count("\n") > 1 else 0.155 * size
@@ -467,7 +468,9 @@ def headstone(name, loc, label, size=1.0, m=None):
 
 def park(S):
     x0, x1, y0, y1 = -32, -10, 10.5, 27
-    gb.box("park.ground", ((x0 + x1) / 2, (y0 + y1) / 2, 0.02), (x1 - x0, y1 - y0, 0.04), M("grass"))
+    # the final look lays parkdress.py's lawn (0.0405 up) over this: its top drops 12 mm under the lawn so they don't z-fight
+    gb.box("park.ground", ((x0 + x1) / 2, (y0 + y1) / 2, 0.014 if FINAL else 0.02), (x1 - x0, y1 - y0, 0.028 if FINAL else 0.04),
+           M("grass"))
     for x in np.arange(x0, x1 + 0.01, 2.0):  # front fence with a gate gap
         if -22.5 < x < -19.5:
             continue
@@ -604,10 +607,10 @@ def person(name, loc, body, extra=None, h=1.75, rot_z=0.0, head=None):
     return root
 
 
-def dev(loc, rot_z=0.0, name="dev"):
+def dev(loc, rot_z=0.0, name="dev", pose="stand"):
     if FINAL:
         import chars
-        return chars.dev(loc, rot_z=rot_z, name=name)
+        return chars.dev(loc, rot_z=rot_z, name=name, pose=pose)
     def ex(root, n):
         gb.box(f"{n}.apron", (0, -0.21, 0.75), (0.34, 0.03, 0.6), M("apron"), parent=root)
         gb.box(f"{n}.belt", (0, 0, 0.92), (0.48, 0.48, 0.08), M("ink"), parent=root)

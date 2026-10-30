@@ -104,3 +104,9 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "much better, go ahead"
 - **Rule:** R1 (approval of the detail look test and the rebuilt figures).
+
+## 2026-10-30T15:05:44-04 — M4 Act 1 clips: flicker, and gags too fast — R1
+
+- **Note from the human:** "Check for flicker - it's present in a bunch of places. There's also places where jokes aren't landing because they're too fast, like the calendar countdown and the post its"
+- **Then:** "The cassette joke is also too fast, and also doesn't look like a cassette"
+- **Rule:** R1 (a creative note on the M4 section clips, given in words; not yet a section-by-section verdict). The agent fixed the flicker and re-staged S06, S11–S12 and S31 (production log, same time).

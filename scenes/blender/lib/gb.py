@@ -353,7 +353,9 @@ def look_rot(loc, target):
 def camera(name, lens=35.0):
     cd = bpy.data.cameras.new(name)
     cd.lens = lens
-    cd.clip_start, cd.clip_end = 0.02, 800
+    # near clip 0.1, not 0.02: depth precision goes as near/far, and at 0.02 the decals, posters and the park's
+    # ground layers (a few mm apart) z-fought at 20 m, flickering as the camera moved
+    cd.clip_start, cd.clip_end = 0.1, 800
     return link(bpy.data.objects.new(name, cd))
 
 

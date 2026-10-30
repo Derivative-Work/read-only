@@ -79,7 +79,14 @@ POSES = {  # joint positions (x, y, z), metres at h = 1, figure facing -Y; arms:
     "phone": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {
         -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
         1: ((0.2, 0.0, 1.19), (0.33, 0.02, 1.13), (0.22, -0.05, 1.38))}},
+    "reach": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S11: into the handset in front of him
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.2, -0.25, 1.08), (0.06, -0.44, 0.86))}},
+    "hold": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S11-S12: the tape held up like evidence
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.3, -0.1, 1.38), (0.24, -0.2, 1.6))}},
 }
+HOLD = (0.226, -0.254, 1.745)  # "hold": where the held thing's centre is, figure space (h = 1)
 
 
 def skin_body(name, verts, edges, radii, m, root, h):
@@ -179,8 +186,8 @@ def person(name, loc, body, extra=None, h=1.75, rot_z=0.0, head=None):
                 hair_col=f"hair{k % 5}" if HAIRS[k % 5] != "beanie" else f"knit{k % 3}")
 
 
-def dev(loc, rot_z=0.0, name="dev"):
-    root = base(name, loc, rot_z, "hoodie", skin="skin1", style="curly", hair_col="hair0")
+def dev(loc, rot_z=0.0, name="dev", pose="stand"):
+    root = base(name, loc, rot_z, "hoodie", skin="skin1", style="curly", hair_col="hair0", pose=pose)
     for s in (-1, 1):  # the hoodie's drawstrings
         gb.cyl(f"{name}.string{s}", (s * 0.045, -0.17, 1.17), 0.008, 0.16, M("drawstring"), parent=root)
     rbox(f"{name}.hood", (0, 0.12, 1.28), (0.34, 0.16, 0.16), M("hoodie"), root, 0.06)  # hood down, on the shoulders

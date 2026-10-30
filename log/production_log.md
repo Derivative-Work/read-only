@@ -602,3 +602,37 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Clips:** `renders/m4/sections/1_intro … 7_goodbot.mp4` (the shots/m4_review.md table) and `renders/m4/m4_act1.mp4` (153.5 s), each `--overlay renders/overlays/act1` (1080p overlays scaled to 720p).
 - **Also committed:** `shots/m4_review.md` (720p, the detail pass, Rhubarb) and `archive/timing/visemes_mms_superseded.json` (the MMS visemes, superseded by Rhubarb).
 - **QC:** stills at 10, 35, 55, 75, 95, 112, 128 and 145 s. The overlays and the karaoke captions are present. S22's CEO still reads small on the balcony (a known weak spot).
+
+## 2026-10-30T15:05:44-04:00 — M4: flicker fixed (z-fighting); S06, S11–S12 and S31 re-staged
+
+- **Why:** the human's notes on the Act 1 clips (human_interventions, same time, R1).
+- **Diagnosis:**
+  - Freezing the camera at each flicker hotspot (one-frame brightness jumps on a 16×9 grid) made the frames identical. So the flicker came from camera movement, not the scene: coplanar surfaces swapped depth order as the camera moved (brick and stucco at 0:11, for one).
+  - A ray-cast survey (every 12th frame, a 64×36 grid, a second surface within 2 mm of the first) found 207 surface pairs and 2,366 hits. The largest groups: the park's ground under the lawn, layered posters 2 mm apart, the shop piers against the side walls, the headstones' old cylinder tops (their hide_render was undone by the inherited visibility keys), the lobby ceiling against the tower, and the chalk squares.
+  - The underlying cause: the cameras' near clip of 0.02 m (far 800 m) gave about 1 mm of depth precision at 20 m.
+- **Fixes:**
+  - The near clip is now 0.1 m (`lib/gb.py`).
+  - The park's base ground sits 12 mm under the lawn.
+  - Posters and flyers are 5 mm apart.
+  - The shop side walls are 5 mm inside the piers.
+  - The chalk squares are raised.
+  - The lobby ceiling is inset.
+  - The headstones' tops are given an empty mesh.
+  - A second survey: 166 pairs and 672 hits, almost all of them intended intersections (grass roots in the lawn, eyes in heads, aprons on bodies).
+- **S06** (the calendar was inside the wall: the plaster at x −18.11 was in front of the whole stack, and the pages showed only through depth fighting):
+  - The calendar is now 3 cm off the plaster.
+  - One camera sees both the mail slot and the calendar, then pushes in.
+  - The pages go two at a time, 0.3 s apart (JUNE 1, 7, 13, 19, 25), and fall to the door side.
+  - The ringed 30 holds about 0.9 s.
+- **S11–S12** (the cassette):
+  - It's rebuilt as a compact cassette at 1.5× scale: a shell, five screws, a smoked window with two tape packs and toothed hubs, the trapezoid with the head openings, and a label with its window cut out ("A · PHONE CALL / do not tape over!", C-60). `scripts/gen_detail_props.py` regenerated `assets/gen/detail/props/*` (git-ignored and regenerable). The old cassette.png was overwritten, not archived; it regenerates from the previous commit's script.
+  - The Dev has new "reach" and "hold" poses (`sets/chars.py`).
+  - S11: he reaches into the handset for 1.3 s, then turns and holds the tape up; the camera pushes from 40 to 50 mm.
+  - S12: it opens close on the tape in his raised hand (50 mm), then pulls back to 24 mm as it goes into the boombox and the windows open (from 1.8 s).
+  - It no longer flies 9 m across the cut.
+- **S31** (the notes were behind the shutter: at FRONT+0.03, with the shutter at +0.12):
+  - Ten notes, 0.3 m, on PAWN's shutter at eye height, lit by a spot (the streetlight's spill).
+  - They hold 1.0 s, then peel 0.16 s apart and arc 1.8 s into the funnel. The funnel is over the roof hatch of a truck in the near lane, about 5 m away.
+  - The camera holds on the wall to 2.4 s, cranes up to look into the funnel, then tilts to the billboard and zooms from 32 to 110 mm.
+  - The billboard has moved to the roof's front edge (from 2 m back, where the roof hid it from the street), and S31's line is 3.0 m text.
+- **Tests:** `renders/m4/gags_v1`…`gags_v6`, stills every 3–6 frames. The S03 close-up now shows the bigger cassette under the REC light.

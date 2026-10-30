@@ -131,15 +131,23 @@ def payroll(rng):
 
 
 def cassette(rng):
-    im = paper(1000, 640, (240, 236, 222), rng, 6)
+    """The label over the cassette's face (90 x 42 mm of it): writing lines, an orange band, side A, and a
+    transparent cut-out where the modelled window and reels show through (props.cassette lines them up)."""
+    W, H = 1000, 467
+    im = paper(W, H, (240, 236, 222), rng, 6).convert("RGBA")
     d = ImageDraw.Draw(im)
-    d.rectangle((0, 0, 1000, 110), fill=(224, 120, 40))
-    d.text((40, 55), "A", font=font(SANS, 80), fill=(240, 236, 222), anchor="lm")
-    for k in range(3):
-        d.line((60, 200 + k * 70, 940, 200 + k * 70), fill=(150, 150, 160), width=3)
-    d.text((80, 130), "phone call", font=font(HAND, 120), fill=(21, 30, 90))
-    d.text((80, 270), "do not tape over", font=font(HAND, 80), fill=(21, 30, 90))
-    d.rounded_rectangle((250, 400, 750, 600), 90, fill=(40, 40, 44))  # the window over the reels
+    d.rectangle((0, 300, W, 400), fill=(224, 120, 40))  # the band across the bottom of the label
+    d.rectangle((0, 400, W, 412), fill=(40, 40, 44))
+    d.text((40, 20), "A", font=font(SANS, 110), fill=(30, 30, 30))
+    for k in range(2):
+        d.line((140, 110 + k * 62, 960, 110 + k * 62), fill=(150, 150, 160), width=3)
+    d.text((150, 6), "PHONE CALL", font=font(HAND, 120), fill=(21, 30, 90))
+    d.text((520, 105), "do not tape over!", font=font(HAND, 64), fill=(170, 20, 20))
+    d.text((40, 420), "C-60   NORMAL POSITION", font=font(SANS, 30), fill=(60, 60, 60))
+    cut = Image.new("L", (W, H), 255)  # the window: alpha 0 inside
+    ImageDraw.Draw(cut).rounded_rectangle((211, 190, 789, 368), 60, fill=0)
+    im.putalpha(cut)
+    ImageDraw.Draw(im).rounded_rectangle((207, 186, 793, 372), 64, outline=(30, 30, 30, 255), width=8)
     im.save(OUT / "cassette.png")
 
 

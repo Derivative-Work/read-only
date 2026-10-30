@@ -110,17 +110,45 @@ def notice():
     kit.mesh_swap(o, m.mesh("prop.notice"))
 
 
+CASS_S = 1.5  # the cassette at 1.5x a real one (100 x 64 x 12 mm): it's the evidence, it has to read at 720p
+
+
 def cassette():
+    """A compact cassette, both faces: the shell, five screws, the label (its window cut out) over a smoked window
+    with the two tape packs (one full, one nearly empty) and toothed hubs, the trapezoid at the bottom with the head
+    openings."""
     o = obj("cassette")
     m = mk.MK()
-    shell, hub = mat("cass.shell", "#2b2d33", rough=0.35), mat("cass.hub", "#e8e8e8", rough=0.4)
-    m.box((0, 0, 0), (0.1, 0.013, 0.064), shell, bevel=0.002, seg=1)
-    for face, y in (("+Y", 0.0068), ("-Y", -0.0068)):
-        m.quad((0, y, 0.006), (0.088, 0.04), img("cassette"), facing=face)
-    for s in (-1, 1):
-        m.cyl((s * 0.021, 0, -0.004), 0.006, 0.0142, hub, axis="Y", n=12)
-    m.box((0, 0, -0.027), (0.06, 0.0135, 0.01), mat("cass.tape", "#4a2e1c"))
-    kit.mesh_swap(o, m.mesh("prop.cassette"))
+    shell = mat("cass.shell", "#2b2d33", rough=0.35)
+    smoke, tape = mat("cass.smoke", "#141517", rough=0.15), mat("cass.tape", "#4a2e1c", rough=0.5)
+    white, dark = mat("cass.hub", "#e8e8e8", rough=0.4), mat("cass.hole", "#0b0b0c", rough=0.6)
+    steel = mat("cass.screw", "#a9abb0", metal=0.9, rough=0.3)
+    m.box((0, 0, 0), (0.1004, 0.012, 0.0638), shell, bevel=0.0015, seg=1)
+    label = mk.img_mat("prop.img.cassette", GEN / "cassette.png", rough=0.7, alpha=True)
+    hz = 0.003  # the hubs' and window's height on the face
+    for sg, face in ((1, "+Y"), (-1, "-Y")):
+        y = sg * 0.006
+        m.quad((0, y + sg * 0.0002, hz), (0.054, 0.017), smoke, facing=face)
+        for x, r in ((-0.0213, 0.0215), (0.0213, 0.0115)):  # the tape packs: side A played most of the way
+            m.cyl((x, y + sg * 0.0004, hz), r, 0.0002, tape, axis="Y", n=40)
+            m.cyl((x, y + sg * 0.0007, hz), 0.0065, 0.0004, white, axis="Y", n=24)
+            m.cyl((x, y + sg * 0.0010, hz), 0.0042, 0.0003, dark, axis="Y", n=20)
+            for k in range(6):  # the hub's teeth
+                a = k * math.pi / 3
+                m.box((x + 0.0034 * math.cos(a), y + sg * 0.0012, hz + 0.0034 * math.sin(a)), (0.0014, 0.0003, 0.0014),
+                      white, rot=(0, -a, 0))
+        m.quad((0, y + sg * 0.0016, 0.006), (0.09, 0.042), label, facing=face)
+        # the trapezoid below the label, with the head opening and the capstan holes
+        m.prism([(-0.0365, -0.0319), (0.0365, -0.0319), (0.03, -0.0165), (-0.03, -0.0165)], 0.0009, shell,
+                c=(0, y + sg * 0.00045, 0))
+        m.quad((0, y + sg * 0.001, -0.027), (0.012, 0.004), dark, facing=face)
+        for s in (-1, 1):
+            m.cyl((s * 0.0175, y + sg * 0.001, -0.026), 0.0018, 0.0002, dark, axis="Y", n=12)
+        for sx, sz in ((-0.046, 0.0275), (0.046, 0.0275), (-0.046, -0.0275), (0.046, -0.0275), (0, -0.021)):
+            m.cyl((sx, y + sg * (0.0013 if sz > -0.021 else 0.0013), sz), 0.0014, 0.0004, steel, axis="Y", n=10)
+    me = m.mesh("prop.cassette")
+    me.transform(__import__("mathutils").Matrix.Scale(CASS_S, 4))
+    kit.mesh_swap(o, me)
 
 
 def boombox():
@@ -397,7 +425,7 @@ def stickies():
         if not o:
             continue
         m = mk.MK()
-        m.quad((0, 0.002, 0), (0.18, 0.18), img(f"sticky_{k:02d}", 0.7), facing="+Y", rot=(0, r.uniform(-0.12, 0.12), 0))
+        m.quad((0, 0.002, 0), (0.3, 0.3), img(f"sticky_{k:02d}", 0.7), facing="+Y", rot=(0, r.uniform(-0.12, 0.12), 0))
         kit.mesh_swap(o, m.mesh(f"prop.sticky{k}"))
 
 
