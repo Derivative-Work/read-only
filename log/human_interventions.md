@@ -81,3 +81,11 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Rule:**
   - **R3:** this session's permissions had blocked fetching Rhubarb Lip Sync's binary (a technical failure the agent couldn't fix itself); the human allowed it. The agent fetched and ran it (production log, same time).
   - **R1:** a creative note on the M4 look, given in words. The agent makes the detail pass itself.
+
+## 2026-10-30T09:40 — Render size for now — R1
+
+- **Note from the human:** "oh and for the renders just stick with 720p for now so it's faster -- we can go to 4k at the end"
+- **Rule:** R1 (a production choice, given in words).
+- **Effect:**
+  - Review renders use the `draft720` profile (1280×720) until the end.
+  - The final render then goes to 4K, not the 1080p that `config/render_profiles.json` notes from the brief. That profile changes when we get there.
