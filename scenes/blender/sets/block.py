@@ -37,8 +37,26 @@ C = {  # grey-box colours (sRGB hex)
 }
 
 
+FINAL = False  # set by the driver: True = the M4 look (textures, stylized figures, sodium light), False = grey-box
+TEXMAP = {"asphalt": "asphalt_03", "sidewalk": "concrete_pavement", "brick": "brick_4", "stucco": "concrete_wall_003",
+          "stucco2": "blue_plaster_weathered", "shutter": "painted_metal_shutter", "plywood": "plywood",
+          "grass": "grass_ground", "dirt": "dry_ground_01", "tile": "brown_floor_tiles",
+          "curb": "concrete_pavement"}
+
+
 def M(key, **kw):
+    if FINAL and key in TEXMAP:
+        return gb.tex_mat(key, TEXMAP[key])
     return gb.mat(key, C[key], **kw)
+
+
+def look_colours():
+    """The style spec's palette over the grey-box colours (called by the driver for the final look)."""
+    P = gb.LOOK["palette"]
+    C.update({"streetlamp": P["sodium"], "window": P["community"], "warm": P["community"], "neon": P["rec"],
+              "rec": P["rec"], "gold": P["gold"], "vest": P["vest"], "screen": P["screen"], "ticker": P["ticker"],
+              "towerglass": P["corporate"], "lantern": P["community"], "sign": "#efe6cf",
+              "stone": "#d9d4ca"})  # plain pale stone, untextured, so the inscriptions read
 
 
 # Every community name on the block is on the list of subreddits that announced they would join the June 2023
@@ -138,7 +156,8 @@ def shopfront(S, i, xw, sign, kind, north=False):
             o = gb_.empty(f"shop{i}.win{fl}{k}.ctl", (x + dx, FRONT, z))
             o["lit"] = 1.0 if (i * 7 + fl * 3 + k) % 4 else 0.0
             gb_.plane(f"shop{i}.win{fl}{k}", (x + dx, FRONT + 0.02, z), (1.2, 1.6),
-                     gb.glow_mat(f"win.{i}{fl}{k}", C["window"], 1.2, o, "lit"), facing="+Y")
+                     gb.glow_mat(f"win.{i}{fl}{k}", C["window"], gb.LOOK["lights"]["window_emit"] if FINAL else 1.2,
+                                 o, "lit", base="#14161a" if FINAL else None), facing="+Y")
             rec = gb_.sphere(f"shop{i}.rec{fl}{k}", (x + dx, FRONT + 0.15, z + 0.4), 0.08, M("rec", emit=12.0))
             wins.append((o, rec))
     S.setdefault("windows", []).append(wins)
@@ -149,7 +168,8 @@ def shopfront(S, i, xw, sign, kind, north=False):
     S.setdefault("shutters", []).append(sh)
     # neon READ-ONLY sign (S14): on the lintel, off until its shutter slams
     ctl = gb_.empty(f"shop{i}.neon.ctl", (x, FRONT, 0))
-    gb_.text(f"shop{i}.neon", "READ-ONLY", 0.34, gb.glow_mat(f"neon.{i}", C["neon"], 14.0, ctl, "on"),
+    gb_.text(f"shop{i}.neon", "READ-ONLY", 0.34, gb.glow_mat(f"neon.{i}", C["neon"], 14.0, ctl, "on",
+                                                       base="#2a2224" if FINAL else None),
             (x, FRONT + 0.2, 4.55), facing="+Y")
     S.setdefault("neon", []).append(ctl)
     # padlock and "UNDER NEW MANAGEMENT" (Hook 2 on), keypad "Log in to continue" (S48)
@@ -257,6 +277,14 @@ def corner(S):
     gb.box("payphone.post", (0, 0, 0.9), (0.15, 0.15, 1.8), M("steam", metal=0.7, rough=0.4), parent=pp)
     gb.box("payphone.box", (0, 0.05, 1.5), (0.45, 0.25, 0.7), M("steam", metal=0.7, rough=0.4), parent=pp)
     gb.box("payphone.hood", (0, 0.1, 1.95), (0.6, 0.45, 0.06), M("trim"), parent=pp)
+    if FINAL:
+        gb.box("payphone.sign", (0, 0.1, 2.08), (0.55, 0.4, 0.18), gb.mat("payphone.sign", "#dfe8f0",
+               emit=gb.LOOK["lights"]["payphone_sign"]), parent=pp)
+        gb.text("payphone.sign.t", "PHONE", 0.09, gb.mat("payphone.ink", "#1b2a3a"), (0, 0.31, 2.08), facing="+Y",
+                parent=pp)
+        pl = __import__("bpy").data.lights.new("payphone.light", "POINT")
+        pl.energy, pl.color, pl.shadow_soft_size = 40, (0.85, 0.92, 1.0), 0.3
+        gb.link(__import__("bpy").data.objects.new("payphone.light", pl)).location = (-31.5, -8.2, 1.9)
     hs = gb.empty("handset", (-31.5, -8.42, 0.9))
     gb.cyl("handset.body", (0, 0, 0), 0.035, 0.22, M("ink"), parent=hs)
     gb.cyl("handset.cord", (0, 0, 0.33), 0.006, 0.45, M("ink"), parent=hs)
@@ -276,7 +304,9 @@ def corner(S):
         gb.box(f"lamp{k}.head", (x, y + side * 2.0, 5.9), (0.3, 0.6, 0.12),
                gb.glow_mat(f"lamp{k}", C["streetlamp"], 20.0, ctl, "on"))
         ld = __import__("bpy").data.lights.new(f"lamp{k}.light", "SPOT")
-        ld.energy, ld.spot_size, ld.color = 1500, math.radians(110), gb.lin(C["streetlamp"])[:3]
+        ld.energy, ld.spot_size, ld.color = (gb.LOOK["lights"]["lamp_w"] if FINAL else 1500), math.radians(110), \
+            gb.lin(C["streetlamp"])[:3]
+        ld.spot_blend = 0.6
         lo = gb.link(__import__("bpy").data.objects.new(f"lamp{k}.light", ld))
         lo.location = (x, y + side * 2.0, 5.7)
         S["lamps"].append((ctl, lo))
@@ -301,9 +331,11 @@ def tower(S):
     gb.box("lobby.floor", (cx, (y0 + y1 - 6) / 2, 0.16), (x1 - x0, y1 - 6 - y0, 0.02), M("lobby", rough=0.2))
     gb.box("lobby.sideW", (x0, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
     gb.box("lobby.sideE", (x1, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
-    gb.plane("lobby.glass", (cx, y0, 3.0), (x1 - x0, 6.0), gb.mat("glass_a", C["glass"], alpha=0.18), facing="-Y")
+    gb.plane("lobby.glass", (cx, y0, 3.0), (x1 - x0, 6.0), gb.mat("glass_lobby", C["glass"], rough=0.02,
+                                                                 alpha=0.06 if FINAL else 0.18), facing="-Y")
     lo = __import__("bpy").data.lights.new("lobby.light", "AREA")
-    lo.energy, lo.size, lo.color = 3000, 12, (1, 0.97, 0.9)
+    lo.energy, lo.size, lo.color = (gb.LOOK["lights"]["lobby_w"], 12, gb.lin(C["towerglass"])[:3]) if FINAL else \
+        (3000, 12, (1, 0.97, 0.9))
     lobj = gb.link(__import__("bpy").data.objects.new("lobby.light", lo))
     lobj.location = (cx, y0 + 6, 5.8)
     # the lobby screen on the back wall (S05, S10, S20): one text object whose body changes per shot
@@ -369,7 +401,8 @@ def headstone(name, loc, label, size=1.0, m=None):
     gb.box(f"{name}.slab", (0, 0, 0.55 * size), (0.9 * size, 0.16 * size, 1.1 * size), m or M("stone"), parent=root)
     gb.cyl(f"{name}.top", (0, 0, 1.1 * size), 0.45 * size, 0.16 * size, m or M("stone"), parent=root, axis="Y")
     if label:
-        gb.text(f"{name}.t", label, 0.085 * size if label.count("\n") > 1 else 0.1 * size, M("ink"),
+        # big enough to read on a phone (brief, "Memorial headstones"): ~0.15 m capitals on a 0.9 m stone
+        gb.text(f"{name}.t", label, 0.12 * size if label.count("\n") > 1 else 0.155 * size, M("ink"),
                 (0, -0.085 * size, 0.7 * size), facing="-Y", parent=root)
     return root
 
@@ -409,9 +442,13 @@ def park(S):
     S["goodbots"] = []
     for k in range(8):
         x = -30 + k * 1.2 if k < 6 else -15 + (k - 6) * 1.2
-        root = gb.empty(f"goodbot{k}", (x, 11.3, 0.04))
-        gb.box(f"goodbot{k}.body", (0, 0, 0.22), (0.26, 0.2, 0.3), M("goodbot"), parent=root)
-        gb.box(f"goodbot{k}.head", (0, 0, 0.47), (0.2, 0.18, 0.16), M("goodbot"), parent=root)
+        if FINAL:
+            import chars
+            root = chars.goodbot(f"goodbot{k}", (x, 11.3, 0.04))
+        else:
+            root = gb.empty(f"goodbot{k}", (x, 11.3, 0.04))
+            gb.box(f"goodbot{k}.body", (0, 0, 0.22), (0.26, 0.2, 0.3), M("goodbot"), parent=root)
+            gb.box(f"goodbot{k}.head", (0, 0, 0.47), (0.2, 0.18, 0.16), M("goodbot"), parent=root)
         ctl = gb.empty(f"goodbot{k}.ctl", (0, 0, 0), parent=root)
         ctl["on"] = 1.0
         gb.sphere(f"goodbot{k}.lantern", (0.2, -0.12, 0.35), 0.07, gb.glow_mat(f"lantern{k}", C["lantern"], 25.0, ctl, "on"),
@@ -461,11 +498,20 @@ def park(S):
     me.materials.append(M("stone"))
     gb.link(bpy.data.objects.new("markers", me))
     S["park"] = (x0, x1, y0, y1)
+    if FINAL:  # moonlight over the park and cemetery: a big, cool, soft area light, so the stones read at night
+        import bpy
+        ld = bpy.data.lights.new("park.moonfill", "AREA")
+        ld.energy, ld.size, ld.color = gb.LOOK["lights"]["park_fill_w"], 18, (0.62, 0.72, 1.0)
+        lo = gb.link(bpy.data.objects.new("park.moonfill", ld))
+        lo.location, lo.rotation_euler = ((x0 + x1) / 2, 15, 11), (math.radians(-25), 0, 0)
 
 
 # ---------------------------------------------------------------- characters (stand-ins)
 
 def person(name, loc, body, extra=None, h=1.75, rot_z=0.0, head=None):
+    if FINAL:
+        import chars
+        return chars.person(name, loc, body, extra=extra, h=h, rot_z=rot_z, head=head)
     """A stand-in figure: body cylinder, head, and a jaw box on the face (-Y side) for grey-box lip sync. Faces -Y
     before rot_z."""
     root = gb.empty(name, loc)
@@ -483,6 +529,9 @@ def person(name, loc, body, extra=None, h=1.75, rot_z=0.0, head=None):
 
 
 def dev(loc, rot_z=0.0, name="dev"):
+    if FINAL:
+        import chars
+        return chars.dev(loc, rot_z=rot_z, name=name)
     def ex(root, n):
         gb.box(f"{n}.apron", (0, -0.21, 0.75), (0.34, 0.03, 0.6), M("apron"), parent=root)
         gb.box(f"{n}.belt", (0, 0, 0.92), (0.48, 0.48, 0.08), M("ink"), parent=root)
@@ -491,6 +540,9 @@ def dev(loc, rot_z=0.0, name="dev"):
 
 
 def ceo(loc, rot_z=0.0, name="ceo"):
+    if FINAL:
+        import chars
+        return chars.ceo(loc, rot_z=rot_z, name=name)
     def ex(root, n):
         c = gb.cyl(f"{n}.cape", (0, 0.06, 0.8), 0.32, 1.3, M("cape"), parent=root)
         gb.box(f"{n}.capetrim", (0, 0.06, 1.42), (0.62, 0.62, 0.08), M("capetrim"), parent=root)
@@ -499,6 +551,9 @@ def ceo(loc, rot_z=0.0, name="ceo"):
 
 
 def mod(loc, k, rot_z=0.0, broom=True, name=None):
+    if FINAL:
+        import chars
+        return chars.mod(loc, k, rot_z=rot_z, broom=broom, name=name)
     name = name or f"mod{k}"
 
     def ex(root, n):
@@ -511,6 +566,9 @@ def mod(loc, k, rot_z=0.0, broom=True, name=None):
 
 
 def vip(loc, k, rot_z=0.0, name=None):
+    if FINAL:
+        import chars
+        return chars.vip(loc, k, rot_z=rot_z, name=name)
     name = name or f"vip{k}"
     root = gb.empty(name, loc)
     root.rotation_euler.z = rot_z
@@ -524,6 +582,9 @@ def vip(loc, k, rot_z=0.0, name=None):
 
 
 def hypeman(loc):
+    if FINAL:
+        import chars
+        return chars.hypeman(loc)
     root = gb.empty("hypeman", loc)
     gb.cyl("hypeman.body", (0, 0, 0.8), 0.24, 1.6, M("silhouette"), parent=root)
     gb.sphere("hypeman.head", (0, 0, 1.7), 0.15, M("silhouette"), parent=root)

@@ -29,7 +29,7 @@ import shots  # noqa: E402
 PROFILES = json.loads((HERE.parents[1] / "config" / "render_profiles.json").read_text())
 
 
-def build(size, samples):
+def build(size, samples, look="greybox", mb_steps=1):
     t = time.time()
     bpy.ops.wm.read_factory_settings(use_empty=True)
     sc = bpy.context.scene
@@ -42,8 +42,19 @@ def build(size, samples):
     sc.eevee.use_raytracing = False
     sc.view_settings.view_transform = "AgX"
     sc.render.film_transparent = False
+    if look == "final":  # the M4 look (style/style_spec.md, config/look.json)
+        block.FINAL = True
+        block.look_colours()
+        sc.view_settings.look = gb.LOOK["agx_look"]
+        sc.view_settings.exposure = gb.LOOK["exposure"]
+        sc.render.use_motion_blur = True
+        sc.render.motion_blur_shutter = gb.LOOK["motion_blur_shutter"]
+        sc.eevee.motion_blur_steps = mb_steps
+        sc.eevee.use_raytracing = True
+        sc.eevee.shadow_pool_size = "1024"
+        sc.eevee.volumetric_end = 120
     S = block.build()
-    shots.light(S)
+    shots.light(S, final=look == "final")
     SP = shots.stage(S)
     sc.frame_start = 0
     sc.frame_end = gb.F(max(b for _, b in SP.values()))
@@ -62,14 +73,21 @@ if __name__ == "__main__":
     ap.add_argument("--anchors", action="store_true")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--look", choices=["greybox", "final"], default="greybox")
+    ap.add_argument("--times", nargs="*", type=float, help="stills at these song seconds -> <out>/t_<s>.png")
     args = ap.parse_args(sys.argv[sys.argv.index("--") + 1:])
     prof = PROFILES[args.profile]
-    sc, SP = build(prof["size"], prof["samples"])
+    sc, SP = build(prof["size"], prof["samples"], args.look, prof.get("motion_blur_steps", 1))
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     sc.render.image_settings.file_format = "PNG"
     t_start = time.time()
-    if args.anchors:
+    if args.times:
+        for t in args.times:
+            sc.frame_set(gb.F(t))
+            sc.render.filepath = str(out / f"t_{t:07.2f}.png")
+            bpy.ops.render.render(write_still=True)
+    elif args.anchors:
         for sid, (a, b) in SP.items():
             if args.only and sid not in args.only:
                 continue

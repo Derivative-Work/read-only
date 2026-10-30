@@ -113,7 +113,7 @@ def walk(o, sid, p0, p1, bob=0.04):
 
 # ---------------------------------------------------------------- the light: day (pre-roll), night (the song on)
 
-def light(S):
+def light(S, final=False):
     sc = bpy.context.scene
     w = bpy.data.worlds.new("sky")
     w.use_nodes = True
@@ -133,7 +133,19 @@ def light(S):
     moon.color = (0.6, 0.7, 1.0)
     mo = gb.link(bpy.data.objects.new("moon", moon))
     mo.rotation_euler = (math.radians(55), 0, math.radians(-30))
-    gb.keys(moon, "energy", [(0, 0.0, "CONSTANT"), (F(0.14), 0.35, "CONSTANT")], interp="CONSTANT")
+    moon_e = gb.LOOK["lights"]["moon"] if final else 0.35
+    if final:
+        moon.color = gb.lin(gb.LOOK["palette"]["night"])[:3]
+        moon.color = tuple(0.35 + 0.65 * c / max(moon.color) for c in moon.color)
+        night = gb.lin(gb.LOOK["palette"]["night"])
+        night = tuple(c * gb.LOOK["lights"]["night_sky"] for c in night[:3]) + (1,)
+        for i in range(4):
+            gb.keys(w.node_tree, 'nodes["Background"].inputs[0].default_value',
+                    [(0, day[i], "CONSTANT"), (F(0.14), night[i], "CONSTANT")], index=i, interp="CONSTANT")
+        vol = w.node_tree.nodes.new("ShaderNodeVolumePrincipled")  # the haze, so lamp cones and neon read in the air
+        vol.inputs["Density"].default_value = gb.LOOK["haze_density"]
+        w.node_tree.links.new(vol.outputs[0], w.node_tree.nodes["World Output"].inputs["Volume"])
+    gb.keys(moon, "energy", [(0, 0.0, "CONSTANT"), (F(0.14), moon_e, "CONSTANT")], interp="CONSTANT")
     # by day the street lamps, upper windows and neon are off; the shops' interiors are lit
     for ctl, lo in S["lamps"]:
         gb.keys(ctl, '["on"]', [(0, 0.0, "CONSTANT"), (F(0.14), 1.0, "CONSTANT")], interp="CONSTANT")
@@ -484,7 +496,7 @@ def stage(S):
         during(n, a + 0.15 + k * (b - a - 0.6) / 10, 1e5)
     cam("S39a", [(0, (-21, 12.2, 1.0), (-21, 13.8, 0.7)), (1, (-21, 9.5, 6.0), (-21, 20, 0.5))], lens=30)
     st = S["stones"]
-    cam("S39b", [(0, (-31.8, 16.6, 1.3), (-30.2, 18.8, 0.7)), (1, (-27.4, 16.6, 1.3), (-25.6, 18.8, 0.7))], lens=26)
+    cam("S39b", [(0, (-31.3, 16.6, 1.3), (-29.7, 18.8, 0.7)), (1, (-28.3, 16.6, 1.3), (-26.5, 18.8, 0.7))], lens=26)
     cam("S39c", [(0, (-28.0, 18.4, 2.4), (-28.0, 21.0, 0.7)), (0.45, (-27.6, 18.4, 2.4), (-28.0, 21.0, 0.7)),
                  (1, (-24.5, 18.6, 2.6), (-24.5, 23.0, 0.3))], lens=26)
     cam("S39d", [(0, (-17.5, 17.0, 1.6), (-14.6, 20.2, 0.7)), (1, (-16.5, 16.6, 1.5), (-14.6, 20.2, 0.7))], lens=30)

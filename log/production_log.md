@@ -276,3 +276,33 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-10-30T01:33:03-04:00 — M3 approved
 
 - **What:** The human approved M3 v2 (`renders/m3/m3_animatic_v2.mp4`) and said to continue (human_interventions, same time). The grey-box framing and timing, `config/bookends.json` and `config/replies_split.json` stand. Next: M4, starting with a look test for approval before the Act 1 renders, as in the sibling projects' C1.
+
+## 2026-10-30T01:39:36-04:00 — M4 (first step): the style spec, CC0 textures, stylized figures, and a look test
+
+- **What:** Before the Act 1 renders, a look test for approval, as the sibling projects' C1:
+  - **The spec** (`style/style_spec.md`):
+    - the palette: sodium street light, a blue night, the cold corporate tower, red reserved for REC and READ-ONLY, warm community windows;
+    - materials, lettering, characters and light.
+  - **The numbers:** `config/look.json`.
+  - **Textures:** 12 CC0 textures from Poly Haven, fetched by `scripts/fetch_textures.py` and checked against Poly Haven's MD5s. Sources and licence are in `assets/textures/sources.tsv`; the files are git-ignored and re-fetchable. They're box-projected in object space at real-world scale (`gb.tex_mat`).
+  - **Figures** (`scenes/blender/sets/chars.py`): stylized and toy-like, with big heads, dot eyes and a driven mouth: the Dev (teal hoodie, apron, tool belt), the CEO (ermine cape with spots, red lining), the mods (MOD vests, brooms), the VIP bots (gunmetal suits, gold VIP badges, cyan eye slits, briefcases), the good bots (small, homemade, screws and antenna) and the hype man (a black silhouette with a cap).
+  - **The switch:** `--look final` in `scenes/blender/animatic.py` turns all of this on. The grey-box stays the default, so M3 still reproduces.
+- **Iterations** (stills at draft720: S01a, S02, S12, S14, S18, S27, S34, S39b; v1–v4 in `archive/renders/m4/`):
+  - **v1:** the park and cemetery were black, the night uniformly orange, the windows and lobby blown out.
+  - **v2:** the payphone gets a backlit PHONE sign and its own light; the lobby light is cold and dimmer.
+  - **v3:**
+    - the windows' unlit glass is now dark (they read as cream slabs before);
+    - a stronger blue moon and night sky;
+    - a soft cool moonlight fill over the park.
+  - **v4:** the unlit neon is dark, so READ-ONLY doesn't show before S14.
+  - **v5:** the headstones are plain pale stone (textured concrete was too dark to read), with lettering about 0.15 m high, "large enough to read on a phone" (brief). S39b's dolly is slower (3 m in 4 s), so the inscriptions don't smear.
+- **Commands:**
+  - `.venv/bin/python -I scripts/fetch_textures.py`
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/look_v5 --profile draft720 --look final --times -15.5 3.5 43.6 51.6 61.8 101.5 125.0 144.5`
+  - Sheet: an inline PIL script → `renders/m4/m4_look_v5.jpg`
+- **Known weak spots, for after the look is approved:**
+  - the upper windows are plain lit panes, with no frames or curtains;
+  - the lobby is bare;
+  - the S01a morning shows no daylight outside;
+  - the sign bands are plain boards.
+- **Status:** **The look test is ready for review**, before the Act 1 renders.

@@ -1,0 +1,92 @@
+{
+ "_doc": "Act 1's look as numbers (style/style_spec.md; change it first). Read by scenes/blender/lib/gb.py and sets/block.py.",
+ "agx_look": "AgX - Medium High Contrast",
+ "exposure": 0.0,
+ "motion_blur_shutter": 0.5,
+ "haze_density": 0.004,
+ "palette": {
+  "sodium": "#ffad5a",
+  "night": "#1b2740",
+  "corporate": "#cfe6ff",
+  "rec": "#ff2a2a",
+  "community": "#ffd38a",
+  "turo": "#ffe6b0",
+  "gold": "#e2b63b",
+  "vest": "#ff7a1a",
+  "screen": "#7fe0ff",
+  "ticker": "#55ff7a"
+ },
+ "lights": {
+  "lamp_w": 2200,
+  "moon": 2.5,
+  "shop_w": 260,
+  "lobby_w": 1400,
+  "night_sky": 1.6,
+  "window_emit": 1.4,
+  "park_fill_w": 7000,
+  "payphone_sign": 6.0
+ },
+ "textures": {
+  "_doc": "texture id: [metres per tile, tint hex or null, roughness scale]",
+  "asphalt_03": [
+   3.0,
+   "#8a8a8a",
+   0.55
+  ],
+  "concrete_pavement": [
+   1.5,
+   null,
+   1.0
+  ],
+  "brick_4": [
+   2.0,
+   null,
+   1.0
+  ],
+  "concrete_wall_003": [
+   3.0,
+   "#d8cfc0",
+   1.0
+  ],
+  "blue_plaster_weathered": [
+   3.0,
+   null,
+   1.0
+  ],
+  "painted_metal_shutter": [
+   1.5,
+   "#b8c4b8",
+   0.9
+  ],
+  "plywood": [
+   1.2,
+   null,
+   1.0
+  ],
+  "grass_ground": [
+   2.5,
+   "#9aa88a",
+   1.0
+  ],
+  "dry_ground_01": [
+   2.0,
+   null,
+   1.0
+  ],
+  "concrete": [
+   1.5,
+   "#f2efe8",
+   1.0
+  ],
+  "brown_floor_tiles": [
+   1.2,
+   null,
+   0.8
+  ],
+  "old_linoleum_flooring_01": [
+   2.0,
+   null,
+   0.8
+  ]
+ }
+}

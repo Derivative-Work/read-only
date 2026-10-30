@@ -47,3 +47,6 @@ assets/real/*
 # The human's private reference photos and scans (real names, faces, logos, other people's photos): kept locally,
 # never published, never hashed into the manifest. reference/README.md (in git) describes them without the details.
 reference/private/
+
+# CC0 textures: re-fetchable with scripts/fetch_textures.py; assets/textures/sources.tsv (in git) has each URL and MD5.
+assets/textures/*/

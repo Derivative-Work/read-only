@@ -61,10 +61,14 @@ def mat(name, hexcol, rough=0.8, emit=0.0, metal=0.0, alpha=1.0):
     return m
 
 
-def glow_mat(name, hexcol, strength, owner, prop):
-    """An emissive material whose strength follows owner[prop] (0..1), so a sign or light can be keyed on and off."""
+def glow_mat(name, hexcol, strength, owner, prop, base=None):
+    """An emissive material whose strength follows owner[prop] (0..1), so a sign or light can be keyed on and off.
+    base: the surface colour when unlit (default: the glow colour), e.g. dark glass for a window."""
     m = mat(name, hexcol, emit=strength)
     b = m.node_tree.nodes["Principled BSDF"]
+    if base:
+        b.inputs["Base Color"].default_value = lin(base)
+        b.inputs["Roughness"].default_value = 0.15
     if prop not in owner:
         owner[prop] = 0.0
     d = b.inputs["Emission Strength"].driver_add("default_value").driver
@@ -75,6 +79,57 @@ def glow_mat(name, hexcol, strength, owner, prop):
     v.targets[0].id = owner
     v.targets[0].data_path = f'["{prop}"]'
     d.expression = f"x * {strength}"
+    return m
+
+
+LOOK = json.loads((ROOT / "config" / "look.json").read_text())
+TEX = ROOT / "assets" / "textures"
+
+
+def tex_mat(name, tex_id, rough=None):
+    """A CC0 texture (style spec, "Materials"), box-projected in object space at its real-world scale (look.json:
+    metres per tile), so no mesh needs UVs: diffuse (optionally tinted), roughness, OpenGL normal."""
+    key = f"tex.{name}"
+    if key in _MATS:
+        return _MATS[key]
+    scale_m, tint, rough_k = LOOK["textures"][tex_id]
+    m = bpy.data.materials.new(key)
+    m.use_nodes = True
+    nt = m.node_tree
+    b = nt.nodes["Principled BSDF"]
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    mp = nt.nodes.new("ShaderNodeMapping")
+    mp.inputs["Scale"].default_value = (1 / scale_m,) * 3
+    nt.links.new(tc.outputs["Object"], mp.inputs["Vector"])
+
+    def img(mapname, noncolor):
+        n = nt.nodes.new("ShaderNodeTexImage")
+        n.image = bpy.data.images.load(str(TEX / tex_id / f"{mapname}.jpg"), check_existing=True)
+        if noncolor:
+            n.image.colorspace_settings.name = "Non-Color"
+        n.projection, n.projection_blend = "BOX", 0.25
+        nt.links.new(mp.outputs["Vector"], n.inputs["Vector"])
+        return n
+    d = img("diff", False)
+    if tint:
+        mix = nt.nodes.new("ShaderNodeMix")
+        mix.data_type, mix.blend_type = "RGBA", "MULTIPLY"
+        mix.inputs["Factor"].default_value = 1.0
+        nt.links.new(d.outputs["Color"], mix.inputs["A"])
+        mix.inputs["B"].default_value = lin(tint)
+        nt.links.new(mix.outputs["Result"], b.inputs["Base Color"])
+    else:
+        nt.links.new(d.outputs["Color"], b.inputs["Base Color"])
+    r = img("rough", True)
+    mul = nt.nodes.new("ShaderNodeMath")
+    mul.operation = "MULTIPLY"
+    mul.inputs[1].default_value = rough if rough is not None else rough_k
+    nt.links.new(r.outputs["Color"], mul.inputs[0])
+    nt.links.new(mul.outputs[0], b.inputs["Roughness"])
+    nm = nt.nodes.new("ShaderNodeNormalMap")
+    nt.links.new(img("nor", True).outputs["Color"], nm.inputs["Color"])
+    nt.links.new(nm.outputs["Normal"], b.inputs["Normal"])
+    _MATS[key] = m
     return m
 
 
