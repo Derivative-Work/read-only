@@ -40,9 +40,8 @@ def main():
         c = burst(sr, 2000, 0.03, 0.55) if i in down else burst(sr, 1200, 0.025, 0.3)
         k = int(round(b * sr))
         click[k:k + len(c)] += c[:max(0, len(click) - k)]
-    marks = [("the first piano chord: the music starts here, 2.9 s before \"Yeah, hello?\" (proposed S01e cut)",
-              TM["first_note"]),
-             ("\"Yeah, hello?\" (the brief's S01e cue)", SHOT["S01e"]["t"]),
+    marks = [("the first piano chord: the S01e match cut, where the music starts", SHOT["S01e"]["t"]),
+             ("\"Yeah, hello?\"", TM["lines"][0]["start"]),
              ("the full beat comes in, after a drum fill from 0:07.1", [b for a, b in TM["drum_dropouts"] if b < 12][-1]),
              ("the beat drops out before \"…so I sold 'em the whole lot\" (S25)",
               next(a for a, b in TM["drum_dropouts"] if 85 < a < 90)),

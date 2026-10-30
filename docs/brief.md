@@ -1,4 +1,4 @@
-<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 65, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
+<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 66, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
 
 # Read-Only: Shot List
 
@@ -186,7 +186,7 @@ Act 1 is all Blender. Hook 2 reuses Hook 1's renders with changed dressing.
 | S01b | Cold open | Before the music | POV through a rendered phone camera framing a rendered plate. A thumb taps the shutter, and the phone screen now shows your real plate photo, the only real image in the frame. | Generic camera UI and shutter flash; generic diner ambience | B+Real |
 | S01c | Cold open | Before the music | The phone lowers and the camera drifts across the table: a plain "VISITOR" badge with the date beside the plate, and a folded schedule under the saucer, its real times showing and the names behind redaction bars | Rendered props: no company name or logo, no real names | B |
 | S01d | Cold open | Before the music | A swipe on the phone from the camera to a third-party reader app: a community thread where a helper bot has replied and people answer "good bot." The thumb scrolls a moment, then pockets the phone | Invented app and accounts: no real app's design, no real usernames | B+JS |
-| S01e | Cold open to Intro | "Yeah, hello?" | Match cut from the phone in hand to the dangling payphone handset at night (S02) | Music starts on the cut | F |
+| S01e | Cold open to Intro | The first piano chord, 2.9 s before "Yeah, hello?" | Match cut from the phone in hand to the dangling payphone handset at night (S02) | Music starts on the cut | F |
 | S02 | Intro | "Yeah, hello? …You still there?" | Wide night establishing shot of the block; slow push toward the payphone, handset dangling | None | B |
 | S03 | Intro | "This call may be recorded" | Close-up: a red REC light blinks inside the handset | Phone-line waveform spikes on "recorded" | B+JS |
 | S04 | Verse 1 | "Fifteen years your door was open…" | The Dev unlocks his shop, "Third-Party App Repair, est. 2008"; warm flashback tint of a busy shop | None | B+M |

@@ -123,3 +123,11 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Why:** Brief M2: "Timing map from the locked track; add timestamps to every shot". The brief names librosa and WhisperX; this uses beat_this and MMS_FA instead, as the sibling projects did. Adding the timestamps to the brief's shot tables waits for the human's ear check, so the doc changes once, not twice.
 - **Fix after the commit:** the ported script still wrote `renders/m2/c3_clicks.*`; renamed in the script and re-run. The misnamed copies (same content) are archived as `archive/renders/m2/m2_clicks_superseded_misnamed-c3.*`.
 - **Status:** **M2 is ready for review.** The agent stops here.
+
+## 2026-10-30T01:10:00-04:00 — S01e cut on the first piano chord; stage directions kept for now
+
+- **What:** On the human's decision, S01e (the match cut) and S02 now start on the first piano chord, 0:00.14. `config/shot_holds.json` (new) holds both, and "Yeah, hello?" falls 2.9 s into S02. In the brief, S01e's cue now reads "The first piano chord, 2.9 s before "Yeah, hello?"" (doc rev 65 → 66); its overlay note "Music starts on the cut" stands. Re-exported `docs/brief.md`, and rebuilt the timing map and the click track. The click track's first two tones are now the cut (0:00.14) and "Yeah, hello?" (0:03.08).
+- **Commands:** Docs connector `update` on node `a990c55c-da10` (a find within table `mh1vfytf976.2893`, row 5, col 2); `python3 -I scripts/doc_to_md.py …`; `.venv/bin/python -I scripts/timing_map.py`; `.venv/bin/python -I scripts/m2_clicks.py`
+- **Findings:** S02 now runs 7.61 s (0:00.14–0:07.75).
+- **Stage directions:** the sung "hype man" (twice) and "downvote" stay in the track for now. The human may revisit replacing them from the stems later. That would be an audio edit, made by the agent and logged. Open item.
+- **Why:** The human's decisions (human_interventions, 01:05).

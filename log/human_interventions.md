@@ -35,3 +35,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "fold S46 into S48 and go ahead with M2"
 - **Rule:** R1 (approving a plan the agent proposed). The agent made the brief edit (production log, 00:05).
+
+## 2026-10-30T01:05 — S01e on the first piano chord; sung stage directions kept for now — R2, R1
+
+- **Note from the human:** "cut S01e on the first piano chord. I'm good with the stage directions landing in here for now -- we can revisit replacing them using the stems later"
+- **Rule:**
+  - **R2:** placing a cut point. The agent proposed it and made the change.
+  - **R1:** accepting Suno's sung stage directions ("hype man", "downvote") as they are, for now.

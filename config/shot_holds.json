@@ -1,0 +1,5 @@
+{
+  "_doc": "Shot starts moved off their brief cue by the human's notes (scripts/timing_map.py reads this). t is seconds of the Suno mix.",
+  "S01e": {"t": 0.14, "note": "the human, 2026-10-30: cut S01e on the first piano chord (the music starts on the cut), not at \"Yeah, hello?\""},
+  "S02": {"t": 0.14, "note": "S02 opens on S01e's match cut, so it starts there too; \"Yeah, hello?\" falls 2.9 s in"}
+}
