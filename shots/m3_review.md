@@ -1,6 +1,6 @@
 # M3 review: the grey-box animatic
 
-Watch `renders/m3/m3_animatic.mp4` (640×360, 24 fps, with the post-filtered master). The anchor stills, one a third
+Watch `renders/m3/m3_animatic_v2.mp4` (640×360, 24 fps, with the post-filtered master). The anchor stills, one a third
 of the way into each shot, are on `renders/m3/m3_sheet_{a,b,c}.jpg`. The gate is the brief's: **approve framing and
 timing**. Look, light and texture come at M4.
 
@@ -28,23 +28,17 @@ timing**. Look, light and texture come at M4.
 | S01a, S01b, S01c, S01d | 5, 4, 4, 5 s (18 s pre-roll) | The cold open, before the music; the track starts on the S01e cut |
 | S48b, S49, S50 | 4, 8, 10 s after the audio | Login prompt, closing bookend, end card |
 | S40 | 0.4 s hold, then 2.8 s of rewind | The rewind runs back through every frame from "Hold up" to the S01e cut |
-| S39b–S39e | ~2.5 s each | The replies (2:20.92–2:33.68) split evenly by beats, with S39a |
+| S39a–S39e | 1.9, 4.0, 2.0, 2.6, 2.3 s | The replies (2:20.92–2:33.68) split by beats, 2 : 6 : 4 : 4 : 4 |
 
-## Timing questions for you
+## Decided at the first review (v2)
 
-1. **S39a–S39e: about 2.5 s a shot.** The six app headstones in S39b, and the four-stone cluster in S39d, go by
-   fast. Options:
-   - keep it;
-   - drop the S39a coffin beat to give the stones more time;
-   - let the stones run under "Hold up" until the freeze, by moving S40's freeze later (its cue is a lyric).
-2. **S47 and S48:** S47 holds the payphone for 13.2 s (Suno repeats the line three times), and S48's crane over the
-   block gets 1.06 s. In the animatic the crane is a blur. Proposal: start S48 on the second "This call was
-   recorded" (2:56.74), giving the crane about 9.6 s.
-3. **S03 runs 12.9 s** on the REC light, over the beat's entry. Proposal: hold the close-up to the beat's entry
-   (0:09.70), then a slow pull back from the payphone to the block until Verse 1 (still S03, no new ID).
-4. **S26 (Hook 2)** reuses S14–S17's cameras, one per line of the hook. But Hook 2's last two lines are the "guard
-   dog" lines, not "Forty-eight hours of night" and "We did the work for nothin'". So S16's 48-hour countdown and
-   S17's meter don't match what's sung. Proposal: for those two lines, use S38's doghouse and S39's VIP bots instead.
+All four proposals taken (the human, 2026-10-30), plus a fuller block:
+- **S39a–S39e** split 2 : 6 : 4 : 4 : 4 by beats: S39b's six app stones get 4.0 s (`config/replies_split.json`).
+- **S48** starts on the second "This call was recorded" (2:56.74); the crane has 9.6 s, and S47 runs 4.6 s.
+- **S03** holds on the REC light until the beat comes in (0:09.70), then pulls back to the block.
+- **S26:** its last two lines use S38's doghouse and S39's VIP bots.
+- **The block:** 17 communities, up from 7: two more south-row shops, a north-side row east of the tower, and six
+  painted upper-window signs.
 
 ## Not in M3 (by design)
 

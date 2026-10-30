@@ -190,3 +190,85 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Not in M3:** overlays (M4), the real photo (M6), the photoreal Act 2 and lip-sync (M5), and proper Act 1 lip-sync (Rhubarb, M4).
 - **Why:** Brief M3: "Grey-box Blender set and an animatic of every shot at low resolution, cut to the track"; gate: "Approve framing and timing". The anchor-sheet loop is Not Yet's C4.
 - **Status:** **M3 is ready for review.** The agent stops here.
+
+## 2026-10-30T00:55:00-04:00 — M3 v2: the four timing changes, a fuller block; brief rev 134
+
+- **What:**
+  1. **S39a–S39e** (`config/replies_split.json`, new):
+     - The replies, S39a to "Hold up", are now split by beats in proportions 2 : 6 : 4 : 4 : 4. `scripts/timing_map.py` reads the weights.
+     - New lengths: S39a 1.9 s (coffin notes), S39b 4.0 s (the six app stones, was 2.6), S39c 2.0 s, S39d 2.6 s, S39e 2.3 s.
+  2. **S48:** a hold in `config/shot_holds.json` starts it on the second "This call was recorded" (L60, 2:56.74), so the crane over the block has 9.64 s, up from 1.06 s; S47 now runs 4.62 s. The crane is re-keyed in five stages: payphone → over the shopfronts → high over the block's doorways and windows → toward the park → settling on the dark park.
+  3. **S03:** the close-up holds on the REC light until the beat comes in (0:09.70), then pulls back from the payphone to the Dev's shop and the eatery by Verse 1.
+  4. **S26** (Hook 2): the cameras for its last two lines are now S38's (the doghouse) and S39's, with three VIP bots strolling past the doghouse on "Now the wolves got a contract".
+  5. **More subreddits:**
+     - two more south-row shops east of FOR LEASE: r/AskHistorians and r/Coffee;
+     - a north-side row east of the tower: r/Houseplants, r/BoardGames and r/Birding, the same shopfront turned to face the street;
+     - painted signs in six upper windows: r/Bonsai, r/MechanicalKeyboards, r/Sewing, r/HomeImprovement, r/Fishing, r/Books.
+
+     Several of these names were replaced at 00:58 (next entry).
+
+     The block now shows 17 communities, up from 7. All 15 shops take part in the shutter slams, the padlocks, the keypads and the S48 doormen.
+- **Fixes found on the way:**
+  - `shopfront()` now builds in local coordinates around a root, so a shop can face either way.
+  - S14's slam wave trailed its tracking camera, so the shutters came down out of frame. Each shop now slams as the camera's aim passes it; the eatery is still last. S26's first line does the same.
+  - The VIP bots in S39 walked outside the frame; their path is now in front of the camera.
+  - The VIP bots' grey is lighter, so they read at night.
+- **Brief** (docs `update` on node `a990c55c-da10`, rev 129 → 134):
+  - S03's and S26's shot text;
+  - S48's cue: "The second "This call was recorded" through "So was everything else."";
+  - Start column: S48 2:56.74, S39b 2:22.82.
+
+  `docs/brief.md` is re-exported, and the Start column matches the timing map (0 mismatches).
+- **Commands:**
+  - `.venv/bin/python -I scripts/timing_map.py`
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m3/anchors_v6 --anchors`, plus a scratch script for stills at chosen moments (S03 late, S14 mid, S26 lines 3–4, S48 mid)
+  - `blender … --out renders/m3/frames_v2` (in progress)
+- **Housekeeping:** the v1 frame sequence moved out of the repo to the session scratchpad. Frame sequences are never archived; `frames_v1` regenerates from commit 64fd4b7.
+- **Why:** The human's decisions (human_interventions, 00:46).
+
+## 2026-10-30T00:58:00-04:00 — The block's communities checked against the blackout list; eight swapped
+
+- **What:**
+  - The human asked whether the block's subreddits took part in the blackout. I had chosen them as recognisable hobby communities without checking.
+  - Downloaded the list of 5,351 subreddits that announced they would join (r/ModCoord's posts, as collected by github.com/bpettis/reddit-blackout-announcements; also published on Dryad, doi:10.5061/dryad.qfttdz0qd).
+  - Of the 18 communities on the block, 12 are on it. r/Aquariums, r/Breadit, r/bicycling, r/birding, r/Bonsai, r/sewing, r/Fishing and r/books aren't.
+  - The list records announced participants, not who actually went private, and it's incomplete (over 7,000 went private), so "not listed" means unconfirmed.
+- **Swaps** (the human: "go with your swaps, Sourdough for Breadit, Cooking for Aquariums"). Every name on the block is now on the list:
+
+  | Was | Now |
+  | --- | --- |
+  | r/Aquariums | r/Cooking |
+  | r/Breadit | r/Sourdough |
+  | r/Bicycling | r/Running |
+  | r/Birding | r/Crochet |
+  | r/Bonsai | r/Embroidery |
+  | r/Sewing | r/Quilting |
+  | r/Fishing | r/Chess |
+  | r/Books | r/Photography |
+
+- **Files:**
+  - `scenes/blender/sets/block.py`: the names, and a comment naming the source.
+  - `reference/sources/blackout_list/subreddits.txt`: the list, kept locally (another publisher's file, like Not Yet's evidence pages).
+  - `reference/sources/blackout_list.tsv` (in git): the list's URL, retrieval time and SHA-256 (cc74ed9e…).
+- **Docs:**
+  - **Brief**, rev 134 → 135: the sets table's example names now read "(r/Philippines, r/Cooking, r/Sourdough), each one a community that announced it would join the June 2023 blackout (r/ModCoord's list)". `docs/brief.md` re-exported.
+  - **Reference Guide**, rev 10 → 11: its visual-references row now names r/Cooking and r/Sourdough.
+- **Render:**
+  - The v2 render in progress still had the old names. It was stopped at frame 954, its partial frames deleted (a regenerable frame sequence), and restarted.
+  - Stopping it with `pkill -f` also ended the two background wait loops; nothing else was affected.
+- **Why:** The hook is "Eight thousand gone dark", and every shop's shutter slams on it, so the block shows only communities that took part. The human's decision (human_interventions, 00:58).
+
+## 2026-10-30T01:27:00-04:00 — M3 v2 rendered and assembled
+
+- **What:** Rendered v2 with the four timing changes, the fuller block and the swapped names. Assembled it, re-rendered the anchor stills and rebuilt the contact sheets. Spot-checked frames: S02, S14 (r/Running's shutter and neon land in frame), S26's last line (the VIP bots past the doghouse), S39d and S42.
+- **Commands:**
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m3/frames_v2` (5,669 frames, about 25 min)
+  - `.venv/bin/python -I scripts/animatic_assemble.py renders/m3/frames_v2 renders/m3/m3_animatic_v2.mp4`
+  - `… --anchors` → `renders/m3/anchors_v7`, then `scripts/contact_sheet.py` → `renders/m3/m3_sheet_{a,b,c}.jpg`
+- **Outputs:** `renders/m3/m3_animatic_v2.mp4` (3:56.17, 640×360), `renders/m3/m3_sheet_{a,b,c}.jpg`, `renders/m3/anchors_v7/`
+- **Archived:**
+  - `archive/renders/m3/m3_animatic_v1_superseded_m3-review.mp4`
+  - `archive/renders/m3/anchors_v5_superseded/`
+  - `archive/renders/m3/m3_sheet_{a,b,c}_v1_superseded.jpg`
+  - `renders/m3/anchors_v6` (check stills of a state that was never rendered) deleted, as were the v1 frames in the scratchpad: both regenerable.
+- **Status:** **M3 v2 is ready for review.**

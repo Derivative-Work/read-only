@@ -1,0 +1,10 @@
+{
+ "_doc": "M3 review (the human, 2026-10-30): the 'good bot' replies, S39a to S40's \"Hold up\", split by beats in these proportions (scripts/timing_map.py). S39a, the coffin notes, is cut to about 2 beats so the headstones get the time; S39b's six app stones the most.",
+ "weights": {
+  "S39a": 2,
+  "S39b": 6,
+  "S39c": 4,
+  "S39d": 4,
+  "S39e": 4
+ }
+}

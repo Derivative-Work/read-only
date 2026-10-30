@@ -28,7 +28,7 @@ C = {  # grey-box colours (sRGB hex)
     "rack": "#2b2f36", "screen": "#7fd0ff", "ticker": "#55ff7a", "billboard": "#f0f0f0", "dirt": "#4a3a2c",
     "grass": "#3b4a33", "fence": "#2f2f2f", "stone": "#a7a39a", "coffin": "#c9b28a", "doghouse": "#8a5a3a",
     "hoodie": "#2f7f7a", "apron": "#8a5c32", "skin": "#c69c7d", "cape": "#f2efe6", "capetrim": "#8b1e2b",
-    "ceohood": "#5a5d63", "vest": "#ff7a1a", "modbody": "#4d5560", "vip": "#3a3d42", "gold": "#d8b23a",
+    "ceohood": "#5a5d63", "vest": "#ff7a1a", "modbody": "#4d5560", "vip": "#7a828c", "gold": "#d8b23a",
     "goodbot": "#b8b0a0", "lantern": "#ffc46b", "silhouette": "#050505", "rec": "#ff2a2a", "neon": "#ff3355",
     "warm": "#ffcf8a", "window": "#ffd9a0", "eatery_wall": "#c9a43c", "tile": "#9a4e35", "steam": "#b9bec4",
     "tray": "#2f8a3a", "menu": "#1e3b2a", "table": "#7a5636", "chair": "#141414", "plate": "#f4f1ea",
@@ -41,19 +41,34 @@ def M(key, **kw):
     return gb.mat(key, C[key], **kw)
 
 
+# Every community name on the block is on the list of subreddits that announced they would join the June 2023
+# blackout (r/ModCoord's posts, as collected by github.com/bpettis/reddit-blackout-announcements; the copy used is
+# listed in reference/sources/blackout_list.tsv).
 SHOPS = [  # x centre, sign, kind
     (-27, "r/Philippines", "eatery"),
     (-21, "Third-Party App Repair  est. 2008", "dev"),
-    (-15, "r/Aquariums", "shop"),
-    (-9, "r/Breadit", "shop"),
+    (-15, "r/Cooking", "shop"),
+    (-9, "r/Sourdough", "shop"),
     (-3, "PAWN", "pawn"),
-    (3, "r/Bicycling", "shop"),
+    (3, "r/Running", "shop"),
     (9, "r/Knitting", "shop"),
     (15, "r/Gardening", "shop"),
     (21, "r/Woodworking", "shop"),
     (27, "FOR LEASE", "lease"),
+    (33, "r/AskHistorians", "shop"),
+    (39, "r/Coffee", "shop"),
+]
+NORTH_SHOPS = [  # facing the street from the north side, east of the tower
+    (28, "r/Houseplants", "shop"),
+    (34, "r/BoardGames", "shop"),
+    (40, "r/Crochet", "shop"),
+]
+UPPER_SIGNS = [  # painted upper-window signs (second-floor tenants), (shop index, window, name)
+    (2, "win01", "r/Embroidery"), (5, "win00", "r/MechanicalKeyboards"), (6, "win12", "r/Quilting"),
+    (9, "win11", "r/HomeImprovement"), (10, "win02", "r/Chess"), (12, "win10", "r/Photography"),
 ]
 FRONT = -10.0  # the south row's facade plane
+FRONT_Y = FRONT
 TOWER_X = (-6.0, 24.0)
 TOWER_Y = (10.5, 30.0)
 LOBBY_DOOR_X = 9.0
@@ -76,87 +91,104 @@ def street(S):
     S["chalk_sq"] = (-10.25, -8.75)
 
 
-def shopfront(S, i, x, sign, kind):
+def shopfront(S, i, xw, sign, kind, north=False):
+    """One shopfront, built in local coordinates around its root (facade centre at ground level, facing local +Y):
+    the south row faces the street at y = FRONT; north=True turns it to face the street from y = -FRONT."""
     w, d, h = 6.0, 12.0, 11.0
-    root = gb.empty(f"shop{i}", (x, FRONT, 0))
+    x, FRONT = 0.0, 0.0  # local
+    root = gb.empty(f"shop{i}", (xw, -FRONT_Y if north else FRONT_Y, 0))
+    root.rotation_euler.z = math.pi if north else 0.0
+    import bpy
+    bpy.context.view_layer.update()
     S.setdefault("shops", []).append(root)
+    _gb = gb
+
+    class _P:  # gb with parent=root on every object made here
+        def __getattr__(self, name):
+            f = getattr(_gb, name)
+            if name in ("box", "cyl", "sphere", "plane", "text", "empty"):
+                return lambda *a, **k: f(*a, **{**k, "parent": k.get("parent", root)})
+            return f
+    gb_ = _P()
     wall = M("brick") if i % 3 == 0 else M("stucco") if i % 3 == 1 else M("stucco2")
     # upper storeys: a solid block; ground floor: walls, ceiling and a back wall around a hollow room
-    gb.box(f"shop{i}.upper", (x, FRONT - d / 2, 4.2 + (h - 4.2) / 2), (w, d, h - 4.2), wall)
-    gb.box(f"shop{i}.pierL", (x - w / 2 + 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
-    gb.box(f"shop{i}.pierR", (x + w / 2 - 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
-    gb.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w, 0.4, 1.0), M("trim"))
-    gb.box(f"shop{i}.back", (x, FRONT - 6.2, 2.1), (w, 0.2, 4.2), M("stucco"))
-    gb.box(f"shop{i}.sideL", (x - w / 2 + 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
-    gb.box(f"shop{i}.sideR", (x + w / 2 - 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
-    gb.box(f"shop{i}.floor", (x, FRONT - 3.1, 0.155), (w, 6.2, 0.01), M("tile" if kind == "eatery" else "curb"))
-    gb.box(f"shop{i}.sill", (x - 0.8, FRONT - 0.1, 0.3), (3.8, 0.3, 0.6), M("trim"))
-    glass = gb.plane(f"shop{i}.glass", (x - 0.8, FRONT + 0.01, 1.85), (3.8, 2.3),
+    gb_.box(f"shop{i}.upper", (x, FRONT - d / 2, 4.2 + (h - 4.2) / 2), (w, d, h - 4.2), wall)
+    gb_.box(f"shop{i}.pierL", (x - w / 2 + 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
+    gb_.box(f"shop{i}.pierR", (x + w / 2 - 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
+    gb_.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w, 0.4, 1.0), M("trim"))
+    gb_.box(f"shop{i}.back", (x, FRONT - 6.2, 2.1), (w, 0.2, 4.2), M("stucco"))
+    gb_.box(f"shop{i}.sideL", (x - w / 2 + 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
+    gb_.box(f"shop{i}.sideR", (x + w / 2 - 0.05, FRONT - 3.1, 2.1), (0.1, 6.2, 4.2), M("stucco"))
+    gb_.box(f"shop{i}.floor", (x, FRONT - 3.1, 0.155), (w, 6.2, 0.01), M("tile" if kind == "eatery" else "curb"))
+    gb_.box(f"shop{i}.sill", (x - 0.8, FRONT - 0.1, 0.3), (3.8, 0.3, 0.6), M("trim"))
+    glass = gb_.plane(f"shop{i}.glass", (x - 0.8, FRONT + 0.01, 1.85), (3.8, 2.3),
                      gb.mat("glass_a", C["glass"], rough=0.05, alpha=0.18), facing="+Y")
-    door = gb.box(f"shop{i}.door", (x + 1.9, FRONT - 0.05, 1.3), (1.2, 0.08, 2.4),
+    door = gb_.box(f"shop{i}.door", (x + 1.9, FRONT - 0.05, 1.3), (1.2, 0.08, 2.4),
                   gb.mat("glass_a", C["glass"], alpha=0.18) if kind == "dev" else M("trim"))
-    gb.box(f"shop{i}.slot", (x + 1.9, FRONT + 0.0, 1.0), (0.35, 0.02, 0.06), M("ink"))
+    gb_.box(f"shop{i}.slot", (x + 1.9, FRONT + 0.0, 1.0), (0.35, 0.02, 0.06), M("ink"))
     # the sign band
-    gb.box(f"shop{i}.signband", (x, FRONT + 0.05, 3.7), (5.4, 0.1, 0.8),
+    gb_.box(f"shop{i}.signband", (x, FRONT + 0.05, 3.7), (5.4, 0.1, 0.8),
            M("lease") if kind == "lease" else M("sign"))
-    gb.text(f"shop{i}.sign", sign, 0.42 if len(sign) < 16 else 0.3, M("sign") if kind == "lease" else M("ink"),
+    gb_.text(f"shop{i}.sign", sign, 0.42 if len(sign) < 16 else 0.3, M("sign") if kind == "lease" else M("ink"),
             (x, FRONT + 0.11, 3.7), facing="+Y")
     # upper windows (lit warm or dark; S48: a red REC light in every one)
     wins = []
     for fl, z in enumerate((5.6, 8.6)):
         for k, dx in enumerate((-1.8, 0, 1.8)):
-            o = gb.empty(f"shop{i}.win{fl}{k}.ctl", (x + dx, FRONT, z))
+            o = gb_.empty(f"shop{i}.win{fl}{k}.ctl", (x + dx, FRONT, z))
             o["lit"] = 1.0 if (i * 7 + fl * 3 + k) % 4 else 0.0
-            gb.plane(f"shop{i}.win{fl}{k}", (x + dx, FRONT + 0.02, z), (1.2, 1.6),
+            gb_.plane(f"shop{i}.win{fl}{k}", (x + dx, FRONT + 0.02, z), (1.2, 1.6),
                      gb.glow_mat(f"win.{i}{fl}{k}", C["window"], 1.2, o, "lit"), facing="+Y")
-            rec = gb.sphere(f"shop{i}.rec{fl}{k}", (x + dx, FRONT + 0.15, z + 0.4), 0.08, M("rec", emit=12.0))
+            rec = gb_.sphere(f"shop{i}.rec{fl}{k}", (x + dx, FRONT + 0.15, z + 0.4), 0.08, M("rec", emit=12.0))
             wins.append((o, rec))
     S.setdefault("windows", []).append(wins)
     # the roll-down shutter: its origin at the top, hanging down; scale z 0 = up (open), 1 = down (closed)
-    sh = gb.box(f"shop{i}.shutter", (x, FRONT + 0.12, 3.15), (5.2, 0.08, 3.0), M("shutter", metal=0.4, rough=0.5))
+    sh = gb_.box(f"shop{i}.shutter", (x, FRONT + 0.12, 3.15), (5.2, 0.08, 3.0), M("shutter", metal=0.4, rough=0.5))
     sh.data.transform(__import__("mathutils").Matrix.Translation((0, 0, -1.5)))
     sh.scale.z = 0.0
     S.setdefault("shutters", []).append(sh)
     # neon READ-ONLY sign (S14): on the lintel, off until its shutter slams
-    ctl = gb.empty(f"shop{i}.neon.ctl", (x, FRONT, 0))
-    gb.text(f"shop{i}.neon", "READ-ONLY", 0.34, gb.glow_mat(f"neon.{i}", C["neon"], 14.0, ctl, "on"),
+    ctl = gb_.empty(f"shop{i}.neon.ctl", (x, FRONT, 0))
+    gb_.text(f"shop{i}.neon", "READ-ONLY", 0.34, gb.glow_mat(f"neon.{i}", C["neon"], 14.0, ctl, "on"),
             (x, FRONT + 0.2, 4.55), facing="+Y")
     S.setdefault("neon", []).append(ctl)
     # padlock and "UNDER NEW MANAGEMENT" (Hook 2 on), keypad "Log in to continue" (S48)
-    lock = gb.box(f"shop{i}.padlock", (x + 1.2, FRONT + 0.2, 0.35), (0.18, 0.08, 0.22), M("gold", metal=0.8, rough=0.3))
-    unm = gb.text(f"shop{i}.unm", "UNDER NEW\nMANAGEMENT", 0.22, M("lease"), (x - 0.8, FRONT + 0.18, 1.9), facing="+Y")
-    pad = gb.box(f"shop{i}.keypad", (x + 1.9, FRONT + 0.2, 1.3), (0.5, 0.06, 0.7), M("phone"))
-    padtxt = gb.text(f"shop{i}.keypad.txt", "Log in to\ncontinue", 0.08, M("screen", emit=3.0),
+    lock = gb_.box(f"shop{i}.padlock", (x + 1.2, FRONT + 0.2, 0.35), (0.18, 0.08, 0.22), M("gold", metal=0.8, rough=0.3))
+    unm = gb_.text(f"shop{i}.unm", "UNDER NEW\nMANAGEMENT", 0.22, M("lease"), (x - 0.8, FRONT + 0.18, 1.9), facing="+Y")
+    pad = gb_.box(f"shop{i}.keypad", (x + 1.9, FRONT + 0.2, 1.3), (0.5, 0.06, 0.7), M("phone"))
+    padtxt = gb_.text(f"shop{i}.keypad.txt", "Log in to\ncontinue", 0.08, M("screen", emit=3.0),
                      (x + 1.9, FRONT + 0.24, 1.4), facing="+Y")
     S.setdefault("padlocks", []).append([lock, unm])
     S.setdefault("keypads", []).append([pad, padtxt])
     if kind == "lease":
         for k in range(3):
-            gb.box(f"shop{i}.ply{k}", (x - 2 + k * 1.3, FRONT + 0.06, 1.85), (1.25, 0.04, 2.3), M("plywood"))
+            gb_.box(f"shop{i}.ply{k}", (x - 2 + k * 1.3, FRONT + 0.06, 1.85), (1.25, 0.04, 2.3), M("plywood"))
     if kind == "pawn":
-        gb.box("pawn.led", (x, FRONT + 0.25, 4.6), (2.6, 0.2, 0.6), M("ink"))
-        gb.text("pawn.led.txt", "48:00:00", 0.4, M("rec", emit=8.0), (x, FRONT + 0.36, 4.6), facing="+Y", mono=True)
+        gb_.box("pawn.led", (x, FRONT + 0.25, 4.6), (2.6, 0.2, 0.6), M("ink"))
+        gb_.text("pawn.led.txt", "48:00:00", 0.4, M("rec", emit=8.0), (x, FRONT + 0.36, 4.6), facing="+Y", mono=True)
     if i in (2, 6):  # graffiti on piers and plywood
-        gb.plane(f"shop{i}.graf", (x - 2.6, FRONT + 0.01, 1.2), (0.9, 1.1), M("graffiti1" if i == 2 else "graffiti2"),
+        gb_.plane(f"shop{i}.graf", (x - 2.6, FRONT + 0.01, 1.2), (0.9, 1.1), M("graffiti1" if i == 2 else "graffiti2"),
                  facing="+Y")
     if i == 7:  # scaffolding on the upper storeys
         for k in range(5):
-            gb.box(f"scaf.v{k}", (x - 2.8 + k * 1.4, FRONT + 0.9, 7.5), (0.06, 0.06, 7), M("rail", metal=0.6))
+            gb_.box(f"scaf.v{k}", (x - 2.8 + k * 1.4, FRONT + 0.9, 7.5), (0.06, 0.06, 7), M("rail", metal=0.6))
         for z in (4.5, 7.0, 9.5):
-            gb.box(f"scaf.h{z}", (x, FRONT + 0.9, z), (5.8, 0.06, 0.06), M("rail", metal=0.6))
-            gb.box(f"scaf.p{z}", (x, FRONT + 0.9, z - 0.05), (5.8, 0.9, 0.05), M("plywood"))
+            gb_.box(f"scaf.h{z}", (x, FRONT + 0.9, z), (5.8, 0.06, 0.06), M("rail", metal=0.6))
+            gb_.box(f"scaf.p{z}", (x, FRONT + 0.9, z - 0.05), (5.8, 0.9, 0.05), M("plywood"))
     # "For Lease" signs in a few upper windows
     if i in (3, 8):
-        gb.plane(f"shop{i}.forlease", (x + 1.8, FRONT + 0.03, 8.6), (1.0, 0.6), M("lease"), facing="+Y")
-        gb.text(f"shop{i}.forlease.t", "FOR LEASE", 0.14, M("sign"), (x + 1.8, FRONT + 0.05, 8.6), facing="+Y")
+        gb_.plane(f"shop{i}.forlease", (x + 1.8, FRONT + 0.03, 8.6), (1.0, 0.6), M("lease"), facing="+Y")
+        gb_.text(f"shop{i}.forlease.t", "FOR LEASE", 0.14, M("sign"), (x + 1.8, FRONT + 0.05, 8.6), facing="+Y")
     # interior light (warm by day in the eatery; the Dev's shop at night)
-    lt = gb.empty(f"shop{i}.light.ctl", (x, FRONT - 3, 3.8))
+    lt = gb_.empty(f"shop{i}.light.ctl", (x, FRONT - 3, 3.8))
     lt["on"] = 1.0
     ld = __import__("bpy").data.lights.new(f"shop{i}.light", "AREA")
     ld.energy, ld.size, ld.color = 300, 3.0, gb.lin(C["warm"])[:3]
-    lo = gb.link(__import__("bpy").data.objects.new(f"shop{i}.light", ld))
+    lo = gb.link(__import__("bpy").data.objects.new(f"shop{i}.light", ld), root)
     lo.location = (x, FRONT - 3, 4.0)
     S.setdefault("shoplights", []).append(lo)
+    S.setdefault("doors", []).append(root.matrix_world @ __import__("mathutils").Vector((1.9, 0.5, 0.16)))
+    S.setdefault("shopx", []).append(xw)
     return root
 
 
@@ -503,6 +535,14 @@ def build():
     street(S)
     for i, (x, sign, kind) in enumerate(SHOPS):
         shopfront(S, i, x, sign, kind)
+    for k, (x, sign, kind) in enumerate(NORTH_SHOPS):
+        shopfront(S, len(SHOPS) + k, x, sign, kind, north=True)
+    import bpy
+    bpy.context.view_layer.update()
+    for i, win, name in UPPER_SIGNS:
+        w = bpy.data.objects[f"shop{i}.{win}"]
+        gb.text(f"shop{i}.{win}.sign", name, 0.13 if len(name) < 16 else 0.09, M("ink"), (0, 0.03, -0.5), facing="+Y",
+                parent=w)
     eatery_interior(S)
     dev_interior(S)
     corner(S)

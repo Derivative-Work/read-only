@@ -1,0 +1,2 @@
+file	url	retrieved	sha256	note
+blackout_list/subreddits.txt	https://storage.googleapis.com/reddit-blackout-announcements/subreddits.txt	2026-10-30T00:57:41-04:00	cc74ed9e7963a065df557e5ae126734d4dab410dfa7c3082c4c39bcc23b2b16e	5,351 subreddits that announced they would join the June 2023 blackout, from r/ModCoord posts (github.com/bpettis/reddit-blackout-announcements; also Dryad doi:10.5061/dryad.qfttdz0qd). Announced participants, not a record of who went private; incomplete.

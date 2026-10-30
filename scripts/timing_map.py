@@ -158,17 +158,21 @@ def main():
         if t is not None:
             cursor = t
         shots.append({**r, "t": t, "line": line_id, "how": how})
-    # S39b-S39e: split the replies between S39a and the next timed shot into equal runs of whole beats
+    # S39b-S39e: split the replies between S39a and the next timed shot into runs of whole beats, in the
+    # proportions of config/replies_split.json (equal runs without it)
     idx = [i for i, s in enumerate(shots) if s["how"] == "split"]
     if idx:
         a = shots[idx[0] - 1]["t"]
         b = next(s["t"] for s in shots[idx[-1] + 1:] if s["t"] is not None)
         ka, kb = int(np.searchsorted(beats, a - 0.05)), int(np.searchsorted(beats, b - 0.05))
-        n = len(idx) + 1  # the previous shot (S39a) gets a run too
-        cuts = [ka + round(j * (kb - ka) / n) for j in range(1, n)]
-        for i, k in zip(idx, cuts):
+        ids = [shots[idx[0] - 1]["id"]] + [shots[i]["id"] for i in idx]
+        wp = Path("config/replies_split.json")
+        wts = json.loads(wp.read_text())["weights"] if wp.exists() else {}
+        w = np.array([wts.get(i, 1.0) for i in ids], float)
+        edges = ka + np.round(np.cumsum(w)[:-1] / w.sum() * (kb - ka)).astype(int)
+        for i, k in zip(idx, edges):
             shots[i]["t"] = float(beats[k])
-            shots[i]["how"] = f"replies split by beats ({(kb - ka) / n:.1f} beats a shot, S39a to S40)"
+            shots[i]["how"] = f"replies split by beats in proportion {wts.get(shots[i]['id'], 1.0)} (config/replies_split.json)"
     for s in shots:
         s["t"] = None if s["t"] is None else round(float(s["t"]), 3)
         s["frame"] = fr(s["t"])

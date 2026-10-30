@@ -1,4 +1,4 @@
-<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 129, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
+<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 135, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
 
 # Read-Only: Shot List
 
@@ -163,7 +163,7 @@ Four sets, all on or above the same block, so one Blender scene covers the whole
 | Set | What it is | Key props |
 | --- | --- | --- |
 | The corner | Street corner with a dead payphone | Handset with a red REC light, streetlight with a coin meter |
-| The block | A row of shopfronts, one per community. One is a Filipino eatery signed "r/Philippines": warm and busy in the morning opener, shuttered at night | Community names in the r/ style, in plain shop lettering (r/Philippines, r/Aquariums, r/Breadit); the Dev's shop keeps its trade sign, "Third-Party App Repair," since it's an app rather than a community, roll-down shutters, neon "READ-ONLY" signs |
+| The block | A row of shopfronts, one per community. One is a Filipino eatery signed "r/Philippines": warm and busy in the morning opener, shuttered at night | Community names in the r/ style, in plain shop lettering (r/Philippines, r/Cooking, r/Sourdough), each one a community that announced it would join the June 2023 blackout (r/ModCoord's list); the Dev's shop keeps its trade sign, "Third-Party App Repair," since it's an app rather than a community, roll-down shutters, neon "READ-ONLY" signs |
 | The tower | Glass office tower across the street | Backlit lobby, server-rack throne, balcony with a bell, LED ticker band, rooftop billboard |
 | The pocket park | A small fenced lot turned cemetery | Headstones, shoebox coffin, an empty doghouse labeled "BOT DEFENSE" |
 
@@ -188,7 +188,7 @@ Act 1 is all Blender. Hook 2 reuses Hook 1's renders with changed dressing.
 | S01d | Cold open | Before the music | Pre-roll | A swipe on the phone from the camera to a third-party reader app: a community thread where a helper bot has replied and people answer "good bot." The thumb scrolls a moment, then pockets the phone | Invented app and accounts: no real app's design, no real usernames | B+JS |
 | S01e | Cold open to Intro | The first piano chord, 2.9 s before "Yeah, hello?" | 0:00.14 | Match cut from the phone in hand to the dangling payphone handset at night (S02) | Music starts on the cut | F |
 | S02 | Intro | "Yeah, hello? …You still there?" | 0:00.14 | Wide night establishing shot of the block; slow push toward the payphone, handset dangling | None | B |
-| S03 | Intro | "This call may be recorded" | 0:07.75 | Close-up: a red REC light blinks inside the handset | Phone-line waveform spikes on "recorded" | B+JS |
+| S03 | Intro | "This call may be recorded" | 0:07.75 | Close-up: a red REC light blinks inside the handset, held until the beat comes in (0:09.70); then a slow pull back from the payphone to the block until Verse 1 | Phone-line waveform spikes on "recorded" | B+JS |
 | S04 | Verse 1 | "Fifteen years your door was open…" | 0:20.62 | The Dev unlocks his shop, "Third-Party App Repair, est. 2008"; warm flashback tint of a busy shop | None | B+M |
 | S05 | Verse 1 | "So I built the app you should've built…" | 0:23.38 | Through the shop window, the tower lobby displays a worse copy of what's on his shelves | None | B |
 | S06 | Verse 1 | "Then a price sheet in my inbox…" | 0:25.88 | An envelope drops through the mail slot; the wall calendar starts shedding pages | Day counter from 30 to 0 | B+JS |
@@ -211,7 +211,7 @@ Act 1 is all Blender. Hook 2 reuses Hook 1's renders with changed dressing.
 | S23 | Verse 2 | "…robots with the wallets scrapin' all your brains" | 1:19.91 | He points down the street: VIP bots with vacuum hoses in the shops' mail slots | None | B+M |
 | S24 | Verse 2 | "I'm the wall around your words…" | 1:22.45 | He heroically bricks up the lobby doors | None | B |
 | S25 | Verse 2 | "(beat drops) …so I sold 'em the whole lot." | 1:27.63 | The brick wall has a little door in it. A VIP bot hands over a briefcase; the CEO hands back the keys. Hard stop. | None | B |
-| S26 | Hook 2 | Whole hook | 1:29.64 | Reuse S14–S17, but the shutters now carry padlocks and "UNDER NEW MANAGEMENT" signs | None | B |
+| S26 | Hook 2 | Whole hook | 1:29.64 | One camera per line: S14's and S15's, then S38's doghouse on "The guard dog's put down" and S39's VIP bots strolling past it on "Now the wolves got a contract". The shutters now carry padlocks and "UNDER NEW MANAGEMENT" signs | None | B |
 | S27 | Verse 3 | "Said the bots were the problem…" | 1:40.18 | Handheld: the Dev storms down the padlocked block. A few human-looking bots blend into the crowd of mods, impossible to tell apart | None | B+M |
 | S28 | Verse 3 | "…by the terabyte to the biggest ones on Earth" | 1:43.20 | Sidewalk auction: crates labeled "COMMENTS 2005–2023" forklifted into a plain truck | None | B |
 | S29 | Verse 3 | "Sixty mil a year from the search guys…" | 1:45.28 | Two plain trucks pull up, labeled only "SEARCH" and "CHAT". At the tower door, a bouncer waves the SEARCH truck in and turns every other vehicle away, including an archive van | None | B |
@@ -233,7 +233,7 @@ The reveal starts at S40. From S42 on, every shot is the same set made photoreal
 | S38 | Good Bot | "You said the bots were the problem." | 2:17.07 | Slow pan to the empty doghouse labeled "BOT DEFENSE" by the gate | None | B |
 | S39 | Good Bot | "So you shut down the one that you'd need." | 2:19.14 | VIP bots stroll past the doghouse into the tower, gold badges swinging | None | B |
 | S39a | Good Bot | The first "good bot" replies | 2:20.92 | Mourners stick "good bot" notes on the coffin; the camera rises to reveal a cemetery behind it | None | B |
-| S39b | Good Bot | Replies continue | 2:24.14 | Slow dolly along a row of six identical headstones for the apps, all dated June 30, 2023 | Inscriptions per "Memorial headstones" | B |
+| S39b | Good Bot | Replies continue | 2:22.82 | Slow dolly along a row of six identical headstones for the apps, all dated June 30, 2023 | Inscriptions per "Memorial headstones" | B |
 | S39c | Good Bot | Replies continue | 2:26.78 | Pushshift's stone, then BotDefense's stone in front of a field of 144,926 tiny markers | Inscriptions per "Memorial headstones" | B |
 | S39d | Good Bot | Replies continue | 2:28.76 | A cluster of four stones: r/IAmA's celebrity AMAs, mobile moderation on r/Blind, search engines other than Google, Wayback Machine archiving | Inscriptions per "Memorial headstones" | B |
 | S39e | Good Bot | The last replies | 2:31.38 | Freshly dug plots with stones for RSS feeds and the public Data API; the shot ends on an open grave with a shovel beside it, under "Logged-out Reddit · 2005 –" | Inscriptions per "Memorial headstones" | B |
@@ -245,7 +245,7 @@ The reveal starts at S40. From S42 on, every shot is the same set made photoreal
 | S45 | Verse 4 | "…allegedly" | 2:48.41 | The hype man's silhouette in a doorway | None | B→V |
 | S46 | Final hook | Retired: the take has no final hook. Folded into S48. | Retired | None | None | B→V |
 | S47 | Outro | "(beep) This call was recorded." | 2:52.12 | The payphone again, now real; the REC light blinks | None | B→V |
-| S48 | Outro | "So was everything else." | 3:05.32 | The camera cranes up from the payphone over the photoreal block (S46's imagery, folded in): a VIP bot stands in every doorway, every shutter has a keypad reading "Log in to continue," and every window shows a red REC light. Then the camera settles on the dark pocket park | None | B→V |
+| S48 | Outro | The second "This call was recorded" through "So was everything else." | 2:56.74 | The camera cranes up from the payphone over the photoreal block (S46's imagery, folded in): a VIP bot stands in every doorway, every shutter has a keypad reading "Log in to continue," and every window shows a red REC light. Then the camera settles on the dark pocket park | None | B→V |
 | S48a | After the outro | Silence after "So was everything else" | 3:06.38 | The camera returns to the cemetery, now photoreal, and holds on the open grave under "Logged-out Reddit · 2005 –". Nothing moves. | None | B→V |
 | S48b | Tag | After the last word | After the audio | The open grave fades to black, which resolves into a generic login prompt; the cursor blinks in the username field, then cut | Generic UI, no Reddit branding | JS |
 

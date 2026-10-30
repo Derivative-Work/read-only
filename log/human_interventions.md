@@ -50,3 +50,15 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - **R2:** checking the timing map by ear (the M2 gate).
   - **R1:** the go-ahead for M3.
 - **Not answered:** whether the eulogy has a music box and a text-to-speech voice, and whether Verse 4 is piano-only (`timing/m2_review.md` section 3). The stem levels stand as the record: drums under both. Logged as Suno's change pending the human's ear.
+
+## 2026-10-30T00:46 (approx., the human's message) — M3 review: the four proposals taken; more subreddits on the block — R1, R2
+
+- **Note from the human:** "go with your proposals for all four. I think we also need more subreddits to fill in the block more"
+- **Rule:**
+  - **R2:** the timing of S39a–S39e, S48 and S03 (cut points and shot lengths).
+  - **R1:** S26's staging and the fuller block, as creative notes given in words. The agent made every change (production log, 00:55).
+
+## 2026-10-30T00:58 (approx., the human's message) — The block's communities swapped for confirmed blackout participants — R1
+
+- **Notes from the human:** "did these subreddits participate in the blackout"; then "go with your swaps, Sourdough for Breadit, Cooking for Aquariums".
+- **Rule:** R1 (choosing between the agent's proposals). r/Aquariums and r/Breadit were the brief's own examples; the human chose their replacements. The agent made the change (production log, 00:58).

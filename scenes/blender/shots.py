@@ -142,16 +142,32 @@ def light(S):
 
 # ---------------------------------------------------------------- the gags
 
-def shutters_slam(S, t0, t1, order, keep=True):
-    """Slam the shutters in `order` (shop indices) on even steps from t0 to t1; each slam takes 3 frames; each shop's
-    neon lights as its shutter lands."""
+def shutters_slam(S, t0, t1, order, aim=None):
+    """Slam the shutters in `order` (shop indices) from t0 to t1; each slam takes 3 frames; each shop's neon lights as
+    its shutter lands. Even steps, or with aim=(x0, x1) (the tracking camera's aim moving from x0 to x1 over the shot)
+    each shop slams as the aim passes it, so the slams land in frame; shops the aim never reaches go first."""
     n = len(order)
     times = [t0 + (t1 - t0) * (k + 0.5) / n for k in range(n)]
+    if aim:
+        x0, x1 = aim
+        ahead = [i for i in order if not min(x0, x1) <= S["shopx"][i] <= max(x0, x1)]
+        times = []
+        for i in order:
+            if i in ahead:
+                f = 0.03 + 0.12 * ahead.index(i) / max(1, len(ahead))
+            else:
+                f = 0.15 + 0.8 * (S["shopx"][i] - x0) / (x1 - x0)
+            times.append(t0 + (t1 - t0) * f)
     for i, t in zip(order, times):
         sh, ne = S["shutters"][i], S["neon"][i]
         S["slam"].setdefault(i, []).append((t, 1.0))
         S["neon_on"].setdefault(i, []).append((t, 1.0))
     return times
+
+
+def west_last(S):
+    """Every shop, east to west, so the eatery (the westmost) comes down last."""
+    return sorted(range(len(S["shutters"])), key=lambda i: -S["shopx"][i])
 
 
 def flush_shutters(S):
@@ -208,8 +224,10 @@ def stage(S):
     cam("S02", [(0, (-20, 4, 4.0), (-31.5, -8.6, 1.4)), (1, (-27.5, -3.2, 2.2), (-31.5, -8.6, 1.1))], lens=30)
     gb.keys(hs, "rotation_euler", [(F(t), 0.08 * math.sin(t * 2.2)) for t in np.arange(0, 22, 0.5)], index=1,
             interp="BEZIER")
-    cam("S03", [(0, (-31.45, -7.95, 0.95), (-31.5, -8.42, 0.86)), (1, (-31.45, -8.15, 0.92), (-31.5, -8.42, 0.86))],
-        lens=50)
+    beat_in = [b for a, b in TM["drum_dropouts"] if b < 12][-1]  # the full beat's entry (0:09.70)
+    k_in = (beat_in - SP["S03"][0]) / (SP["S03"][1] - SP["S03"][0])
+    cam("S03", [(0, (-31.45, -7.95, 0.95), (-31.5, -8.42, 0.86)), (k_in, (-31.45, -8.1, 0.93), (-31.5, -8.42, 0.86)),
+                (1, (-24, 1.5, 3.5), (-22, -9, 2.5))], lens=50)
     rec = []
     for a, b in (SP["S03"], SP["S47"]):
         for t in np.arange(a, b, 0.5):
@@ -266,7 +284,7 @@ def stage(S):
     sing(d12, "S12")
     a, b = SP["S12"]
     k = 0
-    for i in range(10):  # windows open up and down the block
+    for i in range(len(S["windows"])):  # windows open up and down the block
         for (ctl, _), t in zip(S["windows"][i], [a + 0.25 + 0.04 * (i * 6 + j) for j in range(6)]):
             if ctl["lit"] < 0.5:
                 gb.keys(ctl, '["lit"]', [(0, 0.0, "CONSTANT"), (F(t), 1.0, "CONSTANT"), (F(SP["S15"][0]), 0.0, "CONSTANT"),
@@ -280,7 +298,7 @@ def stage(S):
 
     # ---- hook 1 (S14-S17): shutters slam east to west, the eatery last; the block goes dark
     a, b = SP["S14"]
-    shutters_slam(S, a, b, list(range(9, -1, -1)))
+    shutters_slam(S, a, b, west_last(S), aim=(20, -30))
     cam("S14", [(0, (30, -2.0, 2.2), (20, -10, 2.4)), (1, (-24, -2.0, 2.2), (-30, -10, 2.4))], lens=24)
     cam("S15", [(0, (-60, 25, 30), (-5, -9, 2)), (1, (-58, 24, 32), (-3, -9, 2))], lens=24)
     off = SP["S15"][0]
@@ -363,12 +381,15 @@ def stage(S):
     lines = [ln for ln in TM["lines"] if ln["section"] == "Hook 2"]
     reuse = [("S14", [(0, (30, -2.0, 2.2), (20, -10, 2.4)), (1, (-24, -2.0, 2.2), (-30, -10, 2.4))], 24),
              ("S15", [(0, (-60, 25, 30), (-5, -9, 2)), (1, (-58, 24, 32), (-3, -9, 2))], 24),
-             ("S16", [(0, (-3.3, -4.0, 4.4), (-3, -10, 4.6)), (1, (-3.2, -6.5, 4.5), (-3, -10, 4.6))], 40),
-             ("S17", [(0, (-18, 3.5, 2.6), (-25, -6, 1.5)), (1, (-19.5, 2.5, 3.2), (-25, -6.6, 3.5))], 28)]
+             ("S38", [(0, (-21.5, 7.8, 1.3), (-21, 13, 0.6)), (1, (-19.5, 8.3, 1.1), (-18.4, 11.6, 0.6))], 35),
+             ("S39", [(0, (-17.0, 3.5, 1.4), (-18.4, 11, 0.8)), (1, (-15.5, 3.5, 1.4), (-10, 10, 1.2))], 28)]
     starts = [SP["S26"][0]] + [ln["start"] for ln in lines[1:]] + [SP["S26"][1]]
     for (src, keys, lens), t0, t1 in zip(reuse, starts, starts[1:]):
         cam("S26", keys, lens=lens, t0=t0, t1=t1)
-    shutters_slam(S, starts[0], starts[1], list(range(9, -1, -1)))
+    shutters_slam(S, starts[0], starts[1], west_last(S), aim=(20, -30))
+    for k in range(3):  # "Now the wolves got a contract": the VIP bots stroll past the doghouse (S39's staging)
+        v = during(B.vip((-19 - k * 1.3, 8.0, 0.16), 90 + k, rot_z=math.pi / 2), starts[3], starts[4])
+        gb.key_vec(v, "location", [(F(starts[3]), (-19 - k * 1.3, 8.0, 0.16)), (F(starts[4]), (-12 - k * 1.3, 8.0, 0.16))])
     for lock, unm in S["padlocks"]:
         gb.show_from(lock, SP["S26"][0])
         gb.show_between(unm, SP["S26"][0], SP["S33"][1])
@@ -456,7 +477,7 @@ def stage(S):
     a, b = SP["S39"]
     for k in range(3):
         v = only(B.vip((-22 + k * 1.5, 8.0, 0.16), 60 + k, rot_z=math.pi / 2), "S39")
-        walk(v, "S39", (-22 - k * 1.5, 8.0, 0.16), (-14 - k * 1.5, 8.0, 0.16))
+        walk(v, "S39", (-19 - k * 1.3, 8.0, 0.16), (-12 - k * 1.3, 8.0, 0.16))
     cam("S39", [(0, (-17.0, 3.5, 1.4), (-18.4, 11, 0.8)), (1, (-15.5, 3.5, 1.4), (-10, 10, 1.2))], lens=28)
     a, b = SP["S39a"]
     for k, n in enumerate(S["notes"]):
@@ -491,16 +512,18 @@ def stage(S):
     # ---- outro (S47-S48b): the payphone; the crane over a block of doormen, keypads and REC lights; the open grave
     cam("S47", [(0, (-30.6, -7.4, 1.3), (-31.5, -8.42, 0.9)), (1, (-30.9, -7.7, 1.1), (-31.5, -8.42, 0.9))], lens=40)
     a, b = SP["S48"]
-    for k, x in enumerate(sh_x):
-        only(B.vip((x + 1.9, B.FRONT + 0.5, 0.16), 70 + k, rot_z=math.pi), "S48")
+    for k, door in enumerate(S["doors"]):
+        north = k >= len(B.SHOPS)
+        only(B.vip(tuple(door), 70 + k, rot_z=0.0 if north else math.pi), "S48")
     for wins in S["windows"]:
         for ctl, rec in wins:
             gb.show_from(rec, a)
     for wins in S["windows"]:
         for ctl, rec in wins:
             gb.show_between(rec, a, 1e5)
-    cam("S48", [(0, (-29.5, -3.5, 1.8), (-31.5, -8.6, 1.2)), (0.5, (-20, 5, 18), (-5, -10, 4)),
-                (1, (-21, 4.0, 14), (-21, 18, 0))], lens=24)
+    cam("S48", [(0, (-29.5, -3.5, 1.8), (-31.5, -8.6, 1.2)), (0.2, (-26, 0, 6), (-20, -10, 3)),
+                (0.55, (-8, 2, 14), (5, -10, 4)), (0.8, (-14, 5, 16), (-14, 10, 2)), (1, (-21, 4.0, 14), (-21, 18, 0))],
+        lens=24)
     cam("S48a", [(0, (-11.6, 21.6, 1.6), (-11.6, 25.0, 0.5))], lens=35)
     # S48b (the login prompt) and S50 (the end card) are code-drawn cards (JS): the assembler draws placeholders
     cam("S48b", [(0, (-11.6, 21.6, 1.6), (-11.6, 25.0, 0.5))], lens=35)
