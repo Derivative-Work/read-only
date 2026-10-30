@@ -422,12 +422,46 @@ def headstone(name, loc, label, size=1.0, m=None):
     if FINAL:  # settled over the years: a small lean, seeded by name so every render matches
         r = __import__("random").Random(name)
         root.rotation_euler = (r.uniform(-0.05, 0.05), r.uniform(-0.04, 0.04), r.uniform(-0.06, 0.06))
-    gb.box(f"{name}.slab", (0, 0, 0.55 * size), (0.9 * size, 0.16 * size, 1.1 * size), m or M("stone"), parent=root)
-    gb.cyl(f"{name}.top", (0, 0, 1.1 * size), 0.45 * size, 0.16 * size, m or M("stone"), parent=root, axis="Y")
+    slab = gb.box(f"{name}.slab", (0, 0, 0.55 * size), (0.9 * size, 0.16 * size, 1.1 * size), m or M("stone"),
+                  parent=root)
+    top = gb.cyl(f"{name}.top", (0, 0, 1.1 * size), 0.45 * size, 0.16 * size, m or M("stone"), parent=root, axis="Y")
+    if FINAL:  # one solid with a smooth arched top (the cylinder read as a polygon and covered the upper letters)
+        import mk
+        r = 0.45 * size
+        arc = [(r * math.cos(a), 0.55 * size + r * math.sin(a)) for a in np.linspace(0, math.pi, 48)]
+        k = mk.MK()
+        k.prism([(-r, -0.55 * size), (r, -0.55 * size)] + arc, 0.16 * size, m or M("stone"))
+        slab.data = k.mesh(f"{name}.stone")
+        top.hide_render = top.hide_viewport = True
     if label:
         # big enough to read on a phone (brief, "Memorial headstones"): ~0.15 m capitals on a 0.9 m stone
-        gb.text(f"{name}.t", label, 0.12 * size if label.count("\n") > 1 else 0.155 * size, M("ink"),
-                (0, -0.085 * size, 0.7 * size), facing="-Y", parent=root)
+        ts = 0.12 * size if label.count("\n") > 1 else 0.155 * size
+        if not FINAL:
+            gb.text(f"{name}.t", label, ts, M("ink"), (0, -0.085 * size, 0.7 * size), facing="-Y", parent=root)
+            return root
+        # the final look: the letters cut into the face (a boolean), their cut a darker, rougher stone; the line
+        # shrunk to fit inside the stone's margins
+        import bpy
+        t = gb.text(f"{name}.t", label, ts, gb.mat("stone.cut", "#5f5b55", rough=0.95), (0, -0.08 * size, 0.7 * size),
+                    facing="-Y", parent=root, extrude=0.005 * size)
+        bpy.context.view_layer.update()
+        fit = min(1.0, 0.76 * size / max(t.dimensions.x, 1e-6), 0.62 * size / max(t.dimensions.y, 1e-6))
+        t.scale = (fit, fit, 1.0)
+        bpy.context.view_layer.update()
+        me = bpy.data.meshes.new_from_object(t.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+        cut = gb.link(bpy.data.objects.new(f"{name}.cut", me), root)
+        cut.matrix_parent_inverse = t.matrix_parent_inverse
+        cut.location, cut.rotation_euler, cut.scale = t.location, t.rotation_euler, t.scale
+        bpy.data.objects.remove(t)
+        bo = slab.modifiers.new("engrave", "BOOLEAN")
+        bo.operation, bo.solver, bo.object = "DIFFERENCE", "EXACT", cut
+        bo.material_mode = "TRANSFER"
+        bo.use_self, bo.use_hole_tolerant = True, True  # glyphs overlap and are not always closed
+        bpy.context.view_layer.update()  # applied once here: evaluated per frame it quadrupled the render time
+        baked = bpy.data.meshes.new_from_object(slab.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+        slab.modifiers.remove(bo)
+        slab.data = baked
+        bpy.data.objects.remove(cut)
     return root
 
 

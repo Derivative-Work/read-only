@@ -486,3 +486,15 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Checked:**
   - the sub-agent's `renders/m4/detail_park/v9`, `v10`;
   - with the props: `renders/m4/detail_park/mine1..3` (S35, S39a, S39c, S39e).
+
+## 2026-10-30T11:05:00-04:00 — Headstones: one arched solid, inscriptions engraved and fitted
+
+- **Why:** the human's note (human_interventions, 11:05, R1).
+- **What** (`block.headstone()`, final look only; the grey-box is unchanged):
+  - **The shape:** each stone is one solid, a slab with a smooth 48-segment arched top. Before, it was a box plus a 16-sided cylinder, which read as a polygon. The cylinder's face also covered the upper letters, so the first engraving tests lost words.
+  - **The inscriptions:**
+    - Each is shrunk to fit within the stone's margins: 76% of its width and 62% of its height.
+    - Each is cut into the face 5 mm deep (a Boolean, applied once at build time), and the cut takes a darker, rougher stone.
+    - There is no black lettering any more.
+- **Cost:** about 40 s more to build, and none per frame. Evaluating the Boolean every frame had quadrupled the time per still.
+- **Checked:** S36, S39b, S39d and S39e (`renders/m4/detail_park/stones5`; sheet `renders/m4/stones_engraved.jpg`).

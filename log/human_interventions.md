@@ -89,3 +89,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Effect:**
   - Review renders use the `draft720` profile (1280×720) until the end.
   - The final render then goes to 4K, not the 1080p that `config/render_profiles.json` notes from the brief. That profile changes when we get there.
+
+## 2026-10-30T11:05 — Headstones: overflowing, polygonal, painted-on text — R1
+
+- **Note from the human:** "not quite: there is text going over the edge of the gravestones, and they are polygonal rather than round. they should also probably be engraved into the stones rather than black text"
+- **Rule:** R1 (a creative note on the detail pass, given in words). The agent made the change (production log, same time).
