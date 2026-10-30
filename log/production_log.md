@@ -24,3 +24,25 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **Brief vs the setup:** The brief's layout (`blender/`, `review/`, `edit/`) maps onto Not Yet's folders, as `CLAUDE.md` records. The brief's deliverable is 1080p at 24 fps, so `final` is 1920×1080 at 24 fps, not Not Yet's 4K/30.
 - **Why:** Brief, "Production rules and logging" (log from the first action) and "Inputs the human supplies"; Not Yet's step 1 (layout, the 50 MiB check before the first commit, mirrored brief).
 - **Environment:** Claude Code (Opus 5.5) on the RTX 5090 box (32 GB, driver 595.99.02); Blender 5.2.3 LTS; ffmpeg 8.0.1; Python 3.14.4 (system), 3.12 venv via uv 0.13.0; Node v24.22.0; git. Disk: 130 GB free.
+
+## 2026-10-29T23:40:00-04:00 — Step 2: Suno take and planning chat logged; the Reference Guide found
+
+- **What:** Fetched Suno's share page and the planning chat's share page with Not Yet's scripts. Extracted the take's metadata and submitted lyrics, and wrote `log/prompts/suno/takes.md`. Converted the chat to Markdown. Read the chat in full. It links the brief's companion doc, the Reference Guide ("Read-Only / We Hear You: Reference Guide", https://claude.ai/artifact/5KCzixyz4DRBiT9wqovwkW, project `22ef55b7-1ab8-421a-84d2-cadb2c12121b`, rev 10), which I read with the docs tools.
+- **Commands:**
+  - `node scripts/fetch_share.mjs https://claude.ai/share/3aa680ba-c565-45bd-9c13-ecacf3444fe1 docs/planning_chat/planning_chat`; `.venv/bin/python -I scripts/chat_snapshot_to_md.py docs/planning_chat/planning_chat.json <url> > docs/planning_chat/planning_chat.md`
+  - `node scripts/fetch_suno.mjs https://suno.com/s/mQzQ0Dqkj7QCFTx9 log/prompts/suno/fetch_accepted`; `.venv/bin/python -I scripts/suno_meta.py log/prompts/suno/fetch_accepted`
+  - Docs `read` of project `22ef55b7-1ab8-421a-84d2-cadb2c12121b`, node `e1dfb341-e43b` (rev 10)
+- **Outputs:** `docs/planning_chat/planning_chat.{json,html,txt,md}`, `log/prompts/suno/fetch_accepted/{clip.json,lyrics.txt,page.html,page.txt,resp_*.json}`, `log/prompts/suno/takes.md`
+- **Script changes (`scripts/suno_meta.py`):**
+  - The lyric bounds were Not Yet's (`[Verse 1]` … `Goodnight.`). They are now `[Intro` … `So was everything else.`.
+  - String fields came out mojibaked ("Late-â90s"), because `unicode_escape` reads the page's UTF-8 as Latin-1. The script now re-decodes them.
+- **Findings:**
+  - **Take:** Suno V6 (`chirp-hawk`), `aug_creativity` 1, created 2026-10-17T00:20:23Z, 196.16 s. The stored style prompt is an expanded version of the brief's (`takes.md`).
+  - **The take predates the brief's later lyric edits.** Suno's page lyrics (78 lines) match the brief's except in these places (`takes.md`):
+    - **Hook 2** carries the "guard dog" lines.
+    - **No final hook** comes after Verse 4. The brief's S46 ("Read-only! The guard dog's put down…") is cued to a section the take may not have; M2 checks what is sung.
+    - **The eulogy's replies:** the brief's ~15 s of trickling "good bot" replies (added 2026-10-30, planning chat message 52) aren't in the submitted lyrics. The take has the original "Good bot. Good bot. Good bot." Message 50 puts that at about four seconds. The S39a–S39e headstone sequence was planned for the ~15 s. **Open question for the human** (a creative call: an extended take, an edit of the replies, or fewer stones).
+    - The MP3's lyrics tag (step 1) is an export artifact, as in Not Yet: its repeats aren't on Suno's page.
+  - **Planning chat:** "Song: Read-Only (Reddit API)", snapshot 2026-10-30T03:20:57Z. It has 52 messages, 2026-10-16 to 2026-10-30. Messages 3–4 aren't in the share (probably an edited branch); archived as shared. It holds no lyric audit. The brief's conflict-of-interest audit by another lab's model is M8. The shot list's last edits (headstones, u/alternate-source-bot removed) are from 2026-10-30 02:35–03:01Z, after the take and the post-filter batch.
+  - **Reference Guide:** a background timeline, a lyric-by-lyric reference table for both songs (Read-Only and the unmade boy-band version "We Hear You"), the visual references by shot, facts to verify, and sources. It says "other dates and figures here are from memory and approximate". The brief makes it the fact source for the end card, so it gets checked at M8. Not mirrored yet; it gets mirrored to `docs/` when the end card starts.
+- **Why:** Brief, "Production rules and logging": every prompt sent to any model, verbatim, with its outputs (the Suno prompt and lyrics). Not Yet's step 2: log the audio retroactively and archive the planning chat.

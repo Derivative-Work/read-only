@@ -21,12 +21,19 @@ def main(d):
     for k in KEYS:
         m = re.search(r'"' + k + r'":("(?:[^"\\]|\\.)*"|\{[^{}]*\}|[-0-9.]+|true|false|null)', seg)
         if m:
-            clip[k] = json.loads(m.group(1))
+            v = json.loads(m.group(1))
+            if isinstance(v, str):  # unicode_escape reads the page's UTF-8 bytes as Latin-1; undo that
+                try:
+                    v = v.encode("latin-1").decode("utf-8")
+                except UnicodeError:
+                    pass
+            clip[k] = v
     (d / "clip.json").write_text(json.dumps(clip, indent=1, ensure_ascii=False) + "\n")
     t = (d / "page.txt").read_text()
-    # The lyrics run from the first section tag to the last line, "Goodnight.".
-    a, b = t.find("[Verse 1]"), t.rfind("Goodnight.")
-    (d / "lyrics.txt").write_text(t[a:b + len("Goodnight.")] + "\n")
+    # The lyrics run from the first section tag to the last line, "So was everything else.".
+    first, last = "[Intro", "So was everything else."
+    a, b = t.find(first), t.rfind(last)
+    (d / "lyrics.txt").write_text(t[a:b + len(last)] + "\n")
     print(d.name, clip.get("id"), clip.get("duration"))
 
 
