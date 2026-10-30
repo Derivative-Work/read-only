@@ -90,6 +90,11 @@ def receipt(rng):
         im.paste(strip.rotate(rng.uniform(-1.2, 1.2), expand=False, fillcolor=(60, 52, 44)), (x0, 20))
         for yy in (40, H - 90):  # staples
             d.rectangle((x0 + 110, yy, x0 + 180, yy + 8), fill=(180, 182, 186))
+    # the number written on it (S09, "an eviction with a number written on"): red marker across the strips, ringed
+    d.text((W / 2, H * 0.47), "$20,000,000", font=font(HAND, 190), fill=(196, 24, 24), anchor="mm", stroke_width=5,
+           stroke_fill=(196, 24, 24))
+    d.ellipse((40, H * 0.47 - 150, W - 40, H * 0.47 + 150), outline=(196, 24, 24), width=12)
+    d.text((W / 2, H * 0.47 + 230), "due June 30", font=font(HAND, 110), fill=(196, 24, 24), anchor="mm")
     im.save(OUT / "receipt.png")
 
 
@@ -165,6 +170,21 @@ def envelope(rng):
     im.save(OUT / "envelope.png")
 
 
+def tape_strip(rng):
+    """The adding machine's paper tape, a tile 57 mm wide x 228 mm long (props.tape_run repeats it along the run):
+    "0.24 +" printed along it (not across, as a real one prints: S13 sees it from the side and it has to read),
+    big, a little uneven."""
+    W, H = 1024, 256  # drawn lying along the run, turned upright for the UVs below
+    im = paper(W, H, (247, 243, 228), rng, 6)
+    d = ImageDraw.Draw(im)
+    f = font(MONO, 96)
+    for k in range(3):
+        ink = (50 + rng.randint(-10, 10), 50, 65)
+        d.text((W * (k + 0.5) / 3, H / 2), "0.24+", font=f, fill=ink, anchor="mm")
+    im = im.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)  # read from the shop side (S13)
+    im.save(OUT / "tape_strip.png")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     rng = random.Random(SEED)
@@ -181,6 +201,7 @@ def main():
     payroll(rng)
     cassette(rng)
     envelope(rng)
+    tape_strip(random.Random(SEED + 7))
     print(len(list(OUT.glob("*.png"))), "textures ->", OUT)
 
 

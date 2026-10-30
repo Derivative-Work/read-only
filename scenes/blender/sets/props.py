@@ -103,11 +103,127 @@ def envelope():
 
 
 def notice():
-    """S09: the tape, torn into strips and stapled up on his door."""
+    """S09: the tape, torn into strips and stapled up on his door, the total in red marker."""
     o = obj("notice")
     m = mk.MK()
     m.quad((0, 0.001, 0), (0.5, 0.7), img("receipt"), facing="+Y")
+    for x in (-0.16, 0.0, 0.16):  # a staple at the top of each strip
+        m.box((x, 0.003, 0.3), (0.04, 0.002, 0.004), mat("staple", "#b4b6ba", metal=0.9, rough=0.3))
     kit.mesh_swap(o, m.mesh("prop.notice"))
+    from mathutils import Vector  # flat on the door's street face (it floated 10 cm off it)
+    sc = bpy.context.scene
+    hit, loc, *_ = sc.ray_cast(bpy.context.evaluated_depsgraph_get(), Vector((-18.94, -8.0, 1.4)), Vector((0, -1, 0)),
+                               distance=3.0)
+    o.location = (-18.94, (loc.y + 0.004) if hit else -9.9, 1.4)
+
+
+# the tape's run (S07-S13), waypoints (x, y, zmax): each stretch drapes onto the highest upward-facing surface
+# below zmax (the counter, the floor, the threshold, the sidewalk, the street); zmax None = the point's own z (in
+# the air, leaving the roll)
+TAPE_W, TAPE_TILE = 0.085, 0.34  # 1.5x a real 57 mm tape (the props' scale), the strip texture's tile length
+TAPE_PATH = [(-20.4, -13.27, None, 1.17), (-20.4, -13.17, None, 1.2), (-20.4, -13.05, 1.2, 0),
+             (-20.35, -12.85, 1.2, 0), (-20.2, -12.4, 0.3, 0), (-19.6, -11.4, 0.3, 0), (-19.0, -10.4, 0.3, 0),
+             (-18.94, -9.4, 0.3, 0), (-19.3, -8.2, 0.3, 0), (-20.4, -7.65, 0.3, 0), (-26.4, -7.6, 0.3, 0),
+             (-27.2, -7.2, 0.3, 0), (-27.5, -5.6, 0.3, 0), (-27.7, -0.7, 0.3, 0), (-27.9, 4.0, 0.3, 0)]
+# (the sidewalk stretch at y -7.6: at -7.0 it lay beside the curb's painted line and read as another one)
+
+
+def tape_points(SP):
+    """The run sampled every 2 cm, each sample on its surface (ray cast at S08's middle, when the set is as the tape
+    finds it), 3 mm up. Returns [(x, y, z, s)], s the arc length from the roll."""
+    from mathutils import Vector
+    sc = bpy.context.scene
+    sc.frame_set(gb.F(sum(SP["S08"]) / 2))
+    dg = bpy.context.evaluated_depsgraph_get()
+    skip = ("dev", "tape", "notice", "cassette", "magnifier", "haze", "litter", "weeds", "cam.", "door")
+
+    def ground(x, y, zmax):
+        org, d = Vector((x, y, zmax)), Vector((0, 0, -1))
+        for _ in range(20):
+            hit, loc, n, _, ob, _ = sc.ray_cast(dg, org, d, distance=org.z + 1.0)
+            if not hit:
+                return 0.0
+            o = ob.original
+            if n.z > 0.7 and not o.hide_render and not o.name.startswith(skip):
+                return loc.z
+            org = loc + d * 1e-4
+        return 0.0
+    pts, s = [], 0.0
+    for (x0, y0, zm0, z0), (x1, y1, zm1, z1) in zip(TAPE_PATH, TAPE_PATH[1:]):
+        L = math.hypot(x1 - x0, y1 - y0)
+        n = max(1, int(L / 0.02))
+        for i in range(n):
+            u = i / n
+            x, y = x0 + (x1 - x0) * u, y0 + (y1 - y0) * u
+            z = (z0 + (z1 - z0) * u) if zm0 is None else ground(x, y, zm0) + 0.003
+            if pts:
+                s += math.dist(pts[-1][:3], (x, y, z))
+            pts.append((x, y, z, s))
+    return pts
+
+
+def tape_run(S, SP):
+    """The adding machine's tape as one continuous printed ribbon, revealed by arc length (an empty's ["reveal"],
+    metres, keyed by shots.py): S07 spews it off the roll and over the counter; S08 runs it out the door, down the
+    sidewalk and across the tracks; it lies there through S13. Replaces the grey-box's stretched box."""
+    pts = tape_points(SP)
+    me = bpy.data.meshes.new("prop.tape.run")
+    V, Fc, UV, ARC = [], [], [], []
+    for i, (x, y, z, s) in enumerate(pts):
+        a, b = pts[max(i - 1, 0)], pts[min(i + 1, len(pts) - 1)]
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        L = math.hypot(dx, dy) or 1.0
+        px, py = -dy / L * TAPE_W / 2, dx / L * TAPE_W / 2
+        V += [(x - px, y - py, z), (x + px, y + py, z)]
+        UV += [(0.0, s / TAPE_TILE), (1.0, s / TAPE_TILE)]
+        ARC += [(s, 0.0), (s, 0.0)]
+        if i:
+            Fc.append((2 * i - 2, 2 * i - 1, 2 * i + 1, 2 * i))
+    me.from_pydata(V, [], Fc)
+    for name, data in (("UVMap", UV), ("arc", ARC)):
+        uvl = me.uv_layers.new(name=name)
+        for poly in me.polygons:
+            for li in poly.loop_indices:
+                uvl.data[li].uv = data[me.loops[li].vertex_index]
+    for p in me.polygons:
+        p.use_smooth = True
+    ctl = gb.empty("tape.ctl", (0, 0, 0))
+    ctl["reveal"] = 0.0
+    m = bpy.data.materials.new("prop.tape.run")
+    m.use_nodes = True
+    m.surface_render_method = "DITHERED"
+    nt = m.node_tree
+    bsdf = nt.nodes["Principled BSDF"]
+    t = nt.nodes.new("ShaderNodeTexImage")
+    t.image = bpy.data.images.load(str(GEN / "tape_strip.png"), check_existing=True)
+    t.extension = "REPEAT"
+    nt.links.new(t.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Roughness"].default_value = 0.7
+    arc = nt.nodes.new("ShaderNodeUVMap")
+    arc.uv_map = "arc"
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    nt.links.new(arc.outputs["UV"], sep.inputs[0])
+    val = nt.nodes.new("ShaderNodeValue")
+    d = val.outputs[0].driver_add("default_value").driver
+    d.type = "SCRIPTED"
+    v = d.variables.new()
+    v.name, v.type = "r", "SINGLE_PROP"
+    v.targets[0].id_type, v.targets[0].id, v.targets[0].data_path = "OBJECT", ctl, '["reveal"]'
+    d.expression = "r"
+    lt = nt.nodes.new("ShaderNodeMath")
+    lt.operation = "LESS_THAN"
+    nt.links.new(sep.outputs["X"], lt.inputs[0])
+    nt.links.new(val.outputs[0], lt.inputs[1])
+    nt.links.new(lt.outputs[0], bsdf.inputs["Alpha"])
+    me.materials.append(m)
+    o = obj("tape.run")
+    o.data = me
+    o.location, o.rotation_euler, o.scale = (0, 0, 0), (0, 0, 0), (1, 1, 1)
+    o.animation_data_clear()  # the grey-box's stretching keys; its visibility is re-keyed below
+    shots.during(o, SP["S07"][0], SP["S13"][1])
+    blank(obj("tape.sidewalk"))
+    S["tape_ctl"], S["tape_len"], S["tape_pts"] = ctl, pts[-1][3], pts
+    return ctl
 
 
 CASS_S = 1.5  # the cassette at 1.5x a real one (100 x 64 x 12 mm): it's the evidence, it has to read at 720p
@@ -162,6 +278,16 @@ def magnifier():
     s = 1.8
     zc = (kit.dims("magnifying_glass_01").z - 0.066) * s
     kit.swap(o, "magnifying_glass_01", scale=s, offset=(0, zc, 0), rot=(math.pi / 2, 0, 0))
+    for m in o.data.materials:  # the lens: clear glass, seen through (as transmission, Eevee rendered it black)
+        if m and "lense" in m.name:
+            m.surface_render_method = "BLENDED"
+            b = m.node_tree.nodes.get("Principled BSDF")
+            if b:
+                for l in list(b.inputs["Alpha"].links):
+                    m.node_tree.links.remove(l)
+                b.inputs["Transmission Weight"].default_value = 0.0
+                b.inputs["Roughness"].default_value = 0.03
+                b.inputs["Alpha"].default_value = 0.12
 
 
 # ---------------------------------------------------------------- vehicles
@@ -599,6 +725,7 @@ def build(S, SP):
               doghouse, lanterns, shovel):
         f()
     brickwall(SP)
+    shots.tape_staging(S, SP, tape_run(S, SP))
     brooms(SP)
     chalk(S, SP)
     import os

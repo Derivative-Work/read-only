@@ -641,3 +641,23 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
 - **What:** S02–S39e at 720p with the flicker fixes and the re-staged gags (the commit before this one), into `renders/m4/act1_v3/frames`. v2 is superseded; frame sequences are never archived.
 - **Command:** `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v3/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`
+
+## 2026-10-30T16:16:37-04:00 — M4: the adding-machine tape made real; S07, S08, S09 and S13 re-staged
+
+- **Why:** the human's go-ahead (human_interventions, same time, R1). In the v2 render there was no tape: in S07 none came off the machine, in S08 nothing ran out the door, and in S13 the 8 cm grey-box strip read as a painted curb line. The S09 notice was hidden behind the Dev, and the magnifying glass crossed 7 m in 3 s with a black lens.
+- **The tape (`sets/props.py` tape_run):**
+  - One printed paper ribbon, 8.5 cm wide, about 27 m long: from the roll, over the counter edge, across the floor, out the door, along the sidewalk at y −7.6 (at −7.0 it lay against the curb's painted line), round the corner and over the tracks.
+  - Each stretch is draped by ray-casting onto the highest upward-facing surface below a height limit (counter, floor, threshold, sidewalk, street), 3 mm up.
+  - It's revealed by arc length through the material (a driven value against an "arc" UV, dithered alpha), keyed from `shots.tape_staging`: 0 to 2.6 m in S07, the rest by the end of S08. It lies there through S13.
+  - The grey-box's stretched boxes are replaced or blanked.
+- **The tape texture (`scripts/gen_detail_props.py` tape_strip):**
+  - "0.24+" printed along the tape, large: a real machine prints across it, but S13 sees it from the side and it has to read.
+  - The receipt texture (S09) now has the total in bold red marker, "$20,000,000", ringed, with "due June 30".
+  - The notice gets three staples and sits flat on the door's face (found by ray cast; it floated 10 cm off).
+- **Staging:**
+  - S07: closer on the machine; the tape spews over the counter edge to the floor.
+  - S08: a crane from the doorstep, up and back to 6 m, until the whole run shows. A first try chased the tape's end at 1.4 m and blurred it into nothing.
+  - S09: the notice slaps on (scale 0 → 1.1 → 1); the Dev stands aside; framed to read.
+  - S13: the glass moves 2.5 m in the shot, 0.24 m up over the tape; the camera is on the shop side (the curb's posts blocked the street side), at 40 mm. The lens is clear blended glass at alpha 0.12; with transmission it rendered black, and raytraced refraction didn't help.
+- **Tests:** `renders/m4/gags_v7`…`gags_v9`.
+- **The v3 render:** stopped at f_01659. Its 544 frames from S07 (f_01116) on were deleted, since they had the old staging (frame sequences are regenerable and never archived), and it resumes from there with --resume.

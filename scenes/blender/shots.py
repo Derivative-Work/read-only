@@ -68,6 +68,41 @@ def cam(sid, keys, lens=35.0, t0=None, t1=None, shake=0.0):
     return c
 
 
+# the tape's run in plan (props.TAPE_PATH's x, y): the S08 camera follows its end. TAPE_S07: how much is out by the
+# end of S07 (over the counter edge, onto the floor); TAPE_END: all of it (about 27 m)
+TAPE_S07 = 2.6
+
+
+def _tape_plan():
+    import props
+    pts, s = [], 0.0
+    for (x0, y0, *_), (x1, y1, *_) in zip(props.TAPE_PATH, props.TAPE_PATH[1:]):
+        pts.append((s, x0, y0))
+        s += math.hypot(x1 - x0, y1 - y0)
+    pts.append((s, props.TAPE_PATH[-1][0], props.TAPE_PATH[-1][1]))
+    return pts
+
+
+def tape_at(s):
+    pts = _tape_plan()
+    for (s0, x0, y0), (s1, x1, y1) in zip(pts, pts[1:]):
+        if s <= s1:
+            u = (s - s0) / max(s1 - s0, 1e-6)
+            return x0 + (x1 - x0) * u, y0 + (y1 - y0) * u
+    return pts[-1][1], pts[-1][2]
+
+
+TAPE_END = 27.0
+
+
+def tape_staging(S, SP, ctl):
+    """Key how much tape is out (metres along the run, props.tape_run): S07 off the roll from 0.3 s, S08 the rest."""
+    a7, b7 = SP["S07"]
+    a8, b8 = SP["S08"]
+    gb.keys(ctl, '["reveal"]', [(F(a7 + 0.3), 0.0), (F(b7), TAPE_S07), (F(a8 + 0.1), TAPE_S07 + 0.3),
+                                (F(b8 - 0.15), S.get("tape_len", TAPE_END) + 0.05)], interp="LINEAR")
+
+
 def only(o, sid, t1=None):
     a, b = SP[sid]
     gb.show_between(o, a, b if t1 is None else t1)
@@ -289,13 +324,24 @@ def stage(S):
     a7, b8 = SP["S07"][0], SP["S08"][1]
     gb.key_vec(tape, "location", [(F(a7), (-20.4, -13.2, 1.07)), (F(SP["S08"][0]), (-19.1, -10.4, 0.17))])
     gb.keys(tape, "scale", [(F(a7), 0.01), (F(SP["S08"][0]) - 1, 3.0), (F(SP["S08"][0]), 1.0), (F(b8), 14.0)], index=1)
-    cam("S07", [(0, (-19.0, -12.4, 1.5), (-20.4, -13.6, 1.0))], lens=30)
-    cam("S08", [(0, (-17.5, -9.0, 1.2), (-19.1, -8, 0.2)), (1, (-14.5, 2.5, 3.5), (-19.1, -2, 0.0))], lens=24)
+    # the final look's tape is props.tape_run's ribbon (tape_staging keys how much of it is out): S07 close on the
+    # machine as it spews over the counter edge; S08 chases the tape's end out the door, along the sidewalk, over
+    # the tracks
+    cam("S07", [(0, (-19.55, -12.15, 1.5), (-20.35, -13.05, 1.12)), (1, (-19.5, -11.9, 1.45), (-20.3, -12.7, 0.75))],
+        lens=32)
+    # S08: from the doorstep as the tape whips out, craning up and back until the whole run shows: along the
+    # sidewalk, round the corner and over the tracks (a chase cam blurred it into one more painted line)
+    cam("S08", [(0, (-18.3, -8.5, 0.9), (-19.0, -10.3, 0.3)), (0.3, (-19.2, -5.9, 2.6), (-21.5, -8.0, 0.2)),
+                (0.65, (-21.0, -3.2, 5.6), (-25.0, -7.4, 0.1)), (1, (-22.6, -1.6, 6.2), (-27.4, -2.6, 0.0))], lens=24)
     # S09: the tape stapled to his door as an eviction notice
-    only(gb.plane("notice", (-19.1, -9.9, 1.4), (0.5, 0.7), B.M("tape"), facing="+Y"), "S09", t1=SP["S27"][1])
-    d9 = only(B.dev((-18.3, -8.8, 0.16), rot_z=math.pi * 0.85), "S09")
+    # S09: the tape slapped up on his door (stapled, the total in red marker); he stands aside so it reads
+    nt9 = only(gb.plane("notice", (-19.1, -9.9, 1.4), (0.5, 0.7), B.M("tape"), facing="+Y"), "S09", t1=SP["S27"][1])
+    a9 = SP["S09"][0]
+    for i in range(3):
+        gb.keys(nt9, "scale", [(F(a9 + 0.1), 0.0), (F(a9 + 0.25), 1.1), (F(a9 + 0.35), 1.0)], index=i, interp="BEZIER")
+    d9 = only(B.dev((-17.95, -9.15, 0.16), rot_z=math.pi * 0.8), "S09")
     sing(d9, "S09")
-    cam("S09", [(0, (-17.3, -6.9, 1.6), (-19.1, -10, 1.4))], lens=35)
+    cam("S09", [(0, (-18.7, -7.7, 1.55), (-18.9, -10, 1.38)), (1, (-18.75, -7.95, 1.5), (-18.92, -10, 1.38))], lens=35)
     # S10: the tower lobby: a figure on the phone, back to camera; the screen flashes BLACKMAIL
     fig = only(B.ceo((9, 14.0, 0.17), rot_z=math.pi, name="ceo10"), "S10")
     cam("S10", [(0, (9, 4.0, 2.0), (9, 20, 2.5)), (1, (9, 6.0, 2.0), (9, 20, 2.5))], lens=35)
@@ -348,9 +394,11 @@ def stage(S):
     gb.keys(c12.data, "lens", [(F(a), 50.0), (F(a + 1.3), 50.0), (F(a + 2.0), 24.0)], interp="BEZIER")
     mg = only(gb.cyl("magnifier", (-24, -6.7, 0.35), 0.12, 0.02, B.M("glass"), axis="Y"), "S13")
     a, b = SP["S13"]
-    gb.key_vec(mg, "location", [(F(a), (-26.0, -7.0, 0.35)), (F(b), (-19.0, -7.0, 0.35))])
+    # slowly, 2.5 m in the shot, the camera alongside so the printed "0.24 +"s read under the glass
+    gb.key_vec(mg, "location", [(F(a + 0.2), (-25.6, -7.72, 0.24)), (F(b - 0.3), (-23.1, -7.72, 0.24))], interp="BEZIER")
     only(gb.box("tape.sidewalk", (-22.5, -7.0, 0.16), (9.0, 0.08, 0.004), B.M("tape")), "S13")
-    cam("S13", [(0, (-26.5, -5.8, 0.9), (-25.5, -7.0, 0.2)), (1, (-19.5, -5.8, 0.9), (-18.5, -7.0, 0.2))], lens=35)
+    cam("S13", [(0, (-24.8, -8.55, 0.75), (-25.65, -7.6, 0.17)), (1, (-22.3, -8.55, 0.75), (-23.15, -7.6, 0.17))],
+        lens=40)  # from the shop side: the curb's posts were in the way
 
     # ---- hook 1 (S14-S17): shutters slam east to west, the eatery last; the block goes dark
     a, b = SP["S14"]

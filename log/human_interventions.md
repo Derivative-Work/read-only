@@ -110,3 +110,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Note from the human:** "Check for flicker - it's present in a bunch of places. There's also places where jokes aren't landing because they're too fast, like the calendar countdown and the post its"
 - **Then:** "The cassette joke is also too fast, and also doesn't look like a cassette"
 - **Rule:** R1 (a creative note on the M4 section clips, given in words; not yet a section-by-section verdict). The agent fixed the flicker and re-staged S06, S11–S12 and S31 (production log, same time).
+
+## 2026-10-30T16:16:37-04 — Fix the other fast gags too — R1
+
+- **Note from the human:** "yes, fix those too" (the agent had offered S07's running total, S09's eviction notice and S13's magnifying glass).
+- **Rule:** R1 (a creative go-ahead). The agent re-staged S07–S09 and S13 (production log, same time).
