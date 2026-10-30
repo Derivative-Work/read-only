@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Read-Only screens</title>
+<!-- The in-world screens of Act 1 (brief's JS overlays that live on a surface in the set), from overlays/cues.json
+     ("screens"). screens.mjs sizes the canvas per surface and calls show(name, t) per frame (song seconds); the
+     frames become image sequences on the Blender set. Red is the BLACKMAIL screen and the pawn LED, as the style
+     spec's palette; the tower's own screens are its cold blue-white, the ticker LED green. -->
+<style>
+@font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-Medium-flat.ttf"); }
+@font-face { font-family: "JetBrains Mono"; src: url("../assets/fonts/JetBrainsMono-SemiBold-flat.ttf"); }
+html, body { margin: 0; background: #000; overflow: hidden; }
+canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const cv = document.getElementById("c");
+const g = cv.getContext("2d");
+let C, P, S, W, H;
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = x => x * x * (3 - 2 * x);
+
+async function setup(cues) {
+  C = cues; P = C.palette;
+  await Promise.all(['72px "Inter"', '72px "JetBrains Mono"'].map(f => document.fonts.load(f)));
+  await document.fonts.ready;
+  return document.fonts.check('72px "Inter"') && document.fonts.check('72px "JetBrains Mono"');
+}
+
+function size(name) {
+  S = C.screens[name]; [W, H] = S.size;
+  cv.width = W; cv.height = H;
+}
+
+function scanlines(a = 0.12) {
+  g.save(); g.globalAlpha = a; g.fillStyle = "#000";
+  for (let y = 0; y < H; y += 6) g.fillRect(0, y, W, 2);
+  g.restore();
+}
+
+// S10: BLACKMAIL, flashing on the eighth notes: red ground and white letters, then dark ground and red letters
+function lobby_blackmail(t) {
+  const k = S.flash.filter(b => b <= t).length;
+  const hot = k % 2 === 1;
+  g.fillStyle = hot ? P.rec : "#0b0d12"; g.fillRect(0, 0, W, H);
+  g.fillStyle = hot ? "#fff6f0" : P.rec;
+  g.font = `${H * 0.34}px "Inter"`; g.textAlign = "center"; g.textBaseline = "middle";
+  if (!hot) { g.shadowColor = P.rec; g.shadowBlur = 40; }
+  g.fillText("BLACKMAIL", W / 2, H / 2);
+  g.shadowBlur = 0;
+  scanlines();
+}
+
+// S20: the traffic chart, drawn as the shot runs: steady, a dip on "dark", back up past where it was on "bounced";
+// the line's head hops on every beat (the CEO's ball)
+function traffic(x) {  // x: song time -> 0..1 level
+  const [d0, d1] = S.dip, [b0, b1] = S.bounce;
+  let v = 0.62;
+  v -= 0.48 * ease(clamp((x - d0) / (d1 - d0)));
+  v += 0.6 * ease(clamp((x - b0) / (b1 - b0)));
+  return v + 0.02 * Math.sin(x * 7.3) + 0.015 * Math.sin(x * 17.1);
+}
+
+function lobby_traffic(t) {
+  g.fillStyle = "#0b1220"; g.fillRect(0, 0, W, H);
+  const L = 90, R = W - 60, T = 120, B = H - 80;
+  g.strokeStyle = "rgba(207,230,255,0.12)"; g.lineWidth = 2;
+  for (let k = 0; k <= 4; k++) { const y = T + (B - T) * k / 4; g.beginPath(); g.moveTo(L, y); g.lineTo(R, y); g.stroke(); }
+  g.fillStyle = P.corporate; g.font = `56px "Inter"`; g.textBaseline = "alphabetic"; g.textAlign = "left";
+  g.fillText("TRAFFIC", L, 82);
+  g.fillStyle = "rgba(207,230,255,0.55)"; g.font = `34px "Inter"`; g.textAlign = "right";
+  g.fillText("this week", R, 82);
+  const x0 = S.from, x1 = S.to, X = s => L + (R - L) * (s - x0) / (x1 - x0), Y = v => B - (B - T) * clamp(v, 0, 1.1) / 1.1;
+  const now = clamp(t, x0, x1);
+  g.strokeStyle = P.screen; g.lineWidth = 8; g.lineJoin = "round"; g.shadowColor = P.screen; g.shadowBlur = 18;
+  g.beginPath();
+  for (let s = x0; s <= now; s += (x1 - x0) / 400) { const px = X(s), py = Y(traffic(s)); s === x0 ? g.moveTo(px, py) : g.lineTo(px, py); }
+  g.stroke();
+  const last = S.bounces.filter(b => b <= now).pop();  // the hop
+  const hop = last === undefined ? 0 : Math.sin(Math.PI * clamp((now - last) / 0.33)) * 34;
+  g.fillStyle = P.screen;
+  g.beginPath(); g.arc(X(now), Y(traffic(now)) - hop, 16, 0, 7); g.fill();
+  g.shadowBlur = 0;
+  scanlines(0.08);
+}
+
+// S16: the pawn shop's LED clock, from 48:00:00, every digit spinning down through the shot, then holding
+function seg(text, x, y, h, on) {
+  g.font = `${h}px "JetBrains Mono"`; g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillStyle = "rgba(255,42,42,0.08)"; g.fillText(text.replace(/\d/g, "8"), x, y);  // the unlit segments
+  if (on) { g.fillStyle = P.led; g.shadowColor = P.led; g.shadowBlur = 24; g.fillText(text, x, y); g.shadowBlur = 0; }
+}
+
+function pawn_led(t) {
+  g.fillStyle = "#070505"; g.fillRect(0, 0, W, H);
+  const [c0, c1] = S.count;
+  const total = S.hours * 3600;
+  const rem = Math.round(total - clamp((t - c0) / (c1 - c0)) * 5400 * (c1 - c0));
+  const hh = Math.floor(rem / 3600), mm = Math.floor(rem / 60) % 60, ss = rem % 60;
+  const p = n => String(n).padStart(2, "0");
+  seg(`${p(hh)}:${p(mm)}:${p(ss)}`, W / 2, H / 2 + 6, H * 0.78, true);
+}
+
+// S30: the ticker band: green dot-matrix letters scrolling right to left, one copy of the text per loop
+let dotSrc = null;
+function ticker(t) {
+  g.fillStyle = "#020402"; g.fillRect(0, 0, W, H);
+  const cell = 10, rows = Math.floor(H / cell);
+  if (!dotSrc) {
+    dotSrc = document.createElement("canvas");
+    const d = dotSrc.getContext("2d");
+    d.font = `${rows * 0.82}px "JetBrains Mono"`;
+    const w1 = Math.ceil(d.measureText(S.text).width / cell) * cell;
+    dotSrc.width = w1 * 3; dotSrc.height = rows;
+    d.font = `${rows * 0.82}px "JetBrains Mono"`; d.textBaseline = "middle"; d.fillStyle = "#fff";
+    for (let k = 0; k < 3; k++) d.fillText(S.text, k * w1, rows / 2 + 1);
+    dotSrc.w1 = w1;
+  }
+  const d = dotSrc.getContext("2d");
+  const cols = Math.ceil(W / cell);
+  const off = Math.floor(((t - S.from) / (S.to - S.from)) % 1 * dotSrc.w1);
+  const px = d.getImageData(off, 0, cols, rows).data;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const on = px[(r * cols + c) * 4 + 3] > 110;
+    g.fillStyle = on ? P.ticker : "rgba(85,255,122,0.07)";
+    g.beginPath(); g.arc(c * cell + cell / 2, r * cell + cell / 2, cell * 0.36, 0, 7); g.fill();
+  }
+}
+
+const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker };
+function show(name, t) { if (!S || S !== C.screens[name]) { size(name); dotSrc = null; } SHOW[name](t); }
+</script>
+</body>
+</html>

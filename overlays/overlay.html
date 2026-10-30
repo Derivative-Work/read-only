@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Read-Only overlay</title>
+<!-- Act 1's code-drawn overlays (brief: counters, captions, waveforms; generic UI only), from overlays/cues.json
+     (scripts/overlay_cues.py). render.mjs sets the size and calls draw(t) per frame (song seconds); transparent.
+     Inter for labels, JetBrains Mono for figures, as the set's lettering. Red only where something records. -->
+<style>
+@font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-Medium-flat.ttf"); }
+@font-face { font-family: "JetBrains Mono"; src: url("../assets/fonts/JetBrainsMono-SemiBold-flat.ttf"); }
+html, body { margin: 0; background: transparent; overflow: hidden; }
+canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const cv = document.getElementById("c");
+const g = cv.getContext("2d");
+let C, W, H, u, P;
+
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = x => x * x * (3 - 2 * x);
+const fade = (t, on, off, d = 0.25) => clamp((t - on) / d) * clamp((off - t) / d);
+const money = v => "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+async function setup(cues, w, h) {
+  C = cues; W = w; H = h; u = h / 1080; P = C.palette;
+  cv.width = w; cv.height = h;
+  await Promise.all(['72px "Inter"', '72px "JetBrains Mono"'].map(f => document.fonts.load(f)));
+  await document.fonts.ready;
+  return document.fonts.check('72px "Inter"') && document.fonts.check('72px "JetBrains Mono"');
+}
+
+function panel(x, y, w, h, a) {
+  g.save();
+  g.globalAlpha = a;
+  g.fillStyle = P.panel;
+  g.beginPath(); g.roundRect(x, y, w, h, 10 * u); g.fill();
+  g.strokeStyle = "rgba(141,151,166,0.55)"; g.lineWidth = 1.5 * u; g.stroke();
+  g.restore();
+}
+
+function label(text, x, y, a, col = P.dim, size = 22) {
+  g.save(); g.globalAlpha = a; g.fillStyle = col;
+  g.font = `${size * u}px "Inter"`; g.textBaseline = "alphabetic";
+  g.fillText(text, x, y); g.restore();
+}
+
+function figure(text, x, y, a, size, col = P.ui, align = "left") {
+  g.save(); g.globalAlpha = a; g.fillStyle = col; g.textAlign = align;
+  g.font = `${size * u}px "JetBrains Mono"`;
+  g.shadowColor = "rgba(0,0,0,0.7)"; g.shadowBlur = 10 * u;
+  g.fillText(text, x, y); g.restore();
+}
+
+// S03: the phone line's waveform scrolling right to left, the newest sample at the right; red and taller on "recorded"
+function wave(o, t) {
+  const a = fade(t, o.on, o.off);
+  if (!a) return false;
+  const x0 = 90 * u, y0 = H - 300 * u, w = 640 * u, h = 170 * u;
+  panel(x0, y0, w, h, a);
+  const blink = Math.floor(t * 2) % 2 === 0;
+  label("LINE 1", x0 + 24 * u, y0 + 40 * u, a, P.ui);
+  g.save(); g.globalAlpha = a * (blink ? 1 : 0.25); g.fillStyle = P.rec;
+  g.beginPath(); g.arc(x0 + w - 86 * u, y0 + 32 * u, 8 * u, 0, 7); g.fill(); g.restore();
+  label("REC", x0 + w - 70 * u, y0 + 40 * u, a, P.rec);
+  const D = o.data, span = 2.0, n = Math.round(span * D.rate), bw = (w - 48 * u) / n;
+  const mid = y0 + h * 0.6, amp = h * 0.32;
+  const k1 = Math.floor((t - D.from) * D.rate);
+  for (let k = 0; k < n; k++) {
+    const i = k1 - n + k;
+    if (i < 0 || i >= D.max.length) continue;
+    const ts = D.from + i / D.rate;
+    const sp = ts >= o.spike[0] && ts <= o.spike[1];
+    const gain = sp ? 1.6 : 1.0;
+    const top = clamp(D.max[i] * gain, -1.4, 1.4), bot = clamp(D.min[i] * gain, -1.4, 1.4);
+    g.save(); g.globalAlpha = a * (0.35 + 0.65 * k / n);
+    g.fillStyle = sp ? P.rec : P.screen;
+    if (sp) { g.shadowColor = P.rec; g.shadowBlur = 12 * u; }
+    g.fillRect(x0 + 24 * u + k * bw, mid - top * amp, Math.max(1, bw - 0.5 * u), Math.max(1.5 * u, (top - bot) * amp));
+    g.restore();
+  }
+  return true;
+}
+
+// S06: days left, stepping down on sixteenth notes to 0
+function days(o, t) {
+  const a = fade(t, o.on, o.off);
+  if (!a) return false;
+  const idx = o.steps.filter(s => s <= t).length;
+  const v = Math.round(o.from - (o.from - o.to) * idx / o.steps.length);
+  const x0 = W - 420 * u, y0 = 70 * u;
+  panel(x0, y0, 330 * u, 190 * u, a);
+  label("DAYS LEFT", x0 + 28 * u, y0 + 46 * u, a);
+  figure(String(v).padStart(2, "0"), x0 + 28 * u, y0 + 158 * u, a, 108, v === 0 ? P.rec : P.ui);
+  return true;
+}
+
+// S07-S08: the running total in $0.24 steps, then faster and faster, landing on $20,000,000.00
+function total(o, t) {
+  const a = fade(t, o.on, o.off);
+  if (!a) return false;
+  const N = o.value / o.step;
+  let v;
+  if (t >= o.land) v = o.value;
+  else {
+    const f = Math.max(0, Math.floor((t - o.on) * C.fps));  // one step per frame at first
+    const p = clamp((t - o.on) / (o.land - o.on));
+    const n = Math.max(f + 1, Math.floor(Math.exp(Math.log(N) * Math.pow(p, 1.6))));
+    v = Math.min(N - 1, n) * o.step;
+  }
+  const x0 = W - 740 * u, y0 = 70 * u;
+  panel(x0, y0, 650 * u, 170 * u, a);
+  label("RUNNING TOTAL", x0 + 28 * u, y0 + 46 * u, a);
+  label("at $0.24 / 1,000 calls", x0 + 420 * u, y0 + 46 * u, a, P.dim, 18);
+  figure(money(v), x0 + 622 * u, y0 + 132 * u, a, 64, P.ui, "right");
+  if (t >= o.land) {  // the landing: a brief flash
+    const fl = clamp(1 - (t - o.land) / 0.4);
+    g.save(); g.globalAlpha = a * fl * 0.5; g.strokeStyle = P.ui; g.lineWidth = 4 * u;
+    g.beginPath(); g.roundRect(x0, y0, 650 * u, 170 * u, 10 * u); g.stroke(); g.restore();
+  }
+  return true;
+}
+
+// S13: a find bar: the query typed, then "0 results"
+function results(o, t) {
+  const a = fade(t, o.on, o.off);
+  if (!a) return false;
+  const w = 720 * u, h = 84 * u, x0 = (W - w) / 2, y0 = 80 * u;
+  panel(x0, y0, w, h, a);
+  g.save(); g.globalAlpha = a; g.strokeStyle = P.dim; g.lineWidth = 3 * u;  // the magnifier
+  g.beginPath(); g.arc(x0 + 46 * u, y0 + 38 * u, 14 * u, 0, 7); g.stroke();
+  g.beginPath(); g.moveTo(x0 + 56 * u, y0 + 48 * u); g.lineTo(x0 + 68 * u, y0 + 60 * u); g.stroke(); g.restore();
+  const n = Math.round(clamp((t - o.on - 0.3) / (o.typed - o.on - 0.3)) * o.query.length);
+  const caret = Math.floor(t * 2.5) % 2 === 0 && t < o.result ? "|" : "";
+  figure(o.query.slice(0, n) + caret, x0 + 96 * u, y0 + 54 * u, a, 34);
+  if (t >= o.result) figure("0 results", x0 + w - 30 * u, y0 + 54 * u, a * clamp((t - o.result) / 0.15), 34, P.ui, "right");
+  return true;
+}
+
+// S35: the ban counter climbing to 144,926
+function counter(o, t) {
+  const a = fade(t, o.on, o.off);
+  if (!a) return false;
+  const p = ease(clamp((t - o.on) / (o.land - o.on)));
+  const v = t >= o.land ? o.value : Math.floor(o.value * (1 - Math.pow(1 - p, 3)));
+  const w = 520 * u, x0 = (W - w) / 2, y0 = 70 * u;
+  panel(x0, y0, w, 170 * u, a);
+  label("ACCOUNTS BANNED", x0 + 28 * u, y0 + 46 * u, a);
+  figure(v.toLocaleString("en-US"), x0 + w - 28 * u, y0 + 138 * u, a, 84, P.ui, "right");
+  return true;
+}
+
+const DRAW = { wave, days, total, results, counter };
+
+function draw(t) {
+  g.clearRect(0, 0, W, H);
+  let any = false;
+  for (const o of C.overlay) if (t >= o.on - 0.01 && t <= o.off + 0.01) any = DRAW[o.kind](o, t) || any;
+  return any;
+}
+</script>
+</body>
+</html>

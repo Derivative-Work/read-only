@@ -363,3 +363,25 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - the sign bands are boards, now grimy.
 
   Both are left for M6, when the pre-roll and bookends are made.
+
+## 2026-10-30T06:52:14-04:00 — M4: Act 1's overlays and in-world screens (JS)
+
+- **What:** every Act 1 JS overlay in the brief, drawn in HTML/canvas and captured with Puppeteer (brief, "Overlays"). Generic UI only, in Inter and JetBrains Mono, as the set's lettering. The cues come from the timing map and word alignment (`scripts/overlay_cues.py` → `overlays/cues.json`).
+  - **Over the picture** (`overlays/overlay.html`, `overlays/render.mjs`, 443 frames → `renders/overlays/act1/`), composited in the edit:
+    - **S03:** the phone line's waveform from the lead stem, spiking red on "recorded", with a blinking REC.
+    - **S06:** DAYS LEFT, 30 to 0 on sixteenth notes.
+    - **S07–S08:** the RUNNING TOTAL in $0.24 steps, then faster, landing on $20,000,000.00.
+    - **S13:** a find bar typing "threat", then "0 results".
+    - **S35:** ACCOUNTS BANNED climbing to 144,926.
+  - **On the set** (`overlays/screens.html`, `overlays/screens.mjs` → `renders/screens/<name>/`), mapped as image sequences by `scenes/blender/screens.py` in place of the grey-box's static text:
+    - **S10:** the lobby screen flashes BLACKMAIL on the eighth notes, red and white.
+    - **S16:** the pawn shop's LED counts down from 48:00:00.
+    - **S20:** the lobby's traffic chart dips on "dark" and bounces back past where it was on "bounced"; its head hops on each beat with the CEO's ball.
+    - **S30:** a green dot-matrix ticker on the band's street face: "IPO ▲ OPENING BELL ▲ UP UP UP ▲ NEW MANAGEMENT ▲ USER CONTENT NOT INCLUDED". It has no figures or ticker symbol, so it makes no factual claim for M8 to check. It's a 24 s loop, slow enough that motion blur doesn't double the dots.
+- **The edit:** `scripts/animatic_assemble.py` gains `--overlay DIR` (composites the overlay; drops the bracketed notes for drawn overlays) and `--from/--to` (section cuts with matching audio and captions).
+- **Commands:**
+  - `.venv/bin/python -I scripts/overlay_cues.py`
+  - `node overlays/screens.mjs`
+  - `node overlays/render.mjs`
+- **Checked:** stills of each overlay, and S10, S16, S20 and S30 rendered with their screens.
+- **Next:** the Act 1 render (final profile, S02–S39e, frames 435–4120), running.

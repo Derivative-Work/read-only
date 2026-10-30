@@ -10,7 +10,12 @@ After Not Yet's animatic_assemble.py. The edit runs pre-roll (S01a-S01d, no musi
   the brief's gag/overlay note for shots with a JS overlay or F effect, bottom left in brackets, since those are drawn
   at M4; placeholder cards for the code-drawn shots (S48b's login prompt, S50's end card) and for S01b's real photo.
 
-Usage: .venv/bin/python -I scripts/animatic_assemble.py <frames dir> <out.mp4>
+M4 options:
+  --overlay DIR   composite the code-drawn overlay (overlays/render.mjs: DIR/f_<frame>.png, transparent) over each
+                  frame that has one; the bracketed notes for those overlays are left out, since they're drawn
+  --from S --to S cut a section (song seconds; the captions and the audio are cut to match)
+
+Usage: .venv/bin/python -I scripts/animatic_assemble.py <frames dir> <out.mp4> [--overlay DIR] [--from S --to S]
 """
 import json
 import os
@@ -31,7 +36,7 @@ def F(t):
     return int(round((PRE + t) * FPS))
 
 
-def ts(v):
+def _ts(v):
     h, r = divmod(max(v, 0.0), 3600)
     m, s = divmod(r, 60)
     return f"{int(h)}:{int(m):02d}:{s:05.2f}"
@@ -60,8 +65,12 @@ def brief_rows():
     return rows
 
 
-def ass(w, h, SP):
-    L = ["[Script Info]", "ScriptType: v4.00+", f"PlayResX: {w}", f"PlayResY: {h}", "",
+def ass(w, h, SP, t0=0.0, drawn=False):
+    """The review captions; t0 (video seconds) shifts every event, for a section cut. drawn: the M4 overlays are
+    composited, so their bracketed notes are left out."""
+    def ts(v):  # noqa: F811 (the module's ts, shifted by t0)
+        return _ts(v - t0)
+    L = ["[Script Info]", "ScriptType: v4.00+", f"PlayResX: 640", "PlayResY: 360", "",
          "[V4+ Styles]",
          "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, "
          "Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, "
@@ -85,6 +94,8 @@ def ass(w, h, SP):
         pipe = r.get("pipeline", {"S49": "B→V+JS", "S50": "JS+F"}.get(sid, "B"))
         L.append(f"Dialogue: 1,{ts(PRE + a)},{ts(PRE + b)},Id,,0,0,0,,{sid}  {pipe}")
         note = r.get("overlay", "")
+        if drawn and "JS" in pipe and sid <= "S39e":
+            note = ""
         if note and note != "None" and ("JS" in pipe or "F" in pipe or "Real" in pipe or "LS" in pipe):
             L.append(f"Dialogue: 1,{ts(PRE + a)},{ts(PRE + b)},Note,,0,0,0,,[{pipe}: {note}]")
         if "B→V" in pipe:
@@ -100,7 +111,10 @@ def ass(w, h, SP):
 
 
 def main():
-    frames, out = Path(sys.argv[1]), sys.argv[2]
+    argv = sys.argv[1:]
+    opt = lambda k: argv[argv.index(k) + 1] if k in argv else None  # noqa: E731
+    frames, out = Path(argv[0]), argv[1]
+    ov = Path(opt("--overlay")) if opt("--overlay") else None
     SP = spans()
     have = sorted(int(p.stem[2:]) for p in frames.glob("f_*.png"))
     seq = list(range(0, F(max(b for _, b in SP.values()))))  # the whole edit, rendered or not
@@ -114,24 +128,37 @@ def main():
             seq[f] = fa - 1
         else:
             seq[f] = back[int((f - hold) * len(back) / n)]
+    c0 = F(float(opt("--from"))) if opt("--from") else 0
+    c1 = F(float(opt("--to"))) if opt("--to") else len(seq)
     from PIL import Image
     w, h = Image.open(frames / f"f_{have[0]:05d}.png").size
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
-        for i, f in enumerate(seq):
+        for i, f in enumerate(seq[c0:c1]):
             src = frames / f"f_{f:05d}.png"
             if not src.exists():  # a frame not rendered (a gap): repeat the previous one
-                src = frames / f"f_{max([x for x in have if x <= f] or have[:1]):05d}.png"
-            os.symlink(src.resolve(), td / f"{i:05d}.png")
-        (td / "caps.ass").write_text(ass(w, h, SP))
+                f = max([x for x in have if x <= f] or have[:1])
+                src = frames / f"f_{f:05d}.png"
+            o = ov / f"f_{f:05d}.png" if ov else None
+            if o and o.exists():
+                im = Image.open(src).convert("RGBA")
+                top = Image.open(o).convert("RGBA")
+                if top.size != im.size:
+                    top = top.resize(im.size, Image.LANCZOS)
+                im.alpha_composite(top)
+                im.convert("RGB").save(td / f"{i:05d}.png", compress_level=1)
+            else:
+                os.symlink(src.resolve(), td / f"{i:05d}.png")
+        (td / "caps.ass").write_text(ass(w, h, SP, t0=c0 / FPS, drawn=ov is not None))
+        delay = PRE - c0 / FPS  # the master starts at video time PRE
+        afilt = f"adelay={int(delay * 1000)}:all=1,apad" if delay >= 0 else f"atrim=start={-delay},asetpts=PTS-STARTPTS,apad"
         cmd = ["ffmpeg", "-v", "error", "-y", "-framerate", str(FPS), "-i", str(td / "%05d.png"),
                "-i", MASTER, "-filter_complex",
-               f"[0:v]subtitles={td / 'caps.ass'}:fontsdir=assets/fonts,format=yuv420p[v];"
-               f"[1:a]adelay={int(PRE * 1000)}:all=1,apad[a]",
-               "-map", "[v]", "-map", "[a]", "-shortest", "-c:v", "libx264", "-crf", "20", "-preset", "medium",
+               f"[0:v]subtitles={td / 'caps.ass'}:fontsdir=assets/fonts,format=yuv420p[v];[1:a]{afilt}[a]",
+               "-map", "[v]", "-map", "[a]", "-shortest", "-c:v", "libx264", "-crf", "18", "-preset", "medium",
                "-c:a", "aac", "-b:a", "192k", out]
         subprocess.run(cmd, check=True)
-    print(out, f"{len(seq) / FPS:.2f} s", f"pre-roll {PRE:.1f} s")
+    print(out, f"{(c1 - c0) / FPS:.2f} s", f"frames {c0}..{c1 - 1}", f"pre-roll {PRE:.1f} s")
 
 
 if __name__ == "__main__":
