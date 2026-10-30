@@ -586,3 +586,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - a lineup of the cast (`renders/m4/lineup_v7.png`);
   - S04, S09, S10, S17, S18, S19, S25 and S27 in their shots (`renders/m4/figures/v1`, `v2`);
   - sheet: `renders/m4/m4_figures.jpg`.
+
+## 2026-10-30T13:45:00-04:00 — M4: Act 1 render v2 (720p, detail pass), started
+
+- **Why:** the human approved the detail pass and the figures (human_interventions, 13:45, R1). Review renders stay at 720p (human_interventions, 09:40).
+- **What:** S02–S39e (song 0.14–153.68), `draft720` profile, final look, into `renders/m4/act1_v2/frames`. The first Act 1 render (`renders/m4/act1/frames`, before the detail pass) is superseded. Frame sequences are never archived; it stays where it is until it's cleaned up.
+- **Command:** `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v2/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`

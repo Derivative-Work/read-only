@@ -99,3 +99,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "much better, but the people don't look quite right"
 - **Rule:** R1 (a creative note on the detail look test, given in words). The agent rebuilt the figures (production log, same time).
+
+## 2026-10-30T13:45 — The detail pass and figures approved; go-ahead for the Act 1 render — R1
+
+- **Note from the human:** "much better, go ahead"
+- **Rule:** R1 (approval of the detail look test and the rebuilt figures).
