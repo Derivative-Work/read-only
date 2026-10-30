@@ -94,3 +94,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "not quite: there is text going over the edge of the gravestones, and they are polygonal rather than round. they should also probably be engraved into the stones rather than black text"
 - **Rule:** R1 (a creative note on the detail pass, given in words). The agent made the change (production log, same time).
+
+## 2026-10-30T13:30 — The figures — R1
+
+- **Note from the human:** "much better, but the people don't look quite right"
+- **Rule:** R1 (a creative note on the detail look test, given in words). The agent rebuilt the figures (production log, same time).

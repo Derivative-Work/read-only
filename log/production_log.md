@@ -567,3 +567,22 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **S39e:** the engraving is low-contrast in the open.
   - **S01a:** the parol's streamers cross the frame.
 - **Next:** the human's review of the sheets, then Act 1 re-rendered at 720p (about 3 h), then the section clips for the M4 gate.
+
+## 2026-10-30T13:30:00-04:00 — The figures rebuilt: continuous bodies
+
+- **Why:** the human's note (human_interventions, 13:30, R1).
+- **What was wrong:** a lineup (`renders/m4/lineup_v1.png`) showed the bodies as separate blobs. The arms floated with no shoulders, the torso was an egg on two tubes, the vests were boxes, and the CEO's cape and lining wrapped his front like a red sack.
+- **What** (`scenes/blender/sets/chars.py`). Same names, the same `jaw` for the lip sync, the same calls from `shots.py`:
+  - **Bodies:** each body is a skeleton of joints with radii (Blender's Skin modifier, subdivided, applied once at build), so shoulders, elbows and knees join.
+    - The top runs from hem to neck with both arms in one piece.
+    - Each leg is its own chain under the hem. A branched pelvis had folded into flaps.
+  - **Poses** (`POSES`): stand, sit (S18 on the throne; this replaces the earlier fix) and phone (S10).
+  - **Hands, feet and faces:** mitten hands with thumbs; rounded shoes with white soles; whites to the eyes with dark pupils and catchlights; the head slightly egg-shaped.
+  - **The mods' vests** are shaped to the body. The reflective tape runs round them, and the lettering sits on the vest's surface.
+  - **The Dev:** his apron wraps round the body from chest to thigh, with a pocket, a neck strap and a round tool belt.
+  - **The CEO's cape** hangs from the shoulders behind him. It is open at the front, with the red lining inside, and has an ermine collar with spots.
+  - **Unchanged:** the VIP bots and good bots, which are boxy robots on purpose.
+- **Checked:**
+  - a lineup of the cast (`renders/m4/lineup_v7.png`);
+  - S04, S09, S10, S17, S18, S19, S25 and S27 in their shots (`renders/m4/figures/v1`, `v2`);
+  - sheet: `renders/m4/m4_figures.jpg`.

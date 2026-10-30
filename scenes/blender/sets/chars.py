@@ -69,41 +69,100 @@ def hair(name, root, style, col, h=1.0, r=0.19):
                                           z + (0.13 if ring == 0 else 0.19) * h), 0.075 * h, hc, parent=root)
 
 
+POSES = {  # joint positions (x, y, z), metres at h = 1, figure facing -Y; arms: shoulder, elbow, wrist per side
+    "stand": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.27, 0.02, 0.95), (0.29, -0.01, 0.73))}},
+    "sit": {"knee": (0.1, -0.42, 0.84), "ankle": (0.1, -0.46, 0.2), "arm": {
+        -1: ((-0.2, 0.0, 1.19), (-0.27, -0.08, 0.96), (-0.24, -0.3, 0.86)),
+        1: ((0.2, 0.0, 1.19), (0.27, -0.08, 0.96), (0.24, -0.3, 0.86))}},
+    "phone": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {
+        -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
+        1: ((0.2, 0.0, 1.19), (0.33, 0.02, 1.13), (0.22, -0.05, 1.38))}},
+}
+
+
+def skin_body(name, verts, edges, radii, m, root, h):
+    """A continuous limb or trunk: a skeleton of joints with a radius each (Blender's Skin modifier, subdivided),
+    baked once to a plain mesh."""
+    me = bpy.data.meshes.new(name)
+    me.from_pydata([tuple(c * h for c in v) for v in verts], edges, [])
+    o = gb.link(bpy.data.objects.new(name, me), root)
+    o.modifiers.new("skin", "SKIN").use_smooth_shade = True
+    sv = me.skin_vertices[0].data
+    for i, r in enumerate(radii):
+        sv[i].radius = (r[0] * h, r[1] * h) if isinstance(r, tuple) else (r * h, r * h)
+    sv[0].use_root = True
+    o.modifiers.new("sub", "SUBSURF").levels = 2
+    bpy.context.view_layer.update()
+    baked = bpy.data.meshes.new_from_object(o.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+    o.modifiers.clear()
+    o.data = baked
+    baked.materials.append(m)
+    for poly in baked.polygons:
+        poly.use_smooth = True
+    return o
+
+
 def base(name, loc, rot_z, top, legs="jeans", skin="skin1", h=1.0, head_r=0.19, style="crop", hair_col="hair0",
-         face=True):
-    """Legs, shoes, torso (colour `top`), arms, hands, head, eyes, mouth. h scales the whole figure. The detail pass
-    adds a neck, ears, a nose, brows, catchlights, hair (`style`), and white soles; face=False is a mannequin's."""
+         face=True, pose="stand"):
+    """A toy-like figure: one continuous trunk-and-arms in `top`, one pair of legs in `legs` (Skin-modifier bodies,
+    so shoulders, elbows and knees join), mitten hands, rounded shoes, a big head with white eyes and dark pupils,
+    brows, nose, ears and hair (`style`). h scales the whole figure; face=False is a mannequin's; pose is a POSES key
+    (stand, sit, phone). The mouth (`jaw`) is the lip sync's: its z scale opens it."""
     root = gb.empty(name, loc)
     root.rotation_euler.z = rot_z
+    P = POSES[pose]
+    kx, ky, kz = P["knee"]
+    ax, ay, az = P["ankle"]
+    # legs and hips: pelvis (root vertex), then hip, knee, ankle per side
+    for s in (-1, 1):  # each leg its own chain from under the hem (a branched pelvis folded into flaps)
+        skin_body(f"{name}.leg{s}", [(s * 0.09, 0, 0.86), (s * 0.095, 0, 0.74), (s * kx, ky, kz), (s * ax, ay, az)],
+                  [(0, 1), (1, 2), (2, 3)], [0.1, 0.1, 0.075, 0.06], M(legs), root, h)
+    # trunk and arms: waist (root), chest, shoulder line, neck base; shoulder, elbow, wrist per side
+    # the top comes down over the hips (hem, waist, chest, shoulder line, neck base)
+    tv = [(0, 0, 0.68), (0, 0, 0.86), (0, 0, 1.08), (0, 0, 1.2), (0, 0, 1.28)]
+    te = [(0, 1), (1, 2), (2, 3), (3, 4)]
+    tr = [(0.2, 0.135), (0.19, 0.13), (0.2, 0.135), (0.17, 0.12), 0.065]
     for s in (-1, 1):
-        ellipsoid(f"{name}.leg{s}", (s * 0.1 * h, 0, 0.36 * h), (0.09 * h, 0.09 * h, 0.36 * h), M(legs), root)
-        rbox(f"{name}.shoe{s}", (s * 0.1 * h, -0.05 * h, 0.04 * h), (0.13 * h, 0.24 * h, 0.08 * h), M("shoe"), root, 0.03)
-    ellipsoid(f"{name}.torso", (0, 0, 0.95 * h), (0.24 * h, 0.17 * h, 0.3 * h), M(top), root)
-    for s in (-1, 1):
-        ellipsoid(f"{name}.arm{s}", (s * 0.29 * h, 0, 0.93 * h), (0.075 * h, 0.075 * h, 0.27 * h), M(top), root)
-        gb.sphere(f"{name}.hand{s}", (s * 0.3 * h, -0.02 * h, 0.64 * h), 0.06 * h, M(skin), parent=root)
-    gb.sphere(f"{name}.head", (0, 0, 1.47 * h), head_r * h, M(skin), parent=root)
-    for s in (-1, 1):
-        gb.sphere(f"{name}.eye{s}", (s * 0.065 * h, -0.17 * h, 1.52 * h), 0.026 * h, M("eye"), parent=root)
-    jaw = rbox(f"{name}.jaw", (0, -0.175 * h, 1.4 * h), (0.09 * h, 0.03 * h, 0.07 * h), M("mouth"), root, 0.012)
+        sh, el, wr = P["arm"][s]
+        i = len(tv)
+        tv += [sh, el, wr]
+        te += [(3, i), (i, i + 1), (i + 1, i + 2)]
+        tr += [0.068, 0.058, 0.05]
+        # mitten hand and thumb, just past the wrist
+        d = tuple(w - e for w, e in zip(wr, el))
+        L = math.sqrt(sum(c * c for c in d)) or 1
+        hc = tuple((w + 0.06 * c / L) * h for w, c in zip(wr, d))
+        ellipsoid(f"{name}.hand{s}", hc, (0.042 * h, 0.05 * h, 0.06 * h), M(skin), root)
+        gb.sphere(f"{name}.thumb{s}", (hc[0] - s * 0.01 * h, hc[1] - 0.04 * h, hc[2] + 0.015 * h), 0.022 * h, M(skin),
+                  parent=root)
+    skin_body(f"{name}.torso", tv, te, tr, M(top), root, h)
+    for s in (-1, 1):  # rounded shoes with white soles
+        ellipsoid(f"{name}.shoe{s}", (s * ax * h, (ay - 0.04) * h, 0.05 * h), (0.065 * h, 0.13 * h, 0.055 * h), M("shoe"),
+                  root)
+        rbox(f"{name}.sole{s}", (s * ax * h, (ay - 0.04) * h, 0.012 * h), (0.13 * h, 0.26 * h, 0.025 * h), M("sole"), root,
+             0.012)
+    gb.cyl(f"{name}.neck", (0, 0, 1.3 * h), 0.06 * h, 0.1 * h, M(skin), parent=root)
+    head = gb.sphere(f"{name}.head", (0, 0, 1.47 * h), head_r * h, M(skin), parent=root)
+    head.scale = (1.0, 0.96, 1.04)
+    jaw = rbox(f"{name}.jaw", (0, -0.178 * h, 1.4 * h), (0.085 * h, 0.03 * h, 0.065 * h), M("mouth"), root, 0.015)
     jaw.scale.z = 0.05
     root["jaw"] = jaw.name
-    gb.cyl(f"{name}.neck", (0, 0, 1.26 * h), 0.07 * h, 0.1 * h, M(skin), parent=root)
-    for s in (-1, 1):
-        rbox(f"{name}.sole{s}", (s * 0.1 * h, -0.05 * h, 0.012 * h), (0.14 * h, 0.25 * h, 0.025 * h), M("sole"), root, 0.01)
     if not face:  # a mannequin: smooth and blank
-        for part in ("eye-1", "eye1", "jaw"):
-            o = bpy.data.objects[f"{name}.{part}"]
-            o.hide_render = o.hide_viewport = True
+        jaw.hide_render = jaw.hide_viewport = True
         return root
     for s in (-1, 1):
+        ellipsoid(f"{name}.eyewhite{s}", (s * 0.068 * h, -0.158 * h, 1.51 * h), (0.036 * h, 0.022 * h, 0.042 * h),
+                  M("white"), root)
+        gb.sphere(f"{name}.eye{s}", (s * 0.066 * h, -0.176 * h, 1.505 * h), 0.021 * h, M("eye"), parent=root)
+        gb.sphere(f"{name}.glint{s}", (s * 0.066 * h + 0.008 * h, -0.194 * h, 1.515 * h), 0.006 * h,
+                  gb.mat("chr.glint", "#ffffff", emit=2.0), parent=root)
         ellipsoid(f"{name}.ear{s}", (s * head_r * 0.98 * h, 0.01 * h, 1.47 * h), (0.025 * h, 0.035 * h, 0.05 * h), M(skin),
                   root)
-        rbox(f"{name}.brow{s}", (s * 0.068 * h, -0.168 * h, 1.575 * h), (0.065 * h, 0.016 * h, 0.016 * h), M(hair_col),
-             root, 0.006).rotation_euler.y = s * 0.12
-        gb.sphere(f"{name}.glint{s}", (s * 0.065 * h + 0.008 * h, -0.192 * h, 1.53 * h), 0.007 * h,
-                  gb.mat("chr.glint", "#ffffff", emit=2.0), parent=root)
-    ellipsoid(f"{name}.nose", (0, -0.19 * h, 1.465 * h), (0.025 * h, 0.03 * h, 0.03 * h), M(skin), root)
+        rbox(f"{name}.brow{s}", (s * 0.07 * h, -0.164 * h, 1.572 * h), (0.07 * h, 0.018 * h, 0.017 * h), M(hair_col),
+             root, 0.007).rotation_euler.y = s * 0.12
+    ellipsoid(f"{name}.nose", (0, -0.188 * h, 1.455 * h), (0.024 * h, 0.028 * h, 0.03 * h), M(skin), root)
     hair(name, root, style, hair_col, h, head_r)
     return root
 
@@ -125,40 +184,69 @@ def dev(loc, rot_z=0.0, name="dev"):
     for s in (-1, 1):  # the hoodie's drawstrings
         gb.cyl(f"{name}.string{s}", (s * 0.045, -0.17, 1.17), 0.008, 0.16, M("drawstring"), parent=root)
     rbox(f"{name}.hood", (0, 0.12, 1.28), (0.34, 0.16, 0.16), M("hoodie"), root, 0.06)  # hood down, on the shoulders
-    ellipsoid(f"{name}.apron", (0, -0.03, 0.88), (0.235, 0.15, 0.3), M("apron"), root)  # canvas, wrapped round
-    rbox(f"{name}.apronpocket", (0, -0.178, 0.8), (0.22, 0.012, 0.11), M("belt"), root, 0.01)
+    # the shop apron: canvas wrapped round the body from chest to thigh, a pocket, a neck strap, a tool belt
+    skin_body(f"{name}.apron", [(0, 0, 0.6), (0, 0, 0.8), (0, 0, 1.0), (0, 0, 1.12)], [(0, 1), (1, 2), (2, 3)],
+              [(0.215, 0.15), (0.21, 0.148), (0.218, 0.152), (0.15, 0.11)], M("apron"), root, 1.0)
+    rbox(f"{name}.apronpocket", (0, -0.2, 0.84), (0.2, 0.012, 0.1), M("belt"), root, 0.01)
     for s in (-1, 1):  # the neck strap
-        rbox(f"{name}.apronstrap{s}", (s * 0.08, -0.13, 1.17), (0.03, 0.02, 0.16), M("belt"), root, 0.006)
-    rbox(f"{name}.belt", (0, 0, 0.74), (0.5, 0.36, 0.07), M("belt"), root, 0.02)
+        rbox(f"{name}.apronstrap{s}", (s * 0.075, -0.12, 1.2), (0.028, 0.02, 0.14), M("belt"), root, 0.006)
+    import mk
+    belt = mk.MK()
+    belt.torus((0, 0, 0), 0.215, 0.022, M("belt"), n=32, k=6)
+    o = gb.link(bpy.data.objects.new(f"{name}.belt", belt.mesh(f"{name}.belt")), root)
+    o.location, o.scale = (0, 0, 0.74), (1.0, 0.72, 1.0)
     for s in (-1, 1):
-        rbox(f"{name}.pouch{s}", (s * 0.2, -0.15, 0.68), (0.1, 0.06, 0.12), M("belt"), root, 0.015)
+        rbox(f"{name}.pouch{s}", (s * 0.19, -0.12, 0.68), (0.1, 0.06, 0.12), M("belt"), root, 0.015)
     return root
 
 
 def ceo(loc, rot_z=0.0, name="ceo"):
-    root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3")
-    if name == "ceo18":  # S18: seated on the server-rack throne (the grey-box's figure stood on the seat)
-        for s_ in (-1, 1):
-            leg, shoe, sole = (bpy.data.objects[f"{name}.{p}{s_}"] for p in ("leg", "shoe", "sole"))
-            leg.location, leg.scale = (s_ * 0.1, -0.2, 0.7), (0.095, 0.24, 0.095)  # thigh, forward on the seat
-            shin = ellipsoid(f"{name}.shin{s_}", (s_ * 0.1, -0.42, 0.38), (0.085, 0.085, 0.3), M("jeans"), root)
-            shoe.location = (s_ * 0.1, -0.47, 0.04)
-            sole.location = (s_ * 0.1, -0.47, 0.012)
-        root.location.z = 0.12
-    if name == "ceo10":  # on the phone (S10): right hand up at the ear, holding it
-        hand, arm = bpy.data.objects[f"{name}.hand1"], bpy.data.objects[f"{name}.arm1"]
-        hand.location = (0.22, -0.04, 1.42)
-        arm.location, arm.rotation_euler, arm.scale = (0.3, -0.02, 1.2), (0, -0.35, 0), (0.075, 0.075, 0.2)
-        rbox(f"{name}.phone", (0.2, -0.06, 1.47), (0.02, 0.075, 0.15), M("case"), root, 0.006)
-    rbox(f"{name}.hood", (0, 0.12, 1.28), (0.34, 0.16, 0.16), M("ceohood"), root, 0.06)
-    cape = ellipsoid(f"{name}.cape", (0, 0.1, 0.8), (0.36, 0.22, 0.62), M("ermine"), root)
-    ellipsoid(f"{name}.lining", (0, 0.06, 0.8), (0.33, 0.2, 0.6), M("lining"), root)
-    gb.sphere(f"{name}.collar", (0, 0.02, 1.27), 0.2, M("ermine"), parent=root).scale = (1.25, 1.0, 0.35)
-    for k in range(14):  # ermine spots on the back of the cape
-        a = -1.1 + 2.2 * (k % 7) / 6
-        z = 0.45 + 0.35 * (k // 7) + 0.1 * (k % 2)
-        gb.box(f"{name}.spot{k}", (0.36 * math.sin(a), 0.1 + 0.22 * math.cos(a), z), (0.03, 0.03, 0.06),
-               M("spot"), parent=root)
+    pose = {"ceo18": "sit", "ceo10": "phone"}.get(name, "stand")  # S18 on the throne; S10 on the phone
+    root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3", pose=pose)
+    if pose == "sit":
+        root.location.z = 0.0  # hips on the throne's seat
+    if pose == "phone":
+        rbox(f"{name}.phone", (0.2, -0.07, 1.46), (0.02, 0.075, 0.15), M("case"), root, 0.006)
+    rbox(f"{name}.hood", (0, 0.11, 1.27), (0.32, 0.15, 0.15), M("ceohood"), root, 0.06)
+    # the ermine cape hangs behind from the shoulders, its red lining showing at the open front edges
+    cape_mk = __import__("mk").MK()
+    prof = [(0.17, 1.26), (0.27, 1.12), (0.33, 0.8), (0.37, 0.4), (0.39, 0.12)]
+    for (r0, z0), (r1, z1) in zip(prof, prof[1:]):
+        pass
+    import bmesh
+    n = 20
+    a0, a1 = -0.3 * math.pi, 1.3 * math.pi  # an open shell round the back (front gap between the edges)
+    bm = cape_mk.bm
+    rows = []
+    for r, z in prof:
+        rows.append([bm.verts.new((r * math.cos(a0 + (a1 - a0) * j / n), 0.03 + 0.75 * r * math.sin(a0 + (a1 - a0) * j / n),
+                                   z)) for j in range(n + 1)])
+    for ra, rb in zip(rows, rows[1:]):
+        for j in range(n):
+            f = bm.faces.new((ra[j], ra[j + 1], rb[j + 1], rb[j]))
+            f.smooth = True
+    cape_mk._finish([v for r in rows for v in r], M("ermine"))
+    me = cape_mk.mesh(f"{name}.cape")
+    cape = gb.link(bpy.data.objects.new(f"{name}.cape", me), root)
+    sol = cape.modifiers.new("thick", "SOLIDIFY")
+    sol.thickness, sol.material_offset = -0.025, 1  # the lining on the inside
+    me.materials.append(M("lining"))
+    bpy.context.view_layer.update()
+    baked = bpy.data.meshes.new_from_object(cape.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+    cape.modifiers.clear()
+    cape.data = baked
+    collar = __import__("mk").MK()
+    collar.torus((0, 0.02, 1.27), 0.17, 0.055, M("ermine"), n=28, k=10)
+    for k in range(10):
+        a = 2 * math.pi * k / 10
+        collar.box((0.215 * math.cos(a), 0.02 + 0.215 * math.sin(a), 1.27), (0.02, 0.02, 0.045), M("spot"))
+    gb.link(bpy.data.objects.new(f"{name}.collar", collar.mesh(f"{name}.collar")), root)
+    for k in range(16):  # ermine spots on the back of the cape
+        a = 0.15 * math.pi + 0.7 * math.pi * (k % 8) / 7
+        z = 0.35 + 0.3 * (k // 8) + 0.12 * (k % 2)
+        r = 0.37 + 0.02 * (0.8 - z)
+        gb.box(f"{name}.spot{k}", (r * math.cos(a), 0.03 + 0.75 * r * math.sin(a) + 0.015, z), (0.03, 0.02, 0.06),
+               M("spot"), parent=root).rotation_euler.z = a - math.pi / 2
     return root
 
 
@@ -170,13 +258,22 @@ def mod(loc, k, rot_z=0.0, broom=True, name=None):
     root = base(name, loc, rot_z, "mannequin" if blank else "modbody", legs="mannequin" if blank else "jeans",
                 skin="mannequin" if blank else skin, style=style,
                 hair_col=f"knit{k % 3}" if style == "beanie" else f"hair{k % 5}", face=not blank)
-    rbox(f"{name}.vest", (0, 0, 0.98), (0.5, 0.36, 0.46), M("vest"), root, 0.08)
-    for z in (0.86, 1.06):  # reflective tape
-        rbox(f"{name}.tape{z}", (0, 0, z), (0.51, 0.37, 0.035), M("reflect", rough=0.3), root, 0.015)
-    gb.text(f"{name}.vest.t", "MOD", 0.09, gb.mat("chr.vestink", "#1a1a1a"), (0, -0.185, 1.155), facing="-Y", parent=root)
+    # the vest, shaped to the body: a trunk a little bigger than the top, arm holes left at the shoulders
+    vest = skin_body(f"{name}.vest", [(0, 0, 0.76), (0, 0, 0.9), (0, 0, 1.08), (0, 0, 1.2), (0, 0, 1.25)],
+              [(0, 1), (1, 2), (2, 3), (3, 4)],
+              [(0.22, 0.15), (0.225, 0.155), (0.235, 0.16), (0.2, 0.14), (0.12, 0.1)], M("vest"), root, 1.0)
+    import mk
+    for z, rx, ry in ((0.9, 0.212, 0.152), (1.06, 0.226, 0.159)):  # reflective tape
+        t = mk.MK()
+        t.torus((0, 0, 0), rx, 0.016, M("reflect", rough=0.3), n=32, k=6)
+        o = gb.link(bpy.data.objects.new(f"{name}.tape{z}", t.mesh(f"{name}.tape{z}")), root)
+        o.location, o.scale = (0, 0, z), (1.0, ry / rx, 0.7)
+    front = min(v.co.y for v in vest.data.vertices if abs(v.co.x) < 0.05 and 1.1 < v.co.z < 1.17)
+    gb.text(f"{name}.vest.t", "MOD", 0.075, gb.mat("chr.vestink", "#1a1a1a"), (0, front - 0.004, 1.135), facing="-Y",
+            parent=root)
     if broom:
         import kit
-        kit.place(f"{name}.broom", "wooden_broom", (0.36, -0.08, 0.0), rot_z=math.pi / 2, scale=0.93, parent=root)
+        kit.place(f"{name}.broom", "wooden_broom", (0.315, -0.04, 0.0), rot_z=math.pi / 2, scale=0.93, parent=root)
     return root
 
 
