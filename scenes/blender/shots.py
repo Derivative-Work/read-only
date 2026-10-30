@@ -142,9 +142,16 @@ def light(S, final=False):
         for i in range(4):
             gb.keys(w.node_tree, 'nodes["Background"].inputs[0].default_value',
                     [(0, day[i], "CONSTANT"), (F(0.14), night[i], "CONSTANT")], index=i, interp="CONSTANT")
-        vol = w.node_tree.nodes.new("ShaderNodeVolumePrincipled")  # the haze, so lamp cones and neon read in the air
+        # the haze, so lamp cones and neon read in the air: in a bounded box, not the world volume (Eevee treats a
+        # world volume as infinite, and it swallowed the sun and the moon entirely)
+        hm = bpy.data.materials.new("haze")
+        hm.use_nodes = True
+        nt = hm.node_tree
+        nt.nodes.remove(nt.nodes["Principled BSDF"])
+        vol = nt.nodes.new("ShaderNodeVolumePrincipled")
         vol.inputs["Density"].default_value = gb.LOOK["haze_density"]
-        w.node_tree.links.new(vol.outputs[0], w.node_tree.nodes["World Output"].inputs["Volume"])
+        nt.links.new(vol.outputs[0], nt.nodes["Material Output"].inputs["Volume"])
+        gb.box("haze", (0, 0, 30), (300, 300, 60), hm)
         import detail
         detail.sky(w)
     gb.keys(moon, "energy", [(0, 0.0, "CONSTANT"), (F(0.14), moon_e, "CONSTANT")], interp="CONSTANT")

@@ -528,3 +528,31 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - the S05 Dev standing out of frame. That's as it was at M3.
 - **Timing:** not yet measured, because the GPU was shared by the sub-agents. To be measured on the combined build.
 - **Checked:** the sub-agent's `renders/m4/detail_interiors/v1..v7`, and `renders/m4/detail_interiors/mine1` (S01a, S04, S05, S07, S18, S20).
+
+## 2026-10-30T12:30:00-04:00 — M4 detail pass: the city and the street; the haze bounded, so the moon lights
+
+- **What** (`scenes/blender/sets/city.py`, `street.py`; built by a sub-agent of this session, and checked here):
+  - **The sky:** a night-only city glow (warm haze at the horizon fading to night blue), keyed off by day.
+  - **The city:**
+    - streets, cross streets, the alley and outer rings;
+    - about 30 merged building objects with one procedural facade shader: window grids lit warm or a few cool, brick or paint, cornices and roofs, storefronts on street faces;
+    - about 80 skyline towers, mostly north-east;
+    - far lamps.
+  - **The corner:** the two plain `corner.far` boxes are hidden, not deleted. Six generic storefronts take their place (LAUNDRY, GROCERY · DELI, DONUTS…), with awnings, a HOTEL blade sign and fire escapes.
+  - **The block's roofs:** parapets, cornices, water tanks, HVAC units, vents, bulkheads and antennas.
+  - **The street:**
+    - about 110 modelled cars, unbadged and in muted colours, kept out of every gag's path;
+    - hydrants (the CC0 model repainted white);
+    - bins, utility boxes, manholes, drains, meters, nameless newspaper boxes and a bike rack;
+    - ONE WAY and SPEED LIMIT 25 signs. There are no stop signs or signals, since red is reserved.
+    - worn crosswalks and lane paint;
+    - two street trees, thinned.
+  - **The tower's frontage:** a clean granite plaza, steel bollards, and six security cameras with tiny REC lights. They're red because they record, which the style spec allows.
+- **Found by the sub-agent:** the world-volume haze (`shots.light()`) absorbed the sun and the moon entirely, because Eevee treats a world volume as infinite. Since M3, nothing has been lit by the moon fill, or by the pre-roll's sun.
+  - **Fixed:** the haze is now a 300 × 300 × 60 m box with a Principled Volume at the same density.
+  - `city.FAKE_MOON` (the sub-agent's stand-in moonlight) is set to 0.
+  - **Effect:** the night now has the cool moon fill the style spec describes. Walls and roofs read as shapes under a blue night, not black, so the night is a little brighter than the approved look test.
+- **Timing (measured by the sub-agent):** city and street add +0.45 to 0.6 s/frame at the final profile.
+- **Checked:**
+  - the sub-agent's `renders/m4/detail_city/v4..v8`;
+  - the full build in `renders/m4/detail_all/v1` (S01a, S02, S03, S14, S15, S23, S27, S39).
