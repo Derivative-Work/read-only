@@ -42,3 +42,11 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **Rule:**
   - **R2:** placing a cut point. The agent proposed it and made the change.
   - **R1:** accepting Suno's sung stage directions ("hype man", "downvote") as they are, for now.
+
+## 2026-10-30T01:35 — M2 approved — R1, R2
+
+- **Note from the human:** "clicks are good, go ahead with M3"
+- **Rule:**
+  - **R2:** checking the timing map by ear (the M2 gate).
+  - **R1:** the go-ahead for M3.
+- **Not answered:** whether the eulogy has a music box and a text-to-speech voice, and whether Verse 4 is piano-only (`timing/m2_review.md` section 3). The stem levels stand as the record: drums under both. Logged as Suno's change pending the human's ear.

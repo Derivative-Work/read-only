@@ -1,4 +1,4 @@
-<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 66, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
+<!-- Exported by the agent from https://claude.ai/artifact/Ampdx4GB3uytYay53kbTXx (tab 4a328e04-4d89) at doc rev 129, 2026-10-30, with scripts/doc_to_md.py (from Share the Shares). The live doc is the source of truth; re-export if it changes. -->
 
 # Read-Only: Shot List
 
@@ -180,74 +180,74 @@ Four sets, all on or above the same block, so one Blender scene covers the whole
 
 Act 1 is all Blender. Hook 2 reuses Hook 1's renders with changed dressing.
 
-| ID | Section | Cue | Shot | Gag / overlay | Pipeline |
-| --- | --- | --- | --- | --- | --- |
-| S01a | Cold open | Before the music | The block on a sunny morning, quieter than it will be at night. The Filipino eatery, signed "r/Philippines" in hand-painted letters, is the one warm, busy shopfront. Push in through its window to a table. | Caption "San Francisco, 2018" | B |
-| S01b | Cold open | Before the music | POV through a rendered phone camera framing a rendered plate. A thumb taps the shutter, and the phone screen now shows your real plate photo, the only real image in the frame. | Generic camera UI and shutter flash; generic diner ambience | B+Real |
-| S01c | Cold open | Before the music | The phone lowers and the camera drifts across the table: a plain "VISITOR" badge with the date beside the plate, and a folded schedule under the saucer, its real times showing and the names behind redaction bars | Rendered props: no company name or logo, no real names | B |
-| S01d | Cold open | Before the music | A swipe on the phone from the camera to a third-party reader app: a community thread where a helper bot has replied and people answer "good bot." The thumb scrolls a moment, then pockets the phone | Invented app and accounts: no real app's design, no real usernames | B+JS |
-| S01e | Cold open to Intro | The first piano chord, 2.9 s before "Yeah, hello?" | Match cut from the phone in hand to the dangling payphone handset at night (S02) | Music starts on the cut | F |
-| S02 | Intro | "Yeah, hello? …You still there?" | Wide night establishing shot of the block; slow push toward the payphone, handset dangling | None | B |
-| S03 | Intro | "This call may be recorded" | Close-up: a red REC light blinks inside the handset | Phone-line waveform spikes on "recorded" | B+JS |
-| S04 | Verse 1 | "Fifteen years your door was open…" | The Dev unlocks his shop, "Third-Party App Repair, est. 2008"; warm flashback tint of a busy shop | None | B+M |
-| S05 | Verse 1 | "So I built the app you should've built…" | Through the shop window, the tower lobby displays a worse copy of what's on his shelves | None | B |
-| S06 | Verse 1 | "Then a price sheet in my inbox…" | An envelope drops through the mail slot; the wall calendar starts shedding pages | Day counter from 30 to 0 | B+JS |
-| S07 | Verse 1 | "Twenty-four cents a thousand calls…" | The Dev at an adding machine; tape spews out | Running total ticks in $0.24 steps | B+JS |
-| S08 | Verse 1 | "Twenty million for a year…" | The tape runs out the door, down the sidewalk and across the streetcar tracks | Total lands on $20,000,000 | B+JS |
-| S09 | Verse 1 | "That ain't a price, that's an eviction…" | The tape is stapled to his door as an eviction notice | None | B |
-| S10 | Verse 1 | "Then you told the room I threatened you…" | Tower lobby: a figure on the phone, back to camera | The lobby screen flashes "BLACKMAIL" | B+JS |
-| S11 | Verse 1 | "Funny thing about a phone call…" | The Dev pulls a cassette out of the payphone handset | None | B+M |
-| S12 | Verse 1 | "(He got the tape!) I got the tape…" | He holds it up like evidence; a boombox on the curb plays it; windows open up and down the block | None | B+M |
-| S13 | Verse 1 | "Scrubbed it front to back for threats…" | A magnifying glass travels along the unspooled tape | Caption: `0 results` | B+JS |
-| S14 | Hook 1 | "Read-only! Eight thousand gone dark" | Tracking shot down the block; shutters slam on the beat; a neon "READ-ONLY" sign lights on each; the r/Philippines eatery's shutter comes down last | None | B |
-| S15 | Hook 1 | "Pulled the plug on the town square…" | High wide shot: the block is dark, only the tower lit | None | B |
-| S16 | Hook 1 | "Forty-eight hours of night" | A pawn shop's LED sign counts down | 48:00:00 countdown | B+JS |
-| S17 | Hook 1 | "We did the work for nothin'…" | The mods sweep the dark street; one feeds quarters into a meter on the streetlight, which flickers on | None | B |
-| S18 | Verse 2 | "Aw, the mods are mad, that's cute…" | Through the lobby glass: the CEO on a server-rack throne, hoodie under ermine; slow push in | None | B+M |
-| S19 | Verse 2 | "You're landed gentry, baby…" | Outside, the mods kneel on the sidewalk like peasants, still holding brooms | None | B |
-| S20 | Verse 2 | "You went dark for forty-eight… then it bounced" | The CEO bounces a ball in time with the lobby screen | Traffic chart dips, then bounces back | B+JS |
-| S21 | Verse 2 | "Swapped the mods who wouldn't open…" | A locksmith van; shutters are forced up and identical mannequins in MOD vests placed in the doorways | None | B |
-| S22 | Verse 2 | "Did an AMA… (downvote)" | The CEO at a balcony podium; giant generic down arrows hail on him, one per downvote sound | None | B |
-| S23 | Verse 2 | "…robots with the wallets scrapin' all your brains" | He points down the street: VIP bots with vacuum hoses in the shops' mail slots | None | B+M |
-| S24 | Verse 2 | "I'm the wall around your words…" | He heroically bricks up the lobby doors | None | B |
-| S25 | Verse 2 | "(beat drops) …so I sold 'em the whole lot." | The brick wall has a little door in it. A VIP bot hands over a briefcase; the CEO hands back the keys. Hard stop. | None | B |
-| S26 | Hook 2 | Whole hook | Reuse S14–S17, but the shutters now carry padlocks and "UNDER NEW MANAGEMENT" signs | None | B |
-| S27 | Verse 3 | "Said the bots were the problem…" | Handheld: the Dev storms down the padlocked block. A few human-looking bots blend into the crowd of mods, impossible to tell apart | None | B+M |
-| S28 | Verse 3 | "…by the terabyte to the biggest ones on Earth" | Sidewalk auction: crates labeled "COMMENTS 2005–2023" forklifted into a plain truck | None | B |
-| S29 | Verse 3 | "Sixty mil a year from the search guys…" | Two plain trucks pull up, labeled only "SEARCH" and "CHAT". At the tower door, a bouncer waves the SEARCH truck in and turns every other vehicle away, including an archive van | None | B |
-| S30 | Verse 3 | "Then you rang the opening bell…" | The CEO rings a bell on the balcony; a banner unrolls | An LED ticker band wraps the tower | B+JS |
-| S31 | Verse 3 | "Every 'thanks, this worked' at 3 a.m.…" | Sticky notes on the shop windows ("thanks, this worked") are peeled off and fed into a funnel into the truck. Above them, a tower billboard summarizes them all into one bland line | None | B |
-| S32 | Verse 3 | "…and we never got a band" | The mods' brooms stacked by the curb; an empty payroll envelope; a bare rubber band drops to the pavement | None | B |
-| S33 | Verse 3 | "We're the gentry? Then where's the land?" | The Dev stands on one sidewalk square chalked "YOUR LAND"; the camera cranes up to show that's all | None | B+M |
+| ID | Section | Cue | Start | Shot | Gag / overlay | Pipeline |
+| --- | --- | --- | --- | --- | --- | --- |
+| S01a | Cold open | Before the music | Pre-roll | The block on a sunny morning, quieter than it will be at night. The Filipino eatery, signed "r/Philippines" in hand-painted letters, is the one warm, busy shopfront. Push in through its window to a table. | Caption "San Francisco, 2018" | B |
+| S01b | Cold open | Before the music | Pre-roll | POV through a rendered phone camera framing a rendered plate. A thumb taps the shutter, and the phone screen now shows your real plate photo, the only real image in the frame. | Generic camera UI and shutter flash; generic diner ambience | B+Real |
+| S01c | Cold open | Before the music | Pre-roll | The phone lowers and the camera drifts across the table: a plain "VISITOR" badge with the date beside the plate, and a folded schedule under the saucer, its real times showing and the names behind redaction bars | Rendered props: no company name or logo, no real names | B |
+| S01d | Cold open | Before the music | Pre-roll | A swipe on the phone from the camera to a third-party reader app: a community thread where a helper bot has replied and people answer "good bot." The thumb scrolls a moment, then pockets the phone | Invented app and accounts: no real app's design, no real usernames | B+JS |
+| S01e | Cold open to Intro | The first piano chord, 2.9 s before "Yeah, hello?" | 0:00.14 | Match cut from the phone in hand to the dangling payphone handset at night (S02) | Music starts on the cut | F |
+| S02 | Intro | "Yeah, hello? …You still there?" | 0:00.14 | Wide night establishing shot of the block; slow push toward the payphone, handset dangling | None | B |
+| S03 | Intro | "This call may be recorded" | 0:07.75 | Close-up: a red REC light blinks inside the handset | Phone-line waveform spikes on "recorded" | B+JS |
+| S04 | Verse 1 | "Fifteen years your door was open…" | 0:20.62 | The Dev unlocks his shop, "Third-Party App Repair, est. 2008"; warm flashback tint of a busy shop | None | B+M |
+| S05 | Verse 1 | "So I built the app you should've built…" | 0:23.38 | Through the shop window, the tower lobby displays a worse copy of what's on his shelves | None | B |
+| S06 | Verse 1 | "Then a price sheet in my inbox…" | 0:25.88 | An envelope drops through the mail slot; the wall calendar starts shedding pages | Day counter from 30 to 0 | B+JS |
+| S07 | Verse 1 | "Twenty-four cents a thousand calls…" | 0:28.50 | The Dev at an adding machine; tape spews out | Running total ticks in $0.24 steps | B+JS |
+| S08 | Verse 1 | "Twenty million for a year…" | 0:31.52 | The tape runs out the door, down the sidewalk and across the streetcar tracks | Total lands on $20,000,000 | B+JS |
+| S09 | Verse 1 | "That ain't a price, that's an eviction…" | 0:34.03 | The tape is stapled to his door as an eviction notice | None | B |
+| S10 | Verse 1 | "Then you told the room I threatened you…" | 0:36.81 | Tower lobby: a figure on the phone, back to camera | The lobby screen flashes "BLACKMAIL" | B+JS |
+| S11 | Verse 1 | "Funny thing about a phone call…" | 0:39.25 | The Dev pulls a cassette out of the payphone handset | None | B+M |
+| S12 | Verse 1 | "(He got the tape!) I got the tape…" | 0:42.56 | He holds it up like evidence; a boombox on the curb plays it; windows open up and down the block | None | B+M |
+| S13 | Verse 1 | "Scrubbed it front to back for threats…" | 0:45.67 | A magnifying glass travels along the unspooled tape | Caption: `0 results` | B+JS |
+| S14 | Hook 1 | "Read-only! Eight thousand gone dark" | 0:50.01 | Tracking shot down the block; shutters slam on the beat; a neon "READ-ONLY" sign lights on each; the r/Philippines eatery's shutter comes down last | None | B |
+| S15 | Hook 1 | "Pulled the plug on the town square…" | 0:52.34 | High wide shot: the block is dark, only the tower lit | None | B |
+| S16 | Hook 1 | "Forty-eight hours of night" | 0:56.22 | A pawn shop's LED sign counts down | 48:00:00 countdown | B+JS |
+| S17 | Hook 1 | "We did the work for nothin'…" | 0:57.78 | The mods sweep the dark street; one feeds quarters into a meter on the streetlight, which flickers on | None | B |
+| S18 | Verse 2 | "Aw, the mods are mad, that's cute…" | 1:00.62 | Through the lobby glass: the CEO on a server-rack throne, hoodie under ermine; slow push in | None | B+M |
+| S19 | Verse 2 | "You're landed gentry, baby…" | 1:03.12 | Outside, the mods kneel on the sidewalk like peasants, still holding brooms | None | B |
+| S20 | Verse 2 | "You went dark for forty-eight… then it bounced" | 1:05.88 | The CEO bounces a ball in time with the lobby screen | Traffic chart dips, then bounces back | B+JS |
+| S21 | Verse 2 | "Swapped the mods who wouldn't open…" | 1:11.04 | A locksmith van; shutters are forced up and identical mannequins in MOD vests placed in the doorways | None | B |
+| S22 | Verse 2 | "Did an AMA… (downvote)" | 1:13.60 | The CEO at a balcony podium; giant generic down arrows hail on him, one per downvote sound | None | B |
+| S23 | Verse 2 | "…robots with the wallets scrapin' all your brains" | 1:19.91 | He points down the street: VIP bots with vacuum hoses in the shops' mail slots | None | B+M |
+| S24 | Verse 2 | "I'm the wall around your words…" | 1:22.45 | He heroically bricks up the lobby doors | None | B |
+| S25 | Verse 2 | "(beat drops) …so I sold 'em the whole lot." | 1:27.63 | The brick wall has a little door in it. A VIP bot hands over a briefcase; the CEO hands back the keys. Hard stop. | None | B |
+| S26 | Hook 2 | Whole hook | 1:29.64 | Reuse S14–S17, but the shutters now carry padlocks and "UNDER NEW MANAGEMENT" signs | None | B |
+| S27 | Verse 3 | "Said the bots were the problem…" | 1:40.18 | Handheld: the Dev storms down the padlocked block. A few human-looking bots blend into the crowd of mods, impossible to tell apart | None | B+M |
+| S28 | Verse 3 | "…by the terabyte to the biggest ones on Earth" | 1:43.20 | Sidewalk auction: crates labeled "COMMENTS 2005–2023" forklifted into a plain truck | None | B |
+| S29 | Verse 3 | "Sixty mil a year from the search guys…" | 1:45.28 | Two plain trucks pull up, labeled only "SEARCH" and "CHAT". At the tower door, a bouncer waves the SEARCH truck in and turns every other vehicle away, including an archive van | None | B |
+| S30 | Verse 3 | "Then you rang the opening bell…" | 1:47.96 | The CEO rings a bell on the balcony; a banner unrolls | An LED ticker band wraps the tower | B+JS |
+| S31 | Verse 3 | "Every 'thanks, this worked' at 3 a.m.…" | 1:53.49 | Sticky notes on the shop windows ("thanks, this worked") are peeled off and fed into a funnel into the truck. Above them, a tower billboard summarizes them all into one bland line | None | B |
+| S32 | Verse 3 | "…and we never got a band" | 2:00.09 | The mods' brooms stacked by the curb; an empty payroll envelope; a bare rubber band drops to the pavement | None | B |
+| S33 | Verse 3 | "We're the gentry? Then where's the land?" | 2:01.37 | The Dev stands on one sidewalk square chalked "YOUR LAND"; the camera cranes up to show that's all | None | B+M |
 
 ## Shot list: Good Bot eulogy to the outro
 
 The reveal starts at S40. From S42 on, every shot is the same set made photoreal.
 
-| ID | Section | Cue | Shot | Gag / overlay | Pipeline |
-| --- | --- | --- | --- | --- | --- |
-| S34 | Good Bot | "Good bot." | The pocket park at night: a tiny robot in a shoebox coffin, the good bots holding lanterns | Music-box beat | B |
-| S35 | Good Bot | "…a hundred forty-four thousand names" | Rows of tiny ban-list headstones multiply behind the coffin | Counter climbs to 144,926 | B+JS |
-| S36 | Good Bot | "Banned the spammers… never asked for pay or fame" | Close-up of the little robot's headstone: "Here lies a good bot. It worked for free." | None | B |
-| S37 | Good Bot | "I checked your reposts… the night shift in the feed" | The good bots' lanterns go out one by one along the fence | None | B |
-| S38 | Good Bot | "You said the bots were the problem." | Slow pan to the empty doghouse labeled "BOT DEFENSE" by the gate | None | B |
-| S39 | Good Bot | "So you shut down the one that you'd need." | VIP bots stroll past the doghouse into the tower, gold badges swinging | None | B |
-| S39a | Good Bot | The first "good bot" replies | Mourners stick "good bot" notes on the coffin; the camera rises to reveal a cemetery behind it | None | B |
-| S39b | Good Bot | Replies continue | Slow dolly along a row of six identical headstones for the apps, all dated June 30, 2023 | Inscriptions per "Memorial headstones" | B |
-| S39c | Good Bot | Replies continue | Pushshift's stone, then BotDefense's stone in front of a field of 144,926 tiny markers | Inscriptions per "Memorial headstones" | B |
-| S39d | Good Bot | Replies continue | A cluster of four stones: r/IAmA's celebrity AMAs, mobile moderation on r/Blind, search engines other than Google, Wayback Machine archiving | Inscriptions per "Memorial headstones" | B |
-| S39e | Good Bot | The last replies | Freshly dug plots with stones for RSS feeds and the public Data API; the shot ends on an open grave with a shovel beside it, under "Logged-out Reddit · 2005 –" | Inscriptions per "Memorial headstones" | B |
-| S40 | Verse 4 | "Hold up. Who's rappin' this? Run it back one time." | Hard freeze; the whole video rewinds at high speed through earlier shots | Rewind scan lines | F |
-| S41 | Verse 4 | "I learned to flow from comment chains…" | Back on the corner: the Blender street gains real texture, frame by frame | Crossfade from S41's B render to its B→V version | B→V+F |
-| S42 | Verse 4 | "You shut the bot that hunted bots…" | Fully photoreal street in the rain; the rapper's face glitches into a waveform | None | B→V+LS |
-| S43 | Verse 4 | "So which one's singing now?" | Tight close-up of the rapper, face still flickering | None | B→V+LS |
-| S44 | Verse 4 | "Reply below. Good bot, bad bot. Take your time." | The tower's rooftop billboard shows a generic comment box | Cursor blinks in tempo | B→V+JS |
-| S45 | Verse 4 | "…allegedly" | The hype man's silhouette in a doorway | None | B→V |
-| S46 | Final hook | Retired: the take has no final hook. Folded into S48. | None | None | B→V |
-| S47 | Outro | "(beep) This call was recorded." | The payphone again, now real; the REC light blinks | None | B→V |
-| S48 | Outro | "So was everything else." | The camera cranes up from the payphone over the photoreal block (S46's imagery, folded in): a VIP bot stands in every doorway, every shutter has a keypad reading "Log in to continue," and every window shows a red REC light. Then the camera settles on the dark pocket park | None | B→V |
-| S48a | After the outro | Silence after "So was everything else" | The camera returns to the cemetery, now photoreal, and holds on the open grave under "Logged-out Reddit · 2005 –". Nothing moves. | None | B→V |
-| S48b | Tag | After the last word | The open grave fades to black, which resolves into a generic login prompt; the cursor blinks in the username field, then cut | Generic UI, no Reddit branding | JS |
+| ID | Section | Cue | Start | Shot | Gag / overlay | Pipeline |
+| --- | --- | --- | --- | --- | --- | --- |
+| S34 | Good Bot | "Good bot." | 2:04.00 | The pocket park at night: a tiny robot in a shoebox coffin, the good bots holding lanterns | Music-box beat | B |
+| S35 | Good Bot | "…a hundred forty-four thousand names" | 2:05.92 | Rows of tiny ban-list headstones multiply behind the coffin | Counter climbs to 144,926 | B+JS |
+| S36 | Good Bot | "Banned the spammers… never asked for pay or fame" | 2:09.26 | Close-up of the little robot's headstone: "Here lies a good bot. It worked for free." | None | B |
+| S37 | Good Bot | "I checked your reposts… the night shift in the feed" | 2:13.79 | The good bots' lanterns go out one by one along the fence | None | B |
+| S38 | Good Bot | "You said the bots were the problem." | 2:17.07 | Slow pan to the empty doghouse labeled "BOT DEFENSE" by the gate | None | B |
+| S39 | Good Bot | "So you shut down the one that you'd need." | 2:19.14 | VIP bots stroll past the doghouse into the tower, gold badges swinging | None | B |
+| S39a | Good Bot | The first "good bot" replies | 2:20.92 | Mourners stick "good bot" notes on the coffin; the camera rises to reveal a cemetery behind it | None | B |
+| S39b | Good Bot | Replies continue | 2:24.14 | Slow dolly along a row of six identical headstones for the apps, all dated June 30, 2023 | Inscriptions per "Memorial headstones" | B |
+| S39c | Good Bot | Replies continue | 2:26.78 | Pushshift's stone, then BotDefense's stone in front of a field of 144,926 tiny markers | Inscriptions per "Memorial headstones" | B |
+| S39d | Good Bot | Replies continue | 2:28.76 | A cluster of four stones: r/IAmA's celebrity AMAs, mobile moderation on r/Blind, search engines other than Google, Wayback Machine archiving | Inscriptions per "Memorial headstones" | B |
+| S39e | Good Bot | The last replies | 2:31.38 | Freshly dug plots with stones for RSS feeds and the public Data API; the shot ends on an open grave with a shovel beside it, under "Logged-out Reddit · 2005 –" | Inscriptions per "Memorial headstones" | B |
+| S40 | Verse 4 | "Hold up. Who's rappin' this? Run it back one time." | 2:33.68 | Hard freeze; the whole video rewinds at high speed through earlier shots | Rewind scan lines | F |
+| S41 | Verse 4 | "I learned to flow from comment chains…" | 2:36.91 | Back on the corner: the Blender street gains real texture, frame by frame | Crossfade from S41's B render to its B→V version | B→V+F |
+| S42 | Verse 4 | "You shut the bot that hunted bots…" | 2:39.55 | Fully photoreal street in the rain; the rapper's face glitches into a waveform | None | B→V+LS |
+| S43 | Verse 4 | "So which one's singing now?" | 2:42.11 | Tight close-up of the rapper, face still flickering | None | B→V+LS |
+| S44 | Verse 4 | "Reply below. Good bot, bad bot. Take your time." | 2:43.77 | The tower's rooftop billboard shows a generic comment box | Cursor blinks in tempo | B→V+JS |
+| S45 | Verse 4 | "…allegedly" | 2:48.41 | The hype man's silhouette in a doorway | None | B→V |
+| S46 | Final hook | Retired: the take has no final hook. Folded into S48. | Retired | None | None | B→V |
+| S47 | Outro | "(beep) This call was recorded." | 2:52.12 | The payphone again, now real; the REC light blinks | None | B→V |
+| S48 | Outro | "So was everything else." | 3:05.32 | The camera cranes up from the payphone over the photoreal block (S46's imagery, folded in): a VIP bot stands in every doorway, every shutter has a keypad reading "Log in to continue," and every window shows a red REC light. Then the camera settles on the dark pocket park | None | B→V |
+| S48a | After the outro | Silence after "So was everything else" | 3:06.38 | The camera returns to the cemetery, now photoreal, and holds on the open grave under "Logged-out Reddit · 2005 –". Nothing moves. | None | B→V |
+| S48b | Tag | After the last word | After the audio | The open grave fades to black, which resolves into a generic login prompt; the cursor blinks in the username field, then cut | Generic UI, no Reddit branding | JS |
 
 ## Bookends, end card and vertical cut
 
@@ -272,12 +272,12 @@ The opener and closing are rendered, and the only real image in them is your bre
 
 **Open checks**
 
-- [ ] Lock the track and timing map, then add timestamps to every shot.
+- [x] Lock the track and timing map, then add timestamps to every shot.
 - [ ] Confirm the Act 1 / Act 2 switch, or upgrade Act 1 shots to B→V.
 - [ ] Pick the lip-sync model for S42–S43 and test it on one line first.
 - [ ] Check the composite block doesn't copy a real business's signage.
 - [ ] The eatery is fictional: don't copy the real restaurant's name, sign or interior. The plate photo on the phone screen needs no permission.
-- [ ] Check the plate photo's date before captioning it "2018."
+- [x] Check the plate photo's date before captioning it "2018."
 - [ ] Verify the facts listed in the Reference Guide before the end card is rendered.
 - [ ] Hip-hop tradition line in the credits.
 - [ ] Conflict-of-interest audit of the lyrics and fact card by a model from another lab, logged. Pay most attention to Verse 4 and the fact card's lawsuit line, which touch Anthropic directly.

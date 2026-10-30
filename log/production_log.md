@@ -131,3 +131,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Findings:** S02 now runs 7.61 s (0:00.14–0:07.75).
 - **Stage directions:** the sung "hype man" (twice) and "downvote" stay in the track for now. The human may revisit replacing them from the stems later. That would be an audio edit, made by the agent and logged. Open item.
 - **Why:** The human's decisions (human_interventions, 01:05).
+
+## 2026-10-30T01:40:00-04:00 — M2 approved; timestamps written into the brief
+
+- **What:** The human approved the click track (M2 gate). In the brief's two shot tables, added a "Start" column after "Cue" with each shot's start from `timing/timing_map.json` (m:ss.ss of the Suno mix): "Pre-roll" for S01a–S01d, "Retired" for S46, "After the audio" for S48b. The bookends table (S49, S50) has no cue column and is left alone; both come after the audio. Ticked two open checks: "Lock the track and timing map, then add timestamps to every shot" and "Check the plate photo's date" (EXIF, logged 2026-10-29). Doc rev 66 → 129. Re-exported `docs/brief.md`. `scripts/timing_map.py` reads the new seven-column rows; re-running it changes no time, and every brief Start matches the map.
+- **Commands:** Docs connector `update` on node `a990c55c-da10`: an `insert` with `each` (a "TBD" cell after the Cue cell of all 61 rows), then 61 cell-scoped find/replace ops, then two `set checked` ops. `python3 -I scripts/doc_to_md.py …`; `.venv/bin/python -I scripts/timing_map.py`, and a check that the brief's Start column equals the map.
+- **Why:** Brief M2 ("add timestamps to every shot") and its gate; the human's approval (human_interventions, 01:35).

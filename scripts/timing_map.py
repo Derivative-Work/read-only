@@ -50,10 +50,11 @@ def norm(s):
 def shot_rows():
     rows = []
     for line in Path("docs/brief.md").read_text().splitlines():
-        m = re.match(r"\| (S\d\d[a-z]?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$", line)
+        # ID | Section | Cue | Start | Shot | Gag / overlay | Pipeline (Start: this map's times, written back at M2)
+        m = re.match(r"\| (S\d\d[a-z]?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$", line)
         if m:
-            rows.append({"id": m.group(1), "section": m.group(2), "cue": m.group(3), "picture": m.group(4),
-                         "overlay": m.group(5), "pipeline": m.group(6)})
+            rows.append({"id": m.group(1), "section": m.group(2), "cue": m.group(3), "brief_start": m.group(4),
+                         "picture": m.group(5), "overlay": m.group(6), "pipeline": m.group(7)})
             continue
         m = re.match(r"\| (S\d\d[a-z]?) \| (.*?) \| (.*?) \| (.*?) \|$", line)  # bookends: no cue column
         if m and m.group(2) in ("Closing bookend", "End card"):  # not the headstone table's rows
