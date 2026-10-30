@@ -636,3 +636,8 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - The camera holds on the wall to 2.4 s, cranes up to look into the funnel, then tilts to the billboard and zooms from 32 to 110 mm.
   - The billboard has moved to the roof's front edge (from 2 m back, where the roof hid it from the street), and S31's line is 3.0 m text.
 - **Tests:** `renders/m4/gags_v1`…`gags_v6`, stills every 3–6 frames. The S03 close-up now shows the bigger cassette under the REC light.
+
+## 2026-10-30T15:07:10-04:00 — M4: Act 1 render v3 started
+
+- **What:** S02–S39e at 720p with the flicker fixes and the re-staged gags (the commit before this one), into `renders/m4/act1_v3/frames`. v2 is superseded; frame sequences are never archived.
+- **Command:** `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v3/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`
