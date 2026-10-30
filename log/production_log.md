@@ -394,3 +394,21 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Superseded:** the MMS_FA mapping's output → `archive/timing/visemes_mms_superseded.json`. `scripts/visemes.py` stays as the record of how it was made.
 - **Command:** `.venv/bin/python -I scripts/rhubarb_visemes.py` (7 min).
 - **Act 1 render** (`renders/m4/act1/frames`, 3,686 frames) finished with the old mouths and before the detail note; it serves as the survey for the detail pass and will be re-rendered after it.
+
+## 2026-10-30T09:05:00-04:00 — M4 detail pass: survey, CC0 models, hooks
+
+- **Why:** the human's note: "pretty much all of the scenes need more detail" (human_interventions, 08:22, R1).
+- **Survey:** one frame from the middle of every Act 1 shot of the finished render (`renders/m4/survey/page_1..5.jpg`). What's thin:
+  - **Around the block:** a black void. There is nothing across the cross street but two plain boxes, and nothing behind the rows, the tower or the park; the aerials (S15, S23, S26) show the block floating in black. The sky is flat.
+  - **The street:** lamps and litter only. No cars, hydrants, meters, bins, markings or trees.
+  - **The interiors:** the Dev's shop is shelves of blank boxes; the eatery's steam table and menu cards are blank; the other shops are empty rooms; the lobby is boxes and spheres.
+  - **The gags' props are the grey-box's boxes:** the adding machine, cassette, boombox, magnifier, van, trucks, crates, briefcase, arrows, hoses, bell, funnel, coffin, doghouse, lanterns.
+  - **The park and cemetery:** flat grass in front of a black wall.
+  - **The figures:** no hair, ears or noses, and plain clothes.
+- **Plan:** a detail pass in five areas (`scenes/blender/sets/detail.py`): `city`, `street`, `interiors`, `parkdress` (set dressing, the end of `block.build()`) and `props` (after `shots.stage()`, dressing the gags' objects in place so every shot's keys and visibility stay as approved). The figures get their detail in `chars.py`. Then look-test stills of every shot, for review before Act 1 is rendered again.
+- **CC0 models:** 72 Poly Haven models (1k glTF), the same source as the textures. `scripts/fetch_models.py` → `assets/models/` (git-ignored, 273 MB); `assets/models/sources.tsv` records every file's URL, MD5 and licence. `decorative_book_set_01` has no glTF and was skipped.
+  - **Checked** in a contact render (`renders/m4/kit_contact.jpg`). `plastic_crate_01` ("GALLER" moulded in its side) and `gaming_console` (a wordmark) read as brands, so they are fetched but never placed.
+- **Kit:** `scenes/blender/lib/kit.py` imports each model once as one mesh, which all its copies share. `swap()` gives a grey-box object a model's mesh but keeps its keys.
+- **Commands:**
+  - `.venv/bin/python -I scripts/fetch_models.py`
+  - contact render: an inline Blender script (`kit.place` per model).

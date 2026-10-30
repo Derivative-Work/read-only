@@ -637,4 +637,7 @@ def build():
     corner(S)
     tower(S)
     park(S)
+    if FINAL:  # the detail pass (the human's note on M4: "pretty much all of the scenes need more detail")
+        import detail
+        detail.run(detail.SET, S)
     return S

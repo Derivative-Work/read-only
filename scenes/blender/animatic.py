@@ -57,9 +57,11 @@ def build(size, samples, look="greybox", mb_steps=1):
     S = block.build()
     shots.light(S, final=look == "final")
     SP = shots.stage(S)
-    if look == "final":  # the in-world screens (overlays/screens.mjs) on their surfaces
+    if look == "final":  # the in-world screens (overlays/screens.mjs) on their surfaces; the gags' props
         import screens
         screens.build(S, SP)
+        import detail
+        detail.run(detail.STAGED, S, SP)
     sc.frame_start = 0
     sc.frame_end = gb.F(max(b for _, b in SP.values()))
     print(f"built in {time.time() - t:.1f} s; {len(bpy.data.objects)} objects; {len(shots.CAMS)} cameras; "

@@ -56,3 +56,10 @@ assets/gen/grunge/
 
 # Third-party tools, fetched (URL and SHA-256 in the production log): never archived.
 tools/
+
+# CC0 models: re-fetchable with scripts/fetch_models.py; assets/models/sources.tsv (in git) has each URL and MD5.
+!assets/models/
+assets/models/*/
+
+# The detail pass's generated textures: regenerable with scripts/gen_detail_*.py (fixed seeds).
+assets/gen/detail/
