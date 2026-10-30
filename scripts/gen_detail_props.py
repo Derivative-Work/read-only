@@ -91,7 +91,9 @@ def receipt(rng):
         for yy in (40, H - 90):  # staples
             d.rectangle((x0 + 110, yy, x0 + 180, yy + 8), fill=(180, 182, 186))
     # the number written on it (S09, "an eviction with a number written on"): red marker across the strips, ringed
-    d.text((W / 2, H * 0.47), "$20,000,000", font=font(HAND, 190), fill=(196, 24, 24), anchor="mm", stroke_width=5,
+    big = next(font(HAND, s) for s in range(190, 60, -5)  # the largest that fits inside the ring (190 ran off the edges)
+               if d.textlength("$20,000,000", font=font(HAND, s)) <= W - 220)
+    d.text((W / 2, H * 0.47), "$20,000,000", font=big, fill=(196, 24, 24), anchor="mm", stroke_width=5,
            stroke_fill=(196, 24, 24))
     d.ellipse((40, H * 0.47 - 150, W - 40, H * 0.47 + 150), outline=(196, 24, 24), width=12)
     d.text((W / 2, H * 0.47 + 230), "due June 30", font=font(HAND, 110), fill=(196, 24, 24), anchor="mm")

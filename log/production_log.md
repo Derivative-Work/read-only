@@ -661,3 +661,11 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - S13: the glass moves 2.5 m in the shot, 0.24 m up over the tape; the camera is on the shop side (the curb's posts blocked the street side), at 40 mm. The lens is clear blended glass at alpha 0.12; with transmission it rendered black, and raytraced refraction didn't help.
 - **Tests:** `renders/m4/gags_v7`…`gags_v9`.
 - **The v3 render:** stopped at f_01659. Its 544 frames from S07 (f_01116) on were deleted, since they had the old staging (frame sequences are regenerable and never archived), and it resumes from there with --resume.
+
+## 2026-10-30T18:57:10-04:00 — M4: Act 1 v3 rendered and cut; S09's notice text fitted
+
+- **Render:** finished, 3,686 frames (f_00435–f_04120). Two "Failed to create GPU texture" warnings, as in v2; nothing visible.
+- **QC, flicker:** the 16×9 grid brightness check gives 871 cell events against v2's 954. The windows that remain high (about 50–52 s, 90–92 s, 96 s and 137–140 s) were checked by eye: fast pans over the facades, the fence passing the doghouse, the robots' eye lights. None of them is a surface fighting another. The sharpness at 50–51 s varies about ±15% frame to frame, normal for a pan over changing detail.
+- **QC, gags:** stills of S06, S07–S09, S11–S12 and S31 checked. One fault: S09's "$20,000,000" at size 190 was wider than the 1000 px receipt texture and ran off both edges ("20,000,00").
+- **Fix:** `scripts/gen_detail_props.py` receipt() now takes the largest size up to 190 that fits inside the ring. The textures were regenerated (git-ignored and regenerable; the others are the same, from the same seed), and S09 (34.03–36.81 s, 67 frames) was re-rendered over its old frames (log `renders/m4/act1_v3/render_s09.log`).
+- **Cut:** the seven section clips in `renders/m4/sections_v3/` and the full act in `renders/m4/m4_act1_v3.mp4` (153.54 s). The v2 clips stay where they were. The first 2_verse1 cut, with the clipped notice, is archived as `archive/renders/m4/sections_v3_superseded/2_verse1_notice_clipped.mp4`.
