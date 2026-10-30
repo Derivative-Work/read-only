@@ -50,3 +50,6 @@ reference/private/
 
 # CC0 textures: re-fetchable with scripts/fetch_textures.py; assets/textures/sources.tsv (in git) has each URL and MD5.
 assets/textures/*/
+
+# The grunge pass's decals: regenerable with scripts/gen_grunge_decals.py (fixed seed).
+assets/gen/grunge/

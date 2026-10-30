@@ -45,9 +45,12 @@ TEXMAP = {"asphalt": "asphalt_03", "sidewalk": "concrete_pavement", "brick": "br
 
 
 def M(key, **kw):
-    if FINAL and key in TEXMAP:
-        return gb.tex_mat(key, TEXMAP[key])
-    return gb.mat(key, C[key], **kw)
+    m = gb.tex_mat(key, TEXMAP[key]) if FINAL and key in TEXMAP else gb.mat(key, C[key], **kw)
+    g = gb.LOOK["grime"]["materials"].get(key)
+    if FINAL and g and not m.get("grimed"):  # the human's note on the look test: "make sure it's grungy"
+        gb.grime(m, **g)
+        m["grimed"] = 1
+    return m
 
 
 def look_colours():
@@ -398,6 +401,9 @@ TONES = [  # the brief's "Memorial headstones" (shot, inscription)
 
 def headstone(name, loc, label, size=1.0, m=None):
     root = gb.empty(name, loc)
+    if FINAL:  # settled over the years: a small lean, seeded by name so every render matches
+        r = __import__("random").Random(name)
+        root.rotation_euler = (r.uniform(-0.05, 0.05), r.uniform(-0.04, 0.04), r.uniform(-0.06, 0.06))
     gb.box(f"{name}.slab", (0, 0, 0.55 * size), (0.9 * size, 0.16 * size, 1.1 * size), m or M("stone"), parent=root)
     gb.cyl(f"{name}.top", (0, 0, 1.1 * size), 0.45 * size, 0.16 * size, m or M("stone"), parent=root, axis="Y")
     if label:
@@ -604,6 +610,10 @@ def build():
         w = bpy.data.objects[f"shop{i}.{win}"]
         gb.text(f"shop{i}.{win}.sign", name, 0.13 if len(name) < 16 else 0.09, M("ink"), (0, 0.03, -0.5), facing="+Y",
                 parent=w)
+    S["n_south"] = len(SHOPS)
+    if FINAL:
+        import grunge
+        grunge.build(S, {(i, win) for i, win, _ in UPPER_SIGNS} | {(3, "win12"), (8, "win12")})
     eatery_interior(S)
     dev_interior(S)
     corner(S)

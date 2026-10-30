@@ -88,5 +88,76 @@
    null,
    0.8
   ]
+ },
+ "grime": {
+  "_doc": "gb.grime per block material: amt (0..1), and optional space, streak, damp, spots, wet (style spec, Grime)",
+  "colour": "#2b251e",
+  "materials": {
+   "asphalt": {
+    "amt": 0.35,
+    "wet": 1.0
+   },
+   "sidewalk": {
+    "amt": 0.75,
+    "spots": 1.0
+   },
+   "curb": {
+    "amt": 0.85
+   },
+   "brick": {
+    "amt": 0.7
+   },
+   "stucco": {
+    "amt": 0.85
+   },
+   "stucco2": {
+    "amt": 0.7
+   },
+   "shutter": {
+    "amt": 0.85,
+    "space": "object",
+    "damp": 0.0
+   },
+   "plywood": {
+    "amt": 0.7
+   },
+   "sign": {
+    "amt": 0.9
+   },
+   "trim": {
+    "amt": 0.65
+   },
+   "steam": {
+    "amt": 0.35
+   },
+   "lease": {
+    "amt": 0.7
+   },
+   "fence": {
+    "amt": 0.4
+   },
+   "rail": {
+    "amt": 0.6
+   },
+   "stone": {
+    "amt": 0.75,
+    "streak": 0.9,
+    "damp": 0.8
+   },
+   "eatery_wall": {
+    "amt": 0.3,
+    "damp": 0.6
+   },
+   "menu": {
+    "amt": 0.3
+   },
+   "tile": {
+    "amt": 0.3,
+    "damp": 0.0
+   },
+   "crate": {
+    "amt": 0.4
+   }
+  }
  }
 }

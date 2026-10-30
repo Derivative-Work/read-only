@@ -57,7 +57,7 @@ corporate light above. Red is reserved for what records and what closes: the REC
 | Headstones, payphone post | `concrete` | |
 | Eatery floor | `brown_floor_tiles` | the reference photos' terracotta tile |
 | The Dev's shop floor | `old_linoleum_flooring_01` | |
-| Tower | none | flat glass and brushed metal: the only clean surface on the street |
+| Tower | none | flat glass and brushed metal: the only clean surface on the street (no grime pass) |
 
 Textures are box-projected in object space at their real-world scale (a brick is a brick at every shop), so no
 mesh needs UVs.
@@ -68,6 +68,27 @@ mesh needs UVs.
   or logo. The eatery's sign is "hand-painted": a warmer cream ground, with slight unevenness at M4 polish.
 - **The tower:** the same Inter, white on glass. It's clean on purpose.
 - **Graffiti:** shapes and tags made up for this video: no real tags, no words.
+
+## Grime (the human's note on the look test: "make sure it's grungy")
+
+The street is worn down; the people and the tower are not. All of it is seeded, so every render matches.
+
+- **In the materials** (`gb.grime`, amounts per material in `config/look.json` → `grime`):
+  - blotchy dirt, vertical run-off streaks under sills and signs, and rising damp near the ground;
+  - gum spots and cracks in the sidewalks;
+  - puddles in the asphalt that mirror the lamps and neon;
+  - the headstones are weathered but stay readable.
+- **On the set** (`scenes/blender/sets/grunge.py`):
+  - **Windows:** frames and sills on every upper window. Many have blinds, curtains or foil, and some have AC units.
+  - **Fire escapes** on the brick buildings.
+  - **Walls:** made-up tags and throw-ups on the shutters (kept clear of "UNDER NEW MANAGEMENT") and low on the walls, and layered, torn posters on the piers (`scripts/gen_grunge_decals.py`).
+  - **The street:** litter in the gutters and along the walls, bag piles at the curb, cardboard, and weeds where the sidewalk meets the walls.
+  - **Overhead:** the trolley wire and its span wires, cables sagging along the facades, and two utility poles.
+  - **The park:** dead leaves.
+- **Kept clean:**
+  - the tower, its lobby and the sidewalk in front of it: the only clean things on the street;
+  - the people;
+  - no tents, bedrolls or carts (the brief's guardrail on unhoused people as set dressing).
 
 ## Characters (stylized figures)
 

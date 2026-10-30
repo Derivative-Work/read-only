@@ -310,3 +310,31 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-10-30T06:29:44-04:00 — M4 look test approved; grunge pass next
 
 - **What:** The human approved the look test (`renders/m4/m4_look_v5.jpg`, `style/style_spec.md`) with one note: "make sure it's grungy" (human_interventions, same time). Next, before the Act 1 renders: a grunge pass on the set (stains, grime, litter, tags, worn signs), then the known weak spots, then Rhubarb lip sync.
+
+## 2026-10-30T06:40:44-04:00 — M4: the grunge pass
+
+- **What:** The human's note on the look test, "make sure it's grungy", is applied to the whole block. The final look only; the grey-box is unchanged.
+  - **The materials** (`gb.grime`, amounts in `config/look.json` → `grime`):
+    - procedural dirt blotches, run-off streaks and rising damp on the facades, shutters, signs, trim, curbs, plywood and payphone;
+    - gum spots and cracks in the sidewalks;
+    - puddles in the asphalt;
+    - weathered headstones, which stay readable.
+  - **The set dressing** (`scenes/blender/sets/grunge.py`):
+    - **Windows:** frames and sills, plus blinds, curtains, foil and AC units. The coverings dim with their window's light at S15.
+    - **Fire escapes** on four brick buildings.
+    - **Decals:** tags on the shutters, which roll down with them and are kept clear of "UNDER NEW MANAGEMENT", and layered torn posters on the party-wall piers, the FOR LEASE plywood, the corner wall and the payphone post.
+    - **The street:** litter, bag piles, cardboard and weeds.
+    - **Overhead:** the trolley wire, span wires, facade cables and two utility poles.
+    - **The park:** leaves.
+  - **Kept clean:** the tower and its sidewalk, and the people. No tents, bedrolls or carts, per the guardrail on unhoused people.
+- **Decals:** `scripts/gen_grunge_decals.py` (PIL, fixed seed) makes 12 tags and throw-ups and 10 posters. They're shapes only: no letters, no real tags, no text on the posters, and no REC red or Reddit orange-red. `assets/gen/grunge/` is git-ignored and regenerable.
+- **Iterations** (draft720 stills; v1–v3 in `archive/renders/m4/`):
+  - **v1:** too clean on the shutters, signs and stones.
+  - **v2:** more grime and more tags; the stones lean. But a tag covered "UNDER NEW MANAGEMENT" (S27), the puddles flooded the street (S28), and a payphone flyer sat in S03's close-up.
+  - **v3:** weathered stones; tags placed clear of the sign.
+  - **v4:** smaller puddles; the payphone flyers moved low.
+- **Commands:**
+  - `.venv/bin/python -I scripts/gen_grunge_decals.py`
+  - `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/grunge_v4 --profile draft720 --look final --times -15.5 3.5 43.6 51.6 61.8 101.5 125.0 144.5 58.5 104.0`
+  - `.venv/bin/python -I scripts/look_sheet.py renders/m4/grunge_v4 renders/m4/m4_grunge_v4.jpg <labels>`
+- **Status:** the grunge pass is done. Next: the weak spots (lobby, S01a daylight), Rhubarb lip sync, then the Act 1 renders by section.

@@ -133,6 +133,118 @@ def tex_mat(name, tex_id, rough=None):
     return m
 
 
+def grime(m, amt=0.5, space="world", streak=1.0, damp=1.0, spots=0.0, wet=0.0):
+    """Grunge over any material (style spec, "Grime"): blotches, vertical run-off streaks and rising damp near the
+    ground darken it toward the grime colour and roughen it; spots=1 adds gum spots and cracks (sidewalks); wet=1
+    adds puddles: dark, mirror-smooth patches with the normal map flattened (asphalt). Procedural, in world space
+    (or object space, for things that move, like the shutters), so no mesh needs UVs."""
+    nt = m.node_tree
+    b = nt.nodes["Principled BSDF"]
+    N = nt.nodes.new
+    L = nt.links.new
+
+    def src(name):
+        inp = b.inputs[name]
+        if inp.is_linked:
+            return inp.links[0].from_socket
+        if name == "Base Color":
+            n = N("ShaderNodeRGB")
+            n.outputs[0].default_value = inp.default_value[:]
+        else:
+            n = N("ShaderNodeValue")
+            n.outputs[0].default_value = inp.default_value
+        return n.outputs[0]
+
+    def math(op, a, c):
+        n = N("ShaderNodeMath")
+        n.operation, n.use_clamp = op, True
+        for k, v in enumerate((a, c)):
+            if isinstance(v, (int, float)):
+                n.inputs[k].default_value = v
+            else:
+                L(v, n.inputs[k])
+        return n.outputs[0]
+
+    def noise(vec, scale, detail, rough=0.6):
+        n = N("ShaderNodeTexNoise")
+        n.inputs["Scale"].default_value, n.inputs["Detail"].default_value = scale, detail
+        n.inputs["Roughness"].default_value = rough
+        L(vec, n.inputs["Vector"])
+        return n.outputs["Fac"]
+
+    def ramp(x, a, c, lo=0.0, hi=1.0):
+        n = N("ShaderNodeMapRange")
+        L(x, n.inputs["Value"])
+        n.inputs["From Min"].default_value, n.inputs["From Max"].default_value = a, c
+        n.inputs["To Min"].default_value, n.inputs["To Max"].default_value = lo, hi
+        return n.outputs["Result"]
+
+    def mix(fac, a, c):
+        n = N("ShaderNodeMix")
+        n.data_type = "RGBA"
+        L(fac, n.inputs["Factor"]) if not isinstance(fac, float) else None
+        for sock, v in ((n.inputs[6], a), (n.inputs[7], c)):
+            if isinstance(v, tuple):
+                sock.default_value = v
+            else:
+                L(v, sock)
+        return n.outputs[2]
+
+    pos = N("ShaderNodeNewGeometry").outputs["Position"] if space == "world" else \
+        N("ShaderNodeTexCoord").outputs["Object"]
+    blotch = ramp(noise(pos, 0.35, 10), 0.5, 0.72)
+    st = N("ShaderNodeMapping")
+    st.inputs["Scale"].default_value = (2.5, 2.5, 0.18)
+    L(pos, st.inputs["Vector"])
+    mask = math("MAXIMUM", blotch, math("MULTIPLY", ramp(noise(st.outputs[0], 1.0, 4), 0.52, 0.75), 0.8 * streak))
+    if damp:
+        z = N("ShaderNodeSeparateXYZ")
+        L(pos, z.inputs[0])
+        zz = math("ADD", z.outputs["Z"], math("MULTIPLY", noise(pos, 1.5, 6), 0.7))
+        mask = math("MAXIMUM", mask, math("MULTIPLY", ramp(zz, 0.4, 1.5, 1.0, 0.0), 0.85 * damp))
+    mask = math("MULTIPLY", mask, amt)
+    col = mix(mask, src("Base Color"), lin(LOOK["grime"]["colour"]))
+    rough = math("ADD", src("Roughness"), math("MULTIPLY", mask, 0.35))
+    if spots:
+        vo = N("ShaderNodeTexVoronoi")
+        vo.inputs["Scale"].default_value = 2.2
+        L(pos, vo.inputs["Vector"])
+        gum = ramp(vo.outputs["Distance"], 0.045, 0.03)
+        ve = N("ShaderNodeTexVoronoi")
+        ve.feature = "DISTANCE_TO_EDGE"
+        ve.inputs["Scale"].default_value = 0.45
+        wob = N("ShaderNodeVectorMath")
+        wob.operation = "ADD"
+        L(pos, wob.inputs[0])
+        nc = N("ShaderNodeTexNoise")
+        nc.inputs["Scale"].default_value = 3.0
+        L(pos, nc.inputs["Vector"])
+        sc = N("ShaderNodeVectorMath")
+        sc.operation = "SCALE"
+        sc.inputs["Scale"].default_value = 0.25
+        L(nc.outputs["Color"], sc.inputs[0])
+        L(sc.outputs[0], wob.inputs[1])
+        L(wob.outputs[0], ve.inputs["Vector"])
+        crack = math("MULTIPLY", ramp(ve.outputs["Distance"], 0.012, 0.004), ramp(noise(pos, 0.8, 2), 0.45, 0.55))
+        col = mix(math("MULTIPLY", math("MAXIMUM", gum, crack), 0.85 * spots), col, lin("#141210"))
+    if wet:
+        puddle = ramp(noise(pos, 0.12, 3, 0.5), 0.56, 0.6)
+        puddle = math("MULTIPLY", puddle, wet)
+        col = mix(math("MULTIPLY", puddle, 0.55), col, (0, 0, 0, 1))
+        rn = N("ShaderNodeMix")
+        rn.data_type = "FLOAT"
+        L(puddle, rn.inputs["Factor"])
+        L(math("MULTIPLY", rough, 0.85), rn.inputs[2])
+        rn.inputs[3].default_value = 0.03
+        rough = rn.outputs[0]
+        for n in nt.nodes:
+            if n.bl_idname == "ShaderNodeNormalMap":
+                L(math("SUBTRACT", 1.0, puddle), n.inputs["Strength"])
+    L(col, b.inputs["Base Color"])
+    L(rough, b.inputs["Roughness"])
+    return m
+
+
 # ---------------------------------------------------------------- objects
 
 def link(o, parent=None):
