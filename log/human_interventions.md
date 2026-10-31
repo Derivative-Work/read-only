@@ -150,3 +150,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-10-31T06:14:31-04:00 — The headstones in the v6 stills — R1
 - **What:** from the test stills: "the gravestones are now hard to read and too clearly have the same texture".
 - **Rule:** R1. The agent fixes it (production log, next entry).
+
+## 2026-10-31T07:24:51-04:00 — M4 v6 notes — R1
+- **What:** notes on the v6 clips:
+  - "S26: the \"BOT DEFENSE\" doghouse's roof has a hole, and its entrance is not rounded"
+  - "S28: much better, but the comments crates disappear completely once they're in the truck (rather than being in shadow)"
+  - "S30: the \"IPO\" text is visible before the thing that it's on"
+- **Rule:** R1 (notes on the M4 clips). The agent fixes them (production log, next entry).
