@@ -157,3 +157,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - "S28: much better, but the comments crates disappear completely once they're in the truck (rather than being in shadow)"
   - "S30: the \"IPO\" text is visible before the thing that it's on"
 - **Rule:** R1 (notes on the M4 clips). The agent fixes them (production log, next entry).
+
+## 2026-10-31T08:54:26-04:00 — M4 v7 notes — R1
+- **What:** notes on the v7 clips:
+  - "S02 into S03: the handset isn't hanging off the phone booth quite right, and the tape should be in a tape recorder next to the handset"
+  - "S18: the CEO is clipping through his chair"
+  - "S20: let's make it so it looks like he's actually dribbling the ball"
+- **Rule:** R1 (notes on the M4 clips). The agent fixes them (production log, following entries).
