@@ -11,5 +11,9 @@
  "S48": {
   "t": 176.74,
   "note": "the human, 2026-10-30 (M3 review): start S48's crane on the second \"This call was recorded\" (L60), so it has ~9.6 s instead of 1.06 s; S47 holds the payphone through the first"
+ },
+ "S28": {
+  "t": 102.2,
+  "note": "the human, 2026-10-31 (M4 v5): S28 was too fast to see what's going on; it may eat into the previous shot. It starts 1.0 s early, on the last of S27's line (S27 2.02 s, S28 3.08 s)"
  }
 }

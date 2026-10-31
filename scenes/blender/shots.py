@@ -270,9 +270,12 @@ def stage(S):
     # lobby screen and rooftop billboard: one text object per shot that shows something
     for sid, body in (("S05", "NEW! OUR OWN APP"), ("S10", "BLACKMAIL"), ("S20", "TRAFFIC  \\_/")):
         only(gb.text(f"screen.{sid}", body, 0.8, B.M("screen", emit=4.0), (B.LOBBY_DOOR_X, 23.72, 3.6), facing="-Y"), sid)
-    for sid, body in (("S31", "People found this helpful."), ("S44", "Reply below.  |")):
-        only(gb.text(f"billboard.{sid}", body, 3.0 if sid == "S31" else 1.6, B.M("ink"), (9, B.TOWER_Y[0] + 0.2, 76),
-                     facing="-Y"), sid)
+    for sid, body in (("S31", "People found\nthis helpful."), ("S44", "Reply below.  |")):
+        bt = only(gb.text(f"billboard.{sid}", body, 3.0 if sid == "S31" else 1.6, B.M("ink"), (9, B.TOWER_Y[0] + 0.2, 76),
+                          facing="-Y"), sid)
+        if sid == "S31":  # two lines across 70% of the 23 m face (one line ran edge to edge, stretched out)
+            bpy.context.view_layer.update()
+            bt.scale = (16.0 / bt.dimensions.x,) * 3
     for j in range(6):  # the lobby's display of worse copies, by the glass (S05)
         gb.box(f"lobby.front_copy{j}", (-3.5 + j * 0.7, 13.0, 1.0), (0.4, 0.25, 0.3), B.M("graffiti2"))
     gb.box("lobby.front_table", (-1.75, 13.0, 0.45), (4.4, 0.8, 0.7), B.M("trim"))
@@ -466,11 +469,22 @@ def stage(S):
     c22 = only(B.ceo((9, 9.4, 8.15), name="ceo22"), "S22")
     sing(c22, "S22")
     dv = gb.words_between(*SP["S22"], word="downvote")
+    # each downvote (two of them) drives a giant arrow tip-first into the balcony floor, one either side of him, where
+    # it stays, shuddering: at v5 they fell past along one line and out of frame in a second, and read as one blur
+    ARR = [(-1.35, 9.05, 0.12), (1.45, 9.0, -0.1)]  # x off the CEO, y, a lean
+    S_ARR, FLOOR = 1.3, 8.15
     for k, w in enumerate(dv):
+        dx, y, lean = ARR[k % len(ARR)]
+        x = 9 + dx
         arr = only(gb.box(f"arrow{k}", (9, 9.4, 14), (1.2, 0.3, 1.6), B.M("lease")), "S22")
-        gb.key_vec(arr, "location", [(F(w["start"]) - 6, (8 + k * 1.2, 9.0, 16)), (F(w["start"]), (8.6 + k * 0.6, 9.0, 9.5)),
-                                     (F(w["start"]) + 8, (8.6 + k * 0.6, 8.0, 8.4))])
-    cam("S22", [(0, (9, -4, 4.5), (9, 9.4, 9.2)), (1, (9, -2.5, 5.0), (9, 9.4, 9.2))], lens=30)
+        arr.scale = (S_ARR,) * 3
+        zc = FLOOR + 0.8 * S_ARR - 0.12  # the tip 12 cm into the floor
+        f0 = F(w["start"])
+        gb.key_vec(arr, "location", [(f0 - 6, (x + 0.4 * lean, y, zc + 7.0)), (f0, (x, y, zc)), (f0 + 2, (x, y, zc + 0.04)),
+                                     (f0 + 4, (x, y, zc))])
+        gb.key_vec(arr, "rotation_euler", [(f0 - 6, (0, lean * 0.5, 0)), (f0, (0, lean, 0)), (f0 + 2, (0.05, lean * 1.6, 0)),
+                                           (f0 + 4, (-0.03, lean * 0.8, 0)), (f0 + 6, (0, lean, 0))], interp="BEZIER")
+    cam("S22", [(0, (9, 1.5, 8.9), (9, 9.4, 9.0)), (1, (9, 2.6, 8.9), (9, 9.4, 9.0))], lens=30)
     c23 = only(B.ceo((9, 9.4, 8.15), name="ceo23"), "S23")
     sing(c23, "S23")
     for k, i in enumerate((1, 2, 3, 5)):
@@ -481,14 +495,49 @@ def stage(S):
     a, b = SP["S24"]
     gb.keys(S["brickwall"], "scale", [(0, 0.0), (F(a), 0.0), (F(b), 1.0)], index=2)
     cam("S24", [(0, (9, 1.0, 1.7), (9, 10.5, 1.6)), (1, (9, 2.5, 1.7), (9, 10.5, 1.6))], lens=30)
+    # S25 (2 s, "so I sold 'em the whole lot"): the CEO has stepped out of the little door, which stands open behind
+    # him. Face to face, seen side-on: the VIP bot holds out the briefcase on its raised arm, the CEO takes it in his
+    # left hand and holds out the keys in his right; the bot takes the keys and lowers its arm. Hard stop.
     a, b = SP["S25"]
-    gb.keys(S["littledoor"], "location", [(0, 10.0 - 0.5 - 0.0), (F(a), 10.0), (F(a + 0.4), 10.0 - 0.6)], index=1)
-    gb.show_from(S["littledoor"], SP["S24"][0])  # it belongs to the wall: unseen until the wall goes up
+    gb.keys(S["littledoor"], "rotation_euler", [(F(a) - 1, 0.0, "CONSTANT"), (F(a), -1.9, "CONSTANT")], index=2)
+    for o in (S["littledoor"], S["littlehole"]):
+        gb.show_from(o, SP["S24"][0])  # they belong to the wall: unseen until the wall goes up
     c25 = only(B.ceo((9.8, 9.3, 0.16), name="ceo25"), "S25")
     v25 = only(B.vip((9.8, 8.0, 0.16), 30, rot_z=math.pi), "S25")
+    for n in ("vip30.case", "vip30.latch-1", "vip30.latch1"):  # its own case at its side: this one is the deal's
+        o = bpy.data.objects.get(n)
+        if o:
+            o.data = bpy.data.meshes.new(f"{n}.none")
+    arm = bpy.data.objects.get("vip30.arm-1")  # the camera side (the bot faces +Y)
+    if arm:  # pivot at the shoulder; raised to hold the case out, lowered once it has the keys
+        top = max(v.co.z for v in arm.data.vertices)
+        arm.data = arm.data.copy()
+        arm.data.transform(__import__("mathutils").Matrix.Translation((0, 0, -top)))
+        arm.location.z += top
+        gb.keys(arm, "rotation_euler", [(F(a), -1.1), (F(a + 1.45), -1.1), (F(a + 1.85), -0.3)], index=0,
+                interp="BEZIER")
+    bpy.context.view_layer.update()
+    # the shoulder from the bot's own placement (its matrix_world isn't evaluated yet here: it read as the origin)
+    from mathutils import Matrix, Vector
+    sh = Vector(v25.location) + Matrix.Rotation(v25.rotation_euler.z, 3, "Z") @ Vector(arm.location)
+    def vhand(rx):  # the bot's hand (the arm's lower end), for the arm raised rx
+        L = 0.62
+        return (sh.x, sh.y + L * math.sin(-rx), sh.z - L * math.cos(rx))
+    hr = bpy.data.objects.get("ceo25.hand1")
+    hl = bpy.data.objects.get("ceo25.hand-1")
+    pr = hr.matrix_world.translation.copy() if hr else (10.0, 8.88, 1.3)
+    pl = hl.matrix_world.translation.copy() if hl else (9.6, 8.92, 1.1)
+    up, down = vhand(-1.1), vhand(-0.3)
     case = only(gb.box("case25", (9.8, 8.6, 0.9), (0.4, 0.1, 0.3), B.M("ink")), "S25")
-    gb.key_vec(case, "location", [(F(a + 0.6), (9.8, 8.4, 0.9)), (F(a + 1.2), (9.8, 9.0, 0.9))])
-    cam("S25", [(0, (12.5, 5.5, 1.5), (9.6, 9.5, 0.9))], lens=35)
+    case.rotation_euler.z = math.pi / 2  # its long side along the line between them, so the side camera sees it
+    gb.key_vec(case, "location", [(F(a), (up[0], up[1], up[2] - 0.17)), (F(a + 0.35), (up[0], up[1], up[2] - 0.17)),
+                                  (F(a + 0.8), (pl[0], pl[1], pl[2] - 0.17)), (F(b) + 2, (pl[0], pl[1], pl[2] - 0.17))],
+               interp="BEZIER")
+    keys25 = only(gb.box("keys25", (0, 0, 0), (0.1, 0.02, 0.2), B.M("gold")), "S25")
+    gb.key_vec(keys25, "location", [(F(a), (pr[0], pr[1], pr[2] - 0.1)), (F(a + 0.85), (pr[0], pr[1], pr[2] - 0.1)),
+                                    (F(a + 1.3), (up[0], up[1], up[2] - 0.1)), (F(a + 1.45), (up[0], up[1], up[2] - 0.1)),
+                                    (F(a + 1.85), (down[0], down[1], down[2] - 0.1))], interp="BEZIER")
+    cam("S25", [(0, (13.4, 8.45, 1.45), (9.8, 8.7, 1.0)), (1, (12.8, 8.5, 1.4), (9.8, 8.7, 1.0))], lens=35)
 
     # ---- hook 2 (S26): S14-S17's cameras, padlocked and "under new management"; per line of the hook
     lines = [ln for ln in TM["lines"] if ln["section"] == "Hook 2"]
@@ -531,8 +580,9 @@ def stage(S):
     gb.box("forklift28.body", (0, 0, 0.6), (1.1, 2.0, 1.2), B.M("vest"), parent=fl)
     car = gb.empty("forklift28.carriage", (0, 1.05, 0.1), parent=fl)
     gb.box("forklift28.forks", (0, 0.5, 0.03), (0.9, 1.0, 0.05), B.M("trim"), parent=car)
-    t_lift0, t_lift1, t_in, t_set, t_out = a + 0.15, a + 0.75, a + 1.35, a + 1.5, b
-    gb.keys(fl, "location", [(F(a), y0), (F(a + 0.2), y0), (F(t_in), y1, "LINEAR"), (F(t_set + 0.1), y1),
+    d = b - a  # 3.08 s since it starts a second early (the human's note): the beats as fractions of it, so it slows
+    t_hold, t_lift0, t_lift1, t_in, t_set, t_out = a + 0.08 * d, a + 0.1 * d, a + 0.36 * d, a + 0.64 * d, a + 0.7 * d, b
+    gb.keys(fl, "location", [(F(a), y0), (F(t_hold), y0), (F(t_in), y1, "LINEAR"), (F(t_set + 0.1), y1),
                              (F(t_out), y2)], index=1, interp="BEZIER")
     lift = HOLD_Z + 0.04 - SW  # forks just over the hold's floor
     gb.keys(car, "location", [(F(t_lift0), 0.1), (F(t_lift1), lift), (F(t_in), lift), (F(t_set), lift - 0.04)], index=2,
@@ -541,7 +591,7 @@ def stage(S):
     pal = only(gb.box("pallet28", (DOOR_X, y0 + 1.55, SW + 0.17), (1.6, 0.9, 0.12), B.M("crate")), "S28")
     py = lambda yr: yr + 1.55
     pz = lambda zc: SW + zc + 0.055 + 0.06  # on the forks' top
-    gb.keys(pal, "location", [(F(a), py(y0)), (F(a + 0.2), py(y0)), (F(t_in), py(y1), "LINEAR"), (F(t_set + 0.1), py(y1))],
+    gb.keys(pal, "location", [(F(a), py(y0)), (F(t_hold), py(y0)), (F(t_in), py(y1), "LINEAR"), (F(t_set + 0.1), py(y1))],
             index=1, interp="BEZIER")
     gb.keys(pal, "location", [(F(t_lift0), pz(0.1)), (F(t_lift1), pz(lift)), (F(t_in), pz(lift)),
                               (F(t_set), pz(lift - 0.04))], index=2, interp="BEZIER")
@@ -564,19 +614,27 @@ def stage(S):
     sign.rotation_euler.z = 2.6
     # from the west, close to the shopfronts: further out, the lamp post at (-5, -6.6) stood in front of it all; from
     # the east, the truck hid the pallet
+    wl = bpy.data.lights.new("S28.worklight", "SPOT")  # a work light at the hold, so the lot reads in the truck's shadow
+    wl.energy, wl.spot_size, wl.spot_blend, wl.color = 260.0, math.radians(70), 0.5, (1.0, 0.92, 0.8)
+    wlo = gb.link(bpy.data.objects.new("S28.worklight", wl))
+    wlo.location = (DOOR_X - 2.2, -9.6, 3.4)
+    wlo.rotation_euler = gb.look_rot(wlo.location, (DOOR_X, -6.6, 1.0))
+    only(wlo, "S28")
     cam("S28", [(0, (-5.4, -9.75, 2.8), (-2.0, -6.4, 1.0)), (1, (-5.2, -9.75, 2.9), (-1.8, -6.1, 1.2))], lens=28)
     a, b = SP["S29"]
     # they pull up and stop, so their names read (driving through at 9 m/s, the blur took them): SEARCH at the door
-    for nm, x0, x1, t1, y in (("SEARCH", -12, 4.5, a + 1.3, 3.5), ("CHAT", -20, -3.5, a + 1.6, 3.5)):
+    for nm, x0, x1, t1, y in (("SEARCH", -12, 4.5, a + 1.3, 3.5), ("CHAT", -20, -2.5, a + 1.6, 3.5)):
         tr = only(gb.box(f"truck.{nm}", (x0, y, 1.5), (6, 2.4, 3.0), B.M("truck")), "S29")
         gb.text(f"truck.{nm}.t", nm, 0.85, B.M("ink"), (-1.0, 1.21, 0.35), facing="+Y", parent=tr)  # on the box (x -3..1)
         gb.keys(tr, "location", [(F(a), x0, "LINEAR"), (F(a + 0.4), x0 + (x1 - x0) * 0.35), (F(t1), x1), (F(b), x1)],
                 index=0, interp="BEZIER")
-    av = only(gb.box("archivevan", (12, 3.5, 1.0), (4.0, 2.0, 2.0), B.M("van")), "S29")
+    av = only(gb.box("archivevan", (10, 3.5, 1.0), (4.0, 2.0, 2.0), B.M("van")), "S29")
     gb.text("archivevan.t", "ARCHIVE", 0.4, B.M("ink"), (0, 1.01, 0.2), facing="+Y", parent=av)
-    gb.keys(av, "location", [(F(a), 12.0), (F(a + 1.0), 12.0), (F(b), 20.0)], index=0)
+    gb.keys(av, "location", [(F(a), 10.0), (F(a + 1.0), 10.0), (F(b), 20.0)], index=0)
     only(B.person("bouncer", (11.5, 9.6, 0.16), "ink", rot_z=-math.pi / 2), "S29")
-    cam("S29", [(0, (-2, -5.0, 2.5), (6, 8, 1.6))], lens=24)
+    # aimed 17 degrees further west than at v5, where CHAT stopped with its name out of frame the whole shot: now
+    # CHAT's name (x -4.5) to the bouncer (x 11.5) all in, the archive van turned away at the right
+    cam("S29", [(0, (-2, -5.0, 2.5), (1.2, 7.6, 1.6))], lens=24)
     c30 = only(B.ceo((12.0, 9.4, 8.15), name="ceo30"), "S30")
     a, b = SP["S30"]
     gb.keys(S["bell"], "rotation_euler", [(F(t) + d, v) for t in gb.beats_between(a, b) for d, v in ((0, 0.4), (8, -0.3))],
@@ -591,7 +649,7 @@ def stage(S):
     # then up to the billboard, zooming in so its line reads
     a, b = SP["S31"]
     rn = random.Random(31)
-    UNM_CLEAR = {0: (-0.12, 0.0), 1: (0.0, 0.45)}
+    UNM_CLEAR = {0: (-0.24, 0.0), 1: (0.0, 0.45)}
     mouth = (2.0, -4.6, 4.35)  # over the truck's roof hatch (1 m behind its centre); the truck in the near lane
     for k in range(10):
         p0 = (-4.35 + (k % 5) * 0.68 + rn.uniform(-0.08, 0.08), B.FRONT + 0.175, (2.05 if k < 5 else 1.55) + rn.uniform(-0.07, 0.07))
@@ -629,10 +687,13 @@ def stage(S):
     gb.keys(band, "location", [(F(a + 0.2), 0.9), (F(a + 0.6), 0.17)], index=2)
     cam("S32", [(0, (-6.2, -5.4, 0.9), (-7.5, -6.6, 0.3))], lens=35)
     cx, cy = S["chalk_sq"]
-    only(gb.text("yourland", "YOUR LAND", 0.18, B.M("sign"), (cx, cy, 0.155), facing="+Z"), "S33")
-    d33 = only(B.dev((cx, cy, 0.16)), "S33")
+    # the words in the square's front half, read from the camera (it looks from +Y), the Dev in the back half: at v5
+    # they lay under his feet, upside down to us
+    yl = only(gb.text("yourland", "YOUR LAND", 0.22, B.M("sign"), (cx, cy + 0.42, 0.155), facing="+Z"), "S33")
+    yl.rotation_euler.z += math.pi
+    d33 = only(B.dev((cx, cy - 0.3, 0.16)), "S33")
     sing(d33, "S33")
-    cam("S33", [(0, (cx, cy + 2.5, 1.6), (cx, cy, 1.0)), (1, (cx, cy + 5, 20), (cx, cy, 0))], lens=28)
+    cam("S33", [(0, (cx, cy + 3.2, 1.7), (cx, cy, 0.75)), (1, (cx, cy + 5, 20), (cx, cy, 0))], lens=28)
 
     # ---- the Good Bot eulogy (S34-S39e): the pocket park, then the cemetery
     for k, (root, ctl) in enumerate(S["goodbots"]):

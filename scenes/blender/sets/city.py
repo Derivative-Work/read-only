@@ -534,8 +534,11 @@ def slab(Bt, x0, x1, y0, y1, curbs=True):
     far = math.hypot(min(abs(x0), abs(x1)) if x0 * x1 > 0 else 0, min(abs(y0), abs(y1)) if y0 * y1 > 0 else 0) > 70
     Bt["walk"].box(((x0 + x1) / 2, (y0 + y1) / 2, 0.075), (x1 - x0, y1 - y0, 0.15), mi=1 if far else 0)
     if curbs:
-        for c, s in ((((x0 + x1) / 2, y0 + 0.07), (x1 - x0, 0.14)), (((x0 + x1) / 2, y1 - 0.07), (x1 - x0, 0.14)),
-                     ((x0 + 0.07, (y0 + y1) / 2), (0.14, y1 - y0)), ((x1 - 0.07, (y0 + y1) / 2), (0.14, y1 - y0))):
+        # each curb's outer face 6 mm proud of the slab's side (flush, the two flickered)
+        for c, s in ((((x0 + x1) / 2, y0 + 0.067), (x1 - x0 + 0.012, 0.146)),
+                     (((x0 + x1) / 2, y1 - 0.067), (x1 - x0 + 0.012, 0.146)),
+                     ((x0 + 0.067, (y0 + y1) / 2), (0.146, y1 - y0 + 0.012)),
+                     ((x1 - 0.067, (y0 + y1) / 2), (0.146, y1 - y0 + 0.012))):
             Bt["curb"].box((c[0], c[1], 0.08), (s[0], s[1], 0.162), mi=0)
 
 
@@ -759,7 +762,7 @@ def storefront(name, c, w, facing, rng, sign, lit=True, shutter=False, awning=No
     gb.text(f"{name}.sign", sign, 0.38 if len(sign) < 12 else 0.28, mat(f"ink{ink}", ink, grime=0.0),
             (0, 0.43, 3.65), facing="+Y", parent=root)
     if awning:
-        a = gb.box(f"{name}.awning", (-0.3, 0.75, 3.0), (w - 0.6, 1.4, 0.05), mat(f"awn{awning}", awning, grime=0.5),
+        a = gb.box(f"{name}.awning", (-0.3, 0.76, 3.0), (w - 0.6, 1.4, 0.05), mat(f"awn{awning}", awning, grime=0.5),
                    parent=root)
         a.rotation_euler.x = -0.38
         gb.box(f"{name}.valance", (-0.3, 1.42, 2.62), (w - 0.6, 0.03, 0.3), mat(f"awn{awning}", awning), parent=root)

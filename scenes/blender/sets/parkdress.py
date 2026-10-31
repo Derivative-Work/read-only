@@ -470,8 +470,9 @@ def ground(rng):
 
 
 def grass(rng):
-    """Tufts of blades: short on the lawn, long and seeding along the fences, walls and stones; none on the paths or
-    the marker field."""
+    """Tufts of blades: a full lawn (the human, M4 v5: "the grass can use more detail"; it was 3% of cells, the
+    texture showing through), long and seeding along the fences, walls and stones; short in the marker field (under
+    the markers' faces); none on the paths."""
     r = np.random.default_rng(SEED + 3)
     sp = 0.075
     xs = np.arange(X0 + 0.05, X1 - 0.05, sp)
@@ -481,23 +482,24 @@ def grass(rng):
     y = gy.ravel() + r.uniform(-sp / 2, sp / 2, gx.size)
     bare, long_ = bare_at(x, y)
     clump = fbm(x, y, SEED + 4, 0.7, 2)
-    dens = (1 - bare) ** 2 * (0.03 + 0.5 * long_ + 0.45 * smooth01((clump - 0.55) / 0.15))
+    dens = np.minimum(1.0, (1 - bare) ** 2 * (0.3 + 0.5 * long_ + 0.4 * smooth01((clump - 0.55) / 0.15)))
     keep = r.random(x.size) < dens
     fx = (x > FIELD[0] - 0.15) & (x < FIELD[1] + 0.15) & (y > FIELD[2] - 0.15) & (y < FIELD[3] + 0.15)
-    keep &= ~fx
+    keep &= ~(fx & (r.random(x.size) < 0.4))  # thinner among the markers
     for px, py in PLOTS:
         keep &= ~((np.abs(x - px) < 0.65) & (np.abs(y - py) < 1.15))
     keep &= ~((np.abs(x - HOLE[0]) < 0.6) & (np.abs(y - HOLE[1]) < 1.1))
     keep &= ~((np.abs(x - SPOIL[0]) < 0.6) & (np.abs(y - SPOIL[1]) < 1.3))
     keep &= ~((np.abs(x + 18.4) < 0.62) & (np.abs(y - 11.6) < 0.62))  # the doghouse
     keep &= ~((np.abs(x - COFFIN[0]) < 0.5) & (np.abs(y - COFFIN[1]) < 0.3))
-    x, y, long_, clump = x[keep], y[keep], long_[keep], clump[keep]
+    x, y, long_, clump, fx = x[keep], y[keep], long_[keep], clump[keep], fx[keep]
     n = len(x)
-    nb = 5  # blades per tuft
+    nb = 7  # blades per tuft
     h = (0.05 + 0.06 * r.random(n)) * (1 + 2.6 * long_ * r.uniform(0.5, 1.0, n))
     # the ban stones and the inscribed stones' faces: keep the grass short in front of them
     near_ban = (x > -24.8) & (x < -17.4) & (y > 15.7) & (y < 18.0)
     h = np.where(near_ban, np.minimum(h, 0.07), h)
+    h = np.where(fx, np.minimum(h, 0.05), h)  # the marker field: under the markers' faces
     V = np.zeros((n * nb * 3, 3), np.float32)
     C = np.zeros((n * nb * 3, 4), np.float32)
     base_g = np.array(gb.lin("#33452a")[:3])

@@ -278,6 +278,74 @@ def tape_run(S, SP):
     return ctl
 
 
+def payphone():
+    """The corner payphone (S02, S03, S11, S47), modelled into the grey-box's objects (they keep their places, so the
+    cassette's rest on the post's street face and the handset's swing stay as they were): a square steel post on a
+    bolted base plate; the armoured housing with its instruction card, coin slot, keypad, coin return and the empty
+    hook; a canopy with side panels; the handset (earpiece, grip, mouthpiece) on a coiled cord. Worn: grime on the
+    steel, the paint chipped down to the metal round the keypad."""
+    steel = mat("pay.steel", "#7d8288", metal=0.75, rough=0.45)
+    if not steel.get("grimed"):
+        gb.grime(steel, amt=0.55, streak=0.8, damp=0.6)
+        steel["grimed"] = 1
+    paint = mat("pay.paint", "#2f5d8a", metal=0.2, rough=0.5)  # the housing's blue enamel
+    if not paint.get("grimed"):
+        gb.grime(paint, amt=0.45, streak=0.7)
+        paint["grimed"] = 1
+    dark, black = mat("pay.dark", "#16181b", rough=0.6), mat("pay.black", "#0b0b0c", rough=0.35)
+    chrome = mat("pay.chrome", "#c6c9cc", metal=0.95, rough=0.2)
+    card = mat("pay.card", "#e9e6da", rough=0.8)
+    key = mat("pay.key", "#b9bcbf", metal=0.6, rough=0.35)
+    # the post (origin at its centre, z 0.9; the street face at +Y 0.075, where the cassette is taped)
+    m = mk.MK()
+    m.box((0, 0, 0), (0.15, 0.15, 1.8), steel, bevel=0.008, seg=2)
+    m.box((0, 0, -0.89), (0.32, 0.32, 0.02), steel, bevel=0.004, seg=1)  # the base plate
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            m.cyl((sx * 0.12, sy * 0.12, -0.875), 0.012, 0.012, chrome, n=6)  # its bolts
+    m.box((0, 0, 0.905), (0.17, 0.17, 0.012), steel, bevel=0.003, seg=1)  # the cap under the housing
+    kit.mesh_swap(obj("payphone.post"), m.mesh("prop.pay.post"))
+    # the housing (origin at its centre: local (0, 0.05, 1.5) on the post; its face at +Y 0.125)
+    m = mk.MK()
+    m.box((0, 0, 0), (0.42, 0.25, 0.7), paint, bevel=0.025, seg=3)
+    f = 0.125
+    m.box((0, f + 0.004, 0.23), (0.34, 0.01, 0.16), steel, bevel=0.004, seg=1)  # the top plate
+    m.quad((0, f + 0.0095, 0.23), (0.3, 0.12), card, facing="+Y")  # the instruction card behind it, worn blank
+    m.box((0.09, f + 0.012, 0.11), (0.07, 0.018, 0.025), chrome, bevel=0.004, seg=1)  # the coin slot's bezel
+    m.box((0.09, f + 0.021, 0.11), (0.04, 0.002, 0.006), black)
+    m.box((-0.03, f + 0.006, -0.04), (0.17, 0.014, 0.22), steel, bevel=0.006, seg=1)  # the keypad plate
+    for r in range(4):
+        for c in range(3):
+            m.box((-0.08 + c * 0.05, f + 0.016, 0.04 - r * 0.052), (0.036, 0.012, 0.034), key, bevel=0.004, seg=1)
+    m.box((0.12, f + 0.02, -0.25), (0.09, 0.05, 0.08), chrome, bevel=0.01, seg=2)  # the coin return
+    m.box((0.12, f + 0.046, -0.255), (0.06, 0.004, 0.05), black)
+    # the hook, empty: a chrome lever up the housing's left side, the cradle the handset should be in
+    m.box((-0.235, 0.0, 0.08), (0.05, 0.16, 0.36), paint, bevel=0.012, seg=2)
+    m.box((-0.265, 0.04, 0.2), (0.02, 0.05, 0.04), chrome, bevel=0.006, seg=1)
+    m.tube([(-0.2, f + 0.01, -0.32), (-0.2, f + 0.04, -0.35), (-0.2, f + 0.06, -0.37)], 0.012, steel, k=10)  # cord boot
+    kit.mesh_swap(obj("payphone.box"), m.mesh("prop.pay.box"))
+    # the canopy (origin at its centre: local (0, 0.1, 1.95)); side panels down past the housing
+    m = mk.MK()
+    m.box((0, 0, 0), (0.62, 0.46, 0.05), steel, bevel=0.01, seg=2)
+    for sx in (-1, 1):
+        m.box((sx * 0.3, -0.02, -0.42), (0.018, 0.4, 0.8), paint, bevel=0.006, seg=1)
+    kit.mesh_swap(obj("payphone.hood"), m.mesh("prop.pay.hood"))
+    # the handset (origin at its centre, hanging; +Y the side that faces the street, where the REC light is)
+    m = mk.MK()
+    m.box((0, 0, 0), (0.045, 0.035, 0.15), black, bevel=0.012, seg=3)
+    for sz in (1, -1):  # earpiece above, mouthpiece below, both cups facing the street
+        m.box((0, 0.012, sz * 0.085), (0.06, 0.045, 0.05), black, bevel=0.016, seg=3)
+        m.cyl((0, 0.036, sz * 0.085), 0.02, 0.004, dark, axis="Y", n=20)
+        for k in range(5):
+            m.cyl((-0.008 + k * 0.004, 0.0385, sz * 0.085), 0.0012, 0.002, black, axis="Y", n=6)
+    kit.mesh_swap(obj("handset.body"), m.mesh("prop.pay.handset"))
+    # the coiled cord, up from the handset's top into the housing's boot (origin at its centre, 0.33 over the handset)
+    m = mk.MK()
+    for k in range(34):  # the coils, each tipped a little like a helix's turn (mk.tube resamples too coarsely for one)
+        m.torus((0, 0, -0.205 + k * 0.0124), 0.012, 0.0035, black, rot=(0.18, 0, 0), n=14, k=6)
+    kit.mesh_swap(obj("handset.cord"), m.mesh("prop.pay.cord"))
+
+
 CASS_S = 1.5  # the cassette at 1.5x a real one (100 x 64 x 12 mm): it's the evidence, it has to read at 720p
 
 
@@ -471,10 +539,11 @@ def crates():
 # ---------------------------------------------------------------- verse 2
 
 def arrows():
-    """S22: generic down arrows (never the site's own colours)."""
+    """S22: generic down arrows in a downvote's blue-purple (the human's note at M4; the shape is generic, not the
+    site's), lit a little from within so the colour holds at night."""
     out = [(-0.3, 0.8), (-0.3, 0.0), (-0.6, 0.0), (0.0, -0.8), (0.6, 0.0), (0.3, 0.0), (0.3, 0.8)]
     m = mk.MK()
-    m.prism(out, 0.3, mat("arrow", "#e4e7ec", rough=0.35), bevel=0.04)
+    m.prism(out, 0.3, mat("arrow", "#8f8fff", rough=0.35, emit=0.6), bevel=0.04)
     me = m.mesh("prop.arrow")
     for o in bpy.data.objects:
         if o.name.startswith("arrow") and o.type == "MESH":
@@ -526,6 +595,30 @@ def briefcase():
         m.box((s * 0.07, 0, 0.165), (0.015, 0.02, 0.04), gold)
     m.torus((0, 0, 0.17), 0.06, 0.011, leather, rot=(math.pi / 2, 0, 0), arc=math.pi, n=12)
     kit.mesh_swap(o, m.mesh("prop.case"))
+
+
+def keys25():
+    """S25: the keys the CEO hands back, oversized (it's a cartoon deal; at 720p, side-on, real ones are a few pixels):
+    a ring, three keys of different cuts hanging from it, and a brass tag."""
+    o = obj("keys25")
+    if not o:
+        return
+    brass = mat("keys.brass", gb.LOOK["palette"]["gold"], metal=0.9, rough=0.25)
+    steel = mat("keys.steel", "#b8bcc2", metal=0.9, rough=0.3)
+    m = mk.MK()
+    m.torus((0, 0, 0.06), 0.045, 0.006, steel, rot=(math.pi / 2, 0, 0), n=24, k=8)  # the ring, face to the side
+    for k, (dx, ang, mt) in enumerate(((-0.03, 0.35, brass), (0.0, 0.0, steel), (0.03, -0.35, brass))):
+        c = (dx, 0, -0.02)
+        rot = (0, ang, 0)
+        m.torus((dx + 0.02 * math.sin(ang), 0, 0.02), 0.022, 0.006, mt, rot=(math.pi / 2, ang, 0), n=16, k=6)  # bow
+        m.box((dx - 0.06 * math.sin(ang), 0, -0.05), (0.014, 0.008, 0.12), mt, rot=rot)  # shaft
+        for j in range(3):  # the cut
+            m.box((dx - (0.09 + j * 0.02) * math.sin(ang) + 0.012 * math.cos(ang), 0,
+                   -0.085 - j * 0.02 * math.cos(ang)), (0.014, 0.008, 0.01 + 0.006 * ((j + k) % 2)), mt, rot=rot)
+    m.box((0.06, 0, 0.0), (0.05, 0.006, 0.08), brass, rot=(0, -0.5, 0), bevel=0.004, seg=1)  # the tag
+    me = m.mesh("prop.keys25")
+    me.transform(__import__("mathutils").Matrix.Scale(2.8, 4))
+    kit.mesh_swap(o, me)
 
 
 def balcony_rail():
@@ -841,8 +934,8 @@ def shovel():
 
 
 def build(S, SP):
-    for f in (adding_machine, calendar, envelope, notice, cassette, boombox, magnifier, vehicles, crates, arrows,
-              hoses, ball, forklift, auction_sign, briefcase, balcony_rail, balcony_light, bell, podium, banner, stickies, funnel, payroll, rubberband, coffin,
+    for f in (payphone, adding_machine, calendar, envelope, notice, cassette, boombox, magnifier, vehicles, crates, arrows,
+              hoses, ball, forklift, auction_sign, briefcase, keys25, balcony_rail, balcony_light, bell, podium, banner, stickies, funnel, payroll, rubberband, coffin,
               doghouse, lanterns, shovel):
         f()
     brickwall(SP)

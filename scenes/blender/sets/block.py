@@ -41,7 +41,8 @@ FINAL = False  # set by the driver: True = the M4 look (textures, stylized figur
 TEXMAP = {"asphalt": "asphalt_03", "sidewalk": "concrete_pavement", "brick": "brick_4", "stucco": "concrete_wall_003",
           "stucco2": "blue_plaster_weathered", "shutter": "painted_metal_shutter", "plywood": "plywood",
           "grass": "grass_ground", "dirt": "dry_ground_01", "tile": "brown_floor_tiles",
-          "curb": "concrete_pavement"}
+          "curb": "concrete_pavement",
+          "stone": "concrete"}  # the headstones: cast concrete, its roughness map for a worn sheen (the human, M4 v5)
 
 
 def M(key, **kw):
@@ -136,7 +137,8 @@ def shopfront(S, i, xw, sign, kind, north=False):
     gb_.box(f"shop{i}.upper", (x, FRONT - d / 2, 4.2 + (h - 4.2) / 2), (w, d, h - 4.2), wall)
     gb_.box(f"shop{i}.pierL", (x - w / 2 + 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
     gb_.box(f"shop{i}.pierR", (x + w / 2 - 0.2, FRONT - 0.2, 2.1), (0.4, 0.4, 4.2), wall)
-    gb_.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w, 0.4, 1.0), M("trim"))
+    # between the piers: run across them, its face and theirs were one plane and flickered (S02)
+    gb_.box(f"shop{i}.lintel", (x, FRONT - 0.2, 3.7), (w - 0.8, 0.4, 1.0), M("trim"))
     gb_.box(f"shop{i}.back", (x, FRONT - 6.2, 2.1), (w, 0.2, 4.2), M("stucco"))
     # behind the piers and lintel (from FRONT - 0.395): running forward inside them, 5 mm under their faces, they
     # flickered through them from across the street
@@ -298,7 +300,8 @@ def corner(S):
     gb.cyl("handset.body", (0, 0, 0), 0.035, 0.22, M("ink"), parent=hs)
     gb.cyl("handset.cord", (0, 0, 0.33), 0.006, 0.45, M("ink"), parent=hs)
     ctl = gb.empty("rec.ctl", (0, 0, 0))
-    gb.sphere("handset.rec", (0, 0.04, -0.06), 0.012, gb.glow_mat("rec", C["rec"], 40.0, ctl, "on"), parent=hs)
+    # its own, softer glow: at S03's 0.5 m, the windows' strength (40) blew it out to white
+    gb.sphere("handset.rec", (0, 0.016, 0.0), 0.007, gb.glow_mat("rec.handset", C["rec"], 5.0, ctl, "on"), parent=hs)
     S["handset"], S["rec"] = hs, ctl
     # taped flat on the post's street face beside the handset (where the handset hangs, it was inside it)
     cas = gb.box("cassette", CASS_REST, (0.1, 0.015, 0.065), M("ink"))
@@ -342,7 +345,7 @@ def tower(S):
     gb.box("lobby.floor", (cx, (y0 + y1 - 6) / 2, 0.16), (x1 - x0, y1 - 6 - y0, 0.02), M("lobby", rough=0.2))
     gb.box("lobby.sideW", (x0, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
     gb.box("lobby.sideE", (x1, (y0 + y1 - 6) / 2, 3), (0.3, y1 - 6 - y0, 6), M("tower"))
-    gb.plane("lobby.glass", (cx, y0, 3.0), (x1 - x0, 6.0), gb.mat("glass_lobby", C["glass"], rough=0.02,
+    gb.plane("lobby.glass", (cx, y0, 3.0), (x1 - x0 - 0.3, 6.0), gb.mat("glass_lobby", C["glass"], rough=0.02,
                                                                  alpha=0.06 if FINAL else 0.18), facing="-Y")
     lo = __import__("bpy").data.lights.new("lobby.light", "AREA")
     lo.energy, lo.size, lo.color = (gb.LOOK["lights"]["lobby_w"], 12, gb.lin(C["towerglass"])[:3]) if FINAL else \
@@ -385,8 +388,11 @@ def tower(S):
     wall.data.transform(__import__("mathutils").Matrix.Translation((0, 0, 1.5)))
     wall.scale.z = 0.0
     S["brickwall"] = wall
-    ld = gb.box("brickwall.door", (LOBBY_DOOR_X + 0.8, y0 - 0.5, 0.55), (0.6, 0.06, 0.9), M("trim"))
+    # the little door (S25), hinged at its left edge (origin on the hinge), over a dark opening 8 mm proud of the wall
+    ld = gb.box("brickwall.door", (LOBBY_DOOR_X + 0.5, y0 - 0.5, 0.55), (0.6, 0.06, 0.9), M("trim"))
+    ld.data.transform(__import__("mathutils").Matrix.Translation((0.3, 0, 0)))
     S["littledoor"] = ld
+    S["littlehole"] = gb.box("brickwall.hole", (LOBBY_DOOR_X + 0.8, y0 - 0.478, 0.55), (0.56, 0.01, 0.86), M("ink"))
     # the balcony with podium and bell (S22, S30)
     gb.box("balcony", (LOBBY_DOOR_X, y0 - 1.25, 8.0), (12, 2.5, 0.3), M("lobby"))
     gb.box("balcony.rail", (LOBBY_DOOR_X, y0 - 2.45, 8.6), (12, 0.08, 0.9), M("glass", rough=0.1))
@@ -401,8 +407,8 @@ def tower(S):
     S["banner"] = banner
     # the LED ticker band (S30)
     tk = gb.empty("ticker.ctl", (cx, cy, 0))
-    for nm, c, s in (("s", (cx, y0 - 0.1), (x1 - x0 + 0.4, 0.2)), ("n", (cx, y1 + 0.1), (x1 - x0 + 0.4, 0.2)),
-                     ("w", (x0 - 0.1, cy), (0.2, y1 - y0 + 0.4)), ("e", (x1 + 0.1, cy), (0.2, y1 - y0 + 0.4))):
+    for nm, c, s in (("s", (cx, y0 - 0.13), (x1 - x0 + 0.46, 0.2)), ("n", (cx, y1 + 0.13), (x1 - x0 + 0.46, 0.2)),
+                     ("w", (x0 - 0.13, cy), (0.2, y1 - y0 + 0.46)), ("e", (x1 + 0.13, cy), (0.2, y1 - y0 + 0.46))):
         gb.box(f"ticker.{nm}", (c[0], c[1], 13.6), (s[0], s[1], 1.2), gb.glow_mat("ticker", C["ticker"], 10.0, tk, "on"))
     S["ticker"] = tk
     # the rooftop billboard (S31, S44)
@@ -451,7 +457,7 @@ def headstone(name, loc, label, size=1.0, m=None):
         # the final look: the letters cut into the face (a boolean), their cut a darker, rougher stone; the line
         # shrunk to fit inside the stone's margins
         import bpy
-        t = gb.text(f"{name}.t", label, ts, gb.mat("stone.cut", "#5f5b55", rough=0.95), (0, -0.08 * size, 0.7 * size),
+        t = gb.text(f"{name}.t", label, ts, gb.mat("stone.cut", "#1d1b19", rough=0.95), (0, -0.08 * size, 0.7 * size),
                     facing="-Y", parent=root, extrude=0.005 * size)
         bpy.context.view_layer.update()
         fit = min(1.0, 0.76 * size / max(t.dimensions.x, 1e-6), 0.62 * size / max(t.dimensions.y, 1e-6))

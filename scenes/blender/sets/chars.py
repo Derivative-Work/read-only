@@ -88,6 +88,9 @@ POSES = {  # joint positions (x, y, z), metres at h = 1, figure facing -Y; arms:
     "dribble": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S20: palm down over the ball
         -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
         1: ((0.2, 0.0, 1.19), (0.3, -0.12, 0.98), (0.32, -0.3, 0.9))}},
+    "give": {"knee": (0.1, -0.01, 0.46), "ankle": (0.1, 0.0, 0.1), "arm": {  # S25: keys out (right), case taken (left)
+        -1: ((-0.2, 0.0, 1.19), (-0.26, -0.18, 1.0), (-0.22, -0.38, 0.9)),
+        1: ((0.2, 0.0, 1.19), (0.25, -0.2, 1.08), (0.24, -0.42, 1.02))}},
     # S19: on both knees, shins flat behind, soles up; the figure's root goes KNEEL_DROP under the ground
     "kneel": {"knee": (0.1, -0.1, 0.48), "ankle": (0.1, 0.32, 0.47), "arm": {
         -1: ((-0.2, 0.0, 1.19), (-0.27, 0.02, 0.95), (-0.29, -0.01, 0.73)),
@@ -220,7 +223,7 @@ def dev(loc, rot_z=0.0, name="dev", pose="stand"):
 
 
 def ceo(loc, rot_z=0.0, name="ceo"):
-    pose = {"ceo18": "sit", "ceo10": "phone", "ceo20": "dribble"}.get(name, "stand")  # S18 on the throne; S10 on the
+    pose = {"ceo18": "sit", "ceo10": "phone", "ceo20": "dribble", "ceo25": "give"}.get(name, "stand")  # S18 on the throne; S10 on the
     # phone; S20 bouncing the ball
     root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3", pose=pose)
     if pose == "sit":

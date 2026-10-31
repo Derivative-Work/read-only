@@ -74,9 +74,9 @@
    1.0
   ],
   "concrete": [
-   1.5,
-   "#f2efe8",
-   1.0
+   0.9,
+   "#ece7dc",
+   0.6
   ],
   "brown_floor_tiles": [
    1.2,
@@ -140,7 +140,7 @@
     "amt": 0.6
    },
    "stone": {
-    "amt": 0.75,
+    "amt": 0.25,
     "streak": 0.9,
     "damp": 0.8
    },

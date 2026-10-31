@@ -262,14 +262,14 @@ def car_mesh(kind):
             B.cyl((wx, y + sy * 0.112, 0.33), 0.2, 0.01, mi=3, n=14, rot=Euler((math.pi / 2, 0, 0)))
             B.cyl((wx, y + sy * 0.118, 0.33), 0.06, 0.01, mi=4, n=8, rot=Euler((math.pi / 2, 0, 0)))
             # the arch: a dark half-disc on the body side, over the tyre
-            pts = [(wx + 0.43 * math.cos(a), sy * (hw + 0.004), 0.31 + 0.43 * math.sin(a))
+            pts = [(wx + 0.43 * math.cos(a), sy * (hw + 0.012), 0.31 + 0.43 * math.sin(a))
                    for a in np.linspace(0, math.pi, 10)]
             base = len(B.v)
             B.v += pts
             B.f.append(tuple(range(base, base + 10)) if sy > 0 else tuple(range(base + 9, base - 1, -1)))
             B.mi.append(4)
         B.box((sx * (hl + 0.02), 0, 0.42), (0.16, W - 0.08, 0.2), mi=4)  # bumper
-        B.box((sx * (hl + 0.105), 0, 0.46), (0.02, 0.5, 0.12), mi=7)  # blank plate
+        B.box((sx * (hl + 0.105), 0, 0.455), (0.02, 0.5, 0.11), mi=7)  # blank plate
         for sy in (-1, 1):
             if sx > 0:
                 B.box((hl - 0.03, sy * (hw - 0.3), belt - 0.27), (0.08, 0.36, 0.12), mi=5)
@@ -436,7 +436,7 @@ def trees(rng):
     soil = mat("soil", "#2a2119", grime=0.2)
     for k, (x, y, rz) in enumerate(((41.0, -7.45, 0.3), (37.6, 7.45, 2.4))):
         place(f"streettree{k}", me, (x, y, 0.13), rot_z=rz, scale=rng.uniform(0.95, 1.1))
-        gb.box(f"streettree{k}.soil", (x, y, 0.145), (1.2, 1.2, 0.01), soil)
+        gb.box(f"streettree{k}.soil", (x, y, 0.148), (1.2, 1.2, 0.01), soil)
         gb.box(f"streettree{k}.grate", (x, y, 0.152), (1.25, 1.25, 0.008), grate)
 
 

@@ -748,3 +748,46 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-10-31T03:21:26-04:00 — Log: M4 v5 notes from the human (R1)
 
 - Eight notes on S02, S22, S25, S28, S29, S31, S33, S36, verbatim in human_interventions. Working through them next.
+
+## 2026-10-31T03:48:00-04:00 — M4: the human's v5 notes (S02, S22, S25, S28, S29, S31, S33, S36); Act 1 render v6 started
+
+- **Why:** the human's notes on v5 (human_interventions, previous entry, R1).
+- **S02, flicker by the subreddit signs:** a dark wedge came and went where each shop's lintel met its piers. The lintel ran across the piers' tops and the two faces were one plane, brick against trim. It now fits between them (`block.py`). The ray survey and the single-frame pixel check both missed it; even/odd frame crops found it.
+  - **New check:** `coplanar.py` (scratchpad) buckets every axis-aligned face in the scene by plane (0.5 mm) and reports same-facing overlaps between objects or materials. From it, also fixed:
+    - the city's curbs, flush with their slabs' sides block-wide (now 6 mm proud);
+    - the LED ticker's back on the tower's glass bands (now 3 cm off);
+    - the lobby glass into its side walls;
+    - posters and wall tags of neighbouring shops on a shared pier (now at different depths);
+    - street-tree soil level with the sidewalk;
+    - the cars' wheel arches on their sides, and their plates on their bumpers;
+    - the city storefronts' awnings on their frames.
+- **S02, the payphone was grey box:** modelled in `props.payphone()` into the existing objects, so the cassette's rest and the handset's swing are unchanged.
+  - **Post:** square steel on a bolted base plate.
+  - **Housing:** blue enamel, with the instruction card, coin slot, a 12-key keypad, coin return, the empty hook and the cord boot.
+  - **Canopy:** with side panels.
+  - **Handset:** earpiece, grip and mouthpiece, on a coiled cord.
+  - **REC light:** moved into the grip, with its own softer glow (5, not the windows' 40, which blew it out to white at 0.5 m in S03).
+- **S22, the downvotes:**
+  - **Before:** both arrows fell down one line past the balcony and out of frame within a second, and read as one blur. The arrows were white because I had kept clear of the site's colours.
+  - **Now:** each "downvote" (two, at 75.12 s and 76.09 s) drives a 1.3× arrow tip-first into the balcony floor, one either side of the CEO, where it shudders and stays.
+  - **Colour:** blue-purple (#8f8fff), lit slightly from within, on the human's note; the shape stays generic.
+  - **Camera:** at balcony level, so the CEO is larger.
+- **S25, the exchange:** re-staged to the brief ("The brick wall has a little door in it. A VIP bot hands over a briefcase; the CEO hands back the keys").
+  - **The door:** the little door is hinged and stands open on a dark opening behind the CEO.
+  - **The handover:** the bot holds the case out on its raised arm, and the CEO takes it in his left hand (new pose, "give"). He holds out an oversized brass key ring (`props.keys25`), which goes to the bot's hand as the arm lowers.
+  - **Camera:** side-on two-shot. The bot's own case at its side is hidden.
+- **S28, too fast:**
+  - **Timing:** it starts 1.0 s early (102.2 s, `config/shot_holds.json` and timing_map.py; S27 is now 2.02 s, S28 3.08 s), the human having allowed it to eat into the previous shot. The forklift's beats are fractions of the shot, so they slow with it. This moves S28 off the brief's 1:43.20 cue.
+  - **Light:** a work light on the hold, so the lot reads in the truck's shadow.
+- **S29, CHAT off frame:** CHAT stops 1 m behind SEARCH (x −2.5); the camera aims 17° further west; the archive van starts 2 m closer. CHAT, SEARCH and the bouncer are all in.
+- **S31:**
+  - **The notes:** ten different thank-yous ("you saved my thesis", "edit: solved, thanks!", "worked in 2015. still works"…). They're in Permanent Marker (Apache 2.0, google/fonts, vendored with its licence and checksum in `assets/fonts`), as large as fits in three lines. "came from google" was changed to "found it by search": no real company names.
+  - **"People found this helpful.":** now two lines across 70% of the board.
+  - **Clearance:** note 0 is 24 cm clear of the text.
+- **S33:** "YOUR LAND" is in the square's front half, turned to read from the camera; the Dev stands in the back half. The opening camera was pulled back so words, feet and head are all in frame.
+- **S36:**
+  - **Headstones:** Poly Haven's concrete (diffuse, normal and roughness at a 0.9 m tile, roughness ×0.6 for a worn sheen), in place of the plain pale stone.
+  - **Engraving:** darker (#1d1b19) so it still reads; grime on stone 0.25.
+  - **Grass:** the lawn's density goes from 3% of cells to about 30% with 7 blades a tuft, and there is short grass (≤ 5 cm) among the markers, which had none.
+- **Stills:** `renders/m4/notes5_v1`, `notes5_v2`.
+- **Render v6:** all of Act 1 (the curb, lintel, stone and grass changes touch nearly every shot), into `renders/m4/act1_v6/frames`.

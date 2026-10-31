@@ -214,10 +214,10 @@ def decals(S, rng, tags, posters):
         if px is None:
             continue
         if rng.random() < 0.5:  # low on a pier, under where the posters go
-            decal(f"shop{i}.walltag", rng.choice(tags), (px, 0.013, rng.uniform(0.35, 0.6)), (0.7, 0.35),
+            decal(f"shop{i}.walltag", rng.choice(tags), (px, 0.013 + 0.003 * (i % 2), rng.uniform(0.35, 0.6)), (0.7, 0.35),
                   parent=root, tilt=rng.uniform(-0.15, 0.15))
         for k in range(rng.randint(1, 4)):  # layered posters, each pasted over the last
-            decal(f"shop{i}.poster{k}", rng.choice(posters), (px + rng.uniform(-0.1, 0.1), 0.018 + 0.005 * k,
+            decal(f"shop{i}.poster{k}", rng.choice(posters), (px + rng.uniform(-0.1, 0.1), 0.018 + 0.005 * k + 0.0025 * (i % 2),
                   rng.uniform(1.2, 2.3)), (0.5, 0.667), parent=root, tilt=rng.uniform(-0.08, 0.08))
     lease = bpy.data.objects.get("shop9")
     if lease:

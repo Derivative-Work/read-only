@@ -1,11 +1,12 @@
 """The detail pass's printed and handwritten surfaces for the gags' props (scenes/blender/sets/props.py), drawn with
-PIL from a fixed seed. Handwriting is Oooh Baby (OFL, vendored from Not Yet); print is Inter and JetBrains Mono.
+PIL from a fixed seed. Handwriting is Oooh Baby (OFL, vendored from Not Yet); S31's notes are in Permanent Marker (Apache 2.0, google/fonts);
+print is Inter and JetBrains Mono.
 
   calpage_NN.png   S06: a tear-off wall calendar's daily pages, JUNE 1 .. JUNE 28 in steps of 3 (the deadline is
                    June 30, 2023: the board behind them, calboard.png, shows it, ringed)
   receipt.png      S09: three strips of adding-machine tape, "0.24 +" down the columns, the total at the bottom,
                    stapled up as an eviction notice
-  sticky_NN.png    S31: yellow sticky notes, "thanks, this worked" (a few in other hands and words)
+  sticky_NN.png    S31: yellow sticky notes in marker, "thanks, this worked" and nine other thank-yous
   goodbot_NN.png   S39a: sticky notes, "good bot"
   payroll.png      S32: a kraft pay envelope printed PAYROLL, its amount line empty
   cassette.png     S11-S13: the cassette's label, handwritten
@@ -24,6 +25,7 @@ SEED = 20261031
 HAND = str(FONTS / "OoohBaby-Regular.ttf")
 SANS = str(FONTS / "Inter-Medium-flat.ttf")
 MONO = str(FONTS / "JetBrainsMono-SemiBold-flat.ttf")
+MARKER = str(FONTS / "PermanentMarker-Regular.ttf")  # Apache 2.0, from google/fonts
 INKS = ["#1b2a6b", "#151515", "#2a2a2a", "#3a2a6b"]
 
 
@@ -100,27 +102,39 @@ def receipt(rng):
     im.save(OUT / "receipt.png")
 
 
-def sticky(text, rng, name, ink=None, col=None):
+def wrap(d, text, f, width):
+    lines, cur = [], ""
+    for w in text.split():
+        t = (cur + " " + w).strip()
+        if d.textlength(t, font=f) > width and cur:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = t
+    return lines + [cur]
+
+
+def sticky(text, rng, name, ink=None, col=None, marker=False):
     col = col or rng.choice([(250, 226, 96), (252, 232, 120), (246, 218, 88)])
     im = paper(512, 512, col, rng, 8)
     d = ImageDraw.Draw(im)
     d.rectangle((0, 0, 512, 70), fill=tuple(max(0, c - 18) for c in col))  # the gummed strip, a shade darker
     ink = ink or rng.choice(INKS)
-    words = text.split()
-    lines, cur = [], ""
-    f = font(HAND, rng.randint(84, 104))
-    for w in words:
-        t = (cur + " " + w).strip()
-        if d.textlength(t, font=f) > 440 and cur:
-            lines.append(cur)
-            cur = w
-        else:
-            cur = t
-    lines.append(cur)
-    y = 270 - len(lines) * 55
+    if marker:  # S31: as big as fits (3 lines at most), in marker, so it reads at 720p
+        for size in range(130, 50, -4):
+            f = font(MARKER, size)
+            lines = wrap(d, text, f, 440)
+            step = int(size * 1.08)
+            if len(lines) <= 3 and step * len(lines) <= 400 and all(d.textlength(l, font=f) <= 450 for l in lines):
+                break
+        y = 290 - step * len(lines) // 2
+    else:
+        f = font(HAND, rng.randint(84, 104))
+        lines, step = wrap(d, text, f, 440), 110
+        y = 270 - len(lines) * 55
     for ln in lines:
         d.text((256 + rng.randint(-12, 12), y), ln, font=f, fill=ink, anchor="ma")
-        y += 110
+        y += step
     im = im.rotate(rng.uniform(-3, 3), resample=Image.BICUBIC, fillcolor=col)
     im.save(OUT / f"{name}.png")
 
@@ -192,10 +206,11 @@ def main():
     rng = random.Random(SEED)
     calpages(rng)
     receipt(rng)
-    notes = ["thanks, this worked"] * 6 + ["thanks, this worked!", "this worked, thank you", "3am. this worked. thanks",
-                                           "thanks!! this worked"]
+    notes = ["thanks, this worked", "THIS WORKED. thank you", "3am. it worked. thanks", "you saved my thesis",
+             "thanks, this worked!!", "edit: solved, thanks!", "thank you kind stranger", "found it by search. it worked",
+             "+1 this worked", "worked in 2015. still works"]
     for k, t in enumerate(notes):
-        sticky(t, rng, f"sticky_{k:02d}")
+        sticky(t, rng, f"sticky_{k:02d}", ink=["#151515", "#1b2a6b", "#151515", "#7a1414", "#1b2a6b"][k % 5], marker=True)
     for k, t in enumerate(["good bot", "good bot.", "good bot", "Good bot", "good bot <3", "good bot",
                            "good bot.", "good bot", "Good bot.", "good bot"]):
         sticky(t, rng, f"goodbot_{k:02d}", col=rng.choice([(250, 226, 96), (246, 186, 210), (180, 220, 250),
