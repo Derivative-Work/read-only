@@ -297,7 +297,7 @@ def shelving(mb, w, u0, u1, levels, D, wood, col="#7a5a3a", back=None):
     for z in levels:
         mb.box(w.p((u0 + u1) / 2, D / 2, z - 0.012), (u1 - u0, D, 0.024), wood, w.rot, col)
     if back:
-        mb.box(w.p((u0 + u1) / 2, 0.01, (F0 + levels[-1]) / 2), (u1 - u0, 0.02, levels[-1] - F0), wood, w.rot, back)
+        mb.box(w.p((u0 + u1) / 2, 0.045, (F0 + levels[-1]) / 2), (u1 - u0, 0.02, levels[-1] - F0), wood, w.rot, back)
 
 
 def fixtures(mb, light, xs, ys, warm="#fff1d6", along_y=False, k=5.0):
@@ -410,7 +410,7 @@ def dev_shop(S):
     # above the shelves: the clock and the SINCE 2008 card
     kp("int.dev.clock", "wall_clock", (-0.6, -6.08, 3.05), math.pi, 1.0, R)
     r = uv("dev", "since")
-    mb.quad((1.3, -6.07, 2.75), (0.55, 0.55 / r[4]), sign, r)
+    mb.quad((1.3, -6.06, 2.75), (0.55, 0.55 / r[4]), sign, r)
     # the west wall: the workbench under a pegboard of tools
     w = W["west"]
     kp("int.dev.bench", "metal_office_desk", w.p(4.0, 0.48, F0), w.rot, 1.0, R)
@@ -428,13 +428,13 @@ def dev_shop(S):
         else:
             mb.box((x, y - 0.4, bz + 0.004), (0.07, 0.15, 0.006), glossy, rng.uniform(0, 3), "#0d0f12")
     r = uv("dev", "pegboard")
-    mb.quad(w.p(4.0, 0.025, 1.85), (1.9, 0.95), sign, r, rz=w.rot)
+    mb.quad(w.p(4.0, 0.045, 1.85), (1.9, 0.95), sign, r, rz=w.rot)
     for k, (aid, u, z, rot) in enumerate((("wooden_hammer_01", 3.3, 1.6, None), ("pliers", 3.55, 1.75, None),
                                           ("pliers", 3.7, 1.75, None), ("handsaw_wood", 4.4, 2.05, None),
                                           ("wooden_hammer_01", 4.9, 1.62, None))):
-        kp(f"int.dev.peg{k}", aid, w.p(u, 0.04, z), w.rot + (math.pi / 2 if aid == "handsaw_wood" else 0), 1.0, R)
+        kp(f"int.dev.peg{k}", aid, w.p(u, 0.06, z), w.rot + (math.pi / 2 if aid == "handsaw_wood" else 0), 1.0, R)
     for k in range(4):  # cable coils on pegs
-        mb.add(torus_vf(0.08, 0.008, 18, 5), plast, mtx(w.p(4.55 + k * 0.17, 0.05, 1.55), w.rot, math.pi / 2),
+        mb.add(torus_vf(0.08, 0.008, 18, 5), plast, mtx(w.p(4.55 + k * 0.17, 0.07, 1.55), w.rot, math.pi / 2),
                ("#151515", "#e8e8e8", "#151515", "#2a4d8f")[k], smooth=True)
     # under the bench: a crate of cables, a bin
     kp("int.dev.crate", "plastic_crate_02", (-2.45, -5.0, F0), w.rot, 0.95, R)
@@ -454,7 +454,7 @@ def dev_shop(S):
     kp("int.dev.chair", "plastic_monobloc_chair_01", e.p(4.1, 0.35, F0), e.rot + 0.2, 0.95, R)
     for nm, u, z, wd in (("prices", 4.4, 1.95, 0.48), ("dollar", 1.7, 1.95, 0.42), ("nosoft", 2.25, 2.85, 0.42)):
         r = uv("dev", nm)
-        mb.quad(e.p(u, 0.03, z), (wd, wd / r[4]), sign, r, rz=e.rot)
+        mb.quad(e.p(u, 0.045, z), (wd, wd / r[4]), sign, r, rz=e.rot)
     # the counter (dev.counter): the register, a glass case of phones, a jar of pens; a sign on its front
     cz = 1.0
     kp("int.dev.register", "CashRegister_01", (-0.3, -3.62, cz), 0.1, 0.72, R)
@@ -758,7 +758,7 @@ def eatery(S):
     mb.cyl(e.p(5.0, 0.25, F0 + 0.3), 0.2, 0.6, plast, "#4b4f3a", r2=0.22)
     for nm, u, z, wd in (("drinks", 3.9, 2.55, 0.42), ("bus", 5.0, 1.55, 0.44)):
         r = uv("eatery", nm)
-        mb.quad(e.p(u, 0.03, z), (wd, wd / r[4]), sign, r, rz=e.rot)
+        mb.quad(e.p(u, 0.045, z), (wd, wd / r[4]), sign, r, rz=e.rot)
     tv = kp("int.eat.tv", "Television_01", e.p(1.7, 0.45, 2.85), e.rot, 0.8, R)
     tv.rotation_euler.x = 0.0
     mb.box(e.p(1.7, 0.25, 2.8), (0.4, 0.5, 0.03), steel, e.rot, "#3a3a3a")
@@ -861,7 +861,7 @@ def pawn(S):
     kp("int.pawn.toolbox", "metal_toolbox", bw.p(4.4, 0.25, levels[3]), bw.rot, 0.9, R)
     # the east wall: tools hung on a board, a hand truck; tags on everything
     e = room_walls()["east"]
-    mb.box(e.p(4.6, 0.02, 1.8), (1.4, 0.02, 1.1), wood, e.rot, "#7a6040")
+    mb.box(e.p(4.6, 0.045, 1.8), (1.4, 0.02, 1.1), wood, e.rot, "#7a6040")
     for k, (aid, u, z) in enumerate((("handsaw_wood", 4.3, 2.0), ("wooden_hammer_01", 4.95, 1.55),
                                      ("wooden_hammer_01", 5.15, 1.6), ("handsaw_wood", 4.3, 1.6))):
         kp(f"int.pawn.tool{k}", aid, e.p(u, 0.05, z), e.rot + (math.pi / 2 if aid == "handsaw_wood" else 0), 1.0, R)
@@ -1043,8 +1043,8 @@ def shop(S, i, kind):
                    ("#2a4d8f", "#f2efe6", "#3d6b3a", "#6a4c93")[k])
         mb.box((1.3, -4.6, F0 + 0.48), (1.6, 0.6, 0.96), wood, 0, "#5a5d63")
         for k in range(6):  # race bibs pinned on the east wall
-            mb.box(east.p(1.5 + k * 0.5, 0.02, 2.4 + (k % 2) * 0.3), (0.3, 0.004, 0.22), m, east.rot, "#f2efe6")
-            mb.box(east.p(1.5 + k * 0.5, 0.024, 2.42 + (k % 2) * 0.3), (0.2, 0.004, 0.08), m, east.rot, "#2a4d8f")
+            mb.box(east.p(1.5 + k * 0.5, 0.045, 2.4 + (k % 2) * 0.3), (0.3, 0.004, 0.22), m, east.rot, "#f2efe6")
+            mb.box(east.p(1.5 + k * 0.5, 0.049, 2.42 + (k % 2) * 0.3), (0.2, 0.004, 0.08), m, east.rot, "#2a4d8f")
     elif kind in ("knitting", "crochet"):
         paint(mb, "#e6d8d0" if kind == "knitting" else "#e0e6d8", tag)
         for k in range(4):
@@ -1061,7 +1061,7 @@ def shop(S, i, kind):
             for b in range(2):
                 for gx in range(6):
                     for gy in range(6):
-                        mb.box(east.p(1.6 + b * 2.0 + gx * 0.2, 0.02, 1.4 + gy * 0.2), (0.19, 0.006, 0.19), soft, east.rot,
+                        mb.box(east.p(1.6 + b * 2.0 + gx * 0.2, 0.045, 1.4 + gy * 0.2), (0.19, 0.006, 0.19), soft, east.rot,
                                YARN[(gx * 7 + gy * 3 + b) % len(YARN)])
             for k in range(7):
                 p = (-2.3 + k * 0.45, -0.45, 0.72)
@@ -1138,9 +1138,9 @@ def shop(S, i, kind):
         kp(f"int.{tag}.plane", "hand_plane_no4", (-1.3, -4.7, F0 + 0.9), 0.3, 1.0, R)
         kp(f"int.{tag}.hammer", "wooden_hammer_01", (-0.4, -4.6, F0 + 0.91), 0, 1.0, R, rot=(math.pi / 2, 0, 0.6))
         kp(f"int.{tag}.saw", "handsaw_wood", (0.3, -4.8, F0 + 0.91), 0.2, 1.0, R, rot=(0, math.pi / 2, 0.2))
-        mb.box((-0.6, -6.08, 2.0), (2.6, 0.02, 1.1), wood, 0, "#9a7a52")  # the tool board
+        mb.box((-0.6, -6.06, 2.0), (2.6, 0.02, 1.1), wood, 0, "#9a7a52")  # the tool board
         for k in range(8):
-            mb.box((-1.7 + k * 0.3, -6.05, 2.0 + (k % 3) * 0.1), (0.04, 0.03, 0.4 + (k % 3) * 0.1), metal, 0,
+            mb.box((-1.7 + k * 0.3, -6.03, 2.0 + (k % 3) * 0.1), (0.04, 0.03, 0.4 + (k % 3) * 0.1), metal, 0,
                    rng.choice(("#303030", "#8a6a40", "#c8ccd0")))
         for k in range(10):  # the lumber rack on the west wall
             z = 0.6 + (k % 5) * 0.4
@@ -1186,7 +1186,7 @@ def shop(S, i, kind):
         mb.blob((0.3, -0.55, 1.2), (0.17, 0.17, 0.17), m, "#4a7a8a", sub=2)
         mb.box((0.3, -0.55, 0.64), (0.3, 0.3, 0.04), wood, 0, "#4a3020")
         r = uv("shops", "map")
-        mb.quad(east.p(4.5, 0.03, 2.1), (1.0, 1.0 / r[4]), sign, r, rz=east.rot)
+        mb.quad(east.p(4.5, 0.045, 2.1), (1.0, 1.0 / r[4]), sign, r, rz=east.rot)
         mb.box((0.8, -3.2, F0 + 0.75), (1.6, 0.9, 0.05), wood, 0, "#5a3a22")  # the reading table
         for dx in (-0.7, 0.7):
             for dy in (-0.38, 0.38):

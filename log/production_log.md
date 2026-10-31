@@ -722,3 +722,16 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Also:** the extended flicker survey after the building fixes: 82 pairs and 1,978 hits, down from 118 and 3,432; shop12's pier against its side wall went from 50 to 2. The largest left, `int.dev` at 114, is the two faces of a 2 mm sign backing, not a fight.
 - **Render v4:** all of Act 1 again (the building fixes touch nearly every shot), into `renders/m4/act1_v4/frames`.
   - Command: `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v4/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`
+
+## 2026-10-31T00:00:00-04:00 — M4: Act 1 v4 cut; QC found a regression (the Dev's pegboard flickering) and fixed it
+
+- **Render v4:** all 3,686 frames (f_00435–f_04120), exit 0. One "Failed to create GPU texture" warning, as in v3; the frames saved normally.
+- **Cut:** seven section clips in `renders/m4/sections_v4/` and the full act, `renders/m4/m4_act1_v4.mp4` (153.54 s). The assembler's ffmpeg read the shell loop's stdin and clipped the start of six output names; the files were renamed to their section names (frame ranges checked from the logs).
+- **Stills:** `renders/m4/review/v4_fixes_contact.jpg` (S03, S07–S09, S11, S13, S19, S20, S28, S29, S31). S28 reads as crates labelled COMMENTS 2005–2023 forklifted into the truck. In S31 no resting note touches "UNDER NEW MANAGEMENT"; the one crossing it at 115 s is flying off to the funnel.
+- **Flicker QC:** a new per-pixel check for a spot that keeps jumping for one frame and coming back, shot by shot (320×180, a 4×4 block's share of the shot's frames).
+  - Clean everywhere except: S16 (the countdown ticking, meant), S14, S38, S39 and S39e (camera moves past thin fence bars; aliasing, not surfaces fighting), and **S04: the Dev's pegboard**, appearing and vanishing frame to frame.
+  - **Cause, a regression of the last round's fix:** `interiors.paint()` moved the side walls' paint 1.5 cm out to 2.5 cm off the shell, exactly where the pegboard quad sat (`w.p(4.0, 0.025, …)`). The survey's 64×36 grid every 12th frame never landed on it.
+  - **Same cause, hidden:** the running shop's race bibs and the crochet shop's granny squares (2 cm off the wall) were now inside the paint; the price cards (3 cm) and the pawn shop's board were 5 mm off it.
+- **Fix** (`sets/interiors.py`): everything flat on a painted wall now sits at least 1 cm in front of the paint: the pegboard (4.5 cm), its tools (6 cm) and cable coils (7 cm); shelving back panels (3.5–5.5 cm); the Dev's and the eatery's sign cards and the shop poster (4.5 cm); the pawn board (3.5–5.5 cm); bibs (4.5 cm); granny squares (4.5 cm); the SINCE 2008 card and the hardware shop's tool board (back wall, 2–4 cm).
+- **Survey re-run** with a gap probe at each flagged pair. Truly coincident faces (gap ≤ 0.003 mm): inside the CC0 kit models (magnifier, spade, chair, fire escape), where the chalk lines cross (same colour), the park pit's floor. None shows in the pixel check. The rest are 0.3–20 mm apart.
+- **Next:** re-render S03–S10 (7.75–39.25 s, the shots that see into the Dev's shop) into `renders/m4/act1_v4b/frames`, and cut v4 again from v4 plus those frames.
