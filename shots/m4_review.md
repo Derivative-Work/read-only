@@ -1,7 +1,7 @@
 # M4 review: Act 1 final renders and overlays (S02–S39e)
 
-The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v5/`, at 1280×720
-(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v5.mp4` is all seven back to back.
+The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v6/`, at 1280×720
+(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v6.mp4` is all seven back to back.
 
 | Clip | Section | Shots | Song time |
 | --- | --- | --- | --- |
@@ -34,6 +34,23 @@ The brief's gate is **"Approve each section"**. Each section is its own clip in 
   - **S20:** the traffic chart.
   - **S30:** the ticker band.
 - **The lobby** is furnished, still corporate-clean.
+
+## Since v5: your notes
+
+- **S02:**
+  - **Flicker:** each shop's lintel, the strip of wall above the shopfront, shared a plane with the tops of its brick side columns. It now fits between them. A new check that tests every surface in the scene found and fixed more overlaps: the curbs, the tower's ticker, the lobby glass, neighbouring posters, and the cars' trim and plates. No spot in S02 keeps flickering (per-pixel check, v6).
+  - **Payphone:** modelled: a blue steel housing with a keypad, coin slot and return, a canopy with side panels, and a handset on a coiled cord. S03's REC light is now a soft red, not a white blob.
+- **S22:** each "downvote" drives a large blue-purple arrow tip-first into the balcony floor, one either side of the CEO, and the arrows stay. The camera is at balcony level. The colour is your call; the shape stays generic.
+- **S25:** re-staged to the brief, side-on, in front of the open little door. The bot holds out the briefcase and the CEO takes it. He hands over an oversized brass key ring, and the bot lowers its arm with the keys.
+- **S28:** starts 1 s early (at 1:42.20, off the brief's 1:43.20 cue), so it runs 3.1 s and the forklift moves more slowly; S27 is 1 s shorter. A work light shows the crate labels.
+- **S29:** CHAT stops just behind SEARCH and the camera swings left, so both names stay in frame.
+- **S31:** ten different thank-you notes in a marker font (Permanent Marker, Apache 2.0), large enough to read. "People found this helpful." is on two lines with room on the sides.
+- **S33:** "YOUR LAND" is in front of the Dev and reads the right way up from the camera.
+- **S36 and the cemetery:**
+  - **Stones:** concrete with a worn sheen. On your note about the stills, each stone now has its own pattern and tone, the face is calmer, and the dirt streaks are lighter, so the inscriptions read.
+  - **Grass:** a denser lawn, with short grass among the small markers.
+  - **Hook wides:** the stones in the aerial shots are the earlier, uniform ones (too small to tell).
+- **Shimmer:** the iron fence bars still shimmer as the camera passes (S38–S39e, worst in S39e). It's aliasing on thin bars, not overlapping surfaces, and the 4K final's higher sample count should smooth it.
 
 ## Since v3: your notes
 

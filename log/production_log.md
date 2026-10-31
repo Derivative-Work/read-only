@@ -800,3 +800,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **Grime:** the run-off streaks on stone are down from 0.9 to 0.4 (`config/look.json`).
 - **Stills:** `renders/m4/stones_v1`, `stones_v2`. "Here lies a good bot", the S39b row, Pushshift and the S39d/e stones read clearly; each stone has a different tone and pattern.
 - **Render:** v6 was stopped at f_03146 (113.0 s, before the first stone shot) and resumed with --resume, so every shot from S34 on has the new stones. Earlier frames show the cemetery only in the hook's aerial wides.
+
+## 2026-10-31T07:08:45-04:00 — M4: Act 1 v6 cut for the M4 gate
+- **Render:** `renders/m4/act1_v6/frames`, all 3,686 frames (f_00435–f_04120), draft720. It was stopped and resumed once for the headstone fix (previous entry).
+- **QC:**
+  - **Flicker:** the per-shot hot-spot check (flick_hot) finds no lasting flicker in S02 (worst 0.03) or anywhere in S02–S37. The moderate flags are motion: the pan in S14, the countdown's changing digits in S16, and the iron fence bars aliasing as the camera passes in S38–S39e (worst in S39e, 0.28). No coplanar surfaces. The fence is left for the 4K final's higher sample count.
+  - **Stills:** S02 (payphone), S03 (REC light), S22, S25, S28, S29 (CHAT and SEARCH in frame through the shot), S31, S33, S36 and S39b–S39e (inscriptions) checked.
+- **Cut:** `renders/m4/sections_v6/` (seven clips) and `renders/m4/m4_act1_v6.mp4` (153.5 s), with the overlays and the master.
+- **Archive:** the v5 cuts (`sections_v5`, `m4_act1_v5.mp4` and its log) moved to `archive/renders/m4/v5_superseded/`, superseded by v6.
+- **Review notes:** `shots/m4_review.md` now points to v6, with a "Since v5: your notes" section.
+- **Manifest:** updated.
