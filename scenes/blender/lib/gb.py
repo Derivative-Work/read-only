@@ -86,9 +86,13 @@ LOOK = json.loads((ROOT / "config" / "look.json").read_text())
 TEX = ROOT / "assets" / "textures"
 
 
-def tex_mat(name, tex_id, rough=None):
+def tex_mat(name, tex_id, rough=None, vary=None, flat=None, bump=1.0):
     """A CC0 texture (style spec, "Materials"), box-projected in object space at its real-world scale (look.json:
-    metres per tile), so no mesh needs UVs: diffuse (optionally tinted), roughness, OpenGL normal."""
+    metres per tile), so no mesh needs UVs: diffuse (optionally tinted), roughness, OpenGL normal.
+
+    For many copies of one object (the headstones): vary = (scale spread, tone spread) shifts, scales and tilts the
+    texture and shades the tone per object (Object Info: Random), so no two copies match; flat = (amount 0..1,
+    colour) pulls the diffuse toward a plain colour, a calmer surface; bump scales the normal map."""
     key = f"tex.{name}"
     if key in _MATS:
         return _MATS[key]
@@ -101,6 +105,34 @@ def tex_mat(name, tex_id, rough=None):
     mp = nt.nodes.new("ShaderNodeMapping")
     mp.inputs["Scale"].default_value = (1 / scale_m,) * 3
     nt.links.new(tc.outputs["Object"], mp.inputs["Vector"])
+    rnd = None
+    if vary:
+        rnd = nt.nodes.new("ShaderNodeObjectInfo").outputs["Random"]
+
+        def rmap(lo, hi, seed):  # a second, independent per-object random from the first
+            h = nt.nodes.new("ShaderNodeTexWhiteNoise")
+            h.noise_dimensions = "1D"
+            add = nt.nodes.new("ShaderNodeMath")
+            add.operation = "ADD"
+            add.inputs[1].default_value = seed
+            nt.links.new(rnd, add.inputs[0])
+            nt.links.new(add.outputs[0], h.inputs["W"])
+            r = nt.nodes.new("ShaderNodeMapRange")
+            nt.links.new(h.outputs["Value"], r.inputs["Value"])
+            r.inputs["To Min"].default_value, r.inputs["To Max"].default_value = lo, hi
+            return r.outputs["Result"]
+        off = nt.nodes.new("ShaderNodeCombineXYZ")
+        for k, ax in enumerate("XYZ"):
+            nt.links.new(rmap(0, 40, 1.7 * k + 0.3), off.inputs[ax])
+        nt.links.new(off.outputs[0], mp.inputs["Location"])
+        rot = nt.nodes.new("ShaderNodeCombineXYZ")  # a tilt in the face's plane (about Y), so the streaks differ
+        nt.links.new(rmap(-0.6, 0.6, 7.1), rot.inputs["Y"])
+        nt.links.new(rot.outputs[0], mp.inputs["Rotation"])
+        sc = nt.nodes.new("ShaderNodeVectorMath")
+        sc.operation = "SCALE"
+        sc.inputs[0].default_value = (1 / scale_m,) * 3
+        nt.links.new(rmap(1 - vary[0], 1 + vary[0], 11.3), sc.inputs["Scale"])
+        nt.links.new(sc.outputs[0], mp.inputs["Scale"])
 
     def img(mapname, noncolor):
         n = nt.nodes.new("ShaderNodeTexImage")
@@ -117,9 +149,29 @@ def tex_mat(name, tex_id, rough=None):
         mix.inputs["Factor"].default_value = 1.0
         nt.links.new(d.outputs["Color"], mix.inputs["A"])
         mix.inputs["B"].default_value = lin(tint)
-        nt.links.new(mix.outputs["Result"], b.inputs["Base Color"])
+        col = mix.outputs["Result"]
     else:
-        nt.links.new(d.outputs["Color"], b.inputs["Base Color"])
+        col = d.outputs["Color"]
+    if flat:
+        fm = nt.nodes.new("ShaderNodeMix")
+        fm.data_type = "RGBA"
+        fm.inputs["Factor"].default_value = flat[0]
+        nt.links.new(col, fm.inputs["A"])
+        fm.inputs["B"].default_value = lin(flat[1])
+        col = fm.outputs["Result"]
+    if vary:  # per-object tone: lighter or darker, warmer or cooler
+        tone = nt.nodes.new("ShaderNodeMix")
+        tone.data_type, tone.blend_type = "RGBA", "MULTIPLY"
+        tone.inputs["Factor"].default_value = 1.0
+        nt.links.new(col, tone.inputs["A"])
+        hsv = nt.nodes.new("ShaderNodeCombineColor")
+        hsv.mode = "HSV"
+        nt.links.new(rmap(0.06, 0.13, 3.9), hsv.inputs[0])
+        nt.links.new(rmap(0.0, 0.18, 5.3), hsv.inputs[1])
+        nt.links.new(rmap(1 - vary[1], 1 + vary[1], 9.7), hsv.inputs[2])
+        nt.links.new(hsv.outputs[0], tone.inputs["B"])
+        col = tone.outputs["Result"]
+    nt.links.new(col, b.inputs["Base Color"])
     r = img("rough", True)
     mul = nt.nodes.new("ShaderNodeMath")
     mul.operation = "MULTIPLY"
@@ -127,6 +179,7 @@ def tex_mat(name, tex_id, rough=None):
     nt.links.new(r.outputs["Color"], mul.inputs[0])
     nt.links.new(mul.outputs[0], b.inputs["Roughness"])
     nm = nt.nodes.new("ShaderNodeNormalMap")
+    nm.inputs["Strength"].default_value = bump
     nt.links.new(img("nor", True).outputs["Color"], nm.inputs["Color"])
     nt.links.new(nm.outputs["Normal"], b.inputs["Normal"])
     _MATS[key] = m

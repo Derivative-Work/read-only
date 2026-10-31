@@ -141,7 +141,7 @@
    },
    "stone": {
     "amt": 0.25,
-    "streak": 0.9,
+    "streak": 0.4,
     "damp": 0.8
    },
    "eatery_wall": {

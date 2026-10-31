@@ -146,3 +146,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - "S33: \"YOUR LAND\" is occluded by the dev"
   - "S36: the gravestones could use some concrete texturing and reflection maps and the grass can use more detail"
 - **Rule:** R1 (notes on the M4 clips; not yet a section-by-section verdict). The agent fixes them (production log, following entries).
+
+## 2026-10-31T06:14:31-04:00 — The headstones in the v6 stills — R1
+- **What:** from the test stills: "the gravestones are now hard to read and too clearly have the same texture".
+- **Rule:** R1. The agent fixes it (production log, next entry).

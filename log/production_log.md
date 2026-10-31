@@ -791,3 +791,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **Grass:** the lawn's density goes from 3% of cells to about 30% with 7 blades a tuft, and there is short grass (≤ 5 cm) among the markers, which had none.
 - **Stills:** `renders/m4/notes5_v1`, `notes5_v2`.
 - **Render v6:** all of Act 1 (the curb, lintel, stone and grass changes touch nearly every shot), into `renders/m4/act1_v6/frames`.
+
+## 2026-10-31T06:14:31-04:00 — M4: the headstones vary stone to stone and read again; Act 1 v6 resumed with them
+- **The human's note (R1):** the stones were hard to read and all had the same texture. Every stone shared one material, box-projected in object space with each stone's origin in the same place, so each showed the identical pattern. The concrete's formwork lines and the grime's vertical run-off fought the lettering.
+- **Fix (`gb.tex_mat`: new `vary`, `flat`, `bump` options; `block.TEXOPT` sets them for "stone"):**
+  - **Per stone (Object Info: Random):** its own texture offset, a tilt in the face's plane (±0.6 rad), a scale (±35%) and a tone (value ±18%, a little warmer or cooler), so no two stones match.
+  - **Calmer face:** the diffuse is pulled 55% toward plain grey (#8e897f), and the normal map is at half strength.
+  - **Grime:** the run-off streaks on stone are down from 0.9 to 0.4 (`config/look.json`).
+- **Stills:** `renders/m4/stones_v1`, `stones_v2`. "Here lies a good bot", the S39b row, Pushshift and the S39d/e stones read clearly; each stone has a different tone and pattern.
+- **Render:** v6 was stopped at f_03146 (113.0 s, before the first stone shot) and resumed with --resume, so every shot from S34 on has the new stones. Earlier frames show the cemetery only in the hook's aerial wides.

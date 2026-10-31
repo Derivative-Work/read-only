@@ -43,10 +43,13 @@ TEXMAP = {"asphalt": "asphalt_03", "sidewalk": "concrete_pavement", "brick": "br
           "grass": "grass_ground", "dirt": "dry_ground_01", "tile": "brown_floor_tiles",
           "curb": "concrete_pavement",
           "stone": "concrete"}  # the headstones: cast concrete, its roughness map for a worn sheen (the human, M4 v5)
+# per-key texture options (gb.tex_mat): the headstones each get their own offset, tilt, scale and tone, and a calmer
+# face so the inscriptions read (the human, M4 v6: "hard to read and too clearly have the same texture")
+TEXOPT = {"stone": {"vary": (0.35, 0.18), "flat": (0.55, "#8e897f"), "bump": 0.5}}
 
 
 def M(key, **kw):
-    m = gb.tex_mat(key, TEXMAP[key]) if FINAL and key in TEXMAP else gb.mat(key, C[key], **kw)
+    m = gb.tex_mat(key, TEXMAP[key], **TEXOPT.get(key, {})) if FINAL and key in TEXMAP else gb.mat(key, C[key], **kw)
     g = gb.LOOK["grime"]["materials"].get(key)
     if FINAL and g and not m.get("grimed"):  # the human's note on the look test: "make sure it's grungy"
         gb.grime(m, **g)
