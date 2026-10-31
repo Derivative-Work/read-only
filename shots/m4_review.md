@@ -1,7 +1,7 @@
 # M4 review: Act 1 final renders and overlays (S02–S39e)
 
-The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v6/`, at 1280×720
-(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v6.mp4` is all seven back to back.
+The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v7/`, at 1280×720
+(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v7.mp4` is all seven back to back.
 
 | Clip | Section | Shots | Song time |
 | --- | --- | --- | --- |
@@ -34,6 +34,13 @@ The brief's gate is **"Approve each section"**. Each section is its own clip in 
   - **S20:** the traffic chart.
   - **S30:** the ticker band.
 - **The lobby** is furnished, still corporate-clean.
+
+## Since v6: your notes
+
+- **S26, the doghouse:** the roof's two panels now meet under a ridge cap (they stopped short of the peak), and the doorway is a round arch. "BOT DEFENSE" now sits on its board; it had floated 4 cm off it and cast a ghost copy below.
+- **S28:** the truck has a real door opening and a hollow load area, so the crates stay in sight, in shadow, once they're loaded.
+- **S30:** "IPO" is printed on the banner and unrolls with it.
+- **Only clips 5, 6 and 7 changed.** Clips 1–4 are the same frames as v6.
 
 ## Since v5: your notes
 

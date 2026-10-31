@@ -820,3 +820,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **S30, "IPO" before the banner:** the text wasn't attached to the banner and hung in the air while it unrolled. It's now parented to the banner (inverse taken at full size) and unrolls with it.
 - **Stills:** `renders/m4/notes6_v1`, `notes6_v2`.
 - **Render v6b:** S26, S28, S30 and S34–S39 (the doghouse's shots), into `renders/m4/act1_v6b/frames`; the cut will merge them over v6.
+
+## 2026-10-31T08:27:57-04:00 — M4: Act 1 v7 cut for the M4 gate
+- **Frames:** `renders/m4/act1_v7/frames`: symlinks to v6b where re-rendered (S26, S28, S30, S34–S39; 870 frames), else v6.
+- **QC:**
+  - **Flicker:** flick_hot shows S26 0.07, S28 0.04 and S30 0.03. S34–S39 match v6; the fence bars still alias as the camera passes.
+  - **Stills:** the doghouse (S26, S37–S38), the crates in the hold (S28) and the banner unrolling (S30) checked.
+- **Cut:** `renders/m4/sections_v7/` and `renders/m4/m4_act1_v7.mp4` (153.5 s).
+- **Archive:** the v6 cuts moved to `archive/renders/m4/v6_superseded/`, superseded by v7.
+- **Review notes:** `shots/m4_review.md` now points to v7 and has a "Since v6: your notes" section.
+- **Manifest:** updated.
