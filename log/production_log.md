@@ -735,3 +735,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Fix** (`sets/interiors.py`): everything flat on a painted wall now sits at least 1 cm in front of the paint: the pegboard (4.5 cm), its tools (6 cm) and cable coils (7 cm); shelving back panels (3.5–5.5 cm); the Dev's and the eatery's sign cards and the shop poster (4.5 cm); the pawn board (3.5–5.5 cm); bibs (4.5 cm); granny squares (4.5 cm); the SINCE 2008 card and the hardware shop's tool board (back wall, 2–4 cm).
 - **Survey re-run** with a gap probe at each flagged pair. Truly coincident faces (gap ≤ 0.003 mm): inside the CC0 kit models (magnifier, spade, chair, fire escape), where the chalk lines cross (same colour), the park pit's floor. None shows in the pixel check. The rest are 0.3–20 mm apart.
 - **Next:** re-render S03–S10 (7.75–39.25 s, the shots that see into the Dev's shop) into `renders/m4/act1_v4b/frames`, and cut v4 again from v4 plus those frames.
+
+## 2026-10-31T00:48:45-04:00 — M4: S03–S10 re-rendered; Act 1 v5 cut and sent for the M4 gate
+
+- **Render:** S03–S10 (7.75–39.25 s, f_00618–f_01374, 757 frames) into `renders/m4/act1_v4b/frames`, exit 0. The pegboard holds steady in the crops that flickered in v4.
+- **v5 frames:** `renders/m4/act1_v5/frames` holds symlinks, v4b where it exists and v4 elsewhere (no frame copied or overwritten). Both splice frames are pixel-identical between v4 and v4b; the jumps there are the S03 and S11 camera cuts.
+- **Flicker check on v5:** S04's worst spot went from 0.25 to 0.11 of frames, with no block over 0.15; S03–S13 clean.
+- **Cut:** `renders/m4/sections_v5/*.mp4` and `renders/m4/m4_act1_v5.mp4` (153.54 s), with stdin closed to the assembler this time.
+- **Archived:** the v4 cuts to `archive/renders/m4/v4_superseded/` (superseded by v5).
+- **Review notes:** `shots/m4_review.md` points at v5 and lists the fixes for the v3 notes. Stopped at the M4 gate.

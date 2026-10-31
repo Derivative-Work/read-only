@@ -1,7 +1,7 @@
 # M4 review: Act 1 final renders and overlays (S02–S39e)
 
-The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections/`, at 1280×720
-(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1.mp4` is all seven back to back.
+The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v5/`, at 1280×720
+(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v5.mp4` is all seven back to back.
 
 | Clip | Section | Shots | Song time |
 | --- | --- | --- | --- |
@@ -34,6 +34,24 @@ The brief's gate is **"Approve each section"**. Each section is its own clip in 
   - **S20:** the traffic chart.
   - **S30:** the ticker band.
 - **The lobby** is furnished, still corporate-clean.
+
+## Since v3: your notes
+
+- **S03:** the cassette now sits on the payphone's post beside the handset, clear of the phone.
+- **Flicker:**
+  - Every overlapping surface on the buildings and shopfronts is spaced apart: side walls, paint, signs, tags, street paint, the plaza.
+  - The shops' wall paint moved out as part of that, which caught the Dev's pegboard. QC found it, and everything on a painted wall now clears the paint.
+  - A per-pixel check finds no spot that keeps flickering. Thin fence bars still shimmer as the camera moves (S38–S39e); that should smooth out in the 4K final.
+- **S07–S08, the receipt tape:**
+  - It comes off the roll and curves round the counter's edge.
+  - It lies on the floor and passes under the Dev's door, which now has a gap.
+  - It rides over the curb, the joint lines and the rails, and never goes through anything.
+- **S19:** the mods kneel on the sidewalk, filmed low from the side.
+- **S20:** the CEO dribbles: the ball meets the floor on the beat and his palm between beats.
+- **S28:** a forklift loads a pallet of crates labelled COMMENTS 2005–2023 into the truck, with a SIDEWALK AUCTION sign.
+- **S29:** the trucks pull up into frame, and their labels are bigger.
+- **S31:** no note rests on "UNDER NEW MANAGEMENT". One crosses it briefly as it flies to the funnel.
+- **S09:** the red total fits inside its ring.
 
 ## Still review aids, not the final edit
 
