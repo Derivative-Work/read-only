@@ -283,7 +283,12 @@ def dev_interior(S):
     gb.text("dev.est", "est. 2008", 0.2, M("ink"), (x0 - 0.8, FRONT + 0.03, 3.38), facing="+Y")
 
 
-CASS_REST = (-31.37, -8.515, 0.9)  # props.CASS_S's shell is 18 mm deep: its back on the post's face at -8.525
+# the handset hangs on its cord from the boot under the housing's left side; a portable cassette recorder is taped to
+# the post's street face beside it, wired to a pickup on the handset, the tape in it (the human, M4 v7)
+HANDSET_PIVOT = (-31.7, -8.365, 1.13)  # the cord's boot (props.payphone: housing local (-0.2, 0.185, -0.37))
+HANDSET_DROP = 0.38  # the handset's centre below the boot
+RECORDER = (-31.5, -8.498, 0.92)  # its centre: 19 x 5.5 x 27 cm (a real one at 1.5x, like the tape), back on the post
+CASS_REST = (RECORDER[0], RECORDER[1] + 0.0075, RECORDER[2] + 0.035)  # in the recorder's well, label out
 
 
 def corner(S):
@@ -299,14 +304,18 @@ def corner(S):
         pl = __import__("bpy").data.lights.new("payphone.light", "POINT")
         pl.energy, pl.color, pl.shadow_soft_size = 40, (0.85, 0.92, 1.0), 0.3
         gb.link(__import__("bpy").data.objects.new("payphone.light", pl)).location = (-31.5, -8.2, 1.9)
-    hs = gb.empty("handset", (-31.5, -8.42, 0.9))
-    gb.cyl("handset.body", (0, 0, 0), 0.035, 0.22, M("ink"), parent=hs)
-    gb.cyl("handset.cord", (0, 0, 0.33), 0.006, 0.45, M("ink"), parent=hs)
+    hs = gb.empty("handset", HANDSET_PIVOT)  # its origin at the boot, so it swings from there
+    gb.cyl("handset.body", (0, 0, -HANDSET_DROP), 0.035, 0.22, M("ink"), parent=hs)
+    gb.cyl("handset.cord", (0, 0, -0.135), 0.006, 0.27, M("ink"), parent=hs)
+    rc = gb.empty("recorder", RECORDER)
+    gb.box("recorder.body", (0, 0, 0), (0.19, 0.055, 0.27), M("ink"), parent=rc)
+    door = gb.empty("recorder.door", (0, 0.0275, -0.0175), parent=rc)  # hinged at the well's bottom edge
+    gb.box("recorder.door.glass", (0, 0.001, 0.0525), (0.16, 0.002, 0.105), gb.mat("glass_a", C["glass"], alpha=0.18),
+           parent=door)
     ctl = gb.empty("rec.ctl", (0, 0, 0))
-    # its own, softer glow: at S03's 0.5 m, the windows' strength (40) blew it out to white
-    gb.sphere("handset.rec", (0, 0.016, 0.0), 0.007, gb.glow_mat("rec.handset", C["rec"], 5.0, ctl, "on"), parent=hs)
-    S["handset"], S["rec"] = hs, ctl
-    # taped flat on the post's street face beside the handset (where the handset hangs, it was inside it)
+    # the REC light on the recorder, its own softer glow: at S03's 0.5 m, the windows' strength (40) blew it out
+    gb.sphere("recorder.rec", (0.06, 0.03, 0.098), 0.006, gb.glow_mat("rec.handset", C["rec"], 5.0, ctl, "on"), parent=rc)
+    S["handset"], S["rec"], S["recorder_door"] = hs, ctl, door
     cas = gb.box("cassette", CASS_REST, (0.1, 0.015, 0.065), M("ink"))
     S["cassette"] = cas
     # streetlights: the one with the coin meter at the corner, others down the block
@@ -384,7 +393,10 @@ def tower(S):
     for k in range(3):
         gb.box(f"throne.rack{k}", (LOBBY_DOOR_X - 1 + k, y0 + 7.0, 1.1 + (0.4 if k == 1 else 0)),
                (0.9, 0.9, 2.2 + (0.8 if k == 1 else 0)), M("rack", metal=0.4))
-    gb.box("throne.seat", (LOBBY_DOOR_X, y0 + 6.4, 0.7), (1.2, 0.8, 0.15), M("capetrim"))
+    # the seat at a sitting height (its top 0.93, under the CEO's thighs), on a plinth set back from his shins; it
+    # floated at knee height before, and his legs and cape went through it (the human, M4 v7)
+    gb.box("throne.seat", (LOBBY_DOOR_X, y0 + 6.22, 0.855), (1.2, 0.66, 0.15), M("capetrim"))
+    gb.box("throne.plinth", (LOBBY_DOOR_X, y0 + 6.3, 0.475), (1.0, 0.5, 0.61), M("trim"))
     # the doors and the brick wall that grows over them (S24), with its little door (S25)
     gb.box("lobby.doors", (LOBBY_DOOR_X, y0 - 0.05, 1.4), (3.0, 0.1, 2.8), gb.mat("glass_a", C["glass"], alpha=0.18))
     wall = gb.box("brickwall", (LOBBY_DOOR_X, y0 - 0.3, 0.0), (3.6, 0.35, 3.0), M("brick_new"))

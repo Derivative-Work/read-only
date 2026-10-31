@@ -284,11 +284,12 @@ def stage(S):
     # ---- intro (S02-S03): the dead payphone, handset dangling; the REC light
     hs = S["handset"]
     cam("S02", [(0, (-20, 4, 4.0), (-31.5, -8.6, 1.4)), (1, (-27.5, -3.2, 2.2), (-31.5, -8.6, 1.1))], lens=30)
-    gb.keys(hs, "rotation_euler", [(F(t), 0.08 * math.sin(t * 2.2)) for t in np.arange(0, 22, 0.5)], index=1,
-            interp="BEZIER")
+    gb.keys(hs, "rotation_euler", [(F(t), 0.04 * math.sin(t * 2.2)) for t in np.arange(0, 22, 0.5)], index=1,
+            interp="BEZIER")  # a slow sway from the boot (gentle: the recorder's lead runs to it)
     beat_in = [b for a, b in TM["drum_dropouts"] if b < 12][-1]  # the full beat's entry (0:09.70)
     k_in = (beat_in - SP["S03"][0]) / (SP["S03"][1] - SP["S03"][0])
-    cam("S03", [(0, (-31.45, -7.95, 0.95), (-31.5, -8.42, 0.86)), (k_in, (-31.45, -8.1, 0.93), (-31.5, -8.42, 0.86)),
+    # the handset and the recorder taped beside it, then in on the recorder's REC light as the beat comes in
+    cam("S03", [(0, (-31.56, -7.8, 1.02), (-31.58, -8.45, 0.94)), (k_in, (-31.5, -7.98, 1.02), (-31.5, -8.47, 0.98)),
                 (1, (-24, 1.5, 3.5), (-22, -9, 2.5))], lens=50)
     rec = []
     for a, b in (SP["S03"], SP["S47"]):
@@ -377,6 +378,9 @@ def stage(S):
     cas = S["cassette"]
     a12, b12 = SP["S12"]
     rest = B.CASS_REST
+    # he flips the recorder's door down, then lifts the tape out of the well
+    gb.keys(S["recorder_door"], "rotation_euler", [(0, 0.0), (F(a + 0.15), 0.0), (F(a + 0.42), -1.45)], index=0,
+            interp="BEZIER")
     path = [(F(a), rest), (F(a + 0.45), rest), (F(tm) - 1, (rest[0], rest[1] + 0.12, rest[2] + 0.08)),
             (F(tm), held11), (F(b) - 1, held11), (F(a12), held12), (F(a12 + 1.5), held12),
             (F(a12 + 1.9), (-21.8, -6.6, 0.5)), (F(SP["S13"][0]), (-21.8, -6.6, 0.5))]
@@ -439,7 +443,7 @@ def stage(S):
     cam("S17", [(0, (-18, 3.5, 2.6), (-25, -6, 1.5)), (1, (-19.5, 2.5, 3.2), (-25, -6.6, 3.5))], lens=28)
 
     # ---- verse 2 (S18-S25): the CEO
-    c18 = only(B.ceo((9, 17.0, 0.95), name="ceo18"), "S18")
+    c18 = only(B.ceo((9, 16.75, 0.17), name="ceo18"), "S18")  # his cape's back clear of the racks (front 17.05)
     sing(c18, "S18")
     cam("S18", [(0, (9, 1.0, 2.0), (9, 17, 1.9)), (1, (9, 7.5, 2.0), (9, 17, 2.0))], lens=35)
     for k in range(6):
@@ -448,14 +452,87 @@ def stage(S):
     cam("S19", [(0, (-5.6, 5.6, 0.95), (3.0, 8.0, 0.65)), (1, (-4.6, 5.4, 1.0), (4.0, 8.0, 0.7))], lens=30)
     c20 = only(B.ceo((7.5, 16.0, 0.17), name="ceo20"), "S20")
     sing(c20, "S20")
-    # he dribbles it: the floor on each beat, back up to his palm between (the ball bounced 0.7 m off on its own)
+    # he dribbles it (the human, M4 v7: "make it look like he's actually dribbling"): the ball hits the floor on each
+    # beat; his palm meets it on the way up, rides it down and pushes it off, then rises to meet the next bounce. The
+    # arm is its own object, blended to its low pose by a shape key; the mitten and thumb follow the wrist
     import chars
-    bx, by, bz = chars.DRIBBLE
-    R = 0.12
-    ball = only(gb.sphere("ball", (7.5 + bx, 16.0 + by, 0.17 + R), R, B.M("lease")), "S20")
+    R, Z0, X0, Y0 = 0.12, 0.17, 7.5, 16.0
+    arm = bpy.data.objects.get("ceo20.arm1")
+    hi, lo = chars.POSES["dribble"]["arm"][1], chars.DRIBBLE_LOW
+    hand_hi, hand_lo = chars.hand_at(hi[1], hi[2]), chars.hand_at(lo[1], lo[2])
+    if arm is not None:  # the final look's figures (the grey-box's have no arm objects)
+        # the low pose bends this mesh at the shoulder and elbow (two bones, blended over 8 cm at the elbow): the skin
+        # modifier adds rings on a longer forearm, so a second skin of the low pose would not line up vertex for vertex
+        from mathutils import Vector
+        def bone(a, b, a2, b2):
+            a, b, a2, b2 = map(Vector, (a, b, a2, b2))
+            d, d2 = (b - a).normalized(), (b2 - a2).normalized()
+            q, k = d.rotation_difference(d2), (b2 - a2).length / (b - a).length
+            def T(v):
+                r = v - a
+                along = r.dot(d)
+                return a2 + q @ (r - along * d) + along * k * d2
+            return T, d
+        up, _ = bone(hi[0], hi[1], lo[0], lo[1])
+        fore, df = bone(hi[1], hi[2], lo[1], lo[2])
+        arm.shape_key_add(name="hi")
+        low = arm.shape_key_add(name="low")
+        for kv in low.data:
+            v = Vector(kv.co)
+            w = min(1.0, max(0.0, ((v - Vector(hi[1])).dot(df) + 0.04) / 0.08))
+            kv.co = up(v) * (1 - w) + fore(v) * w
+    def v_at(p):  # the arm, 0 high .. 1 low, over one bounce (p 0 = the ball on the floor)
+        if p < 0.45:  # rising to meet it (from the last release at 0.75)
+            u = (p + 0.25) / 0.7
+            return 0.5 + 0.5 * math.cos(math.pi * min(1.0, u))
+        if p < 0.75:  # riding it down and pushing
+            u = (p - 0.45) / 0.3
+            return 0.5 * u + 0.5 * u * u
+        u = (p - 0.75) / 0.7
+        return 0.5 + 0.5 * math.cos(math.pi * u)
+    def palm(v):  # the palm's underside over the ball (world), and its x, y
+        c = [a + (b - a) * v for a, b in zip(hand_hi, hand_lo)]
+        return X0 + c[0], Y0 + c[1], Z0 + c[2] - 0.06
+    def ball_at(p):
+        top_hi, top_lo = palm(0.0)[2], palm(1.0)[2]
+        if p < 0.45:  # up off the floor, slowing into his palm
+            u = p / 0.45
+            z = Z0 + R + (top_hi - 2 * R - Z0) * (1 - (1 - u) ** 2)
+            v = 0.0
+        elif p < 0.75:
+            v = v_at(p)
+            z = palm(v)[2] - R
+        else:  # pushed off: down to the floor, gathering speed
+            u = (p - 0.75) / 0.25
+            z = top_lo - R - (top_lo - R - (Z0 + R)) * (0.45 * u + 0.55 * u * u)
+            v = 1.0
+        x, y, _ = palm(v)
+        return x, y, z
+    ball = only(gb.sphere("ball", (X0 + hand_hi[0], Y0 + hand_hi[1], Z0 + R), R, B.M("lease")), "S20")
     bt = gb.beats_between(SP["S20"][0] - 1, SP["S20"][1] + 1)
-    gb.keys(ball, "location", [(F(t), 0.17 + R) for t in bt] + [(F((t0 + t1) / 2), 0.17 + bz - R) for t0, t1 in zip(bt, bt[1:])],
-            index=2, interp="LINEAR")
+    hand = bpy.data.objects.get("ceo20.hand1")
+    thumb = bpy.data.objects.get("ceo20.thumb1")
+    for f in range(F(bt[0]), F(bt[-1]) + 1):
+        t = f / 24 - 18  # gb.F's inverse
+        k = max(i for i, b in enumerate(bt) if b <= t + 1e-9) if t >= bt[0] else 0
+        if k >= len(bt) - 1:
+            continue
+        p = (t - bt[k]) / (bt[k + 1] - bt[k])
+        bp = ball_at(p)
+        for i in range(3):
+            ball.location[i] = bp[i]
+            ball.keyframe_insert("location", index=i, frame=f)
+        v = v_at(p)
+        if arm is not None:
+            kb = arm.data.shape_keys.key_blocks["low"]
+            kb.value = v
+            kb.keyframe_insert("value", frame=f)
+        c = [a + (b - a) * v for a, b in zip(hand_hi, hand_lo)]
+        for o, off in ((hand, (0, 0, 0)), (thumb, (-0.01, -0.04, 0.015))):
+            if o is None:
+                continue
+            o.location = (c[0] + off[0], c[1] + off[1], c[2] + off[2])
+            o.keyframe_insert("location", frame=f)
     cam("S20", [(0, (8.3, 9.6, 1.6), (8.0, 16.5, 1.9)), (1, (8.25, 10.2, 1.6), (8.0, 16.5, 1.9))], lens=30)  # in close
     # enough that the ball and his hand read, the screen's chart over them
     a, b = SP["S21"]
@@ -753,7 +830,7 @@ def stage(S):
     cam("S45", [(0, (sh_x[6] + 1.5, -5.5, 1.5), (sh_x[6] + 1.9, -10, 1.3))], lens=40)
 
     # ---- outro (S47-S48b): the payphone; the crane over a block of doormen, keypads and REC lights; the open grave
-    cam("S47", [(0, (-30.6, -7.4, 1.3), (-31.5, -8.42, 0.9)), (1, (-30.9, -7.7, 1.1), (-31.5, -8.42, 0.9))], lens=40)
+    cam("S47", [(0, (-30.6, -7.4, 1.3), (-31.56, -8.45, 0.88)), (1, (-30.9, -7.7, 1.1), (-31.56, -8.45, 0.88))], lens=40)
     a, b = SP["S48"]
     for k, door in enumerate(S["doors"]):
         north = k >= len(B.SHOPS)

@@ -830,3 +830,23 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Archive:** the v6 cuts moved to `archive/renders/m4/v6_superseded/`, superseded by v7.
 - **Review notes:** `shots/m4_review.md` now points to v7 and has a "Since v6: your notes" section.
 - **Manifest:** updated.
+
+## 2026-10-31T09:16:17-04:00 — M4: the human's v7 notes (the payphone's handset and a tape recorder; S18 throne; S20 dribble); re-render v7b started
+- **S02–S03, the handset:**
+  - **Before:** it hung from the middle of the housing's underside, its cord running up into the housing.
+  - **Now:** it hangs on its coiled cord from the cord's boot under the housing's left side, and sways from there (block.HANDSET_PIVOT). The sway is gentler (0.04 rad), since a lead runs to it.
+- **S02–S03, the tape (`props.recorder`):**
+  - **Before:** the cassette was taped flat on the post.
+  - **The recorder:** a portable cassette recorder (generic, no maker's name), 1.5x scale like the tape, taped to the post beside the handset with two bands of grey tape. The tape sits behind a smoked window in a door hinged at its bottom edge.
+  - **Details:** piano keys on top (REC in red) and a speaker grille. The REC light moved from the handset to the recorder, clear of the tape. A thin lead runs from its mic jack to a suction-cup pickup on the handset's back, the way calls were taped.
+  - **S03:** the camera frames the recorder and the handset, then pushes in on the REC light as the beat comes in.
+  - **S11:** the Dev flips the door down, then lifts the tape out (CASS_REST is now in the recorder's well).
+  - **S47:** its camera now aims at the recorder.
+- **S18, the CEO through his chair:** the seat floated at knee height (0.7 m) on nothing, so his shins and cape went through it.
+  - **Throne:** the seat is at sitting height (top 0.93) on a plinth set back from his shins.
+  - **The CEO:** he sits on the floor's level (root 0.17), 25 cm forward, his cape's back clear of the racks. Seated, his cape ends on the seat.
+- **S20, a real dribble:**
+  - **The arm:** the dribbling arm is its own object (`chars.arm_chain`). A shape key blends it from "dribble" to DRIBBLE_LOW, the wrist down 18 cm. The low pose bends the same mesh at the shoulder and elbow, because a second skin of the low pose had more vertices.
+  - **Timing:** the ball hits the floor on each beat. On the way up it slows into his palm; the palm rides it down and pushes it off; the hand rises to meet the next bounce. The mitten, thumb and ball are keyed every frame from one phase function, so the hand and ball stay in contact.
+- **Stills:** `renders/m4/notes7_v1`–`v3`; a 2.2 s S20 clip, `renders/m4/notes7_clip`.
+- **Render v7b:** 0.14–20.62, 23.38–25.88, 36.81–50.01 and 57.78–73.60 s (the payphone, the throne in the lobby shots, the CEO), into `renders/m4/act1_v7b/frames`.

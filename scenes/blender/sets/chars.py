@@ -98,6 +98,9 @@ POSES = {  # joint positions (x, y, z), metres at h = 1, figure facing -Y; arms:
 }
 KNEEL_DROP = 0.4  # "kneel": the ground is this far over the root (h = 1)
 HOLD = (0.226, -0.254, 1.745)
+# S20's dribbling arm, low: the wrist down 18 cm (the arm straightens, a little stretched, a toy's), the palm over the
+# ball still; shots.py blends "dribble" to this with a shape key
+DRIBBLE_LOW = ((0.2, 0.0, 1.19), (0.28, -0.15, 0.965), (0.32, -0.31, 0.72))
 DRIBBLE = (0.326, -0.355, 0.816)  # "dribble": under the palm (x, y), and the palm's underside (z), figure space  # "hold": where the held thing's centre is, figure space (h = 1)
 
 
@@ -123,8 +126,22 @@ def skin_body(name, verts, edges, radii, m, root, h):
     return o
 
 
+def arm_chain(name, sh, el, wr, m, root, h=1.0):
+    """One arm as its own chain (from inside the shoulder): a branch-free skin, so a second pose of it has the same
+    vertices and can be its shape key (S20's dribble)."""
+    inner = (sh[0] * 0.5, sh[1], sh[2] - 0.02)
+    return skin_body(name, [inner, sh, el, wr], [(0, 1), (1, 2), (2, 3)], [0.07, 0.068, 0.058, 0.05], m, root, h)
+
+
+def hand_at(el, wr, h=1.0):
+    """The mitten's centre, just past the wrist along the forearm."""
+    d = tuple(w - e for w, e in zip(wr, el))
+    L = math.sqrt(sum(c * c for c in d)) or 1
+    return tuple((w + 0.06 * c / L) * h for w, c in zip(wr, d))
+
+
 def base(name, loc, rot_z, top, legs="jeans", skin="skin1", h=1.0, head_r=0.19, style="crop", hair_col="hair0",
-         face=True, pose="stand"):
+         face=True, pose="stand", sep_arm=None):
     """A toy-like figure: one continuous trunk-and-arms in `top`, one pair of legs in `legs` (Skin-modifier bodies,
     so shoulders, elbows and knees join), mitten hands, rounded shoes, a big head with white eyes and dark pupils,
     brows, nose, ears and hair (`style`). h scales the whole figure; face=False is a mannequin's; pose is a POSES key
@@ -145,14 +162,15 @@ def base(name, loc, rot_z, top, legs="jeans", skin="skin1", h=1.0, head_r=0.19, 
     tr = [(0.2, 0.135), (0.19, 0.13), (0.2, 0.135), (0.17, 0.12), 0.065]
     for s in (-1, 1):
         sh, el, wr = P["arm"][s]
-        i = len(tv)
-        tv += [sh, el, wr]
-        te += [(3, i), (i, i + 1), (i + 1, i + 2)]
-        tr += [0.068, 0.058, 0.05]
+        if s == sep_arm:  # this arm its own object (it moves)
+            arm_chain(f"{name}.arm{s}", sh, el, wr, M(top), root, h)
+        else:
+            i = len(tv)
+            tv += [sh, el, wr]
+            te += [(3, i), (i, i + 1), (i + 1, i + 2)]
+            tr += [0.068, 0.058, 0.05]
         # mitten hand and thumb, just past the wrist
-        d = tuple(w - e for w, e in zip(wr, el))
-        L = math.sqrt(sum(c * c for c in d)) or 1
-        hc = tuple((w + 0.06 * c / L) * h for w, c in zip(wr, d))
+        hc = hand_at(el, wr, h)
         ellipsoid(f"{name}.hand{s}", hc, (0.042 * h, 0.05 * h, 0.06 * h), M(skin), root)
         gb.sphere(f"{name}.thumb{s}", (hc[0] - s * 0.01 * h, hc[1] - 0.04 * h, hc[2] + 0.015 * h), 0.022 * h, M(skin),
                   parent=root)
@@ -225,15 +243,18 @@ def dev(loc, rot_z=0.0, name="dev", pose="stand"):
 def ceo(loc, rot_z=0.0, name="ceo"):
     pose = {"ceo18": "sit", "ceo10": "phone", "ceo20": "dribble", "ceo25": "give"}.get(name, "stand")  # S18 on the throne; S10 on the
     # phone; S20 bouncing the ball
-    root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3", pose=pose)
+    root = base(name, loc, rot_z, "ceohood", skin="skin3", style="crop", hair_col="hair3", pose=pose,
+                sep_arm=1 if pose == "dribble" else None)
     if pose == "sit":
-        root.location.z = 0.0  # hips on the throne's seat
+        root.location.z = 0.17  # on the lobby floor, his thighs on the throne's seat (top 0.93)
     if pose == "phone":
         rbox(f"{name}.phone", (0.2, -0.07, 1.46), (0.02, 0.075, 0.15), M("case"), root, 0.006)
     rbox(f"{name}.hood", (0, 0.11, 1.27), (0.32, 0.15, 0.15), M("ceohood"), root, 0.06)
     # the ermine cape hangs behind from the shoulders, its red lining showing at the open front edges
     cape_mk = __import__("mk").MK()
     prof = [(0.17, 1.26), (0.27, 1.12), (0.33, 0.8), (0.37, 0.4), (0.39, 0.12)]
+    if pose == "sit":  # seated, it ends on the seat behind him (it went down through the seat)
+        prof = [(0.17, 1.26), (0.27, 1.12), (0.32, 0.86)]
     for (r0, z0), (r1, z1) in zip(prof, prof[1:]):
         pass
     import bmesh
@@ -264,7 +285,7 @@ def ceo(loc, rot_z=0.0, name="ceo"):
         a = 2 * math.pi * k / 10
         collar.box((0.215 * math.cos(a), 0.02 + 0.215 * math.sin(a), 1.27), (0.02, 0.02, 0.045), M("spot"))
     gb.link(bpy.data.objects.new(f"{name}.collar", collar.mesh(f"{name}.collar")), root)
-    for k in range(16):  # ermine spots on the back of the cape
+    for k in range(16 if pose != "sit" else 0):  # ermine spots on the back of the cape
         a = 0.15 * math.pi + 0.7 * math.pi * (k % 8) / 7
         z = 0.35 + 0.3 * (k // 8) + 0.12 * (k % 2)
         r = 0.37 + 0.02 * (0.8 - z)

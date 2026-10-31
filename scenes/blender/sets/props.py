@@ -156,7 +156,7 @@ def tape_points(SP):
     sc = bpy.context.scene
     sc.frame_set(gb.F(sum(SP["S08"]) / 2))
     dg = bpy.context.evaluated_depsgraph_get()
-    skip = ("tape", "notice", "cassette", "magnifier", "haze", "weeds", "cam.", "door")
+    skip = ("tape", "notice", "cassette", "magnifier", "haze", "weeds", "cam.", "door", "recorder", "handset")
     STEP, LIFT, SLOPE, REACH = 0.01, 0.003, 0.5, 30  # m; m; rise per run; samples the slope reaches
 
     def ground(x, y, zmax):
@@ -339,11 +339,70 @@ def payphone():
         for k in range(5):
             m.cyl((-0.008 + k * 0.004, 0.0385, sz * 0.085), 0.0012, 0.002, black, axis="Y", n=6)
     kit.mesh_swap(obj("handset.body"), m.mesh("prop.pay.handset"))
-    # the coiled cord, up from the handset's top into the housing's boot (origin at its centre, 0.33 over the handset)
+    # the coiled cord, from the housing's boot down to the handset's top (origin at its centre, 0.135 under the boot)
     m = mk.MK()
-    for k in range(34):  # the coils, each tipped a little like a helix's turn (mk.tube resamples too coarsely for one)
-        m.torus((0, 0, -0.205 + k * 0.0124), 0.012, 0.0035, black, rot=(0.18, 0, 0), n=14, k=6)
+    for k in range(22):  # the coils, each tipped a little like a helix's turn (mk.tube resamples too coarsely for one)
+        m.torus((0, 0, -0.13 + k * 0.0124), 0.012, 0.0035, black, rot=(0.18, 0, 0), n=14, k=6)
     kit.mesh_swap(obj("handset.cord"), m.mesh("prop.pay.cord"))
+    recorder(black, dark, chrome)
+
+
+def recorder(black, dark, chrome):
+    """S02-S03, S11: a portable cassette recorder (generic, no maker's name) taped to the post beside the handset, the
+    tape behind its window, the REC light on; a thin lead from its mic jack to a suction-cup pickup on the handset's
+    back, the way calls were taped. 1.5x a real one, like the tape (origin at its centre; +Y the street)."""
+    body = mat("rec.body", "#2a2c2f", rough=0.55)
+    gb.grime(body, amt=0.35, space="object") if not body.get("grimed") else None
+    body["grimed"] = 1
+    tape = mat("rec.tape", "#7d7b76", rough=0.6, metal=0.15)  # grey duct tape
+    m = mk.MK()
+    W, D, H = 0.19, 0.055, 0.27
+    wx, wz0, wz1 = 0.08, -0.0175, 0.0875  # the cassette well's opening (half width; bottom and top)
+    m.box((0, -D / 2 + 0.0125, 0), (W, 0.025, H), body, bevel=0.01, seg=2)  # the back half
+    fy, fd = -D / 2 + 0.025 + 0.015, 0.03  # the front frame round the well
+    m.box((-(wx + (W / 2 - wx) / 2), fy, 0), (W / 2 - wx, fd, H), body, bevel=0.006, seg=1)
+    m.box(((wx + (W / 2 - wx) / 2), fy, 0), (W / 2 - wx, fd, H), body, bevel=0.006, seg=1)
+    m.box((0, fy, (wz1 + H / 2) / 2), (2 * wx + 0.002, fd, H / 2 - wz1), body, bevel=0.004, seg=1)
+    m.box((0, fy, (wz0 - H / 2) / 2), (2 * wx + 0.002, fd, wz0 + H / 2), body, bevel=0.004, seg=1)
+    m.box((0, -D / 2 + 0.0255, (wz0 + wz1) / 2), (2 * wx, 0.002, wz1 - wz0), dark)  # the well's floor
+    for r in range(4):  # the speaker grille, below the well
+        for c in range(9):
+            m.box((-0.064 + c * 0.016, D / 2 + 0.0005, -0.065 - r * 0.014), (0.009, 0.002, 0.005), black)
+    keys = ["#3a3d41"] * 6
+    keys[0] = "#b3261e"  # REC
+    for k, col in enumerate(keys):  # the piano keys along the top
+        m.box((-0.07 + k * 0.028, 0.004, H / 2 + 0.006), (0.024, 0.034, 0.014), mat(f"rec.key{k}", col, rough=0.5),
+              bevel=0.003, seg=1)
+    m.cyl((-0.075, 0.0, H / 2 + 0.004), 0.005, 0.008, chrome, n=12)  # the mic jack
+    m.box((0.06, D / 2 + 0.001, 0.098), (0.03, 0.002, 0.016), black)  # the REC light's bezel, clear of the tape
+    for z, ang in ((0.124, 0.05), (-0.112, -0.05)):  # two bands of tape round it and the post, a little askew
+        m.box((0, D / 2 + 0.0015, z), (W + 0.006, 0.003, 0.028), tape, rot=(0, ang, 0))
+        m.box((0, -D / 2 - 0.15 - 0.0015, z), (W + 0.006, 0.003, 0.028), tape, rot=(0, ang, 0))
+        for s in (-1, 1):
+            m.box((s * (W / 2 + 0.0015), -0.075 - 0.0015, z - s * ang * W / 2), (0.003, D + 0.15 + 0.006, 0.028), tape)
+    kit.mesh_swap(obj("recorder.body"), m.mesh("prop.recorder"))
+    # the well's door: a smoked window in a thin frame, hinged at its bottom edge (S11 opens it)
+    m = mk.MK()
+    smoke = mat("rec.window", "#2b2a30", rough=0.1)
+    smoke.surface_render_method = "DITHERED"
+    smoke.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 0.22
+    m.box((0, 0.0, 0.0525), (0.156, 0.002, 0.101), smoke)
+    for c, sz in (((0, 0.002, 0.004), (0.162, 0.004, 0.008)), ((0, 0.002, 0.101), (0.162, 0.004, 0.008)),
+                  ((-0.077, 0.002, 0.0525), (0.008, 0.004, 0.105)), ((0.077, 0.002, 0.0525), (0.008, 0.004, 0.105))):
+        m.box(c, sz, body)
+    kit.mesh_swap(obj("recorder.door.glass"), m.mesh("prop.recorder.door"))
+    obj("recorder.door.glass").location = (0, 0, 0)
+    # the lead, from the jack over to a suction cup on the handset's back, in the handset's (swinging) frame
+    hp, rc = B.HANDSET_PIVOT, B.RECORDER
+    jack = (rc[0] - 0.075 - hp[0], rc[1] - hp[1], rc[2] + H / 2 + 0.008 - hp[2])
+    cup = (0.0, -0.0215, -B.HANDSET_DROP + 0.06)
+    mid1 = (jack[0] - 0.01, jack[1] + 0.02, jack[2] + 0.03)
+    mid2 = ((jack[0] + cup[0]) / 2, (jack[1] + cup[1]) / 2 - 0.01, (jack[2] + cup[2]) / 2 - 0.05)
+    m = mk.MK()
+    m.tube([jack, mid1, mid2, (cup[0] + 0.005, cup[1] - 0.012, cup[2] + 0.004), (cup[0], cup[1] - 0.004, cup[2])],
+           0.0018, black, k=6)
+    m.cyl(cup, 0.012, 0.006, mat("rec.cup", "#3b3e42", rough=0.4), axis="Y", n=16)
+    lead = gb.link(bpy.data.objects.new("handset.lead", m.mesh("prop.recorder.lead")), obj("handset"))
 
 
 CASS_S = 1.5  # the cassette at 1.5x a real one (100 x 64 x 12 mm): it's the evidence, it has to read at 720p
