@@ -133,3 +133,16 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 
 - **Note from the human:** "Look closer at the receipt tape. It's still clipping into the table and floor. It may help to use a cloth simulation or similar"
 - **Rule:** R1 (a creative and technical note). The agent re-checks the tape's draping (production log, following entries).
+
+## 2026-10-31T03:21:26-04:00 — M4 v5 notes — R1
+
+- **Notes from the human** (verbatim):
+  - "S02: the phone booth and phone are still gray box and I'm still seeing flicker by the subreddit titles"
+  - "S22: the downvotes are not convincing enough -- give them some more separation and make them the correct blue/purple"
+  - "S25: the exchange is not reading correctly"
+  - "S28: still too fast to see what's going on; it can eat slightly into the previous shot if necessary"
+  - "S29: CHAT truck text stays off frame for the entire shot"
+  - "S31: add a few more variations on this so it's not all the same text, also it's too small to be legible -- use a marker font instead. make \"People found this helpful\" have some more space on the sides so it's not so stretched out"
+  - "S33: \"YOUR LAND\" is occluded by the dev"
+  - "S36: the gravestones could use some concrete texturing and reflection maps and the grass can use more detail"
+- **Rule:** R1 (notes on the M4 clips; not yet a section-by-section verdict). The agent fixes them (production log, following entries).

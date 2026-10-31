@@ -744,3 +744,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Cut:** `renders/m4/sections_v5/*.mp4` and `renders/m4/m4_act1_v5.mp4` (153.54 s), with stdin closed to the assembler this time.
 - **Archived:** the v4 cuts to `archive/renders/m4/v4_superseded/` (superseded by v5).
 - **Review notes:** `shots/m4_review.md` points at v5 and lists the fixes for the v3 notes. Stopped at the M4 gate.
+
+## 2026-10-31T03:21:26-04:00 — Log: M4 v5 notes from the human (R1)
+
+- Eight notes on S02, S22, S25, S28, S29, S31, S33, S36, verbatim in human_interventions. Working through them next.
