@@ -450,8 +450,28 @@ def vehicle(name, L, W, H, colour, kind="van", front=-1, open_side=False, roof_h
     else:
         cab_l = 1.9
         bx0, bx1 = (-L / 2, L / 2 - cab_l - 0.1) if f > 0 else (-L / 2 + cab_l + 0.1, L / 2)
-        m.box(((bx0 + bx1) / 2, 0, (g + clear + 0.1 + H / 2) / 2), (bx1 - bx0, W, H / 2 - g - clear - 0.1), paint,
-              bevel=0.03)
+        z0b, z1b = g + clear + 0.1, H / 2  # the box body's floor and roof
+        if not open_side:
+            m.box(((bx0 + bx1) / 2, 0, (z0b + z1b) / 2), (bx1 - bx0, W, z1b - z0b), paint, bevel=0.03)
+        else:  # a hollow box with a real door opening on -Y, so the lot stays in sight (in shadow) once it's loaded
+            t = 0.05
+            dx0, dx1 = bx0 + 1.6 - 0.9, bx0 + 1.6 + 0.9
+            dz0, dz1 = z0b + t, (z0b + z1b) / 2 - 0.1 + 0.95  # the opening down to the hold's floor
+            xm, ln = (bx0 + bx1) / 2, bx1 - bx0
+            for c, sz in ((((xm, 0, z0b + t / 2)), (ln, W, t)), ((xm, 0, z1b - t / 2), (ln, W, t)),  # floor, roof
+                          ((bx0 + t / 2, 0, (z0b + z1b) / 2), (t, W, z1b - z0b)),  # the two ends
+                          ((bx1 - t / 2, 0, (z0b + z1b) / 2), (t, W, z1b - z0b)),
+                          ((xm, W / 2 - t / 2, (z0b + z1b) / 2), (ln, t, z1b - z0b)),  # the far side
+                          (((bx0 + dx0) / 2, -W / 2 + t / 2, (z0b + z1b) / 2), (dx0 - bx0, t, z1b - z0b)),  # round the door
+                          (((dx1 + bx1) / 2, -W / 2 + t / 2, (z0b + z1b) / 2), (bx1 - dx1, t, z1b - z0b)),
+                          (((dx0 + dx1) / 2, -W / 2 + t / 2, (dz1 + z1b) / 2), (dx1 - dx0, t, z1b - dz1))):
+                m.box(c, sz, paint)
+            inner = mat("veh.inner", "#8a8478", rough=0.85)  # the hold's lining: scuffed grey, darker than the paint
+            m.box((xm, 0, z0b + t + 0.005), (ln - 2 * t, W - 2 * t, 0.01), mat("veh.holdfloor", "#4a4038", rough=0.9))
+            m.box((xm, W / 2 - t - 0.005, (z0b + z1b) / 2), (ln - 2 * t, 0.01, z1b - z0b - 2 * t), inner)
+            for x in (bx0 + t + 0.005, bx1 - t - 0.005):
+                m.box((x, 0, (z0b + z1b) / 2), (0.01, W - 2 * t - 0.02, z1b - z0b - 2 * t), inner)
+            m.box(((dx0 + dx1) / 2, -W / 2 - 0.004, dz1 + 0.06), (dx1 - dx0 + 0.08, 0.02, 0.12), mat("veh.trim2", "#8d9196", metal=0.6, rough=0.4))  # the rolled-up door's drum
         cx0 = bx1 + 0.1 if f > 0 else -L / 2
         cx1 = L / 2 if f > 0 else bx0 - 0.1
         ch = 2.3
@@ -466,9 +486,6 @@ def vehicle(name, L, W, H, colour, kind="van", front=-1, open_side=False, roof_h
             m.box(((cx0 + cx1) / 2 + 0.15 * f, s * (W / 2 - 0.04), g + clear + 1.45), (0.8, 0.01, 0.5), glass)
             m.box((cx1 - 0.3 if f > 0 else cx0 + 0.3, s * (W / 2 + 0.1), g + clear + 1.4), (0.06, 0.15, 0.25), trim)
         m.box(((bx0 + bx1) / 2, 0, g + clear + 0.05), (bx1 - bx0, W - 0.2, 0.12), trim)  # the chassis rail
-        if open_side:  # a side door rolled up on the -Y side, the dark hold showing
-            m.box((bx0 + 1.6, -W / 2 - 0.005, (g + clear + 0.1 + H / 2) / 2 - 0.1), (1.8, 0.01, 1.9),
-                  mat("veh.hold", "#060606", rough=0.9))
         if roof_hatch:
             m.box(((bx0 + bx1) / 2, 0, H / 2 + 0.005), (1.2, 1.2, 0.01), mat("veh.hold", "#060606", rough=0.9))
         rear_x = bx0 if f > 0 else bx1
@@ -889,11 +906,17 @@ def doghouse():
     m.prism([(-w / 2, z0 + hw), (w / 2, z0 + hw), (0, z0 + hw + 0.45)], d, wood)  # the gable
     for k in range(6):  # plank lines
         m.box((0, -d / 2 - 0.004, z0 + 0.1 + k * 0.12), (w, 0.006, 0.012), roof)
-    for s in (-1, 1):  # the roof's two slopes
-        ang = math.atan2(0.45, w / 2)
-        m.box((s * w / 4 * 1.05, 0, z0 + hw + 0.24), (w / 2 * 1.25, d + 0.2, 0.04), roof, rot=(0, s * ang, 0))
-    m.prism([(-0.2, 0.0), (0.2, 0.0), (0.2, 0.38), (0.12, 0.5), (0.0, 0.53), (-0.12, 0.5), (-0.2, 0.38)], 0.02, dark,
-            c=(0, -d / 2 - 0.006, z0 + 0.02))
+    ang, sl = math.atan2(0.45, w / 2), math.hypot(0.45, w / 2)
+    for s in (-1, 1):  # the roof's two slopes: each the slope's full length plus an eave, meeting at the ridge
+        ux, uz = s * (w / 2) / sl, -0.45 / sl  # down the slope, from the ridge
+        nx, nz = s * 0.45 / sl, (w / 2) / sl  # out of it
+        ln = sl + 0.14
+        cx, cz = ux * (ln / 2 - 0.02) + nx * 0.02, z0 + hw + 0.45 + uz * (ln / 2 - 0.02) + nz * 0.02
+        m.box((cx, 0, cz), (ln, d + 0.2, 0.04), roof, rot=(0, s * ang, 0))
+    m.cyl((0, 0, z0 + hw + 0.45 + 0.035), 0.035, d + 0.2, roof, axis="Y", n=12)  # the ridge cap
+    r = 0.2  # the doorway: straight sides and a round arch
+    arch = [(r * math.cos(a), 0.33 + r * math.sin(a)) for a in [math.pi * k / 24 for k in range(25)]]
+    m.prism([(-r, 0.0), (r, 0.0)] + arch, 0.02, dark, c=(0, -d / 2 - 0.006, z0 + 0.02))
     m.box((0, -d / 2 - 0.015, 0.35), (0.72, 0.02, 0.16), board)  # the sign board behind BOT DEFENSE
     m.lathe([(0.0, z0 + 0.0), (0.12, z0 + 0.0), (0.13, z0 + 0.06), (0.1, z0 + 0.06), (0.1, z0 + 0.02), (0.0, z0 + 0.02)],
             mat("dog.bowl", "#8a9096", metal=0.8, rough=0.35), c=(0.35, -0.85, 0), n=24)  # an empty bowl
@@ -902,7 +925,8 @@ def doghouse():
     blank(obj("doghouse.door"))
     sign = obj("doghouse.sign")
     if sign:
-        sign.location.y -= 0.02
+        # on the board's face (-d/2 - 0.025 from the house's centre): 4.5 cm off it, the letters cast a ghost below
+        sign.location.y = o.location.y - d / 2 - 0.025 - 0.003
         sign.data.materials.clear()
         sign.data.materials.append(mat("dog.ink", "#1b1b1b"))
 

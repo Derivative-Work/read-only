@@ -13,6 +13,7 @@ import math
 import random
 
 import bpy
+from mathutils import Matrix
 import numpy as np
 
 import block as B
@@ -574,7 +575,7 @@ def stage(S):
     # pallet of four crates (two on two) and drives it into the hold, then backs off; a second lot waits by the sign
     a, b = SP["S28"]
     only(gb.box("truck28", (0, -4.7, 1.6), (7, 2.5, 3.2), B.M("truck")), "S28")  # its -Y side at -5.95, the curb -6.0
-    DOOR_X, HOLD_Z, SW = -1.9, 0.86, 0.15  # the door's centre (world x), the hold's floor, the sidewalk
+    DOOR_X, HOLD_Z, SW = -1.9, 0.64, 0.15  # the door's centre (world x), the hold's floor (props.vehicle's lining), the sidewalk
     y0, y1, y2 = -8.6, -7.05, -7.7  # the forklift's root: start, the pallet all in the hold, backed off
     fl = only(gb.empty("forklift28", (DOOR_X, y0, SW)), "S28")
     gb.box("forklift28.body", (0, 0, 0.6), (1.1, 2.0, 1.2), B.M("vest"), parent=fl)
@@ -642,7 +643,12 @@ def stage(S):
     gb.keys(S["banner"], "scale", [(0, 0.0), (F(a + 0.4), 0.0), (F(a + 1.6), 1.0)], index=2)
     gb.keys(S["ticker"], '["on"]', [(0, 0.0, "CONSTANT"), (F(a + 0.4), 1.0, "CONSTANT")], interp="CONSTANT")
     gb.text("banner.t", "IPO", 1.5, B.M("ink"), (B.LOBBY_DOOR_X, 10.5 - 2.6, 5.6), facing="-Y")
-    only(bpy.data.objects["banner.t"], "S30", t1=TM["duration_s"])
+    ipo = bpy.data.objects["banner.t"]
+    only(ipo, "S30", t1=TM["duration_s"])
+    # printed on the banner: it unrolls with it (it hung in the air before the banner came down: the human, M4 v6)
+    bn = S["banner"]  # the inverse at full size (keyed at scale 0 before the shot, its world matrix has no inverse)
+    ipo.parent = bn
+    ipo.matrix_parent_inverse = Matrix.LocRotScale(bn.location, bn.rotation_euler, (1, 1, 1)).inverted()
     cam("S30", [(0, (10, -3.5, 1.8), (12, 9, 10.2)), (1, (9, -5.0, 1.6), (9, 9, 13.0))], lens=24)
     # S31: the notes are on PAWN's shutter (down since S14) at eye height, close enough to read; they hold 1.2 s,
     # peel one at a time 0.22 s apart and arc into the funnel on the truck in the near lane, the camera following;

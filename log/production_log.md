@@ -810,3 +810,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Archive:** the v5 cuts (`sections_v5`, `m4_act1_v5.mp4` and its log) moved to `archive/renders/m4/v5_superseded/`, superseded by v6.
 - **Review notes:** `shots/m4_review.md` now points to v6, with a "Since v5: your notes" section.
 - **Manifest:** updated.
+
+## 2026-10-31T07:29:43-04:00 — M4: the human's v6 notes (S26 doghouse, S28 hold, S30 banner); re-render v6b started
+- **S26, the doghouse (`props.doghouse`):**
+  - **Roof:** the two slopes were shorter than the slope itself and left a gap at the ridge. Each is now the slope's full length plus an eave, and they meet under a ridge cap.
+  - **Doorway:** a true round arch (25 points) on straight sides; the old one had three straight segments.
+  - **Sign:** found in QC: "BOT DEFENSE" stood 4.5 cm off its board and cast a ghost copy below. It now sits on the board.
+- **S28, the crates vanish in the truck (`props.vehicle`, open_side):** the truck was a solid box with a black panel for its door, so the lot disappeared into the solid. It's now hollow: walls round a real 1.8 m opening down to the hold's floor, a grey lining, a dark floor and the rolled-up door's drum. The crates stay in sight, in shadow, lit a little by the work light. The forklift's lift (`HOLD_Z` 0.86 → 0.64) matches the new floor.
+- **S30, "IPO" before the banner:** the text wasn't attached to the banner and hung in the air while it unrolled. It's now parented to the banner (inverse taken at full size) and unrolls with it.
+- **Stills:** `renders/m4/notes6_v1`, `notes6_v2`.
+- **Render v6b:** S26, S28, S30 and S34–S39 (the doghouse's shots), into `renders/m4/act1_v6b/frames`; the cut will merge them over v6.
