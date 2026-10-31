@@ -850,3 +850,14 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **Timing:** the ball hits the floor on each beat. On the way up it slows into his palm; the palm rides it down and pushes it off; the hand rises to meet the next bounce. The mitten, thumb and ball are keyed every frame from one phase function, so the hand and ball stay in contact.
 - **Stills:** `renders/m4/notes7_v1`–`v3`; a 2.2 s S20 clip, `renders/m4/notes7_clip`.
 - **Render v7b:** 0.14–20.62, 23.38–25.88, 36.81–50.01 and 57.78–73.60 s (the payphone, the throne in the lobby shots, the CEO), into `renders/m4/act1_v7b/frames`.
+
+## 2026-10-31T10:35:00-04:00 — M4: Act 1 v8 cut for the M4 gate
+- **Frames:** `renders/m4/act1_v8/frames`: symlinks to v7b where re-rendered (1,252 frames: 0.14–20.62, 23.38–25.88, 36.81–50.01, 57.78–73.60 s), else v7's targets.
+- **Render log:** three "Failed to create GPU texture" lines, one per Blender process; the same intermittent message has appeared since the first Act 1 render with no visible effect.
+- **QC:**
+  - **Flicker:** flick_hot matches v7 everywhere except S20, 0.07 → 0.08, which is the moving arm.
+  - **Stills:** the recorder and REC light (S03), the tape out (S11), the seated CEO (S18) and the dribble (S20) checked.
+- **Cut:** `renders/m4/sections_v8/` and `renders/m4/m4_act1_v8.mp4`.
+- **Archive:** the v7 cuts moved to `archive/renders/m4/v7_superseded/`, superseded by v8.
+- **Review notes:** `shots/m4_review.md` now points to v8 and has a "Since v7: your notes" section.
+- **Manifest:** updated.

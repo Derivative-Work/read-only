@@ -1,7 +1,7 @@
 # M4 review: Act 1 final renders and overlays (S02–S39e)
 
-The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v7/`, at 1280×720
-(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v7.mp4` is all seven back to back.
+The brief's gate is **"Approve each section"**. Each section is its own clip in `renders/m4/sections_v8/`, at 1280×720
+(your call: 720p for review, 4K at the end) and 24 fps, with the post-filtered master. `renders/m4/m4_act1_v8.mp4` is all seven back to back.
 
 | Clip | Section | Shots | Song time |
 | --- | --- | --- | --- |
@@ -34,6 +34,15 @@ The brief's gate is **"Approve each section"**. Each section is its own clip in 
   - **S20:** the traffic chart.
   - **S30:** the ticker band.
 - **The lobby** is furnished, still corporate-clean.
+
+## Since v7: your notes
+
+- **S02–S03, the handset:** it hangs on its coiled cord from the cord's exit on the housing's left side (it hung from the housing's middle), and sways gently from there.
+- **S02–S03, the tape:** it's now in a portable cassette recorder (generic, no maker's name) taped to the post beside the handset with grey duct tape, the tape behind its smoked window. A lead runs from it to a suction-cup pickup on the handset's back. The REC light is on the recorder. S03 frames the recorder and handset, then pushes in on the REC light.
+- **S11:** the Dev flips the recorder's door down and lifts the tape out.
+- **S18:** the throne's seat is at sitting height on a base set back from his legs; he sits on it, his cape ending on the seat.
+- **S20:** he dribbles: the ball hits the floor on each beat, his palm meets it on the way up, rides it down and pushes it off.
+- **Clips 1, 2, 3 and 4 changed** (clip 3 only because the payphone is in the background of S17). Clips 5–7 are the same frames as v7.
 
 ## Since v6: your notes
 
