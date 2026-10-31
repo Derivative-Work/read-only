@@ -121,24 +121,43 @@ def notice():
 # below zmax (the counter, the floor, the threshold, the sidewalk, the street); zmax None = the point's own z (in
 # the air, leaving the roll)
 TAPE_W, TAPE_TILE = 0.085, 0.34  # 1.5x a real 57 mm tape (the props' scale), the strip texture's tile length
-TAPE_PATH = [(-20.4, -13.27, None, 1.226), (-20.4, -13.23, None, 1.222), (-20.4, -13.19, None, 1.12),  # off the roll's top
-             (-20.4, -13.16, None, 1.004), (-20.4, -13.11, None, 1.004),  # on the counter (its edge at -13.1)
-             (-20.4, -13.094, None, 0.99), (-20.4, -13.092, None, 0.97),  # over the edge
-             (-20.4, -13.08, None, 0.4), (-20.4, -13.05, None, 0.22), (-20.4, -13.0, None, 0.168),  # down its face
-             (-20.38, -12.9, 0.3, 0), (-20.2, -12.4, 0.3, 0), (-19.6, -11.4, 0.3, 0), (-19.0, -10.4, 0.3, 0),
+
+
+def _bend(cy, cz, r, a0, a1, n=8, x=-20.4):
+    """Placed points round an arc in the y-z plane (angles from +y, counter-clockwise toward +z)."""
+    return [(x, cy + r * math.cos(a0 + (a1 - a0) * k / n), None, cz + r * math.sin(a0 + (a1 - a0) * k / n))
+            for k in range(n + 1)]
+
+
+# off the roll's top (its centre y -13.27, z 1.18, r 0.042), down onto the counter (top 1.0, front edge y -13.1),
+# round the edge (an arc about it, 1.3 mm clear of the corner: a straight cut went into the counter), plumb down its
+# face, and round onto the floor (0.168)
+TAPE_PATH = ([(-20.4, -13.27, None, 1.226), (-20.4, -13.23, None, 1.222), (-20.4, -13.2, None, 1.17),
+              (-20.4, -13.18, None, 1.06), (-20.4, -13.165, None, 1.008), (-20.4, -13.14, None, 1.005)]
+             + _bend(-13.109, 0.991, 0.014, math.pi / 2, 0.0)
+             + _bend(-12.975, 0.293, 0.12, math.pi, 1.5 * math.pi, n=12)
+             + [(-20.38, -12.9, 0.3, 0), (-20.2, -12.4, 0.3, 0), (-19.6, -11.4, 0.3, 0), (-19.0, -10.4, 0.3, 0),
              (-18.94, -9.4, 0.3, 0), (-19.3, -8.2, 0.3, 0), (-20.4, -7.65, 0.3, 0), (-26.4, -7.6, 0.3, 0),
-             (-27.2, -7.2, 0.3, 0), (-27.5, -5.6, 0.3, 0), (-27.7, -0.7, 0.3, 0), (-27.9, 4.0, 0.3, 0)]
+             (-27.2, -7.2, 0.3, 0), (-27.5, -5.6, 0.3, 0), (-27.7, -0.7, 0.3, 0), (-27.9, 4.0, 0.3, 0)])
 # (the sidewalk stretch at y -7.6: at -7.0 it lay beside the curb's painted line and read as another one)
 
 
 def tape_points(SP):
-    """The run sampled every 2 cm, each sample on its surface (ray cast at S08's middle, when the set is as the tape
-    finds it), 3 mm up. Returns [(x, y, z, s)], s the arc length from the roll."""
+    """The run sampled every centimetre and laid like paper (the set as the tape finds it, at S08's middle), 3 mm up.
+    Returns [(x, y, z, s)], s the arc length from the roll.
+
+    The surface under it is the highest surface under the tape's whole width: one ray down the middle every 2 cm
+    missed narrow things (the sidewalk's joint lines, the rails, litter) and the tape ran under them. Then a 1-D
+    relaxation stands in for a cloth simulation: the paper can't bend sharper than a slope (it rides over a joint
+    line or a rail in a short ramp, not a step) and is smoothed only upward, so it never goes into what it lies on.
+    The stretches in the air (off the roll, over the counter's edge and down its face) keep their placed heights."""
+    import numpy as np
     from mathutils import Vector
     sc = bpy.context.scene
     sc.frame_set(gb.F(sum(SP["S08"]) / 2))
     dg = bpy.context.evaluated_depsgraph_get()
-    skip = ("dev", "tape", "notice", "cassette", "magnifier", "haze", "litter", "weeds", "cam.", "door")
+    skip = ("tape", "notice", "cassette", "magnifier", "haze", "weeds", "cam.", "door")
+    STEP, LIFT, SLOPE, REACH = 0.01, 0.003, 0.5, 30  # m; m; rise per run; samples the slope reaches
 
     def ground(x, y, zmax):
         org, d = Vector((x, y, zmax)), Vector((0, 0, -1))
@@ -147,22 +166,48 @@ def tape_points(SP):
             if not hit:
                 return 0.0
             o = ob.original
-            if abs(n.z) > 0.7 and not o.hide_render and not o.name.startswith(skip):  # some floors' faces point down
+            if abs(n.z) > 0.7 and not o.hide_render and not o.name.startswith(skip) and ".door" not in o.name:
+                # (some floors' faces point down; a door's underside is not a floor)
                 return max(loc.z, 0.0)  # the haze's floor is the road's (z 0): stepping past it skips the road too,
                 # and the ray found the far ground 1 cm under it
             org = loc + d * 1e-4
         return 0.0
-    pts, s = [], 0.0
+    raw = []  # (x, y, placed z or None, the ray's start)
     for (x0, y0, zm0, z0), (x1, y1, zm1, z1) in zip(TAPE_PATH, TAPE_PATH[1:]):
         L = math.hypot(x1 - x0, y1 - y0)
-        n = max(1, int((L if zm0 is not None else math.hypot(L, z1 - z0)) / 0.02))
+        if zm0 is None:  # placed: toward the next point's placed height, or its surface's if it's laid
+            z1 = z1 if zm1 is None else ground(x1, y1, zm1) + LIFT
+        n = max(1, int((L if zm0 is not None else math.hypot(L, z1 - z0)) / STEP))
         for i in range(n):
             u = i / n
-            x, y = x0 + (x1 - x0) * u, y0 + (y1 - y0) * u
-            z = (z0 + (z1 - z0) * u) if zm0 is None else ground(x, y, zm0) + 0.003
-            if pts:
-                s += math.dist(pts[-1][:3], (x, y, z))
-            pts.append((x, y, z, s))
+            raw.append((x0 + (x1 - x0) * u, y0 + (y1 - y0) * u, None if zm0 is not None else z0 + (z1 - z0) * u,
+                        zm0 if zm0 is not None else z0 + (z1 - z0) * u + 0.002))
+    x, y, zm = TAPE_PATH[-1][:3]
+    raw.append((x, y, None, zm))
+    N = len(raw)
+    xy = np.array([(r[0], r[1]) for r in raw])
+    lo = np.zeros(N)
+    for i, (x, y, zp, zmax) in enumerate(raw):
+        a, b = xy[max(i - 2, 0)], xy[min(i + 2, N - 1)]
+        dx, dy = b - a
+        L = math.hypot(dx, dy)
+        if L > 0.005:
+            px, py = -dy / L * TAPE_W / 2, dx / L * TAPE_W / 2
+        lo[i] = max(ground(x + px * k, y + py * k, zmax) for k in (-1, -0.5, 0, 0.5, 1)) + LIFT
+    laid = np.array([r[2] is None for r in raw])
+    d = np.where(laid, lo, -1.0)  # the paper's stiffness, from the laid samples only (not from the counter top)
+    for k in range(1, REACH + 1):
+        drop = SLOPE * k * STEP
+        d[k:] = np.maximum(d[k:], np.where(laid[:-k], lo[:-k], -1.0) - drop)
+        d[:-k] = np.maximum(d[:-k], np.where(laid[k:], lo[k:], -1.0) - drop)
+    g = np.exp(-0.5 * (np.arange(-6, 7) / 2.0) ** 2)
+    sm = np.convolve(np.pad(d, 6, mode="edge"), g / g.sum(), mode="valid")
+    z = np.where(laid, np.maximum(lo, np.maximum(d, sm)), [max(r[2], l) if r[2] is not None else 0 for r, l in zip(raw, lo)])
+    pts, s = [], 0.0
+    for (x, y), zz in zip(xy, z):
+        if pts:
+            s += math.dist(pts[-1][:3], (x, y, zz))
+        pts.append((float(x), float(y), float(zz), s))
     return pts
 
 
@@ -178,7 +223,7 @@ def tape_run(S, SP):
         a, b = pts[max(i - 1, 0)], pts[min(i + 1, len(pts) - 1)]
         dx, dy = b[0] - a[0], b[1] - a[1]
         L = math.hypot(dx, dy)
-        if L > 0.005:  # hanging straight down (over the counter's edge) it keeps the last heading's width
+        if L > 0.002:  # hanging straight down (over the counter's edge) it keeps the last heading's width
             px, py = -dy / L * TAPE_W / 2, dx / L * TAPE_W / 2
         V += [(x - px, y - py, z), (x + px, y + py, z)]
         UV += [(0.0, s / TAPE_TILE), (1.0, s / TAPE_TILE)]
@@ -228,6 +273,7 @@ def tape_run(S, SP):
     o.animation_data_clear()  # the grey-box's stretching keys; its visibility is re-keyed below
     shots.during(o, SP["S07"][0], SP["S13"][1])
     blank(obj("tape.sidewalk"))
+    blank(obj("dev.tape"))  # the grey-box's stub of tape at the roll (it showed as a stray scrap)
     S["tape_ctl"], S["tape_len"], S["tape_pts"] = ctl, pts[-1][3], pts
     return ctl
 

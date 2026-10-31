@@ -699,3 +699,26 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **S29:** the trucks drove through at 9 m/s and the blur took their names. SEARCH and CHAT now pull up and stop, SEARCH at the door. Their names are larger, 0.85 m, on the cargo box.
 - **S31:** "UNDER NEW MANAGEMENT" (x −4.33..−3.28, z 1.73..2.07) covered note 1 and the edge of note 0. Note 1 is now above the text and note 0 is 12 cm aside.
 - **Tests:** `renders/m4/notes_v1`…`notes_v6`.
+
+## 2026-10-30T20:25:33-04:00 — M4: the tape laid like paper; Act 1 render v4 started
+
+- **Why:** the human's note that the tape still clipped into the counter and the floor (human_interventions, same time, R1).
+- **What was wrong** (found with close-up debug renders, `renders/m4/tape_look_v1`, and probes of the tape against the set):
+  - **Through the counter:** the placed points over the counter's edge cut its corner with a straight segment, 3 mm into the counter.
+  - **Under the shop floor:** the step from the last placed point to the first laid one used that point's placeholder height of 0, so the tape sloped into the ground for 15 cm.
+  - **Under narrow things:** one ray down the middle every 2 cm missed the sidewalk's joint lines (6 mm high since the flicker fix), the streetcar rails and bits of litter, so the tape ran under them.
+  - **Through the door:** the Dev's door is a closed glass slab down to the floor; the tape went through it. The draping also took the door's underside for a floor.
+  - **A stray scrap:** the grey-box's stub of tape at the roll (`dev.tape`) was still drawn.
+- **Fix** (`sets/props.py` tape_points):
+  - **Sampling:** every centimetre, with five rays across the tape's width; the highest surface wins. Litter is no longer skipped, so the tape lies over it, being newer.
+  - **Stiffness:** a 1-D relaxation stands in for a cloth simulation. The paper can't bend sharper than a slope of 0.5 from anything it rests on, then it's smoothed upward only, so it rides over a joint line or a rail in a short ramp and never goes into what it lies on. A full cloth sim over the 27 m run, colliding with half the block, would be slow; this gives the same shape for paper lying on surfaces.
+  - **The counter:** an arc round the front edge (1.3 mm clear of the corner), then plumb down the face, then an arc onto the floor.
+  - **The door:** the Dev's door stops 18.5 cm up (`block.py`), a gap the tape runs under. Doors' undersides are skipped when draping.
+  - **The scrap:** blanked.
+- **Checked:**
+  - no tape vertex lies inside any object;
+  - nothing visible lies over the tape except things above it (the ceiling, the door leaf, the slot, the notice);
+  - close-ups at the roll, the edge, the counter, the floor, the door, the curb and the rails, and stills of S07–S08 (`renders/m4/tape_look_v2`).
+- **Also:** the extended flicker survey after the building fixes: 82 pairs and 1,978 hits, down from 118 and 3,432; shop12's pier against its side wall went from 50 to 2. The largest left, `int.dev` at 114, is the two faces of a 2 mm sign backing, not a fight.
+- **Render v4:** all of Act 1 again (the building fixes touch nearly every shot), into `renders/m4/act1_v4/frames`.
+  - Command: `blender -b --factory-startup --python scenes/blender/animatic.py -- --out renders/m4/act1_v4/frames --profile draft720 --look final --from 0.14 --to 153.68 --resume`

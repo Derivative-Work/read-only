@@ -146,7 +146,8 @@ def shopfront(S, i, xw, sign, kind, north=False):
     gb_.box(f"shop{i}.sill", (x - 0.8, FRONT - 0.1, 0.3), (3.8, 0.3, 0.6), M("trim"))
     glass = gb_.plane(f"shop{i}.glass", (x - 0.8, FRONT + 0.01, 1.85), (3.8, 2.3),
                      gb.mat("glass_a", C["glass"], rough=0.05, alpha=0.18), facing="+Y")
-    door = gb_.box(f"shop{i}.door", (x + 1.9, FRONT - 0.05, 1.3), (1.2, 0.08, 2.4),
+    db = 0.185 if kind == "dev" else 0.1  # the Dev's: a gap under it for the tape (S08) to run out through
+    door = gb_.box(f"shop{i}.door", (x + 1.9, FRONT - 0.05, (db + 2.5) / 2), (1.2, 0.08, 2.5 - db),
                   gb.mat("glass_a", C["glass"], alpha=0.18) if kind == "dev" else M("trim"))
     gb_.box(f"shop{i}.slot", (x + 1.9, FRONT + 0.0, 1.0), (0.35, 0.02, 0.06), M("ink"))
     # the sign band
