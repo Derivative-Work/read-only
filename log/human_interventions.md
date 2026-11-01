@@ -191,3 +191,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-01 — M5: S41 approved, sign back — R1
 - **What:** "This is great. Put the text back for continuity". S41's reveal approved; the eatery's "r/Philippines" sign goes back on in Act 2.
 - **Rule:** R1 (approval, and a rejection of the blank sign). The agent fixes it (production log, next entry).
+
+## 2026-11-01 — M5: S44 approved — R1
+- **What:** "Good, keep going". S44 (`takes/fx/S44/S44_billboard.mp4`: V seed 1, the comment box pinned on) approved.
+- **Rule:** R1. The agent moves on to S45.
