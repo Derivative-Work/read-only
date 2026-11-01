@@ -142,7 +142,7 @@ def main():
         if meta["resolution"][1] > meta["resolution"][0]:
             w, h = h, w
         v = spec.get("v", 1)
-        prompt = f"{CFG['layout_prefix']} {spec['prompt']} {CFG['style']}"
+        prompt = f"{CFG['layout_prefix']} {spec['prompt'].format(tenderloin=CFG.get('tenderloin', ''))} {CFG['style']}"
         stem = shot if v == 1 else f"{shot}_v{v}"
         if args.denoise is not None:
             stem += f"_d{round(args.denoise * 100)}"

@@ -175,3 +175,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - **Sheet:** `takes/stills/rapper/rapper_s1002.png` kept.
   - **Note:** the S43 keyframe's wall-mounted payphone doesn't match the set's post-mounted one; fix it.
 - **Rule:** R1 (approve or reject; the note is a rejection of that detail). The agent fixes it (production log, next entries).
+
+## 2026-11-01 — M5: S43 v3 — R1
+- **What:** "better, but this is still reading more like Queens than it is Tenderloin"
+- **Rule:** R1 (a rejection of the take's look). The agent fixes it (production log, next entry).

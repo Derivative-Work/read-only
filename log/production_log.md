@@ -958,3 +958,30 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S43/S43_v3_moge_s2.mp4` | 20.0 | used (as the test) |
 - **Lip sync:** seed 2 (approved) on V seed 2 (row above): `takes/l/S43/S43_s2.mp4`. The test's lip-sync outputs moved to `archive/takes/l/S43_keyframe_v2/`, superseded (their working frame folders not archived).
 - **Review:** `renders/m5/review/S43_v3.mp4` (played three times with the master).
+
+## 2026-11-01T09:26:08-05:00 — M5: keyframes (S43)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S43 --seeds 2001,2002,2003,2004`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S43_v4 | 2004 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S43/S43_v4_s2004.png` | 50.1 | pending (R1) |
+
+## 2026-11-01T09:27:56-05:00 — M5: lip sync with LatentSync 1.6 (S43 --seeds 2)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S43 --seeds 2`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S43 | 2 | 39 | 41 | `takes/v/S43/S43_v4_moge_s2.mp4` | `takes/l/S43/S43_s2.mp4` | 22.5 | pending (R1) |
+
+## 2026-11-01T10:20:00-05:00 — M5: S43 v4, the Tenderloin (the human's note)
+- **Why it read as Queens:** red brick walk-ups down a long flat street, under orange sodium light.
+- **Keyframe v4** (`config/keyframes.json`): a "tenderloin" sentence for every street shot: six- and seven-story early-1900s apartment hotels in pale stucco and terracotta, ornate cornices, stacked bay windows, fire escapes on the fronts, vertical neon blade signs, scissor gates and roll-down shutters, a parking meter, Muni trolley-bus wires overhead and a steep hill in the distance. The style's light is now San Francisco's white LED streetlights. The set's brick corner wall stays beside him. Checked against the street photo in `reference/private/` (mood only; nothing from it used as an input).
+  - **Seeds:** 2001–2004. The first run hit the tool's 10-minute limit after three seeds and was stopped before writing its log rows; the rerun made 2004 and logged only that one (row above). Seeds 2001–2003 were made with the same command and prompt (`log/prompts/keyframes/S43_v4.txt`).
+  - **Pick:** seed 2002: an ornate cornice, the hill, trolley wires, the payphone at the right edge with the recorder on its post. The neon across the street is blurred and has no legible text.
+- **V:** as approved, with "Tenderloin" and white LED light in the prompt (`log/prompts/v/S43_moge_v4.txt`), seed 2: `takes/v/S43/S43_v4_moge_s2.mp4` (35.7 s), control `S43_v4_control.mp4`.
+- **Lip sync:** seed 2 on it: `takes/l/S43/S43_s2.mp4` (auto-logged row above). v3's outputs moved to `archive/takes/l/S43_keyframe_v3/`, superseded (working frames not archived).
+- **Review:** `renders/m5/review/S43_v4.mp4`.
