@@ -8,6 +8,6 @@
  "crop_scale": 2.6,
  "smooth": 9,
  "takes": {
-  "S43": {"take": "takes/v/S43/S43_moge_s2.mp4", "song_time": [162.11, 163.77]}
+  "S43": {"take": "takes/v/S43/S43_v3_moge_s2.mp4", "song_time": [162.11, 163.77]}
  }
 }

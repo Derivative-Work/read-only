@@ -926,3 +926,35 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S43/S43_moge_s2.mp4` | 17.4 | 31.6 GB | pending (R1); used for the lip sync (a car passes behind him) |
 - **Lip sync:** LatentSync 1.6 on V seed 2 (entry above), the brief's "pick the current best": the tool Folks Like Us settled on after LTX-2.3's audio-video model failed there. It runs outside ComfyUI, which the brief names; the reason is in `config/l.json`. Both seeds replace the V take's hanging-open mouth with the words' shapes; no seam at the paste.
 - **Not in the test:** the brief's "face still flickering" glitch for S43, an effect pass after the lip sync is approved.
+
+## 2026-11-01T08:59:44-05:00 — M5: keyframes (S43)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S43 --seeds 2001,2002,2003,2004`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S43_v3 | 2001 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S43/S43_v3_s2001.png` | 169.3 | pending (R1) |
+| S43_v3 | 2002 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S43/S43_v3_s2002.png` | 157.2 | pending (R1) |
+| S43_v3 | 2003 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S43/S43_v3_s2003.png` | 156.6 | pending (R1) |
+| S43_v3 | 2004 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S43/S43_v3_s2004.png` | 157.2 | pending (R1) |
+
+## 2026-11-01T09:11:53-05:00 — M5: lip sync with LatentSync 1.6 (S43 --seeds 2)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S43 --seeds 2`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S43 | 2 | 39 | 41 | `takes/v/S43/S43_v3_moge_s2.mp4` | `takes/l/S43/S43_s2.mp4` | 22.5 | pending (R1) |
+
+## 2026-11-01T09:40:00-05:00 — M5: S43 with the set's payphone (the human's note)
+- **Keyframe v3** (`config/keyframes.json`; four seeds, auto-logged above): the set's payphone, a crop of S42's layout (`takes/stills/props/payphone_layout.png`), is reference image 3, placed at the frame's right edge as in the layout: a blue housing on a square post with a lit blank sign box. All four seeds have it; seed 2002 is closest to the layout and used.
+- **V:** as the approved test (MoGe depth of the keyframe, pull-back 1.06 → 1.0, guide 0.6, `log/prompts/v/S43_moge.txt`): `takes/v/S43/S43_v3_control.mp4`, `S43_v3_first.png`.
+
+  | Seed | Output | Seconds | Status |
+  | --- | --- | --- | --- |
+  | 1 | `takes/v/S43/S43_v3_moge_s1.mp4` | 45.8 | not used |
+  | 2 | `takes/v/S43/S43_v3_moge_s2.mp4` | 20.0 | used (as the test) |
+- **Lip sync:** seed 2 (approved) on V seed 2 (row above): `takes/l/S43/S43_s2.mp4`. The test's lip-sync outputs moved to `archive/takes/l/S43_keyframe_v2/`, superseded (their working frame folders not archived).
+- **Review:** `renders/m5/review/S43_v3.mp4` (played three times with the master).
