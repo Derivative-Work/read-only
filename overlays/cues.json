@@ -2132,6 +2132,26 @@
    "to": 131.95999999999998,
    "loop": true,
    "text": "IPO  \u25b2  OPENING BELL  \u25b2  UP  UP  UP  \u25b2  NEW MANAGEMENT  \u25b2  USER CONTENT NOT INCLUDED  \u25b2  "
+  },
+  "billboard_reply": {
+   "size": [
+    2300,
+    900
+   ],
+   "shot": "S44",
+   "from": 163.77,
+   "to": 168.41,
+   "blink": [
+    163.26,
+    163.92,
+    164.58,
+    165.24,
+    165.9,
+    166.54,
+    167.2,
+    167.86,
+    168.52
+   ]
   }
  }
 }

@@ -1073,3 +1073,37 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Reveal:** `scripts/reveal.py` prints the lettering onto the V take's blank band as ink (darkens the band by 85% under the matte, blurred 0.6 px) before the dissolve, so the text carries through and takes the real light. Same command; `takes/fx/S41/S41_reveal.mp4`. The first reveal moved to `archive/takes/fx/S41_v1/`, superseded.
 - S42–S43 frame the corner below the sign band, so they need no sign.
 - **Review:** `renders/m5/review/S41_S43_v2.mp4`.
+
+## 2026-11-01T12:58:33-05:00 — M5: keyframes (S44)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S44 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S44_d90 | 2001 | 0.9 | renders/m5/plates/S44/beauty/04362.png | `takes/keyframes/S44/S44_d90_s2001.png` | 104.6 | pending (R1) |
+| S44_d90 | 2002 | 0.9 | renders/m5/plates/S44/beauty/04362.png | `takes/keyframes/S44/S44_d90_s2002.png` | 73.1 | pending (R1) |
+
+## 2026-11-01T13:01:31-05:00 — M5: keyframes (S44)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S44 --seeds 2001,2002 --denoise 0.96`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S44_d96 | 2001 | 0.96 | renders/m5/plates/S44/beauty/04362.png | `takes/keyframes/S44/S44_d96_s2001.png` | 79.1 | pending (R1) |
+| S44_d96 | 2002 | 0.96 | renders/m5/plates/S44/beauty/04362.png | `takes/keyframes/S44/S44_d96_s2002.png` | 79.1 | pending (R1) |
+
+## 2026-11-01T14:30:00-05:00 — M5: S44, the rooftop billboard's comment box
+- **Plates:** all 112 frames of S44 (4362–4473), `renders/m5/plates/S44/`.
+- **Screen (`overlays/screens.html` "billboard_reply", cue in `scripts/overlay_cues.py`):** a generic comment box (a white field holding "Reply below.", plain Cancel and Reply buttons, Inter), the cursor on for the first half of every beat (brief: "Cursor blinks in tempo"). Cues regenerated; Act 1's entries unchanged (checked). `node overlays/screens.mjs --only billboard_reply` → `renders/screens/billboard_reply/` (113 frames from 4362). Blender doesn't map it (scenes/blender/screens.py lists its own), so Act 1 is untouched.
+- **Keyframe** (`config/keyframes.json` S44, no sheets; four rows auto-logged above): the tower's crown from below with a blank glowing billboard. Denoise 0.9 and 0.96, seeds 2001–2002. **Pick: 0.9, seed 2001**: the billboard and the tower's edge where the layout has them; the others drift or tilt.
+- **V:** the Blender depth, guide 1.0, chained (the plan's 97 + 17: clip 1 starts from clip 0's last frame, one frame of overlap dropped), `log/prompts/v/S44_depth.txt`. Per-clip depth and first frames kept in `takes/v/S44/`.
+  - **Command (per clip):** `.venv/bin/python scripts/ltx_v.py takes/v/S44/S44_c<k>_depth.mp4 <first> takes/v/S44/S44_s<seed>_c<k>.mp4 --prompt "$(cat log/prompts/v/S44_depth.txt)" --seed <seed> --control depth`
+
+  | Seed | Output | Seconds (c0 + c1) | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S44/S44_s1.mp4` | 63.0 + 8.0 | 31.1 GB | used: clean across the join |
+  | 2 | `takes/v/S44/S44_s2.mp4` | 28.1 + 7.0 | 31.3 GB | not used: the billboard's corners darken in clip 1 |
+- **Pin (new, `scripts/billboard.py`):** finds the billboard's lit face in the take each frame (largest bright four-cornered region), smooths the corners over 5 frames, warps the screen onto it, multiplied by the take's light there so rain and falloff carry over. **Command:** `.venv/bin/python scripts/billboard.py S44 takes/v/S44/S44_s1.mp4` → `takes/fx/S44/S44_billboard.mp4`, `corners.json`.
+- **Review:** `renders/m5/review/S43_S44_v1.mp4` (S43 into S44 with the master, three times).

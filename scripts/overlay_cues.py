@@ -7,7 +7,8 @@ Two kinds, one file (overlays/cues.json), all times song seconds:
             total in $0.24 steps, landing on $20,000,000; S13 the "0 results" caption; S35 the counter to 144,926
   screens   in-world screens drawn by overlays/screens.html (overlays/screens.mjs) to image sequences that the
             Blender set maps onto their surfaces: S10 the lobby screen flashing BLACKMAIL; S16 the pawn shop's LED
-            countdown from 48:00:00; S20 the lobby's traffic chart, dipping and bouncing back; S30 the LED ticker band
+            countdown from 48:00:00; S20 the lobby's traffic chart, dipping and bouncing back; S30 the LED ticker band; S44 (M5) the
+            rooftop billboard's comment box
 
 Usage: .venv/bin/python -I scripts/overlay_cues.py
 """
@@ -59,6 +60,7 @@ def main():
     rec = word("L02", "recorded")
     s03, s06, s07, s08, s13, s35 = (SHOT[k] for k in ("S03", "S06", "S07", "S08", "S13", "S35"))
     s10, s16, s20, s30 = (SHOT[k] for k in ("S10", "S16", "S20", "S30"))
+    s44 = SHOT["S44"]
     dark, bounced = word("L21", "dark"), word("L22", "bounced")
     beat_in = [b for a, b in TM["drum_dropouts"] if b < 12][-1]
     cues = {
@@ -90,6 +92,10 @@ def main():
             "ticker": {"size": [4000, 160], "shot": "S30", "from": s30[0], "to": s30[0] + 24.0, "loop": True,
                        "text": "IPO  ▲  OPENING BELL  ▲  UP  UP  UP  ▲  NEW MANAGEMENT  ▲  "
                                "USER CONTENT NOT INCLUDED  ▲  "},
+            # M5: the rooftop billboard's generic comment box (S44, pinned onto the V take by scripts/billboard.py):
+            # "Reply below." waits in the field and the cursor blinks on the beat (brief: "Cursor blinks in tempo")
+            "billboard_reply": {"size": [2300, 900], "shot": "S44", "from": s44[0], "to": s44[1],
+                                "blink": beats(s44[0] - 1.0, s44[1] + 0.5)},
         },
     }
     Path("overlays").mkdir(exist_ok=True)

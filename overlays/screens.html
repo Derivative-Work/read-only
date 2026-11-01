@@ -130,7 +130,29 @@ function ticker(t) {
   }
 }
 
-const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker };
+// S44 (M5): the rooftop billboard as a generic comment box: a reply field holding "Reply below.", the cursor blinking
+// on the beat (on for the first half of each beat), and two plain buttons. No site's layout, colours or fonts.
+function rrect(x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+function billboard_reply(t) {
+  g.fillStyle = "#eef1f4"; g.fillRect(0, 0, W, H);
+  const L = 150, R = W - 150, T = 150, B = H - 290;
+  g.fillStyle = "#ffffff"; rrect(L, T, R - L, B - T, 36); g.fill();
+  g.strokeStyle = "#9aa4b0"; g.lineWidth = 8; rrect(L, T, R - L, B - T, 36); g.stroke();
+  g.fillStyle = "#1d232b"; g.font = `150px "Inter"`; g.textAlign = "left"; g.textBaseline = "middle";
+  const txt = "Reply below.", y = (T + B) / 2, x = L + 90;
+  g.fillText(txt, x, y);
+  const last = S.blink.filter(b => b <= t).pop(), next = S.blink.find(b => b > t);
+  const on = last === undefined || next === undefined || (t - last) < (next - last) / 2;
+  if (on) { g.fillRect(x + g.measureText(txt).width + 26, y - 95, 12, 190); }
+  const by = B + 70, bh = 140;
+  g.fillStyle = "#d5dbe2"; rrect(R - 980, by, 420, bh, 70); g.fill();
+  g.fillStyle = "#3d4651"; rrect(R - 520, by, 520, bh, 70); g.fill();
+  g.font = `72px "Inter"`; g.textAlign = "center";
+  g.fillStyle = "#3d4651"; g.fillText("Cancel", R - 770, by + bh / 2 + 4);
+  g.fillStyle = "#ffffff"; g.fillText("Reply", R - 260, by + bh / 2 + 4);
+}
+
+const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker, billboard_reply };
 function show(name, t) { if (!S || S !== C.screens[name]) { size(name); dotSrc = null; } SHOW[name](t); }
 </script>
 </body>
