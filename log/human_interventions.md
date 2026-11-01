@@ -179,3 +179,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-01 — M5: S43 v3 — R1
 - **What:** "better, but this is still reading more like Queens than it is Tenderloin"
 - **Rule:** R1 (a rejection of the take's look). The agent fixes it (production log, next entry).
+
+## 2026-11-01 — M5: S43 v4 approved — R1
+- **What:** "Much better, keep going". S43 v4 (`takes/l/S43/S43_s2.mp4`, keyframe seed 2002) approved, and with it the Tenderloin description and white LED light for every Act 2 street shot.
+- **Rule:** R1. The agent moves on to S42.

@@ -985,3 +985,6 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **V:** as approved, with "Tenderloin" and white LED light in the prompt (`log/prompts/v/S43_moge_v4.txt`), seed 2: `takes/v/S43/S43_v4_moge_s2.mp4` (35.7 s), control `S43_v4_control.mp4`.
 - **Lip sync:** seed 2 on it: `takes/l/S43/S43_s2.mp4` (auto-logged row above). v3's outputs moved to `archive/takes/l/S43_keyframe_v3/`, superseded (working frames not archived).
 - **Review:** `renders/m5/review/S43_v4.mp4`.
+
+## 2026-11-01T10:40:00-05:00 — Log: S43 v4 approved (R1)
+- S43 is done for the V and lip-sync passes: `takes/l/S43/S43_s2.mp4`. Still open for S43: the face flicker (brief: "face still flickering"), to be added with S42's glitch so the two match. Next: S42.
