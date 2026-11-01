@@ -187,3 +187,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-01 — M5: S42 and the face glitch approved — R1
 - **What:** "This is great, keep going". S42 (`takes/l/S42/S42_s2.mp4`, keyframe seed 2003) and the face glitch on S42 and S43 (`takes/fx/`, `config/glitch.json`) approved; the neon sign's made-up letters accepted as they are.
 - **Rule:** R1. The agent moves on to S41.
+
+## 2026-11-01 — M5: S41 approved, sign back — R1
+- **What:** "This is great. Put the text back for continuity". S41's reveal approved; the eatery's "r/Philippines" sign goes back on in Act 2.
+- **Rule:** R1 (approval, and a rejection of the blank sign). The agent fixes it (production log, next entry).

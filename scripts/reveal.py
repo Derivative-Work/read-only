@@ -4,6 +4,10 @@ at once. Each pixel turns real at its own moment: a soft noise field plus the de
 first and the corner nearest the camera last. Both sides share the Blender camera (V follows its depth), so they
 line up through the dissolve.
 
+The shop sign's lettering (renders/m5/plates/<shot>/sign/, scenes/blender/sign_matte.py) is printed onto the V
+take's blank sign band before the dissolve, as ink that darkens the band, so it takes the real light (the human's note:
+"put the text back for continuity").
+
 Usage: .venv/bin/python scripts/reveal.py S41 takes/v/S41/S41_depth_s2.mp4 [--start 0.25 --end 2.0] [--seed 1]
        --start/--end: seconds into the shot where the reveal begins and ends.
 Output: takes/fx/<shot>/<shot>_reveal.mp4 (picture only) and _audio.mp4 (with the master, for review).
@@ -61,6 +65,10 @@ def main():
         p = p * p * (3 - 2 * p)
         alpha = np.clip((p * 1.25 - thr) / 0.25 + 0.0, 0, 1)[..., None] if 0 < p < 1 else np.full((h, w, 1), p)
         vi = v[min(i, len(v) - 1)].astype(np.float32)
+        sp = plate / "sign" / f"{f:05d}.png"
+        if sp.exists():
+            ink = Image.open(sp).getchannel("A").filter(ImageFilter.GaussianBlur(0.6))
+            vi *= 1 - 0.85 * (np.asarray(ink, np.float32)[..., None] / 255)
         enc.stdin.write((b * (1 - alpha) + vi * alpha).astype(np.uint8).tobytes())
     enc.stdin.close()
     enc.wait()

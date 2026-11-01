@@ -1067,3 +1067,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Reveal (new, `scripts/reveal.py`):** the brief's crossfade from the B render (the plates' beauty) to the V take, done in patches: each pixel turns at its own moment from a soft noise field plus the depth pass, so the far street goes real first and the corner nearest the camera last. 0.25 s to 2.0 s into the shot, smoothstep. **Command:** `.venv/bin/python scripts/reveal.py S41 takes/v/S41/S41_depth_s2.mp4` → `takes/fx/S41/S41_reveal.mp4`.
 - **Review:** `renders/m5/review/S41_S43_v1.mp4` (S41 → S42 → S43 with the master, three times).
 - **Open:** the "r/Philippines" sign on the eatery dissolves to a blank band, and S42–S43's corner has no sign either. If it should read in Act 2, it goes on as an overlay in the edit (signs are overlays, `config/v.json`).
+
+## 2026-11-01T13:40:00-05:00 — M5: S41, the eatery sign back on (the human's note)
+- **Sign matte (new, `scenes/blender/sign_matte.py`):** the sign's lettering alone (`shop0.sign`) from S41's camera, every other object a holdout so the pole still hides it, fog off (it put haze in the alpha; first try discarded, not an asset): `renders/m5/plates/S41/sign/`. **Command:** `blender -b --factory-startup --python scenes/blender/sign_matte.py -- S41`
+- **Reveal:** `scripts/reveal.py` prints the lettering onto the V take's blank band as ink (darkens the band by 85% under the matte, blurred 0.6 px) before the dissolve, so the text carries through and takes the real light. Same command; `takes/fx/S41/S41_reveal.mp4`. The first reveal moved to `archive/takes/fx/S41_v1/`, superseded.
+- S42–S43 frame the corner below the sign band, so they need no sign.
+- **Review:** `renders/m5/review/S41_S43_v2.mp4`.
