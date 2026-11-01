@@ -7,7 +7,9 @@ depth frames. The first frame (LTXVImgToVideoInplace) and the prompt are the sho
 While it runs, GPU memory, RAM and swap are sampled once a second; peaks are printed and returned.
 
 Usage: .venv/bin/python scripts/ltx_v.py <control.mp4> <first_frame.png> <out.mp4> --prompt "..." [--seed N]
-       [--control depth|moge] [--guide 1.0]
+       [--control depth|moge] [--guide 1.0] [--end last.png] [--key 48:mid.png ...] [--end-strength 1.0]
+--end / --key: keyframes for the clip's last frame or frame IDX too (LTXVAddGuides chained after the control's), so a
+long move that reveals new set stays in the look (S48: the facades went to daylight from the first frame alone).
        [--width 1280 --height 704]
 """
 import argparse
@@ -31,7 +33,8 @@ NEGATIVE = ("blurry, out of focus, overexposed, low contrast, washed out colors,
             "jittery movement, camera shake, sudden cuts")
 
 
-def build(control_name, image_name, prompt, seed, width, height, prefix, control="depth", guide=1.0):
+def build(control_name, image_name, prompt, seed, width, height, prefix, control="depth", guide=1.0, keys=None,
+          key_strength=1.0):
     """control="depth": the control video is a depth pass, fed to LTXVAddGuide directly (the MoGe group is dropped).
     control="moge": the control video is the Blender beauty pass, and the template's MoGe group estimates its depth.
     guide: LTXVAddGuide strength. Below 1 the take follows the depth loosely, so a person can move in ways the rigid
@@ -57,6 +60,20 @@ def build(control_name, image_name, prompt, seed, width, height, prefix, control
     g["129:113"]["inputs"]["value"] = width
     g["129:98"]["inputs"]["value"] = height
     g["68"]["inputs"]["filename_prefix"] = prefix
+    prev = "129:115"
+    for k, (idx, name) in enumerate(keys or []):  # keyframes at other frames, each guided after the one before
+        g[f"key{k}_load"] = {"class_type": "LoadImage", "inputs": {"image": name}}
+        g[f"key{k}"] = {"class_type": "LTXVAddGuide", "inputs": {
+            "frame_idx": idx, "strength": key_strength, "positive": [prev, 0], "negative": [prev, 1],
+            "vae": g["129:115"]["inputs"]["vae"], "latent": [prev, 2], "image": [f"key{k}_load", 0]}}
+        prev = f"key{k}"
+    if prev != "129:115":  # downstream nodes take the last guide's outputs
+        for k, node in g.items():
+            if k.startswith("key"):
+                continue
+            for name, v in node["inputs"].items():
+                if isinstance(v, list) and len(v) == 2 and v[0] == "129:115":
+                    node["inputs"][name] = [prev, v[1]]
     return g
 
 
@@ -90,10 +107,21 @@ def main():
     ap.add_argument("--height", type=int, default=704)
     ap.add_argument("--control", choices=["depth", "moge"], default="depth")
     ap.add_argument("--guide", type=float, default=1.0, help="depth guide strength")
+    ap.add_argument("--end")
+    ap.add_argument("--key", action="append", default=[], help="IDX:IMAGE, a keyframe at frame IDX (repeatable)")
+    ap.add_argument("--end-strength", type=float, default=1.0)
     a = ap.parse_args()
     control_name = cc.upload_image(a.control_video)
     image_name = cc.upload_image(a.first)
-    g = build(control_name, image_name, a.prompt, a.seed, a.width, a.height, f"readonly/v_{Path(a.out).stem}", a.control, a.guide)
+    keys = [(int(k.split(":", 1)[0]), k.split(":", 1)[1]) for k in a.key]
+    if a.end:
+        length = int(subprocess.check_output(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0",
+                                              "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0",
+                                              a.control_video]).decode().split()[0])
+        keys.append((length - 1, a.end))
+    keys = [(i, cc.upload_image(p)) for i, p in sorted(keys)]
+    g = build(control_name, image_name, a.prompt, a.seed, a.width, a.height, f"readonly/v_{Path(a.out).stem}", a.control,
+              a.guide, keys, a.end_strength)
     mon = Monitor()
     mon.start()
     outputs, secs = cc.run(g, timeout=7200)

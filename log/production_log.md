@@ -1219,3 +1219,62 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S47/S47_s2.mp4` | 28.1 + 7.0 | 31.3 GB | not used (much the same; seed 1 a little cleaner) |
 - **REC blink (new, `scripts/rec_blink.py`):** the take has a lit red LED a few pixels from the Blender one; it is found each frame (the reddest blob within 40 px of the matte's position), smoothed, and blinked on the Blender timing (on 0.25 s every 0.5 s from the shot's start): dimmed to a dark red lens when off, a bright lens with a soft red glow when on. **Command:** `.venv/bin/python scripts/rec_blink.py S47 takes/v/S47/S47_s1.mp4` → `takes/fx/S47/S47_rec.mp4`.
 - **Review:** `renders/m5/review/S45_S47_v1.mp4` (S45 into S47 with the master, three times; S46 is retired).
+
+## 2026-11-01T16:14:06-05:00 — M5: keyframes (S48)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48 --seeds 2001,2002 --denoise 0.95`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48_d95 | 2001 | 0.95 | renders/m5/plates/S48/beauty/04674.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S48/S48_d95_s2001.png` | 127.1 | pending (R1) |
+| S48_d95 | 2002 | 0.95 | renders/m5/plates/S48/beauty/04674.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S48/S48_d95_s2002.png` | 110.1 | pending (R1) |
+
+## 2026-11-01T16:18:04-05:00 — M5: keyframes (S48_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48_end --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48_end_d92 | 2001 | 0.92 | renders/m5/plates/S48/beauty/04904.png | `takes/keyframes/S48_end/S48_end_d92_s2001.png` | 77.2 | pending (R1) |
+| S48_end_d92 | 2002 | 0.92 | renders/m5/plates/S48/beauty/04904.png | `takes/keyframes/S48_end/S48_end_d92_s2002.png` | 76.1 | pending (R1) |
+
+## 2026-11-01T16:25:14-05:00 — M5: keyframes (S48_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48_mid --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48_mid_d92 | 2001 | 0.92 | renders/m5/plates/S48/beauty/04770.png | `takes/keyframes/S48_mid/S48_mid_d92_s2001.png` | 92.7 | pending (R1) |
+| S48_mid_d92 | 2002 | 0.92 | renders/m5/plates/S48/beauty/04770.png | `takes/keyframes/S48_mid/S48_mid_d92_s2002.png` | 77.1 | pending (R1) |
+
+## 2026-11-01T16:30:58-05:00 — M5: keyframes (S48_q)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48_q --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48_q_d92 | 2001 | 0.92 | renders/m5/plates/S48/beauty/04722.png | `takes/keyframes/S48_q/S48_q_d92_s2001.png` | 91.2 | pending (R1) |
+| S48_q_d92 | 2002 | 0.92 | renders/m5/plates/S48/beauty/04722.png | `takes/keyframes/S48_q/S48_q_d92_s2002.png` | 76.3 | pending (R1) |
+
+## 2026-11-01T21:30:00-05:00 — M5: S48, the crane over the block
+- **Plates:** 231 frames (4674–4904): the first at 16 samples, the rest at 4. The first run was stopped by Claude Code at 119 frames (the machine ran low on memory, ComfyUI holding its models in RAM); after the human restarted the session with the reaper off, ComfyUI's models were freed (`POST /free`) and the render resumed from frame 120 (plates.py skips finished frames).
+- **The whip:** between 0.55 and 0.8 of the shot the crane swings round almost 180° (frame 4850 is all motion blur) and settles on the pocket park. So the take is two parts cut inside the blur: **A**, frames 0–175, forward from a keyframe of the first frame; **B**, frames 176–230, generated backwards from a keyframe of the last frame (as Folks Like Us's v_batch "reverse"), so the park is designed, not invented from a blur.
+- **Keyframes** (`config/keyframes.json`; rows auto-logged above). `scripts/keyframes.py` gains a per-entry `"frame"` (a plate frame other than the first). **S48** (the corner; payphone crop as reference 2), 0.95: **seed 2001**. **S48_end** (frame 4904, the park), 0.92: **seed 2001** (keeps the layout's marker grid, headstones, paths, fence and doghouse). **S48_mid** (frame 4770), 0.92: **seed 2001** (night, lit windows with a red light in each, the doormen; the Blender lettering survived too). **S48_q** (frame 4722), 0.92: **seed 2001** (dark robot doormen with gold ties).
+- **V:** the Blender depth, guide 1.0. Part A chained 97 + 81 (clip 1 from clip 0's last frame), part B one 57-frame clip from the depth reversed (2 frames of hold), joined as A[0:176] + reversed B.
+  - **v1** (anchor: the first frame only): the facades went to overcast daylight with unlit windows once the camera left the corner, and the doormen came out as white bin-shaped robots. Moved to `archive/takes/v/S48_no_mid_guide/`, superseded.
+  - **`scripts/ltx_v.py` gains `--key IDX:IMAGE` and `--end IMAGE`:** keyframes for other frames of a clip, as more LTXVAddGuide nodes chained after the control's.
+  - **v2** (+ S48_mid as clip 0's end): night from frame 96 on, but still dusky with white robots around frame 46. Moved to `archive/takes/v/S48_mid_guide_only/`, superseded.
+  - **v3** (+ S48_q at frame 48): night throughout, dark doormen. Prompts `log/prompts/v/S48_a_depth_v3.txt` (part A) and `log/prompts/v/S48_b_depth.txt` (part B).
+  - **Command (part A clip 0):** `.venv/bin/python scripts/ltx_v.py takes/v/S48/S48_a_c0_depth.mp4 takes/v/S48/S48_a_c0_first.png takes/v/S48/S48_v3_s<seed>_a_c0.mp4 --prompt "$(cat log/prompts/v/S48_a_depth_v3.txt)" --seed <seed> --control depth --key 48:takes/v/S48/S48_a_c0_key48.png --end takes/v/S48/S48_a_c0_end.png`; clip 1 and part B as before without keys.
+
+  | Seed | Output | Seconds (A c0 + A c1 + B) | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S48/S48_v3_s1.mp4` | 44.2 + 24.1 + 16.0 | 31.3 GB | used |
+  | 2 | `takes/v/S48/S48_v3_s2.mp4` | 31.1 + 23.0 + 16.0 | 31.2 GB | not used (much the same) |
+- **Overlay (new, `scripts/overlay_add.py`):** the set's shop signs, READ-ONLY neon, keypad screens, window REC lights, the doormen's eye slits and the pawn clock, rendered alone in their own colours: `scenes/blender/sign_matte.py` gains `--own` (keep materials and the look), glob `--objects` and `--subdir`. `blender -b --factory-startup --python scenes/blender/sign_matte.py -- S48 --own --subdir overlay --objects 'shop*.rec[0-9]*' 'shop*.neon' 'shop*.keypad.txt' 'shop*.sign' 'shop*.unm' 'shop*.win*.sign' 'vip*.eye' 'screen.pawn_led.face'` → `renders/m5/plates/S48/overlay/`; laid over the take with a glow from its lights: `.venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v3_s1.mp4` → `takes/fx/S48/S48_overlay.mp4`.
+- **Open:** the keypads' "Log in to continue" barely reads: each doorman stands in front of his keypad (as built at M3). For the human.
+- **Review:** `renders/m5/review/S47_S48_v1.mp4` (S47 into S48 with the master, three times).

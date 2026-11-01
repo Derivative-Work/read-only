@@ -41,7 +41,7 @@ def layout_dir(shot):
 def layout(shot):
     d = layout_dir(shot)
     meta = json.load(open(d / "shot.json"))
-    f = meta["frames_rendered"][0]
+    f = CFG["shots"][shot].get("frame", meta["frames_rendered"][0])  # "frame": another frame of the plate (S48's end)
     return d / "beauty" / f"{f:05d}.png", d / "depth" / f"{f:05d}.png", meta
 
 
