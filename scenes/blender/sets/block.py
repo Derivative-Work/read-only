@@ -186,9 +186,11 @@ def shopfront(S, i, xw, sign, kind, north=False):
     # padlock and "UNDER NEW MANAGEMENT" (Hook 2 on), keypad "Log in to continue" (S48)
     lock = gb_.box(f"shop{i}.padlock", (x + 1.2, FRONT + 0.2, 0.35), (0.18, 0.08, 0.22), M("gold", metal=0.8, rough=0.3))
     unm = gb_.text(f"shop{i}.unm", "UNDER NEW\nMANAGEMENT", 0.22, M("lease"), (x - 0.8, FRONT + 0.18, 1.9), facing="+Y")
-    pad = gb_.box(f"shop{i}.keypad", (x + 1.9, FRONT + 0.2, 1.3), (0.5, 0.06, 0.7), M("phone"))
-    padtxt = gb_.text(f"shop{i}.keypad.txt", "Log in to\ncontinue", 0.08, M("screen", emit=3.0),
-                     (x + 1.9, FRONT + 0.24, 1.4), facing="+Y")
+    # M5: beside the door on the shutter (in the doorway, the doorman stood in front of it), larger, so it reads in
+    # the crane
+    pad = gb_.box(f"shop{i}.keypad", (x + 0.75, FRONT + 0.2, 1.35), (0.75, 0.06, 0.6), M("phone"))
+    padtxt = gb_.text(f"shop{i}.keypad.txt", "Log in to\ncontinue", 0.11, M("screen", emit=5.0),
+                     (x + 0.75, FRONT + 0.24, 1.37), facing="+Y")
     S.setdefault("padlocks", []).append([lock, unm])
     S.setdefault("keypads", []).append([pad, padtxt])
     if kind == "lease":

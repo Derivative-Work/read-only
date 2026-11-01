@@ -5,7 +5,10 @@ rendered alone from the shot's camera in their own colours (scenes/blender/sign_
 laid over the take, which follows the same camera through the Blender depth. The bright parts also glow (a blur of
 the overlay's highlights, added), so the lights sit in the rain.
 
-Usage: .venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v3_s1.mp4 [--glow 6]
+--clean R: the take's own copy of the lettering (keyframes made from the layout keep it, a little off) is blurred out
+under the overlay's ink, dilated by R px, before the overlay goes on, so the letters don't double.
+
+Usage: .venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v4_s1.mp4 [--glow 6] [--clean 5]
 Output: takes/fx/<shot>/<shot>_overlay.mp4 (picture only) and _audio.mp4 (with the master, for review).
 """
 import argparse
@@ -25,6 +28,7 @@ def main():
     ap.add_argument("shot")
     ap.add_argument("take")
     ap.add_argument("--glow", type=float, default=6)
+    ap.add_argument("--clean", type=int, default=0)
     a = ap.parse_args()
     plate = Path("renders/m5/plates") / a.shot
     meta = json.load(open(plate / "shot.json"))
@@ -47,6 +51,11 @@ def main():
         ov = cv2.GaussianBlur(ov, (0, 0), 0.6)  # the take's softness
         alpha = ov[..., 3:] / 255
         rgb = ov[..., :3]
+        if a.clean:  # under the ink (dark lettering, not the lights), the take's own letters blurred away
+            ink = ((ov[..., 3] > 30) & (rgb.max(2) < 150)).astype(np.uint8)
+            zone = cv2.GaussianBlur(cv2.dilate(ink, np.ones((2 * a.clean + 1,) * 2, np.uint8)).astype(np.float32),
+                                    (0, 0), 2)[..., None]
+            img = img * (1 - zone) + cv2.GaussianBlur(img, (0, 0), 3 * a.clean) * zone
         comp = img * (1 - alpha) + rgb * alpha
         hi = rgb * alpha * (rgb.max(2, keepdims=True) > 150)  # the lights, not the ink
         glow = cv2.GaussianBlur(hi, (0, 0), a.glow)

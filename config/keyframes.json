@@ -11,7 +11,10 @@
  "denoise": 0.92,
  "refs": {
   "rapper": "takes/stills/rapper/rapper_s1002.png",
-  "payphone": "takes/stills/props/payphone_layout.png"
+  "payphone": "takes/stills/props/payphone_layout.png",
+  "s48_k0": "takes/keyframes/S48/S48_d95_s2001.png",
+  "s48_k48": "takes/keyframes/S48_q/S48_q_v2_d92_s2002.png",
+  "s48_k96": "takes/keyframes/S48_mid/S48_mid_v2_d92_s2001.png"
  },
  "layout_prefix": "Reference image 1 is a rough 3D layout of this exact shot. Keep its camera angle, lens, framing, horizon line and perspective exactly, and keep every building, object and figure in the same place and pose. Turn the stand-in shapes into the real, photographed things described below, as a still from a high-budget cinematic film.",
  "style": "Night, steady light rain, wet surfaces, cinematic 35mm film look, shallow depth of field, cool white LED streetlights and colored neon, deep shadows, natural skin texture. Every sign, screen and label is plain and blank, with no text, letters, numbers or logos.",
@@ -65,20 +68,37 @@
   "S48_end": {
    "plate": "S48",
    "frame": 4904,
-   "refs": [],
-   "prompt": "A high crane view at night looking down over a small fenced pocket park on a San Francisco Tenderloin block, in steady rain. Reference image 1 gives the camera angle, the framing and where everything stands: keep the fence, the paths, the trees, the headstones, the buildings and the pole exactly where they are. A black iron fence along the sidewalk with a gate; inside, wet patchy grass, winding gravel paths, two bare young trees, a few old iron lamp posts with their lanterns dark, a small grey doghouse by the gate. In the middle of the park a tiny memorial: a shoebox-sized coffin on a low plinth under a small headstone; behind it rows of small weathered grey headstones and a field of hundreds of tiny white markers. Old apartment buildings with lit windows on two sides, a parked car on the street, a wooden utility pole in the foreground with a transformer. Everything wet and glistening, the park dark and still. Every sign and label is plain and blank, with no text, letters, numbers or logos. Old San Francisco Tenderloin buildings: pale stucco, bay windows, fire escapes."
+   "refs": [
+    "s48_k96"
+   ],
+   "prompt": "A high crane view at night looking down over a small fenced pocket park on a San Francisco Tenderloin block, in steady rain. Reference image 1 gives the camera angle, the framing and where everything stands: keep the fence, the paths, the trees, the headstones, the buildings and the pole exactly where they are. A black iron fence along the sidewalk with a gate; inside, wet patchy grass, winding gravel paths, two bare young trees, a few old iron lamp posts with their lanterns dark, a small grey doghouse by the gate. In the middle of the park a tiny memorial: a shoebox-sized coffin on a low plinth under a small headstone; behind it rows of small weathered grey headstones and a field of hundreds of tiny white markers. Old apartment buildings with lit windows on two sides, a parked car on the street, a wooden utility pole in the foreground with a transformer. Everything wet and glistening, the park dark and still. Reference image 2 is the same street a moment earlier in the same shot: match its buildings' materials and colors, its night lighting, the color of its light and its rain exactly. Every sign and label is plain and blank, with no text, letters, numbers or logos. Old San Francisco Tenderloin buildings: pale stucco, bay windows, fire escapes.",
+   "v": 2
   },
   "S48_mid": {
    "plate": "S48",
    "frame": 4770,
-   "refs": [],
-   "prompt": "A crane view at night, high above a wet San Francisco Tenderloin street in steady rain, looking across at a row of old three- and four-story apartment buildings over ground-floor shops. Reference image 1 gives the camera angle, the framing and where everything stands: keep every building, window, shutter, doorway, pole, car and the street exactly where they are. It is the middle of the night: the sky and the shadows are black, the street lit by white LED streetlights. Every shop's corrugated metal shutter is rolled down. In every shop doorway stands a boxy robot doorman with dark gunmetal body panels shaped like a suit, a gold tie, and a thin glowing white slit for eyes, perfectly still. The upper windows glow warm from inside, curtains and blinds, a small red light in each window. Dark neon tubes above the shutters. Pale painted stucco and brick facades with cornices, bay windows and black fire escapes. Parked cars along the curb, the wet asphalt and sidewalk reflecting the lights. Every sign and label is plain and blank, with no text, letters, numbers or logos."
+   "refs": [
+    "s48_k48"
+   ],
+   "prompt": "A crane view at night, high above a wet San Francisco Tenderloin street in steady rain, looking across at a row of old three- and four-story apartment buildings over ground-floor shops. Reference image 1 gives the camera angle, the framing and where everything stands: keep every building, window, shutter, doorway, pole, car and the street exactly where they are. It is the middle of the night: the sky and the shadows are black, the street lit by white LED streetlights. Every shop's corrugated metal shutter is rolled down. In every shop doorway stands a boxy robot doorman with dark gunmetal body panels shaped like a suit, a gold tie, and a thin glowing white slit for eyes, perfectly still. The upper windows glow warm from inside, curtains and blinds, a small red light in each window. Dark neon tubes above the shutters. Pale painted stucco and brick facades with cornices, bay windows and black fire escapes. Parked cars along the curb, the wet asphalt and sidewalk reflecting the lights. Reference image 2 is the same street a moment earlier in the same shot: match its buildings' materials and colors, its night lighting, the color of its light and its rain exactly. Every sign and label is plain and blank, with no text, letters, numbers or logos.",
+   "v": 2
   },
   "S48_q": {
    "plate": "S48",
    "frame": 4722,
-   "refs": [],
-   "prompt": "A crane shot at night, rising past the shopfronts of a wet San Francisco Tenderloin street in steady rain, looking down across the sidewalk at a row of old apartment buildings over ground-floor shops. Reference image 1 gives the camera angle, the framing and where everything stands: keep every building, window, shutter, doorway, pole, car and the street exactly where they are. It is the middle of the night: the sky and the shadows are black, the street lit by white LED streetlights. Every shop's corrugated metal shutter is rolled down. In every shop doorway stands a boxy robot doorman, as tall as a man: a dark gunmetal body with squared shoulders and panels shaped like a dark suit, a gold tie, a squared head with a thin glowing white slit for eyes, dark legs and black shoes, perfectly still. They are dark, not white. The upper windows glow warm from inside, curtains and blinds, a small red light in each window. Dark neon tubes above the shutters. Pale painted stucco and brick facades with cornices, bay windows and black fire escapes. Parked cars along the curb, the wet asphalt and sidewalk reflecting the lights. Every sign and label is plain and blank, with no text, letters, numbers or logos."
+   "refs": [
+    "s48_k0"
+   ],
+   "prompt": "A crane shot at night, rising past the shopfronts of a wet San Francisco Tenderloin street in steady rain, looking down across the sidewalk at a row of old apartment buildings over ground-floor shops. Reference image 1 gives the camera angle, the framing and where everything stands: keep every building, window, shutter, doorway, pole, car and the street exactly where they are. It is the middle of the night: the sky and the shadows are black, the street lit by white LED streetlights. Every shop's corrugated metal shutter is rolled down. In every shop doorway stands a boxy robot doorman, as tall as a man: a dark gunmetal body with squared shoulders and panels shaped like a dark suit, a gold tie, a squared head with a thin glowing white slit for eyes, dark legs and black shoes, perfectly still. They are dark, not white. The upper windows glow warm from inside, curtains and blinds, a small red light in each window. Dark neon tubes above the shutters. Pale painted stucco and brick facades with cornices, bay windows and black fire escapes. Parked cars along the curb, the wet asphalt and sidewalk reflecting the lights. Reference image 2 is the same street a moment earlier in the same shot: match its buildings' materials and colors, its night lighting, the color of its light and its rain exactly. Every sign and label is plain and blank, with no text, letters, numbers or logos.",
+   "v": 2
+  },
+  "S48_k144": {
+   "plate": "S48",
+   "frame": 4818,
+   "refs": [
+    "s48_k96"
+   ],
+   "prompt": "A crane view at night in steady rain, high above a San Francisco Tenderloin street, looking steeply down at the street and the sidewalk along a row of old apartment buildings. Reference image 1 gives the camera angle, the framing and where everything stands: keep every building, window, pole, car and the street exactly where they are. The street is wet black asphalt at ground level with painted white lane lines and a double yellow center line, reflecting the streetlights and the lit windows; parked cars along the curb, a concrete sidewalk with the shuttered shopfronts and a still robot doorman in each doorway, streetlights on poles casting pools of white light. It is the middle of the night: the shadows are black. Reference image 2 is the same street a moment earlier in the same shot: match its buildings' materials and colors, its night lighting, the color of its light and its rain exactly. Every sign and label is plain and blank, with no text, letters, numbers or logos."
   }
  },
  "tenderloin": "The street is in San Francisco's Tenderloin: six- and seven-story early-1900s apartment hotels with flat fronts in pale gray, cream and beige painted stucco and terracotta, ornate cornices at the roofline, stacked bay windows, black fire escapes zigzagging down the facades, vertical neon blade signs on the hotels, black scissor security gates and roll-down shutters on the ground-floor shops, a slim gray parking meter, Muni trolley-bus wires strung across the street overhead, and in the distance the street climbs a steep hill."

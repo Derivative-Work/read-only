@@ -207,3 +207,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-01 — M5: S47 approved — R1
 - **What:** "Good, keep going". S47 (`takes/fx/S47/S47_rec.mp4`) approved.
 - **Rule:** R1. The agent moves on to S48.
+
+## 2026-11-01 — M5: S48 v3 notes — R1
+- **What:** "move the keypads beside the doors. is there supposed to be anything that actually says "log in to continue"? the reference isn't quite clear from the video. for a bit, parts of the road read as a roof atop it, almost like an elevated subway. the continuity is also not great, and there seem to be warp artifacts from the generation"
+- **Rule:** R1 (a rejection of the take, and a layout change the human chose between the two offered). The agent fixes it (production log, next entry).
