@@ -6,8 +6,8 @@ of it (a shutter) still covers it.
 The take's own version of the sign (often garbled letters) is replaced: the rendered sign is lit by the take's light
 there, its luminance blurred (sigma --blur px) so the take's letters don't show through, normalised to the paper's
 white. --shutter X0 X1 (a locked-off camera): the take's own shutter coming down from the top (its timing needn't
-match the Blender one's) is found row by row between columns X0 and X1, as the rows that changed from the first frame
-contiguously from the top; above its bottom edge the paste gives way to the take.
+match the Blender one's) is found row by row between columns X0 and X1, as the first tall run of rows near the top that
+changed from the first frame; above its bottom edge the paste gives way to the take.
 (S41's sign, black ink on the take's own band, is printed by scripts/reveal.py instead.)
 
 Usage: .venv/bin/python scripts/sign_paste.py S45 takes/v/S45/S45_s1.mp4 [--blur 14] [--shutter 650 1250]
@@ -57,7 +57,14 @@ def main():
             x0, x1 = a.shutter
             d = cv2.GaussianBlur(np.abs(img - vid[0].astype(np.float32)).mean(2), (0, 0), 2)[:, x0:x1]
             rows = (d > 20).mean(1) > 0.5
-            edge = int(np.argmin(rows)) if not rows.all() else h  # the first row from the top that didn't change
+            edge = 0  # the bottom of the first run of changed rows near the top (the trim above may not change)
+            hit = np.nonzero(rows[:80])[0]
+            if hit.size:
+                start = end = int(hit[0])
+                while end + 1 < h and rows[end + 1:end + 9].any():  # bridging gaps of up to 8 rows
+                    end += 1
+                if end - start > 60:  # a shutter, not a flickering neon tube (~25 rows)
+                    edge = end
             if edge > 2:
                 cover = np.clip((edge + 6 - np.arange(h)) / 8, 0, 1)[:, None, None]
                 alpha = alpha * (1 - cover)

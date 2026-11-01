@@ -1152,3 +1152,28 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S45/S45_s2.mp4` | 30.0 | 31.0 GB | not used: the shutter starts early and hangs half down |
 - **The STITCH NIGHT notice** (continuity, as the human asked for S41's sign): the take's notice came out garbled. `scenes/blender/sign_matte.py` gains `--materials` (keep faces of a material, by name prefix, showing their own texture; glass clear; all else holdout), since the notice is a quad in the interior's merged mesh: `blender -b --factory-startup --python scenes/blender/sign_matte.py -- S45 --materials int.atlas.shops` → `renders/m5/plates/S45/sign/`. New `scripts/sign_paste.py` replaces the take's notice with it, lit by the take's light there (blurred so the garbled letters don't show), and with `--shutter 650 1250` gives way to the take's own shutter as it comes down (its bottom edge found row by row; a first try by pixel difference let the notice ghost on the blue shutter). **Command:** `.venv/bin/python scripts/sign_paste.py S45 takes/v/S45/S45_s1.mp4 --shutter 650 1250` → `takes/fx/S45/S45_sign.mp4`.
 - **Review:** `renders/m5/review/S44_S45_v1.mp4` (S44 into S45 with the master, three times).
+
+## 2026-11-01T14:49:57-05:00 — M5: keyframes (S45)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S45 --seeds 2001,2002,2003 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S45_v3_d92 | 2001 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v3_d92_s2001.png` | 113.8 | pending (R1) |
+| S45_v3_d92 | 2002 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v3_d92_s2002.png` | 76.2 | pending (R1) |
+| S45_v3_d92 | 2003 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v3_d92_s2003.png` | 76.3 | pending (R1) |
+
+## 2026-11-01T17:20:00-05:00 — M5: S45 v3, the hype man inside the shop (the human's note)
+- **Why:** he stood 0.3 m behind the shopfront, on the same floor height as the sidewalk, so the photoreal take put his feet on the sidewalk and the shutter seemed to come down in front of a man outside it.
+- **Set (`shots.py`):** he stands 1.2 m inside on the shop floor; his backlight moves back to match (FRONT − 3.4). Plates and the notice matte re-rendered (89 frames; first frame 16 samples, the rest 4). The previous layout is in `archive/renders/m5/plates_S45_v2/`, superseded.
+- **Archived, superseded:** the v1–v2 keyframes, V takes and the notice pass, in `archive/takes/S45_hypeman_at_door/` (the V prompt they used stays as `log/prompts/v/S45_depth.txt`).
+- **Keyframe v3** (`config/keyframes.json` S45; three rows auto-logged above): "a few steps inside the shop, on its floor and well behind the doorway's threshold … framed by the open doorway"; the threshold and the sidewalk between him and the camera. 0.92, seeds 2001–2003. **Pick: seed 2003**: a real man inside on the shop floor, the threshold in front of his feet; 2001 and 2002 kept the stand-in's shape.
+- **V:** as before (depth, guide 0.7), prompt `log/prompts/v/S45_depth_v3.txt` (he stands inside behind the threshold; the shutter comes down across the shopfront, between him and the camera).
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S45/S45_v3_s1.mp4` | 51.6 | 31.1 GB | used: the shutter slams across the shopfront in the last four frames |
+  | 2 | `takes/v/S45/S45_v3_s2.mp4` | 28.1 | 31.2 GB | not used: the shutter starts early |
+- **Notice:** `scripts/sign_paste.py S45 takes/v/S45/S45_v3_s1.mp4 --shutter 450 1200` → `takes/fx/S45/S45_sign.mp4`. The shutter's edge detection now takes the first tall run of changed rows near the top (the trim above the shutter doesn't change; gaps of up to 8 rows bridged; under 60 rows is a flickering neon tube, not the shutter).
+- **Review:** `renders/m5/review/S44_S45_v2.mp4`.

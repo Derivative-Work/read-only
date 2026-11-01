@@ -822,13 +822,15 @@ def stage(S):
     cam("S42", [(0, (-27.6, -4.4, 1.6), (-29.5, -7.4, 1.4))], lens=40)
     cam("S43", [(0, (-28.9, -6.3, 1.6), (-29.5, -7.4, 1.58)), (1, (-29.0, -6.5, 1.6), (-29.5, -7.4, 1.58))], lens=50)
     cam("S44", [(0, (9, -30, 30), (9, 12.5, 76)), (1, (9, -26, 32), (9, 12.5, 76))], lens=45)
-    hm = only(B.hypeman((sh_x[6] + 1.9, B.FRONT - 0.3, 0.16)), "S45")
+    # M5: 1.2 m inside the door, on the shop floor (0.3 m in, the photoreal take read him as standing on the sidewalk,
+    # so the shutter seemed to come down in front of a man outside it)
+    hm = only(B.hypeman((sh_x[6] + 1.9, B.FRONT - 1.2, 0.16)), "S45")
     S["slam"].setdefault(6, []).extend([(SP["S45"][0] - 0.05, 0.0), (SP["S45"][1], 1.0)])
     gb.hide_between(bpy.data.objects["shop6.door"], *SP["S45"])
     bl = bpy.data.lights.new("hype.back", "AREA")
     bl.energy, bl.size, bl.color = 400, 1.5, (1.0, 0.85, 0.6)
     blo = only(gb.link(bpy.data.objects.new("hype.back", bl)), "S45")
-    blo.location, blo.rotation_euler = (sh_x[6] + 1.9, B.FRONT - 2.5, 1.5), (math.radians(-90), 0, 0)
+    blo.location, blo.rotation_euler = (sh_x[6] + 1.9, B.FRONT - 3.4, 1.5), (math.radians(-90), 0, 0)
     # M5: from x + 1.5 a sidewalk fixture stood 0.85 m in front of the lens, over the doorway; a metre east clears it
     cam("S45", [(0, (sh_x[6] + 2.6, -5.5, 1.5), (sh_x[6] + 1.9, -10, 1.3))], lens=40)
 
