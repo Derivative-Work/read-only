@@ -164,3 +164,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
   - "S18: the CEO is clipping through his chair"
   - "S20: let's make it so it looks like he's actually dribbling the ball"
 - **Rule:** R1 (notes on the M4 clips). The agent fixes them (production log, following entries).
+
+## 2026-11-01 — M4 approved — R1
+- **What:** after the v8 clips: "approved, go ahead with M5". Act 1 (S02–S39e, sections 1–7 in `renders/m4/sections_v8/`) approved.
+- **Rule:** R1 (the M4 gate). The fence shimmer in S38–S39e stays an open item for the 4K render.

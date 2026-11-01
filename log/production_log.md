@@ -861,3 +861,8 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Archive:** the v7 cuts moved to `archive/renders/m4/v7_superseded/`, superseded by v8.
 - **Review notes:** `shots/m4_review.md` now points to v8 and has a "Since v7: your notes" section.
 - **Manifest:** updated.
+
+## 2026-11-01 — M4 gate passed; M5 starts
+- **M4:** the human approved Act 1 v8 (human interventions, same date). Approved cut: `renders/m4/sections_v8/`, `renders/m4/m4_act1_v8.mp4`.
+- **Open for the 4K render:** the fence bars' shimmer in S38–S39e.
+- **Next:** M5, the lip-sync test on S43, then Act 2 (S40–S48b).
