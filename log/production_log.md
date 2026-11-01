@@ -1023,3 +1023,47 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Face glitch (new, `scripts/glitch_face.py`, `config/glitch.json`):** an effect pass inside the tracked face ellipse, driven by the lead vocal stem: rows tear sideways by the voice's samples, the colour channels split, and above strength 0.5 the face goes dark and becomes the vocal's waveform (a teal trace, 12 ms of the voice per frame). Timed to the words (`timing/words.json`): S42 flickers on "bot" and "bots," and turns into the waveform on "the bots to the feed"; S43 keeps flickering ("face still flickering") with a waveform flash on its first frame. Outputs `takes/fx/S42/S42_glitch.mp4`, `takes/fx/S43/S43_glitch.mp4`.
 - **Config:** `config/v.json` style: white LED light instead of sodium (unused by the scripts so far; kept in step with the approved look).
 - **Review:** `renders/m5/review/S42_S43_v1.mp4` (S42 into S43 with the master, three times).
+
+## 2026-11-01T12:21:17-05:00 — M5: keyframes (S41)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S41 --seeds 2001,2002 --denoise 0.85`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S41_d85 | 2001 | 0.85 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d85_s2001.png` | 149.7 | pending (R1) |
+| S41_d85 | 2002 | 0.85 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d85_s2002.png` | 135.3 | pending (R1) |
+
+## 2026-11-01T12:26:02-05:00 — M5: keyframes (S41)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S41 --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S41_d92 | 2001 | 0.92 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d92_s2001.png` | 146.4 | pending (R1) |
+| S41_d92 | 2002 | 0.92 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d92_s2002.png` | 146.6 | pending (R1) |
+
+## 2026-11-01T12:31:11-05:00 — M5: keyframes (S41)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S41 --seeds 2001,2002 --denoise 0.96`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S41_d96 | 2001 | 0.96 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d96_s2001.png` | 152.2 | pending (R1) |
+| S41_d96 | 2002 | 0.96 | renders/m5/plates/S41/beauty/04198.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S41/S41_d96_s2002.png` | 152.2 | pending (R1) |
+
+## 2026-11-01T13:05:00-05:00 — M5: S41, the reveal (plates, keyframe, V, the patchy crossfade)
+- **Plates:** all 63 frames of S41 (4198–4260), `blender -b --factory-startup --python scenes/blender/plates.py -- S41`, `renders/m5/plates/S41/`.
+- **Keyframe** (`config/keyframes.json` S41; six rows auto-logged above): unlike S42–S43, S41 must keep the layout's geometry, since it dissolves from the Blender render. From the layout at denoise 0.85 (still CG; the rapper keeps the stand-in's head), 0.92 (the far street turns real, the corner stays CG) and 0.96. **Pick: 0.96, seed 2002** (`takes/keyframes/S41/S41_d96_s2002.png`): the pole, wall, payphone, van, crosswalk and one-way sign in place; apartment hotels with bay windows and fire escapes, a hill, rain. The eatery's sign band comes out blank (the style asks for blank signs).
+- **V:** the Blender depth pass this time (63 frames, last held to the 65-frame clip: `takes/v/S41/S41_depth.mp4`), guide 0.8 so the man can move a little off the stand-in's shape, `log/prompts/v/S41_depth.txt`.
+  - **Command:** `.venv/bin/python scripts/ltx_v.py takes/v/S41/S41_depth.mp4 takes/v/S41/S41_first.png takes/v/S41/S41_depth_s<seed>.mp4 --prompt "$(cat log/prompts/v/S41_depth.txt)" --seed <seed> --control depth --guide 0.8`
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S41/S41_depth_s1.mp4` | 36.5 | 31.1 GB | not used |
+  | 2 | `takes/v/S41/S41_depth_s2.mp4` | 18.0 | 31.1 GB | used (cleaner around him) |
+- **Reveal (new, `scripts/reveal.py`):** the brief's crossfade from the B render (the plates' beauty) to the V take, done in patches: each pixel turns at its own moment from a soft noise field plus the depth pass, so the far street goes real first and the corner nearest the camera last. 0.25 s to 2.0 s into the shot, smoothstep. **Command:** `.venv/bin/python scripts/reveal.py S41 takes/v/S41/S41_depth_s2.mp4` → `takes/fx/S41/S41_reveal.mp4`.
+- **Review:** `renders/m5/review/S41_S43_v1.mp4` (S41 → S42 → S43 with the master, three times).
+- **Open:** the "r/Philippines" sign on the eatery dissolves to a blank band, and S42–S43's corner has no sign either. If it should read in Act 2, it goes on as an overlay in the edit (signs are overlays, `config/v.json`).
