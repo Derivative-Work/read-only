@@ -8,7 +8,7 @@ Two kinds, one file (overlays/cues.json), all times song seconds:
   screens   in-world screens drawn by overlays/screens.html (overlays/screens.mjs) to image sequences that the
             Blender set maps onto their surfaces: S10 the lobby screen flashing BLACKMAIL; S16 the pawn shop's LED
             countdown from 48:00:00; S20 the lobby's traffic chart, dipping and bouncing back; S30 the LED ticker band; S44 (M5) the
-            rooftop billboard's comment box
+            rooftop billboard's comment box; S48b (M5) the login prompt
 
 Usage: .venv/bin/python -I scripts/overlay_cues.py
 """
@@ -61,6 +61,7 @@ def main():
     s03, s06, s07, s08, s13, s35 = (SHOT[k] for k in ("S03", "S06", "S07", "S08", "S13", "S35"))
     s10, s16, s20, s30 = (SHOT[k] for k in ("S10", "S16", "S20", "S30"))
     s44 = SHOT["S44"]
+    s48b = (TM["duration_s"], TM["duration_s"] + BOOK["postroll"]["S48b"])  # after the audio (config/bookends.json)
     dark, bounced = word("L21", "dark"), word("L22", "bounced")
     beat_in = [b for a, b in TM["drum_dropouts"] if b < 12][-1]
     cues = {
@@ -96,6 +97,11 @@ def main():
             # "Reply below." waits in the field and the cursor blinks on the beat (brief: "Cursor blinks in tempo")
             "billboard_reply": {"size": [2300, 900], "shot": "S44", "from": s44[0], "to": s44[1],
                                 "blink": beats(s44[0] - 1.0, s44[1] + 0.5)},
+            # M5: S48b, the tag after the last word: black, then a generic login prompt fades in and its cursor blinks in
+            # the username field (twice a second, the music has stopped), then cut. The grave's fade to black is the
+            # assembler's.
+            "login_prompt": {"size": [1280, 720], "shot": "S48b", "from": s48b[0], "to": s48b[1],
+                             "fade_in": [round(s48b[0] + 0.8, 3), round(s48b[0] + 1.6, 3)]},
         },
     }
     Path("overlays").mkdir(exist_ok=True)

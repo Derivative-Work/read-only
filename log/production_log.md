@@ -1372,3 +1372,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S48a/S48a_s2.mp4` | 27.4 | 30.9 GB | used, from frame 73 |
   | 3 | `takes/v/S48a/S48a_s3.mp4` | 25.1 | 31.0 GB | used, from frame 146 |
 - **Review:** `renders/m5/review/S48_S48a_v1.mp4` (S48 into S48a with the master, twice).
+
+## 2026-11-02T03:00:00-05:00 — M5: S40, S48b and the Act 2 cut (the M5 gate)
+- **S48b (new screen, `overlays/screens.html` "login_prompt", cue in `scripts/overlay_cues.py`):** a generic login prompt, full frame: a white card on light grey with "Log in to continue", Username and Password fields, a plain Log in button and "Forgot your password?", Inter; black until 0.8 s into S48b, fading in by 1.6 s; the cursor blinks in the username field twice a second. No site's layout, colours, logo or fonts. Cues regenerated (the other entries unchanged, checked); `node overlays/screens.mjs --only login_prompt` → `renders/screens/login_prompt/` (97 frames). S48b runs 196.16–200.16 (`config/bookends.json` post-roll).
+- **Act 2 cut (new, `scripts/act2_assemble.py`):** 2 s of S39e from the approved Act 1 frames (`renders/m4/act1_v8/frames`), then S40, the approved M5 takes S41–S48a (scaled to cover 1280×720), and S48b; the master to its end, S48b silent. **Command:** `.venv/bin/python -I scripts/act2_assemble.py renders/m5/act2_v1.mp4` → `renders/m5/act2_v1.mp4` (48.5 s).
+  - **S40:** the M3 assembler's rewind (0.4 s hard freeze on S39e's last frame, then every Act 1 frame back to S02 in reverse), with the brief's "rewind scan lines" over the rewind: scan lines, a rolling tracking band of noise, the colour channels pulled apart, line jitter, crushed and desaturated. The freeze stays clean.
+  - **S48b:** S48a's last frame fades to black over 0.8 s, then the login prompt.

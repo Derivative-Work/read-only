@@ -152,7 +152,35 @@ function billboard_reply(t) {
   g.fillStyle = "#ffffff"; g.fillText("Reply", R - 260, by + bh / 2 + 4);
 }
 
-const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker, billboard_reply };
+// S48b (M5): a generic login prompt, full frame: a white card on light grey ("Log in to continue", username and
+// password fields, a plain button, a small link), fading in from black; the cursor blinks in the empty username
+// field twice a second. No site's layout, colours, logo or fonts.
+function login_prompt(t) {
+  g.fillStyle = "#000"; g.fillRect(0, 0, W, H);
+  const [f0, f1] = S.fade_in, a = ease(clamp((t - f0) / (f1 - f0)));
+  if (a <= 0) return;
+  g.save(); g.globalAlpha = a;
+  g.fillStyle = "#eceef1"; g.fillRect(0, 0, W, H);
+  const cw = 440, ch = 430, cx = (W - cw) / 2, cy = (H - ch) / 2;
+  g.fillStyle = "#ffffff"; rrect(cx, cy, cw, ch, 14); g.fill();
+  g.strokeStyle = "#d4d8de"; g.lineWidth = 2; rrect(cx, cy, cw, ch, 14); g.stroke();
+  g.fillStyle = "#1d232b"; g.font = `600 30px "Inter"`; g.textAlign = "left"; g.textBaseline = "alphabetic";
+  g.fillText("Log in to continue", cx + 40, cy + 70);
+  const field = (label, y, cursor) => {
+    g.fillStyle = "#5b6470"; g.font = `16px "Inter"`; g.fillText(label, cx + 40, y);
+    g.fillStyle = "#ffffff"; rrect(cx + 40, y + 10, cw - 80, 48, 8); g.fill();
+    g.strokeStyle = cursor ? "#3d4651" : "#c3c8cf"; g.lineWidth = cursor ? 2.5 : 2; rrect(cx + 40, y + 10, cw - 80, 48, 8); g.stroke();
+    if (cursor && ((t - f1) % 1.0 + 1.0) % 1.0 < 0.5) { g.fillStyle = "#1d232b"; g.fillRect(cx + 56, y + 22, 2, 24); }
+  };
+  field("Username", cy + 120, true);
+  field("Password", cy + 216, false);
+  g.fillStyle = "#3d4651"; rrect(cx + 40, cy + 314, cw - 80, 50, 25); g.fill();
+  g.fillStyle = "#ffffff"; g.font = `600 18px "Inter"`; g.textAlign = "center"; g.fillText("Log in", W / 2, cy + 345);
+  g.fillStyle = "#5b6470"; g.font = `14px "Inter"`; g.fillText("Forgot your password?", W / 2, cy + 400);
+  g.restore();
+}
+
+const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker, billboard_reply, login_prompt };
 function show(name, t) { if (!S || S !== C.screens[name]) { size(name); dotSrc = null; } SHOW[name](t); }
 </script>
 </body>
