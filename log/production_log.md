@@ -1177,3 +1177,45 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S45/S45_v3_s2.mp4` | 28.1 | 31.2 GB | not used: the shutter starts early |
 - **Notice:** `scripts/sign_paste.py S45 takes/v/S45/S45_v3_s1.mp4 --shutter 450 1200` → `takes/fx/S45/S45_sign.mp4`. The shutter's edge detection now takes the first tall run of changed rows near the top (the trim above the shutter doesn't change; gaps of up to 8 rows bridged; under 60 rows is a flickering neon tube, not the shutter).
 - **Review:** `renders/m5/review/S44_S45_v2.mp4`.
+
+## 2026-11-01T15:01:31-05:00 — M5: keyframes (S47)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S47 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S47_d90 | 2001 | 0.9 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_d90_s2001.png` | 136.8 | pending (R1) |
+| S47_d90 | 2002 | 0.9 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_d90_s2002.png` | 115.4 | pending (R1) |
+
+## 2026-11-01T15:05:56-05:00 — M5: keyframes (S47)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S47 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S47_v2_d90 | 2001 | 0.9 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_v2_d90_s2001.png` | 110.3 | pending (R1) |
+| S47_v2_d90 | 2002 | 0.9 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_v2_d90_s2002.png` | 102.2 | pending (R1) |
+
+## 2026-11-01T15:09:29-05:00 — M5: keyframes (S47)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S47 --seeds 2001,2002 --denoise 0.95`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S47_v2_d95 | 2001 | 0.95 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_v2_d95_s2001.png` | 128.1 | pending (R1) |
+| S47_v2_d95 | 2002 | 0.95 | renders/m5/plates/S47/beauty/04563.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S47/S47_v2_d95_s2002.png` | 125.2 | pending (R1) |
+
+## 2026-11-01T18:30:00-05:00 — M5: S47, the real payphone and its REC light
+- **Plates:** 111 frames (4563–4673): the first at 16 samples (the keyframe layout), the rest at 4 (depth only). The REC LED's matte from the shot's camera: `blender -b --factory-startup --python scenes/blender/sign_matte.py -- S47 --objects recorder.rec` → `renders/m5/plates/S47/sign/`.
+- **Keyframe** (`config/keyframes.json` S47, the payphone crop as reference 2; six rows auto-logged above): v1 asked for "piano-key buttons" and got a toy keyboard on the recorder; v2 describes a row of six chunky push buttons, the speaker grille and the open cassette door. 0.9 and 0.95, seeds 2001–2002. **Pick: v2 0.95 seed 2001** (`takes/keyframes/S47/S47_v2_d95_s2001.png`): the post, the duct-taped recorder with a cassette in its open door, the handset on its coiled cord, the van and the newspaper box where the layout has them.
+- **V:** the Blender depth, guide 1.0, chained 97 + 17 like S44, `log/prompts/v/S47_depth.txt`.
+
+  | Seed | Output | Seconds (c0 + c1) | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S47/S47_s1.mp4` | 52.1 + 7.0 | 31.3 GB | used |
+  | 2 | `takes/v/S47/S47_s2.mp4` | 28.1 + 7.0 | 31.3 GB | not used (much the same; seed 1 a little cleaner) |
+- **REC blink (new, `scripts/rec_blink.py`):** the take has a lit red LED a few pixels from the Blender one; it is found each frame (the reddest blob within 40 px of the matte's position), smoothed, and blinked on the Blender timing (on 0.25 s every 0.5 s from the shot's start): dimmed to a dark red lens when off, a bright lens with a soft red glow when on. **Command:** `.venv/bin/python scripts/rec_blink.py S47 takes/v/S47/S47_s1.mp4` → `takes/fx/S47/S47_rec.mp4`.
+- **Review:** `renders/m5/review/S45_S47_v1.mp4` (S45 into S47 with the master, three times; S46 is retired).
