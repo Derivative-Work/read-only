@@ -876,7 +876,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 | Item | Seed | Output | Seconds | Status |
 | --- | --- | --- | --- | --- |
 | rapper | 1001 | `takes/stills/rapper/rapper_s1001.png` | 62.5 | pending (R1) |
-| rapper | 1002 | `takes/stills/rapper/rapper_s1002.png` | 50.1 | pending (R1) |
+| rapper | 1002 | `takes/stills/rapper/rapper_s1002.png` | 50.1 | kept (R1, 2026-11-01) |
 | rapper | 1003 | `takes/stills/rapper/rapper_s1003.png` | 50.1 | pending (R1) |
 | rapper | 1004 | `takes/stills/rapper/rapper_s1004.png` | 50.1 | pending (R1) |
 
@@ -908,7 +908,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 | Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | S43 | 1 | 39 | 41 | `takes/v/S43/S43_moge_s2.mp4` | `takes/l/S43/S43_s1.mp4` | 22.4 | pending (R1) |
-| S43 | 2 | 39 | 41 | `takes/v/S43/S43_moge_s2.mp4` | `takes/l/S43/S43_s2.mp4` | 19.5 | pending (R1) |
+| S43 | 2 | 39 | 41 | `takes/v/S43/S43_moge_s2.mp4` | `takes/l/S43/S43_s2.mp4` | 19.5 | approved (R1, 2026-11-01): lip sync method and seed |
 
 ## 2026-11-01T08:58:00-05:00 — M5: the S43 lip-sync test (pipeline, plates, sheet, keyframe, V, lip sync)
 - **Pipeline (from Folks Like Us, which built it 2026-10-19/20 on this machine):** `scripts/comfy_client.py`, `stills.py`, `keyframes.py`, `ltx_v.py`, `l_faces.py`, `l_batch.py`, and ComfyUI's FLUX.2 and LTX-2.3 templates with their API conversions in `workflows/` (brief: "export it in API format to `workflows/`"). Adapted: Read-Only's paths, no building-mask sentences, `config/l.json` lists each take with its song time. Outputs go in `takes/` (git-ignored, in the manifest).

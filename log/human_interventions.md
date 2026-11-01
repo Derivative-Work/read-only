@@ -168,3 +168,10 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-01 — M4 approved — R1
 - **What:** after the v8 clips: "approved, go ahead with M5". Act 1 (S02–S39e, sections 1–7 in `renders/m4/sections_v8/`) approved.
 - **Rule:** R1 (the M4 gate). The fence shimmer in S38–S39e stays an open item for the 4K render.
+
+## 2026-11-01 — M5: the S43 lip-sync test — R1
+- **What:** "lip sync is good, use seed 2. use whichever reference sheet was used on the demo. yes, fix the payphone"
+  - **Lip sync:** approved; `takes/l/S43/S43_s2.mp4` (LatentSync 1.6) is the pick.
+  - **Sheet:** `takes/stills/rapper/rapper_s1002.png` kept.
+  - **Note:** the S43 keyframe's wall-mounted payphone doesn't match the set's post-mounted one; fix it.
+- **Rule:** R1 (approve or reject; the note is a rejection of that detail). The agent fixes it (production log, next entries).
