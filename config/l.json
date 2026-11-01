@@ -2,12 +2,28 @@
  "note": "M5 lip sync (brief: \"Audio-driven model via ComfyUI (pick the current best). Test on S43 first.\"): LatentSync 1.6 on the approved V take (scripts/l_batch.py), as Folks Like Us settled on 2026-10-20: it re-generates only the lower face of existing footage from the vocal, so the V take stays the take. It runs from ByteDance's repo in its own venv (~/LatentSync), not in ComfyUI, whose packages its pinned dependencies would replace; LTX-2.3's audio-video model kept a fixed mouth or moved the head there (Folks Like Us log/decisions.md). A 512 px crop that follows the face (YuNet, scripts/l_faces.py), 24 fps frames labelled 25 fps with the vocal sped up 25/24, pasted back through a feathered ellipse. Each take's \"song_time\" is its shot's span; the vocal and the master start at song time 0.",
  "vocal": "audio/stems/0 Lead Vocals.wav",
  "master": "audio/master/Read-Only (postfilter m6f).wav",
- "seeds": [1, 2],
+ "seeds": [
+  1,
+  2
+ ],
  "steps": 20,
  "guidance": 2.5,
  "crop_scale": 2.6,
  "smooth": 9,
  "takes": {
-  "S43": {"take": "takes/v/S43/S43_v4_moge_s2.mp4", "song_time": [162.11, 163.77]}
+  "S43": {
+   "take": "takes/v/S43/S43_v4_moge_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42": {
+   "take": "takes/v/S42/S42_moge_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  }
  }
 }

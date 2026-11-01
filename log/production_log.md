@@ -988,3 +988,38 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
 ## 2026-11-01T10:40:00-05:00 — Log: S43 v4 approved (R1)
 - S43 is done for the V and lip-sync passes: `takes/l/S43/S43_s2.mp4`. Still open for S43: the face flicker (brief: "face still flickering"), to be added with S42's glitch so the two match. Next: S42.
+
+## 2026-11-01T11:47:06-05:00 — M5: keyframes (S42)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S42 --seeds 2001,2002,2003,2004`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S42 | 2001 | 1.0 | renders/m5/plates/S42/beauty/04261.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S42/S42_s2001.png` | 171.4 | pending (R1) |
+| S42 | 2002 | 1.0 | renders/m5/plates/S42/beauty/04261.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S42/S42_s2002.png` | 158.2 | pending (R1) |
+| S42 | 2003 | 1.0 | renders/m5/plates/S42/beauty/04261.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S42/S42_s2003.png` | 157.5 | pending (R1) |
+| S42 | 2004 | 1.0 | renders/m5/plates/S42/beauty/04261.png, takes/stills/rapper/rapper_s1002.png, takes/stills/props/payphone_layout.png | `takes/keyframes/S42/S42_s2004.png` | 158.2 | pending (R1) |
+
+## 2026-11-01T11:59:44-05:00 — M5: lip sync with LatentSync 1.6 (S42 --seeds 2)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S42 --seeds 2`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S42 | 2 | 62 | 64 | `takes/v/S42/S42_moge_s2.mp4` | `takes/l/S42/S42_s2.mp4` | 28.2 | pending (R1) |
+
+## 2026-11-01T12:15:00-05:00 — M5: S42 (keyframe, V, lip sync) and the face glitch (S42, S43)
+- **Keyframe** (`config/keyframes.json` S42; four seeds, auto-logged above): the S43 recipe (layout as reference only, denoise 1.0, sheet 1002, the payphone crop, the Tenderloin sentence), as a medium shot in steady rain. **Pick: seed 2003**, closest to the layout (brick corner and shutter on the left, him centred, the payphone with the recorder on its post, a newspaper box); cornices, bay windows, fire escapes, trolley wires. The neon blade sign across the street has nonsense letters; blurred and not a real name.
+- **V:** as S43: MoGe depth of the keyframe with the shot's camera made by ffmpeg (S42's Blender camera is static, so a slow push-in, zoom 1.0 → 1.04 over 65 frames, the plan's clip), guide 0.6, `log/prompts/v/S42_moge.txt`. Control `takes/v/S42/S42_control.mp4`, first frame `S42_first.png`.
+  - **Command:** `.venv/bin/python scripts/ltx_v.py takes/v/S42/S42_control.mp4 takes/v/S42/S42_first.png takes/v/S42/S42_moge_s<seed>.mp4 --prompt "$(cat log/prompts/v/S42_moge.txt)" --seed <seed> --control moge --guide 0.6`
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S42/S42_moge_s1.mp4` | 46.3 | 31.1 GB | not used |
+  | 2 | `takes/v/S42/S42_moge_s2.mp4` | 31.1 | 31.2 GB | used (a car passes behind him, as in S43) |
+- **Lip sync:** the approved seed 2 (auto-logged above): `takes/l/S42/S42_s2.mp4`.
+- **Face glitch (new, `scripts/glitch_face.py`, `config/glitch.json`):** an effect pass inside the tracked face ellipse, driven by the lead vocal stem: rows tear sideways by the voice's samples, the colour channels split, and above strength 0.5 the face goes dark and becomes the vocal's waveform (a teal trace, 12 ms of the voice per frame). Timed to the words (`timing/words.json`): S42 flickers on "bot" and "bots," and turns into the waveform on "the bots to the feed"; S43 keeps flickering ("face still flickering") with a waveform flash on its first frame. Outputs `takes/fx/S42/S42_glitch.mp4`, `takes/fx/S43/S43_glitch.mp4`.
+- **Config:** `config/v.json` style: white LED light instead of sodium (unused by the scripts so far; kept in step with the approved look).
+- **Review:** `renders/m5/review/S42_S43_v1.mp4` (S42 into S43 with the master, three times).
