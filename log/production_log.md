@@ -1339,3 +1339,36 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **The seam:** part B was regenerated longer, reversed from the park keyframe back to plate frame 4834 (73 frames: `takes/v/S48/S48_b5_depth_rev.mp4`, seed 1 → `S48_v5_s1_b_rev.mp4`, 36.4 s, peak VRAM 31.1 GB), so A (0–176) and B (160–230) overlap through the whip. Over the overlap B was 2.5× A's brightness (Lab L 131 vs 53). New `scripts/join_blend.py` grades B to A over the overlap (per-channel Lab mean and spread), crossfades it in with a smoothstep across frames 160–176, and eases the grade off over the next 24 frames: `.venv/bin/python scripts/join_blend.py takes/v/S48/S48_v5_s1_a.mp4 takes/v/S48/S48_v5_s1_b.mp4 --b-start 160 --length 231 --out takes/v/S48/S48_v5_s1.mp4`.
 - **Overlay:** `.venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v5_s1.mp4 --clean 5` → `takes/fx/S48/S48_overlay.mp4`; the v4 overlay moved to `archive/takes/fx/S48_v4/`, superseded.
 - **Review:** `renders/m5/review/S47_S48_v3.mp4`.
+
+## 2026-11-01T18:36:06-05:00 — M5: keyframes (S48a)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48a --seeds 2001,2002 --denoise 0.85`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48a_d85 | 2001 | 0.85 | renders/m5/plates/S48a/beauty/04905.png | `takes/keyframes/S48a/S48a_d85_s2001.png` | 96.6 | pending (R1) |
+| S48a_d85 | 2002 | 0.85 | renders/m5/plates/S48a/beauty/04905.png | `takes/keyframes/S48a/S48a_d85_s2002.png` | 71.1 | pending (R1) |
+
+## 2026-11-01T18:38:54-05:00 — M5: keyframes (S48a)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S48a --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S48a_d92 | 2001 | 0.92 | renders/m5/plates/S48a/beauty/04905.png | `takes/keyframes/S48a/S48a_d92_s2001.png` | 76.3 | pending (R1) |
+| S48a_d92 | 2002 | 0.92 | renders/m5/plates/S48a/beauty/04905.png | `takes/keyframes/S48a/S48a_d92_s2002.png` | 76.4 | pending (R1) |
+
+## 2026-11-02T02:10:00-05:00 — M5: S48a, the open grave
+- **Plate:** the first frame only (`plates.py S48a --first --samples 16`): the camera is locked off and nothing in the set moves, so that frame's depth serves for every frame (`takes/v/S48a/S48a_depth.mp4`, the frame held 97 frames). 235 frames, 186.38–196.16.
+- **Keyframe** (`config/keyframes.json` S48a; four rows auto-logged above): 0.85 and 0.92, seeds 2001–2002; all four keep the inscription ("Logged-out Reddit / 2005 –") as carved. **Pick: 0.92 seed 2002** (`takes/keyframes/S48a/S48a_d92_s2002.png`): wet granite, the grave dark, a little street neon on the railing.
+- **V:** three 97-frame clips from the same keyframe (seeds 1–3, the depth guide, `log/prompts/v/S48a_depth.txt`), joined with 24-frame dissolves (offsets 3.04 s and 6.08 s) and trimmed to 235 frames: `takes/v/S48a/S48a_joined.mp4`. Largest frame-to-frame change 1.1 grey levels (at the first dissolve): the joins don't show.
+  - **Command:** `.venv/bin/python scripts/ltx_v.py takes/v/S48a/S48a_depth.mp4 takes/v/S48a/S48a_first.png takes/v/S48a/S48a_s<seed>.mp4 --prompt "$(cat log/prompts/v/S48a_depth.txt)" --seed <seed> --control depth`
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S48a/S48a_s1.mp4` | 56.0 | 31.1 GB | used, frames 0–96 |
+  | 2 | `takes/v/S48a/S48a_s2.mp4` | 27.4 | 30.9 GB | used, from frame 73 |
+  | 3 | `takes/v/S48a/S48a_s3.mp4` | 25.1 | 31.0 GB | used, from frame 146 |
+- **Review:** `renders/m5/review/S48_S48a_v1.mp4` (S48 into S48a with the master, twice).
