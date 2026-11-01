@@ -829,7 +829,8 @@ def stage(S):
     bl.energy, bl.size, bl.color = 400, 1.5, (1.0, 0.85, 0.6)
     blo = only(gb.link(bpy.data.objects.new("hype.back", bl)), "S45")
     blo.location, blo.rotation_euler = (sh_x[6] + 1.9, B.FRONT - 2.5, 1.5), (math.radians(-90), 0, 0)
-    cam("S45", [(0, (sh_x[6] + 1.5, -5.5, 1.5), (sh_x[6] + 1.9, -10, 1.3))], lens=40)
+    # M5: from x + 1.5 a sidewalk fixture stood 0.85 m in front of the lens, over the doorway; a metre east clears it
+    cam("S45", [(0, (sh_x[6] + 2.6, -5.5, 1.5), (sh_x[6] + 1.9, -10, 1.3))], lens=40)
 
     # ---- outro (S47-S48b): the payphone; the crane over a block of doormen, keypads and REC lights; the open grave
     cam("S47", [(0, (-30.6, -7.4, 1.3), (-31.56, -8.45, 0.88)), (1, (-30.9, -7.7, 1.1), (-31.56, -8.45, 0.88))], lens=40)

@@ -1107,3 +1107,48 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   | 2 | `takes/v/S44/S44_s2.mp4` | 28.1 + 7.0 | 31.3 GB | not used: the billboard's corners darken in clip 1 |
 - **Pin (new, `scripts/billboard.py`):** finds the billboard's lit face in the take each frame (largest bright four-cornered region), smooths the corners over 5 frames, warps the screen onto it, multiplied by the take's light there so rain and falloff carry over. **Command:** `.venv/bin/python scripts/billboard.py S44 takes/v/S44/S44_s1.mp4` → `takes/fx/S44/S44_billboard.mp4`, `corners.json`.
 - **Review:** `renders/m5/review/S43_S44_v1.mp4` (S43 into S44 with the master, three times).
+
+## 2026-11-01T14:00:59-05:00 — M5: keyframes (S45)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S45 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S45_d90 | 2001 | 0.9 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_d90_s2001.png` | 116.8 | pending (R1) |
+| S45_d90 | 2002 | 0.9 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_d90_s2002.png` | 75.4 | pending (R1) |
+
+## 2026-11-01T14:04:12-05:00 — M5: keyframes (S45)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S45 --seeds 2001,2002 --denoise 0.96`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S45_d96 | 2001 | 0.96 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_d96_s2001.png` | 79.4 | pending (R1) |
+| S45_d96 | 2002 | 0.96 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_d96_s2002.png` | 80.1 | pending (R1) |
+
+## 2026-11-01T14:07:07-05:00 — M5: keyframes (S45)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S45 --seeds 2001,2002,2003 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S45_v2_d92 | 2001 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v2_d92_s2001.png` | 82.4 | pending (R1) |
+| S45_v2_d92 | 2002 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v2_d92_s2002.png` | 81.5 | pending (R1) |
+| S45_v2_d92 | 2003 | 0.92 | renders/m5/plates/S45/beauty/04474.png | `takes/keyframes/S45/S45_v2_d92_s2003.png` | 78.3 | pending (R1) |
+
+## 2026-11-01T16:10:00-05:00 — M5: S45, the hype man in the doorway
+- **Camera (`shots.py`):** S45's first plate showed a sidewalk fixture (`street.furniture`, found by ray cast) 0.85 m in front of the lens, over the doorway: S45 is Act 2, so its final-look layout was never reviewed at M4. The camera moves a metre east (x + 1.5 → x + 2.6), still aimed at the doorway; Act 1 is untouched. The stopped first render's layout is in `archive/renders/m5/plates_S45_v1/`, superseded.
+- **Plates:** 89 frames (4474–4562). The first frame at 16 samples (the keyframe layout), the rest at 4 (`--samples 4`: V uses only their depth; 32 samples ran at ~50 s a frame with the doorway's backlight). The shutter slams down over him in the last three frames, as built at M3.
+- **Keyframe** (`config/keyframes.json` S45; seven rows auto-logged above): v1 at 0.9 and 0.96 (seeds 2001–2002): one kept the stand-in's cartoon legs, one put a sports-team-style logo on his cap (rejected under the guardrails), the others lit his face (brief: "never fully seen"). v2 asks for a pitch-black front with a thin rim light and a plain cap, 0.92, seeds 2001–2003. **Pick: v2 seed 2001** (`takes/keyframes/S45/S45_v2_d92_s2001.png`): a solid silhouette with human proportions; 2002 and 2003 kept the stand-in's shape.
+- **V:** the Blender depth at guide 0.7 (his shape stays human), 89 frames, `log/prompts/v/S45_depth.txt`.
+  - **Command:** `.venv/bin/python scripts/ltx_v.py takes/v/S45/S45_depth.mp4 takes/v/S45/S45_first.png takes/v/S45/S45_s<seed>.mp4 --prompt "$(cat log/prompts/v/S45_depth.txt)" --seed <seed> --control depth --guide 0.7`
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S45/S45_s1.mp4` | 61.9 | 31.3 GB | used: the shutter slams in the last frames, as in Blender |
+  | 2 | `takes/v/S45/S45_s2.mp4` | 30.0 | 31.0 GB | not used: the shutter starts early and hangs half down |
+- **The STITCH NIGHT notice** (continuity, as the human asked for S41's sign): the take's notice came out garbled. `scenes/blender/sign_matte.py` gains `--materials` (keep faces of a material, by name prefix, showing their own texture; glass clear; all else holdout), since the notice is a quad in the interior's merged mesh: `blender -b --factory-startup --python scenes/blender/sign_matte.py -- S45 --materials int.atlas.shops` → `renders/m5/plates/S45/sign/`. New `scripts/sign_paste.py` replaces the take's notice with it, lit by the take's light there (blurred so the garbled letters don't show), and with `--shutter 650 1250` gives way to the take's own shutter as it comes down (its bottom edge found row by row; a first try by pixel difference let the notice ghost on the blue shutter). **Command:** `.venv/bin/python scripts/sign_paste.py S45 takes/v/S45/S45_s1.mp4 --shutter 650 1250` → `takes/fx/S45/S45_sign.mp4`.
+- **Review:** `renders/m5/review/S44_S45_v1.mp4` (S44 into S45 with the master, three times).

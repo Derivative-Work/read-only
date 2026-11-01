@@ -2,9 +2,15 @@
 photoreal takes (the human's note on S41: "put the text back for continuity"). Every other object is a holdout, so
 whatever stands in front of the sign (the pole in S41) still hides it. Same build as plates.py.
 
-Out: renders/m5/plates/<shot>/sign/NNNNN.png (RGBA: the ink's colour, alpha = coverage).
+--materials instead keeps every face with a material whose name starts with one of the prefixes (a poster that is a
+quad inside an interior's merged mesh, S45's STITCH NIGHT notice), showing its own texture; glass is clear and every
+other material renders as a holdout.
+
+Out: renders/m5/plates/<shot>/sign/NNNNN.png (RGBA: --objects, black ink; --materials, the texture's colours;
+alpha = coverage).
 
 Usage: blender -b --factory-startup --python scenes/blender/sign_matte.py -- S41 [--objects shop0.sign]
+       blender -b --factory-startup --python scenes/blender/sign_matte.py -- S45 --materials int.atlas.shops
 """
 import argparse
 import json
@@ -22,10 +28,35 @@ ROOT = HERE.parents[1]
 VCFG = json.loads((ROOT / "config" / "v.json").read_text())
 
 
+def materials_matte(prefixes):
+    """Kept materials emit their image texture (alpha from the texture); every other material is a holdout. Objects
+    without a material are holdouts."""
+    for m in list(bpy.data.materials):
+        if not m.use_nodes:
+            m.use_nodes = True
+        nt = m.node_tree
+        out = next((n for n in nt.nodes if n.type == "OUTPUT_MATERIAL"), None) or nt.nodes.new("ShaderNodeOutputMaterial")
+        for l in list(out.inputs["Surface"].links) + list(out.inputs["Volume"].links):
+            nt.links.remove(l)
+        if any(m.name.startswith(p) for p in prefixes):
+            tex = next(n for n in nt.nodes if n.type == "TEX_IMAGE")
+            em = nt.nodes.new("ShaderNodeEmission")
+            nt.links.new(tex.outputs["Color"], em.inputs["Color"])
+            nt.links.new(em.outputs[0], out.inputs["Surface"])
+        elif m.name.startswith("glass"):  # windows: see through them to the poster behind
+            nt.links.new(nt.nodes.new("ShaderNodeBsdfTransparent").outputs[0], out.inputs["Surface"])
+        else:
+            nt.links.new(nt.nodes.new("ShaderNodeHoldout").outputs[0], out.inputs["Surface"])
+    for o in bpy.data.objects:
+        if o.type in ("MESH", "CURVE", "FONT") and not any(ms.material for ms in o.material_slots):
+            o.is_holdout = True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("shots", nargs="+")
     ap.add_argument("--objects", nargs="+", default=["shop0.sign"])
+    ap.add_argument("--materials", nargs="+")
     ap.add_argument("--out", default=str(ROOT / "renders/m5/plates"))
     a = ap.parse_args(sys.argv[sys.argv.index("--") + 1:])
     sc, SP = animatic.build(tuple(VCFG["size"]), 16, "final", 1)
@@ -37,8 +68,11 @@ def main():
     if sc.world and sc.world.node_tree:  # no fog: it would put haze in the alpha
         for l in [l for l in sc.world.node_tree.links if l.to_socket.name == "Volume"]:
             sc.world.node_tree.links.remove(l)
+    if a.materials:
+        materials_matte(a.materials)
+        a.objects = []
     keep = set(a.objects)
-    for o in bpy.data.objects:
+    for o in [] if a.materials else bpy.data.objects:
         if o.name not in keep:
             o.is_holdout = True
             if any(ms.material and ms.material.node_tree and any(n.type.startswith("PRINCIPLED_VOLUME") or n.type == "VOLUME_SCATTER"
