@@ -1,0 +1,27 @@
+{
+ "note": "M5: one photoreal keyframe per B\u2192V shot, made with FLUX.2 [dev] from the shot's Blender first frame (reference image 1: layout, renders/m5/plates/<shot>/) and the reference sheets (images 2+). V animates from it, guided by the same plate's depth, so the keyframe keeps the layout's geometry: the sampler starts from the layout at partial denoise. Text is the overlays': signs, screens and the billboard stay plain. Act 2 is the same night as Act 1, now in rain (brief, S42). S43 v2: v1 (denoise 0.92) kept the stand-in's cartoon head and eyes; v2 starts from noise (denoise 1.0) with the layout as a reference only, and asks for natural proportions.",
+ "size": [
+  1920,
+  1056
+ ],
+ "seeds": [
+  2001,
+  2002
+ ],
+ "denoise": 0.92,
+ "refs": {
+  "rapper": "takes/stills/rapper/rapper_s1002.png"
+ },
+ "layout_prefix": "Reference image 1 is a rough 3D layout of this exact shot. Keep its camera angle, lens, framing, horizon line and perspective exactly, and keep every building, object and figure in the same place and pose. Turn the stand-in shapes into the real, photographed things described below, as a still from a high-budget cinematic film.",
+ "style": "Night, steady light rain, wet surfaces, cinematic 35mm film look, shallow depth of field, sodium-orange streetlight and cool neon, deep shadows, natural skin texture. Every sign, screen and label is plain and blank, with no text, letters, numbers or logos.",
+ "shots": {
+  "S43": {
+   "refs": [
+    "rapper"
+   ],
+   "prompt": "A tight close-up of the man from reference image 2, a real adult man with natural human proportions, normal-sized eyes and a lean face: the same face, short black curly hair, teal hoodie with white drawstrings and the straps of a tan canvas apron. Reference image 1 gives only the camera angle, the framing and the background; the cartoon figure in it becomes this real man, head and shoulders filling the frame. He stands on a city street corner at night and looks straight into the camera, lips parted mid-word as he raps, calm and knowing. Raindrops bead on his face and hair. Behind him, out of focus: a red brick wall and a rolled-down corrugated metal shutter on the left, a lit payphone and parked cars on the right, lit apartment windows above, wet asphalt reflecting the lights.",
+   "v": 2,
+   "denoise": 1.0
+  }
+ }
+}

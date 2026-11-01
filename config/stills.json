@@ -1,0 +1,11 @@
+{
+ "note": "M5: reference sheets for the Act 2 performers (brief: \"Character stills: FLUX.2 via ComfyUI. Reference sheets for the Act 2 performers, kept consistent with the Act 1 designs\"). scripts/stills.py renders one candidate per seed; the human keeps one (R1). Characters are invented: no names, no likenesses (guardrails). The rapper is the Dev's Act 1 design made real (shots.py builds S41-S43's rapper from B.dev): brown skin, short black curly hair, a teal hoodie with white drawstrings, a tan canvas shop apron and a tool belt, jeans. Not a likeness of the Apollo developer (brief). No legible text or logos.",
+ "model": {"unet": "flux2_dev_fp8mixed.safetensors", "clip": "mistral_3_small_flux2_fp4_mixed.safetensors", "vae": "flux2-vae.safetensors", "steps": 28, "guidance": 4.0, "sampler": "euler"},
+ "seeds": [1001, 1002, 1003, 1004],
+ "items": {
+  "rapper": {
+   "size": [1920, 1088],
+   "prompt": "Character reference sheet of one invented man, about 30 years old, with warm brown skin, short thick black curly hair, a clean-shaven face with a thin, slightly tired, knowing half-smile, dark eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  }
+ }
+}

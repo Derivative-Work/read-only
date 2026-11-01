@@ -1,0 +1,10 @@
+{
+ "note": "M5 V: LTX-2.3 IC-LoRA union control over the Blender depth pass (scripts/v_batch.py, after Folks Like Us). Each shot starts from its approved keyframe (config/keyframes.json); a clip is 8k+1 frames, at most clip_max; longer shots are chained. Prompts say what moves; the camera move comes from the depth pass. Signs and screens are drawn by the overlays, so the prompts keep their faces plain. Positive wording only.",
+ "size": [1280, 704],
+ "clip_max": 97,
+ "far_default": 120,
+ "far": {},
+ "seeds": [1, 2],
+ "style": "Photorealistic cinematic night footage shot on 35mm film, a rainy San Francisco Tenderloin street, wet asphalt reflecting sodium streetlights and neon, natural subtle motion.",
+ "shots": {}
+}

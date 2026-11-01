@@ -813,8 +813,10 @@ def stage(S):
     cam("S40", [(0, (-11.6, 21.3, 1.7), (-11.6, 25.2, 0.4))], lens=30)
 
     # ---- verse 4 (S41-S45): back on the corner, the reveal
-    for sid in ("S41", "S42", "S43"):
-        r = only(B.dev((-29.5, -7.4, 0.16), rot_z=math.radians(200), name=f"rapper.{sid}"), sid)
+    # M5: he faces each camera (rot_z 200 turned him 50 degrees off it; S42-S43 are lip-synced): the figure looks
+    # down -Y turned by rot_z, so facing the camera at (dx, dy) from him is atan2(dx, -dy)
+    for sid, yaw in (("S41", 147), ("S42", 151), ("S43", 154)):
+        r = only(B.dev((-29.5, -7.4, 0.16), rot_z=math.radians(yaw), name=f"rapper.{sid}"), sid)
         sing(r, sid)
     cam("S41", [(0, (-24, 0, 2.2), (-29.5, -7.4, 1.4)), (1, (-25, -2, 1.9), (-29.5, -7.4, 1.4))], lens=30)
     cam("S42", [(0, (-27.6, -4.4, 1.6), (-29.5, -7.4, 1.4))], lens=40)

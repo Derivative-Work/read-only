@@ -866,3 +866,63 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **M4:** the human approved Act 1 v8 (human interventions, same date). Approved cut: `renders/m4/sections_v8/`, `renders/m4/m4_act1_v8.mp4`.
 - **Open for the 4K render:** the fence bars' shimmer in S38–S39e.
 - **Next:** M5, the lip-sync test on S43, then Act 2 (S40–S48b).
+
+## 2026-11-01T08:37:14-05:00 — M5: reference sheets (rapper)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, text encoder `mistral_3_small_flux2_fp4_mixed.safetensors`, VAE `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0; ComfyUI (`scripts/stills.py`, graph as the `image_flux2_fp8` template, text-to-image).
+- **Prompts:** `log/prompts/stills/<item>.txt`. **Inputs:** none (text only).
+- **Command:** `.venv/bin/python scripts/stills.py rapper`
+
+| Item | Seed | Output | Seconds | Status |
+| --- | --- | --- | --- | --- |
+| rapper | 1001 | `takes/stills/rapper/rapper_s1001.png` | 62.5 | pending (R1) |
+| rapper | 1002 | `takes/stills/rapper/rapper_s1002.png` | 50.1 | pending (R1) |
+| rapper | 1003 | `takes/stills/rapper/rapper_s1003.png` | 50.1 | pending (R1) |
+| rapper | 1004 | `takes/stills/rapper/rapper_s1004.png` | 50.1 | pending (R1) |
+
+## 2026-11-01T08:41:17-05:00 — M5: keyframes (S43)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S43`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S43 | 2001 | 0.92 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png | `takes/keyframes/S43/S43_s2001.png` | 108.2 | pending (R1) |
+| S43 | 2002 | 0.92 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png | `takes/keyframes/S43/S43_s2002.png` | 106.1 | pending (R1) |
+
+## 2026-11-01T08:45:06-05:00 — M5: keyframes (S43)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S43`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S43_v2 | 2001 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png | `takes/keyframes/S43/S43_v2_s2001.png` | 115.1 | pending (R1) |
+| S43_v2 | 2002 | 1.0 | renders/m5/plates/S43/beauty/04323.png, takes/stills/rapper/rapper_s1002.png | `takes/keyframes/S43/S43_v2_s2002.png` | 114.3 | pending (R1) |
+
+## 2026-11-01T08:51:04-05:00 — M5: lip sync with LatentSync 1.6 (S43)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S43`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S43 | 1 | 39 | 41 | `takes/v/S43/S43_moge_s2.mp4` | `takes/l/S43/S43_s1.mp4` | 22.4 | pending (R1) |
+| S43 | 2 | 39 | 41 | `takes/v/S43/S43_moge_s2.mp4` | `takes/l/S43/S43_s2.mp4` | 19.5 | pending (R1) |
+
+## 2026-11-01T08:58:00-05:00 — M5: the S43 lip-sync test (pipeline, plates, sheet, keyframe, V, lip sync)
+- **Pipeline (from Folks Like Us, which built it 2026-10-19/20 on this machine):** `scripts/comfy_client.py`, `stills.py`, `keyframes.py`, `ltx_v.py`, `l_faces.py`, `l_batch.py`, and ComfyUI's FLUX.2 and LTX-2.3 templates with their API conversions in `workflows/` (brief: "export it in API format to `workflows/`"). Adapted: Read-Only's paths, no building-mask sentences, `config/l.json` lists each take with its song time. Outputs go in `takes/` (git-ignored, in the manifest).
+- **Plates:** `scenes/blender/plates.py` renders a shot's own frames from the animatic build (look final) at the V size, 1280×704: beauty, 16-bit inverse depth and EXR, into `renders/m5/plates/<shot>/`. No handles past a shot's end, since its cast is hidden there; a clip is padded by holding the last frame. First frames of S41–S43 rendered.
+- **The rapper faces his cameras** (`shots.py`): at rot_z 200° he looked 50° off S42's and S43's cameras, in profile for a lip-synced close-up. Now S41 147°, S42 151°, S43 154°. The first layouts are in `archive/renders/m5/plates_first_v1/`, superseded.
+- **Sheet:** `rapper`, the Dev's Act 1 design made real (config/stills.json), four seeds (entry above). Seed 1002 used for the test (consistent face across the four views); the human picks at the gate.
+- **Keyframe:** v1 (denoise 0.92 from the layout) kept the stand-in's cartoon head and eyes. v2 starts from noise with the layout as a reference only and asks for natural proportions: photoreal, but its background is its own (the payphone is wall-mounted, the street runs away to the right). v2 seed 2002 used.
+- **V (deviation for S43):** v2's geometry doesn't match the Blender depth, which would pull the face back to the stand-in's. S43 is a near-static close-up, so its control is the template's MoGe depth estimate of the keyframe itself, with the shot's slow pull-back made by ffmpeg (zoom 1.06 → 1.0 over 41 frames, `takes/v/S43/S43_s1_c0_control.mp4`). Wider shots keep the Blender depth.
+  - **Command:** `.venv/bin/python scripts/ltx_v.py takes/v/S43/S43_s1_c0_control.mp4 takes/v/S43/S43_s1_c0_first.png takes/v/S43/S43_moge_s<seed>.mp4 --prompt "$(cat log/prompts/v/S43_moge.txt)" --seed <seed> --control moge --guide 0.6`
+  - **Model:** LTX-2.3 22B distilled fp8 + IC-LoRA union control (ref0.5), `workflows/video_ltx2_3_ic_lora.api.json`, 1280×704, 41 frames, 24 fps.
+
+  | Seed | Output | Seconds | Peak VRAM | Status |
+  | --- | --- | --- | --- | --- |
+  | 1 | `takes/v/S43/S43_moge_s1.mp4` | 36.9 | 32.0 GB | pending (R1) |
+  | 2 | `takes/v/S43/S43_moge_s2.mp4` | 17.4 | 31.6 GB | pending (R1); used for the lip sync (a car passes behind him) |
+- **Lip sync:** LatentSync 1.6 on V seed 2 (entry above), the brief's "pick the current best": the tool Folks Like Us settled on after LTX-2.3's audio-video model failed there. It runs outside ComfyUI, which the brief names; the reason is in `config/l.json`. Both seeds replace the V take's hanging-open mouth with the words' shapes; no seam at the paste.
+- **Not in the test:** the brief's "face still flickering" glitch for S43, an effect pass after the lip sync is approved.
