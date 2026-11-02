@@ -12,6 +12,8 @@ over it in red, to check that the geometry held). Every generation is a row in l
 Usage: .venv/bin/python scripts/keyframes.py [shot ...] [--seeds 2001,2002] [--denoise 0.85]   (ComfyUI must be running)
        A shot's own "seeds" in the config (new seeds for an unchanged prompt) override the default seeds.
        --denoise overrides the config for a test; its outputs get a _d<NN> suffix.
+A shot's "mask" (a PNG, white = repaint) limits the img2img to that area (SetLatentNoiseMask): outside it the
+layout's latent is kept (M7, S49's cutlery: repaint only where the old cutlery was erased and the new one pasted).
 """
 import argparse
 import datetime
@@ -46,7 +48,7 @@ def layout(shot):
 
 
 
-def graph(prompt, ref_names, seed, w, h, prefix, denoise=1.0):
+def graph(prompt, ref_names, seed, w, h, prefix, denoise=1.0, mask_name=None):
     m = STILLS["model"]
     g = {
         "12": {"class_type": "UNETLoader", "inputs": {"unet_name": m["unet"], "weight_dtype": "default"}},
@@ -83,6 +85,11 @@ def graph(prompt, ref_names, seed, w, h, prefix, denoise=1.0):
         })
         del g["47"]
         g["13"]["inputs"].update({"sigmas": ["split", 1], "latent_image": ["init_enc", 0]})
+        if mask_name:
+            g["mask_load"] = {"class_type": "LoadImageMask", "inputs": {"image": mask_name, "channel": "red"}}
+            g["masked"] = {"class_type": "SetLatentNoiseMask",
+                           "inputs": {"samples": ["init_enc", 0], "mask": ["mask_load", 0]}}
+            g["13"]["inputs"]["latent_image"] = ["masked", 0]
     g.update({
         "8": {"class_type": "VAEDecode", "inputs": {"samples": ["13", 0], "vae": ["10", 0]}},
         "9": {"class_type": "SaveImage", "inputs": {"images": ["8", 0], "filename_prefix": prefix}},
@@ -159,7 +166,12 @@ def main():
             dest = OUT / shot / f"{stem}_s{seed}.png"
             if not dest.exists():
                 dn = args.denoise or spec.get("denoise", denoise)
-                outputs, secs = cc.run(graph(prompt, names, seed, w, h, f"readonly/kf_{stem}_s{seed}", dn))
+                mname = None
+                if spec.get("mask"):
+                    if spec["mask"] not in uploaded:
+                        uploaded[spec["mask"]] = cc.upload_image(spec["mask"])
+                    mname = uploaded[spec["mask"]]
+                outputs, secs = cc.run(graph(prompt, names, seed, w, h, f"readonly/kf_{stem}_s{seed}", dn, mname))
                 cc.download(outputs["9"]["images"][0], dest)
                 rows.append((stem, seed, dn, ", ".join(refs), str(dest), round(secs, 1)))
                 print(f"{shot} seed {seed}: {dest} ({secs:.1f} s)")

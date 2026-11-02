@@ -1682,3 +1682,77 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Timecard:** `scripts/assemble.py` `TIMECARD`: "Five years later" over S02's start (the opener is 2018, the song 2023), set as S01a's "San Francisco, 2018" is (`bookends_assemble.caption`: lower left, 0.6 s fades), from song 0.5 s to 3.05 s, so it is gone before "Yeah, hello?" paints on its row (3.08 s). The `♪♪` tag under the piano moves to the lower right (`captions.py` TAGS, "right"), clear of it, as 608 captioners moved captions off on-screen text.
 - **Tracking:** `scripts/act2_assemble.py` `tracking()` replaces M6's fade from the grave (S48a) to the login prompt (S48b). A VHS tracking bar (a 76-line band of snow) rolls up the frame as the scratches go by: its height is the scratch stem's accumulated energy over 194.65–195.75 s (the same curve the fade used), the grave above it and the login prompt below, as a tape switching between two recordings. Each stroke (`scratch_energy()`: the Other stem's energy per frame over its loudest) tears the lines sideways (block wobble, a hard skew at the bar), rolls the picture a few lines, pulls red and blue apart, drains the colour and lifts the snow; a little remains on the login prompt while the last strokes sound. Seeded per frame (repeatable).
 - **Cut:** `renders/m7/m7_full_v2.mp4` (268.21 s, the same 6437 frames); review copy `renders/review/m7_full_v2_review_small.mp4` (28 MiB). Test sections checked frame by frame (video 16.5–22.5 s and 211.5–215 s). `deliverables/read_only.srt` regenerated: identical. The vertical cut (S34–S45) is unaffected. v1 and its review copies → `archive/renders/m7/`, `archive/renders/review/`, superseded.
+
+## 2026-11-02T17:21:23-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v6_d90 | 2001 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v6_d90_s2001.png` | 89.3 | pending (R1) |
+| S49_v6_d90 | 2002 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v6_d90_s2002.png` | 74.1 | pending (R1) |
+
+## 2026-11-02T17:24:46-05:00 — M5: keyframes (S49_plate)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_plate --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_plate | 2001 | 0.65 | renders/m7/s49_v8/layout/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_s2001.png` | 54.4 | pending (R1) |
+| S49_plate | 2002 | 0.65 | renders/m7/s49_v8/layout/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_s2002.png` | 53.1 | pending (R1) |
+
+## 2026-11-02T17:31:25-05:00 — M5: keyframes (S49_plate)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_plate --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_plate_v2 | 2001 | 0.5 | renders/m7/s49_v8/layout2/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v2_s2001.png` | 51.2 | pending (R1) |
+| S49_plate_v2 | 2002 | 0.5 | renders/m7/s49_v8/layout2/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v2_s2002.png` | 41.2 | pending (R1) |
+
+## 2026-11-02T17:33:34-05:00 — M5: keyframes (S49_plate)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_plate --seeds 2001,2002,2003`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_plate_v3 | 2001 | 0.8 | renders/m7/s49_v8/layout3/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v3_s2001.png` | 65.2 | pending (R1) |
+| S49_plate_v3 | 2002 | 0.8 | renders/m7/s49_v8/layout3/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v3_s2002.png` | 65.1 | pending (R1) |
+| S49_plate_v3 | 2003 | 0.8 | renders/m7/s49_v8/layout3/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v3_s2003.png` | 65.1 | pending (R1) |
+
+## 2026-11-02T17:37:15-05:00 — M5: keyframes (S49_plate)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_plate --seeds 2001,2002,2003`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_plate_v4 | 2001 | 0.8 | renders/m7/s49_v8/layout4/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v4_s2001.png` | 65.1 | pending (R1) |
+| S49_plate_v4 | 2002 | 0.8 | renders/m7/s49_v8/layout4/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v4_s2002.png` | 65.1 | pending (R1) |
+| S49_plate_v4 | 2003 | 0.8 | renders/m7/s49_v8/layout4/beauty/05236.png | `takes/keyframes/S49_plate/S49_plate_v4_s2003.png` | 65.1 | pending (R1) |
+
+## 2026-11-02T17:40:42-05:00 — M5: keyframes (S49_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v7 | 2001 | 0.6 | renders/m6/s49_reproj_v3/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v7_s2001.png` | 52.1 | pending (R1) |
+| S49_mid_v7 | 2002 | 0.6 | renders/m6/s49_reproj_v3/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v7_s2002.png` | 50.2 | pending (R1) |
+
+## 2026-11-02T17:55:00-05:00 — M7: full cut v3 (the fork, spoon and chairs remodelled; S49 regenerated with them)
+- **Why:** the human's notes (human interventions, same date, R1): the fork, spoon and chair "prominently missing some detail and have parts floating"; then S49's cutlery "also visibly wrong -- regenerate it".
+- **Fork and spoon (`sets/props.py`):** they were flat boxes, the fork's tines four loose slivers, the spoon's bowl a flattened sphere beside its handle, set at fixed heights over the food. New `utensil()`: each one moulded piece, a closed shell over stations along its length (UTENSIL: a rounded handle end, the handle's edges raised 0.5 mm, the neck dipping the head 4–4.5 mm; the spoon's bowl dished 4.5 mm; the fork's four tapered tines with gaps, grown out of the head, their tips curling up 2 mm). New `rest()`: sets a rigid piece down on what's under it (rays down onto the plate, the food, the tray and the table top, sampled along its length and across its width against its own underside; it lies on the upper hull of those heights where the hull spans its middle: on its two highest contacts, through nothing). The tray is built before them; the fish drapes over them as before.
+- **Chair (`sets/interiors.ladder_chair`):** its "side stretchers" ran crosswise through the middle of the seat, touching no leg (floating); now stretchers run between the legs on every side (front and sides doubled, one at the back). Turned legs (round, the front ones swelling to the seat, feet), back posts with finials and a turned ring at the seat, an apron under the seat, a rush seat woven in from its four edges (strands twisted in short alternating lengths, three shades), three back slats bowed back 2 cm. The pans' serving spoons: the handle swung with its random angle while the bowl stayed put, so on most pans it stood in the air beside the bowl; it now starts at the bowl's back edge, with a neck.
+- **Renders:** the opener `renders/m7/preroll_v7/` (436 frames). Act 1: a survey of stills every 2 s against `renders/m7/act1` found changes only in the eatery shots at song 0.2–16.2 s (largest 2.7% of pixels at 12.2 s), none after; re-rendered song 0.14–20.62 s (`renders/m7/act1_eatery/`, 493 frames) and the cut frame with `--mb-start` (`renders/m7/act1_eatery_cut/`); `renders/m7/act1_v2/frames` links them over `renders/m7/act1/frames` (3686 frames).
+- **S49 v8:** plates re-rendered (`renders/m5/plates/S49/`; the M6 plates kept as `renders/m5/plates/S49_m6/` for comparison; the overlay and sign mattes copied, those objects unchanged; `cams.py` re-run). The approved anchors are kept and only the cutlery changed in them:
+  - New `scenes/blender/cutlery_matte.py`: mattes of the new fork and spoon (and the old plasticware, rebuilt) from S49's camera. The approved anchor `S49_v5_d90_s2002` had painted the old cutlery a few cm off the set's (its spoon across the napkin), so the old cutlery's area there is traced by hand (`renders/m7/s49_v8/mask_old_painted_05236.png`).
+  - New FLUX run on the new plate (`S49_v6_d90_s2001/2002`, config S49 v6, the prompt now describing the cutlery's lie); `S49_v6_d90_s2002` fills the old and new cutlery's areas in the approved anchor; `scripts/keyframes.py` gains a shot `mask` (SetLatentNoiseMask) and repaints only there at 0.8 (`S49_plate` v4; v1–v3 tried a whole-plate paste, which brought back a CG fish, and an inpainted fill, whose smears FLUX copied from its reference): **pick `S49_plate_v4_s2003`**, pasted back inside the mask → `renders/m7/s49_v8/S49_open_v8.png`. The approved fish, eggs and rice stay.
+  - Reprojected to frame 5332 (`renders/m6/s49_reproj_v3/`) → `S49_mid_v7_s2001` (FLUX 0.6), pasted into the approved `S49_mid_v6_s2001` where the two reprojections differ → `renders/m7/s49_v8/S49_mid_v8.png`.
+  - V v8 as v7 (clip 0 first → middle anchor, clip 1 on the depth alone), prompt `log/prompts/v/S49_depth_v5.txt` (adds "a white plastic fork and spoon resting still on the plate"): seeds 1–2 near identical, the cutlery steady through the push; **pick seed 1** → `sign_paste.py --blur 10`, `overlay_add.py --bloom 0 --bezel 9 --halo 30` → `takes/fx/S49/S49_overlay.mp4`. v7's inputs → `archive/takes/S49_v7_inputs/`, its fx → `archive/takes/S49_v7_fx_final/`.
+- **Cut:** `scripts/assemble.py renders/m7/m7_full_v3.mp4 --preroll renders/m7/preroll_v7 --act1 renders/m7/act1_v2/frames` (268.21 s); review copy `renders/review/m7_full_v3_review_small.mp4`. v2 and its review copy → `archive/renders/m7/`, `archive/renders/review/`. The vertical cut and thumbnails don't include the eatery: unchanged.

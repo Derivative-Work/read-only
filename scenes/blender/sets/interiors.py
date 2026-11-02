@@ -624,29 +624,78 @@ def food_pan(mb, rng, x, y, z, dish, steel, food):
             mb.box((px, py, top + 0.006), (0.024, 0.024, 0.02), food, rng.uniform(0, 3), rng.choice(pcs),
                    rx=rng.uniform(-0.4, 0.4))
     # a serving spoon in most pans
+    # (its handle from the bowl's back edge, whatever its angle: the handle used to swing with the angle while the bowl
+    # stayed put, so on most pans it hung beside the bowl in the air; the human: "parts floating")
     if dish != 3:
         a = rng.uniform(-0.4, 0.4)
-        mb.blob((x + 0.08, y - 0.05, top + 0.012), (0.04, 0.03, 0.01), steel, "#c8ccd0", rz=a)
-        mb.cyl((x + 0.08 + 0.1 * math.sin(a), y + 0.05, top + 0.05), 0.006, 0.22, steel, "#c8ccd0", n=6,
-               rx=-1.1, rz=a)
+        bx, by, bz = x + 0.08, y - 0.05, top + 0.012
+        mb.blob((bx, by, bz), (0.03, 0.042, 0.01), steel, "#c8ccd0", rz=a)  # the bowl, long along the handle
+        ax = Vector((0, math.sin(1.1), math.cos(1.1)))  # the handle's axis (as mtx(rx=-1.1, rz=a) turns Z)
+        ax.rotate(Euler((0, 0, a)))
+        foot = Vector((bx, by, bz + 0.004)) + Vector((-math.sin(a), math.cos(a), 0)) * 0.036
+        mb.cyl(tuple(foot + ax * 0.11), 0.006, 0.22, steel, "#c8ccd0", n=8, rx=-1.1, rz=a)
+        mb.cyl(tuple(foot + ax * 0.005), 0.009, 0.012, steel, "#c8ccd0", n=8, rx=-1.1, rz=a)  # the neck
 
 
 def ladder_chair(mb, loc, rz, m):
-    """A black ladder-back chair: four legs, a woven seat, two tall back posts and three slats (front is -Y)."""
-    x, y, z = loc
+    """A black ladder-back chair (front is -Y): turned legs, the back legs running up into posts with finials; an apron
+    under the seat; stretchers between the legs on every side (front and sides doubled, as on a real one); a rush seat
+    woven in from its four edges; three back slats bowed back for the sitter. Every part meets the next (the human, on
+    the M7 cut: the chair is "prominently missing some detail" with "parts floating": the old side stretchers ran
+    crosswise through the seat's middle, touching no leg)."""
     M = Matrix.Translation(loc) @ Matrix.Rotation(rz, 4, "Z")
+    blk, wear = "#141414", "#1c1b1a"
 
-    def b(c, s, col="#141414"):
-        mb.add((box_v(s), BOX_F), m, M @ Matrix.Translation(c), col)
-    for sx in (-0.19, 0.19):
-        b((sx, -0.18, 0.23), (0.032, 0.032, 0.46))
-        b((sx, 0.18, 0.5), (0.034, 0.034, 1.0))
-        b((0, 0, 0.16) if sx < 0 else (0, 0.0, 0.16), (0.36, 0.018, 0.018))
-    for sy in (-0.18, 0.18):
-        b((0, sy, 0.13), (0.36, 0.018, 0.018))
-    b((0, 0, 0.465), (0.42, 0.42, 0.035), "#1d1a16")
+    def b(c, s, col=blk, a=0.0):
+        mb.add((box_v(s), BOX_F), m, M @ Matrix.Translation(c) @ Matrix.Rotation(a, 4, "Z"), col)
+
+    def rod(c, r, h, axis="Z", col=blk, r2=None, n=10):
+        R = {"Z": Matrix.Identity(4), "X": Matrix.Rotation(math.pi / 2, 4, "Y"),
+             "Y": Matrix.Rotation(math.pi / 2, 4, "X")}[axis]
+        mb.add(cyl_vf(r, h, n, r2), m, M @ Matrix.Translation(c) @ R, col, smooth=True)
+    LX, LY = 0.185, 0.185  # the legs' centres
+    for sx in (-LX, LX):
+        rod((sx, -LY, 0.2325), 0.0175, 0.465, r2=0.0185)  # front legs, swelling a little to the seat
+        rod((sx, -LY, 0.012), 0.0145, 0.024, col=wear)  # a foot
+        rod((sx, LY, 0.5), 0.0185, 1.0)  # back legs and posts, one piece
+        rod((sx, LY, 1.012), 0.016, 0.024, r2=0.009, n=12)  # the finial
+        rod((sx, LY, 0.43), 0.021, 0.035, col=wear)  # a turned ring at the seat
+        for z in (0.14, 0.27):  # the side stretchers, front leg to back leg
+            rod((sx, 0.0, z), 0.0085, 2 * LY, "Y")
+    for z in (0.19, 0.31):  # the front stretchers
+        rod((0.0, -LY, z), 0.0085, 2 * LX, "X")
+    rod((0.0, LY, 0.19), 0.0085, 2 * LX, "X")  # the back stretcher
+    # the apron under the seat, leg to leg
+    for sy in (-LY, LY):
+        b((0, sy, 0.425), (2 * LX, 0.02, 0.05))
+    for sx in (-LX, LX):
+        b((sx, 0, 0.425), (0.02, 2 * LY, 0.05))
+    # the rush seat: a base, then strands laid in from each edge, parallel to it, shorter toward the middle (where the
+    # four triangles meet on the diagonals); two shades, a strand a little proud of the next
+    b((0, 0, 0.462), (0.4, 0.4, 0.024), "#17130f")
+    half, step = 0.2, 0.0142
+    rush = ("#2b241b", "#211b14", "#30281d")
+    # each strand is twisted: short lengths leaning alternately (the rope's lay), so the seat reads as rush, not rings
+    for i in range(14):
+        d = i * step + step / 2
+        ln = max(0.01, 2 * (half - d))
+        z = 0.478 + 0.0015 * ((i % 2) - 0.5)
+        n = max(1, round(ln / 0.021))
+        for k, (cx, cy, a) in enumerate(((0, -half + d, 0), (0, half - d, 0), (-half + d, 0, math.pi / 2),
+                                         (half - d, 0, math.pi / 2))):
+            ca, sa = math.cos(a), math.sin(a)
+            for j in range(n):
+                u = -ln / 2 + (j + 0.5) * ln / n
+                lean = 0.32 * (1 if (j + i) % 2 else -1)
+                b((cx + u * ca, cy + u * sa, z), (ln / n * 1.08, step * 0.8, 0.009), rush[(i + j + k) % 3], a + lean)
+    # the back slats, bowed back 2 cm, each in five pieces along the bow; their ends in the posts
     for k in range(3):
-        b((0, 0.185, 0.62 + k * 0.13), (0.38, 0.016, 0.06))
+        z = 0.63 + k * 0.13
+        xs = [-LX + 2 * LX * j / 5 for j in range(6)]
+        for x0, x1 in zip(xs, xs[1:]):
+            y0, y1 = (LY + 0.02 * (1 - (x / LX) ** 2) for x in (x0, x1))
+            a = math.atan2(y1 - y0, x1 - x0)
+            b(((x0 + x1) / 2, (y0 + y1) / 2, z), (math.hypot(x1 - x0, y1 - y0) + 0.004, 0.016, 0.065), blk, a)
 
 
 def eatery(S):

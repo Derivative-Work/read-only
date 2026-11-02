@@ -1106,6 +1106,138 @@ def drape(ob, targets, lift=0.0012, slope=0.25, cell=0.002, reach=0.03):
     me.update()
 
 
+UTENSIL = {  # (length, stations (s, half-width, mid-height), ...): a white plastic fork and spoon, metres; s from the
+    # handle's end; the mid-height is the piece's centreline above its handle's underside (the neck dips the head)
+    "fork": (0.165, [(0.0, 0.0006, 0.0), (0.004, 0.0052, 0.0), (0.012, 0.0062, 0.0), (0.08, 0.0052, 0.0),
+                     (0.104, 0.0033, 0.0), (0.116, 0.0058, -0.0022), (0.13, 0.0112, -0.0042), (0.137, 0.0114, -0.0046)]),
+    "spoon": (0.152, [(0.0, 0.0006, 0.0), (0.004, 0.0052, 0.0), (0.012, 0.0062, 0.0), (0.075, 0.005, 0.0),
+                      (0.098, 0.0031, 0.0), (0.106, 0.0042, -0.0025), (0.112, 0.0105, -0.004), (0.122, 0.0162, -0.0045),
+                      (0.131, 0.0172, -0.0045), (0.14, 0.0152, -0.0045), (0.147, 0.0105, -0.0042),
+                      (0.1505, 0.005, -0.004), (0.152, 0.0006, -0.004)]),
+}
+
+
+def utensil(kind, m, t=0.0019):
+    """One moulded plastic piece as a closed shell: a top and an underside grid across stations along X (UTENSIL),
+    the handle's edges raised 0.5 mm (the moulded rim), a spoon's bowl dished 4.5 mm; a fork's four tines (with gaps)
+    grow out of the head, their tips curling up 2 mm. Local X runs from the handle's end; z 0 is the handle's underside."""
+    import bmesh
+    import numpy as np
+    L, st = UTENSIL[kind]
+    ss = np.array([q[0] for q in st])
+    sample = np.unique(np.concatenate([np.linspace(0, ss[-1], 90), ss]))
+    hw = np.interp(sample, ss, [q[1] for q in st])
+    mid = np.interp(sample, ss, [q[2] for q in st])
+    bm = bmesh.new()
+
+    def shell(xs, half, zmid, us, bowl=None, curl=None):
+        """xs (N,), half (N,), zmid (N,); us (M,) in -1..1 across: the grid's top and bottom, joined round the edge."""
+        top, bot = [], []
+        for i, x in enumerate(xs):
+            rt, rb = [], []
+            for u in us:
+                y = u * half[i]
+                z = zmid[i]
+                rim = 0.0005 * max(0.0, (abs(u) - 0.7) / 0.3) if x < 0.1 else 0.0
+                if bowl:
+                    c, a, d = bowl
+                    q = ((x - c) / a) ** 2 + u ** 2
+                    z -= d * max(0.0, 1 - q) ** 0.8
+                if curl:
+                    x0, h = curl
+                    z += h * max(0.0, (x - x0) / (xs[-1] - x0)) ** 2 if x > x0 else 0.0
+                rt.append(bm.verts.new((x, y, z + t / 2 + rim)))
+                rb.append(bm.verts.new((x, y, z - t / 2)))
+            top.append(rt)
+            bot.append(rb)
+        n, k = len(xs), len(us)
+        for i in range(n - 1):
+            for j in range(k - 1):
+                bm.faces.new((top[i][j], top[i][j + 1], top[i + 1][j + 1], top[i + 1][j]))
+                bm.faces.new((bot[i][j], bot[i + 1][j], bot[i + 1][j + 1], bot[i][j + 1]))
+            for j, sgn in ((0, 1), (k - 1, -1)):  # the long edges
+                f = (top[i][j], top[i + 1][j], bot[i + 1][j], bot[i][j])
+                bm.faces.new(f if sgn > 0 else tuple(reversed(f)))
+        for i, sgn in ((0, 1), (n - 1, -1)):  # the ends
+            ring = [top[i][j] for j in range(k)] + [bot[i][j] for j in reversed(range(k))]
+            bm.faces.new(ring if sgn < 0 else list(reversed(ring)))
+
+    us = np.linspace(-1, 1, 9)
+    if kind == "spoon":
+        shell(sample, hw, mid, us, bowl=(0.131, 0.021, 0.0045))
+    else:
+        shell(sample, hw, mid, us)
+        x0, x1 = st[-1][0] - 0.003, L  # the tines: from inside the head (so they're one piece with it) to the tips
+        tw, gap = 0.0044, 0.0016
+        xs = np.linspace(x0, x1, 14)
+        zm = np.full_like(xs, st[-1][2])
+        for j in range(4):
+            yc = (j - 1.5) * (tw + gap)
+            taper = np.interp(xs, [x0, x1 - 0.004, x1], [tw / 2, tw / 2 * 0.9, tw / 2 * 0.45])
+            before = len(bm.verts)
+            shell(xs, taper, zm, np.linspace(-1, 1, 3), curl=(x1 - 0.012, 0.002))
+            for v in list(bm.verts)[before:]:  # this tine, moved across to its place
+                v.co.y += yc
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    me = bpy.data.meshes.new(f"prop.{kind}")
+    bm.to_mesh(me)
+    bm.free()
+    me.materials.append(m)
+    for poly in me.polygons:
+        poly.use_smooth = True
+    return me
+
+
+def rest(ob, at, yaw, targets, floor=-1.0, lift=0.0003):
+    """Set a rigid piece down on what's under it: its underside sampled along its length (across its width too), the
+    surface under each sample found by rays down onto `targets`; the piece rests on the upper hull of (surface minus
+    underside) where that hull spans its middle, so it lies on its two highest contacts, touching, through nothing.
+    `at` is where the handle's end goes (x, y), yaw its heading; `floor` the table top's height (off the tray)."""
+    import numpy as np
+    from mathutils import Vector
+    from mathutils.bvhtree import BVHTree
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    trees = [(BVHTree.FromObject(t, dg), t.matrix_world.copy()) for t in targets]
+    co = np.array([v.co[:] for v in ob.data.vertices])
+    L = co[:, 0].max()
+    cs, sn = math.cos(yaw), math.sin(yaw)
+
+    def ground(x, y):
+        best = floor
+        for tr, mw in trees:
+            inv = mw.inverted()
+            hit = tr.ray_cast(inv @ Vector((x, y, 2.0)), (inv.to_3x3() @ Vector((0, 0, -1))).normalized(), 5.0)
+            if hit[0] is not None:
+                best = max(best, (mw @ hit[0]).z)
+        return best
+    pts = []
+    for s in np.linspace(0, L, 60):
+        near = co[np.abs(co[:, 0] - s) < L / 100]
+        if not len(near):
+            continue
+        need = -1.0
+        for y in np.linspace(near[:, 1].min(), near[:, 1].max(), 5):
+            under = near[np.abs(near[:, 1] - y) <= max(1e-4, np.ptp(near[:, 1]) / 6)]
+            zb = under[:, 2].min() if len(under) else near[:, 2].min()
+            wx, wy = at[0] + cs * s - sn * y, at[1] + sn * s + cs * y
+            need = max(need, ground(wx, wy) - zb)
+        pts.append((s, need))
+    hull = []  # the upper hull, left to right
+    for p in pts:
+        while len(hull) >= 2 and (hull[-1][0] - hull[-2][0]) * (p[1] - hull[-2][1]) - \
+                (hull[-1][1] - hull[-2][1]) * (p[0] - hull[-2][0]) >= 0:
+            hull.pop()
+        hull.append(p)
+    sc = float((co[:, 0].min() + L) / 2)  # about the middle: the head is heavier, the handle longer
+    (s0, h0), (s1, h1) = next((a, b) for a, b in zip(hull, hull[1:]) if a[0] <= sc <= b[0])
+    m = (h1 - h0) / (s1 - s0)
+    z0 = h0 - m * s0
+    ob.location = (at[0], at[1], z0 + lift)
+    ob.rotation_euler = (0.0, -math.atan(m), yaw)
+    return (s0, s1)
+
+
 def breakfast(S, SP):
     """S01a-S01d, S49: the breakfast as in the human's plate photo (assets/real/plate.jpg, which the phone shows in
     S01b): bangsilog on a paper plate (garlic rice, two fried eggs with runny yolks, a butterflied fried milkfish),
@@ -1162,17 +1294,7 @@ def breakfast(S, SP):
     fi.rotation_euler = (0, 0, 0.12)                    # the rice less once it lies on the plate (drape, below)
     fi.scale = (0.85, 0.85, 0.85)
     plast = mat("plasticware", "#f6f5f0", rough=0.3)
-    m = mk.MK()  # the fork (across the front left, handle off the rim) and the spoon (on the rice, back right)
-    m.box((-0.09, -0.06, 0.03), (0.1, 0.009, 0.0025), plast, rot=(0, 0.08, -0.12), bevel=0.001)
-    m.box((-0.03, -0.068, 0.034), (0.025, 0.016, 0.002), plast, rot=(0, 0.0, -0.12), bevel=0.0006)
-    for k in range(4):
-        m.box((-0.008, -0.074 + k * 0.0045, 0.035), (0.026, 0.002, 0.0016), plast, rot=(0, 0, -0.12))
-    m.box((0.125, -0.07, 0.04), (0.09, 0.009, 0.0025), plast, rot=(0, -0.12, -0.3), bevel=0.001)  # (front right now:
-    m.sphere((0.075, -0.055, 0.045), 0.02, plast, s=(1.0, 0.7, 0.22), rot=(0, 0, -0.3), u=14, v=6)  # the fish's back)
-    ware = gb.link(bpy.data.objects.new("eat.plasticware", m.mesh("prop.plasticware")))
-    ware.location = (cx, cy, top)
-    drape(fi, [o, obj("eat.fish"), ware])
-    tray_o = obj("eat.mytray")
+    tray_o = obj("eat.mytray")  # (before the cutlery, which rests on it)
     tray = food("tray", "#1d1e20", "#2a2b2e", scale=140, bump=0.6, rough=0.55, detail=2)
     m = mk.MK()
     m.box((0, 0, 0), (0.5, 0.36, 0.008), tray, bevel=0.004)
@@ -1180,6 +1302,17 @@ def breakfast(S, SP):
         m.box((0, s * 0.177, 0.007), (0.5, 0.008, 0.012), tray, bevel=0.003)
         m.box((s * 0.247, 0, 0.007), (0.008, 0.36, 0.012), tray, bevel=0.003)
     kit.mesh_swap(tray_o, m.mesh("prop.tray"))
+    # the fork (across the front left, its handle off the rim onto the tray) and the spoon (its bowl in the rice, the
+    # handle out to the front right): each one moulded piece (utensil()), set down rigid on what's under it (rest())
+    # (the human, on the M7 cut: "the fork, spoon, and chair -- they are prominently missing some detail and have
+    # parts floating": they were flat slabs, the spoon's bowl a separate disc beside its handle, both above the food)
+    under = [o, obj("eat.fish"), tray_o]
+    wares = []
+    for kind, (hx, hy), yaw in (("fork", (-0.178, -0.05), -0.12), ("spoon", (0.19, -0.09), math.pi - 0.3)):
+        u = gb.link(bpy.data.objects.new(f"eat.{kind}", utensil(kind, plast)))
+        rest(u, (cx + hx, cy + hy), yaw, under, floor=tz)
+        wares.append(u)
+    drape(fi, [o, obj("eat.fish"), *wares])
     m = mk.MK()  # the paper cup (tapered) and the napkin folded on the tray's back right
     cup = mat("papercup", "#f4f2ec", rough=0.75)
     m.lathe([(0, 0), (0.028, 0), (0.037, 0.095), (0.039, 0.097), (0.036, 0.097), (0.026, 0.004), (0, 0.004)], cup, n=32)
