@@ -111,7 +111,9 @@ def main():
             # M6: the phone's screens. S01d: the photo just taken (the human's plate photo), a swipe to an invented
             # reader app (never named), the thread scrolling past a helper bot's reply to its "good bot"s; S49: the
             # thread's end, an empty reply box, under the app's shut-down notice
-            "phone_s01d": {"size": [540, 1152], "shot": "S01d", "from": s01d[0], "to": s01d[1],
+            # (from S01a's start: Blender shows nothing before a sequence's first frame; dark until the photo is taken)
+            "phone_s01d": {"size": [540, 1152], "shot": "S01d", "from": -sum(BOOK["preroll"].values()), "to": s01d[1],
+                           "taken": -BOOK["preroll"]["S01d"] - BOOK["preroll"]["S01c"],
                            "swipe": [round(s01d[0] + 0.6, 3), round(s01d[0] + 1.1, 3)],
                            "scroll": [round(s01d[0] + 1.6, 3), round(s01d[1] - 1.0, 3)], "scroll_px": 420},
             "phone_s49": {"size": [540, 1152], "shot": "S49", "from": s49[0], "to": s49[1], "scroll_px_end": 520},

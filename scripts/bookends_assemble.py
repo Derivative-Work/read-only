@@ -75,7 +75,7 @@ def camera_ui(frame, t):
         d.line([(W * k / 3, 0), (W * k / 3, H)], fill=(255, 255, 255, 60), width=1)
         d.line([(0, H * k / 3), (W, H * k / 3)], fill=(255, 255, 255, 60), width=1)
     d.rectangle([0, 0, W, 56], fill=(0, 0, 0, 120))  # top bar: flash, a dot menu
-    d.text((40, 28), "⚡", font=font(26), fill=(255, 255, 255, 230), anchor="mm")
+    d.polygon([(42, 12), (30, 31), (39, 31), (34, 45), (48, 24), (39, 24)], fill=(255, 255, 255, 230))  # the flash
     for k in range(3):
         d.ellipse([W - 52 + k * 10, 25, W - 46 + k * 10, 31], fill=(255, 255, 255, 230))
     d.rectangle([0, H - 150, W, H], fill=(0, 0, 0, 130))  # bottom bar: last photo, shutter, switch

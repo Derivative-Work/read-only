@@ -869,10 +869,13 @@ def stage(S):
     exp = gb.text("eat.badge.expired", "EXPIRED", 0.018, B.M("lease"), (tx - 0.25, ty - 0.18, tz + 0.009), facing="+Z")
     during(exp, a, 1e5)
     during(bpy.data.objects[S["badge_text"]], -1e5, a)
-    gb.key_vec(ph, "location", S["phone_loc"] + [(F(a - 0.1), (tx - 0.24, ty - 0.26, tz + 0.005))])  # M6: on the table by the badge (it lay across the tray's edge)
+    gb.key_vec(ph, "location", S["phone_loc"] + [(F(a - 0.1), (tx - 0.27, ty - 0.2, tz + 0.005))])  # M6: on the table by the badge (it lay across the tray's edge)
     gb.keys(ph, "rotation_euler", S["phone_rot"] + [(F(a - 0.1), math.radians(-90))], index=0)
+    # M6: from the table to the phone and the badge (from the M3 framing the phone's notice was 70 px wide, unreadable):
+    # the push ends close over them
     cam("S49", [(0, (tx + 0.5, ty - 1.0, tz + 0.7), (tx - 0.05, ty - 0.15, tz)),
-                (1, (tx + 0.3, ty - 0.75, tz + 0.55), (tx - 0.05, ty - 0.15, tz))], lens=35)
+                (0.35, (tx + 0.3, ty - 0.8, tz + 0.55), (tx - 0.15, ty - 0.17, tz)),
+                (1, (tx - 0.16, ty - 0.46, tz + 0.27), (tx - 0.28, ty - 0.13, tz))], lens=35)
     cam("S50", [(0, (0, 0, -50), (0, 0, -60))], lens=35)  # black: the end card is drawn by the assembler
 
     flush_shutters(S)

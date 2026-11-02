@@ -259,6 +259,7 @@ function statusbar(dark, clock) {
 
 // S01d: the photo, a swipe to the reader app, the thread scrolling past the bot's reply and its "good bot"s
 function phone_s01d(t) {
+  if (t < S.taken) { g.fillStyle = "#050506"; g.fillRect(0, 0, W, H); return; }  // the screen dark until the photo
   const [s0, s1] = S.swipe, [c0, c1] = S.scroll;
   const k = ease(clamp((t - s0) / (s1 - s0)));
   if (k < 1) { g.save(); g.translate(-k * W, 0); photo_review(); statusbar(true); g.restore(); }

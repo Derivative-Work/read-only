@@ -73,14 +73,16 @@ def build(S, SP):
     ph = S["phone"]
     old_screen = bpy.data.objects.get("phone.screen")
     faces = []
-    for name in ("phone_s01d", "phone_s49"):
-        o = surface(name, (0, 0, 0), (0.068, 0.145), seq_mat(name, 2.0), "-Y")
+    for name, glow in (("phone_s01d", 2.0), ("phone_s49", 0.35)):  # S49 is at night: at 2.0 (then 0.7) its screen blew out
+        o = surface(name, (0, 0, 0), (0.068, 0.145), seq_mat(name, glow), "-Y")
         o.parent = ph
         o.location = (0, -0.0052, 0)
         faces.append(o)
     if old_screen:
         bpy.data.objects.remove(old_screen)
     f49 = gb.F(SP["S49"][0])  # the opener's face until S49, S49's after (keyed directly: show_between's keys assume t0 >= 0)
-    for o, before, after in ((faces[0], 0.0, 1.0), (faces[1], 1.0, 0.0)):
-        for path in ("hide_render", "hide_viewport"):
-            gb.keys(o, path, [(0, before, "CONSTANT"), (f49, after, "CONSTANT")], interp="CONSTANT")
+    b0, b1 = gb.F(SP["S01b"][0]), gb.F(SP["S01b"][1])  # S01b is the phone camera's own view: the phone is hidden
+    for path in ("hide_render", "hide_viewport"):
+        gb.keys(faces[0], path, [(0, 0.0, "CONSTANT"), (b0, 1.0, "CONSTANT"), (b1, 0.0, "CONSTANT"), (f49, 1.0, "CONSTANT")],
+                interp="CONSTANT")
+        gb.keys(faces[1], path, [(0, 1.0, "CONSTANT"), (f49, 0.0, "CONSTANT")], interp="CONSTANT")

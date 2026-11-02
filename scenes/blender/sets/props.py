@@ -1129,8 +1129,7 @@ def breakfast(S, SP):
     nap = gb.link(bpy.data.objects.new("eat.napkin", m.mesh("prop.napkin")))
     nap.location = (tx + 0.22, ty + 0.03, tz + 0.02)
     # the badge and the schedule, printed
-    for name, key, during_ in (("eat.badge", "badge_visitor", (-1e5, SP["S49"][0])),
-                               ("eat.badge.exp", "badge_expired", (SP["S49"][0], 1e5))):
+    for name, key in (("eat.badge", "badge_visitor"), ("eat.badge.exp", "badge_expired")):
         m = mk.MK()
         m.box((0, 0, -0.0006), (0.0889, 0.0572, 0.0008), mat("badge.back", "#f4f4f2", rough=0.6))
         m.quad((0, 0, 0.0002), (0.0889, 0.0572), mk.img_mat(f"prop.img.{key}", PROPS6 / f"{key}.png", rough=0.5),
@@ -1142,9 +1141,12 @@ def breakfast(S, SP):
         else:
             bo = gb.link(bpy.data.objects.new(name, m.mesh(f"prop.{key}")))
             bo.location = obj("eat.badge").location
-        bo.location = (tx - 0.2, ty - 0.08, tz + 0.006)  # beside the tray, where S01c's drift passes
+        bo.location = (tx - 0.29, ty - 0.02, tz + 0.006)  # clear of the tray (at x - 0.2 it lay under its edge), where S01c's drift ends
         bo.rotation_euler = (0, 0, 0.18)
-        gb.show_between(bo, *during_)
+        f49 = gb.F(SP["S49"][0])  # keyed directly: show_between's keys assume t0 >= 0 (from -1e5 it hid the badge)
+        before, after = (0.0, 1.0) if name == "eat.badge" else (1.0, 0.0)
+        for path in ("hide_render", "hide_viewport"):
+            gb.keys(bo, path, [(0, before, "CONSTANT"), (f49, after, "CONSTANT")], interp="CONSTANT")
     for t in ("eat.badge.t", "eat.badge.expired"):  # the grey-box lettering (text curves): the print replaces it
         o = obj(t)
         if o:
