@@ -239,3 +239,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M6: the ambience pick — R1
 - **What:** after an A/B file (the distilled model's clip, then three from the full LTX-2.3 model): "for the audio, go with seed 2" (`takes/sfx/amb_dev_s2.wav`).
 - **Rule:** R1 (picking a take).
+
+## 2026-11-02 — M6: bookends v2 notes — R1
+- **What:** "the intro is a little washed out", "the ending's phone screen has a white border on the edges -- it's probably not masked correctly", "the ending's wall appears to travel"; then, mid-fix, "also, \"EXPIRED\" is very hard to read".
+- **Rule:** R1 (rejections). The agent fixes them (production log, next entry).

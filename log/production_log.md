@@ -1543,3 +1543,41 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **The schedule:** the saucer on it "is not reading correctly": it is gone (hidden), and the schedule is a three-panel page (folded in thirds and opened out, its creases riding up a few millimetres), one corner tucked under the tray. S01b–S01d re-rendered (`renders/m6/preroll_v1/`, frames 120–435) and S49's plates.
 - **S49 "too CG":** the anchors at 0.9 from the Blender frames stayed CG. v3–v4: the close-up anchors at 0.95 with no style reference (with S49's opening keyframe as reference they copied its whole composition), the prompt saying "indoors … the eatery's yellow-painted wall … no window, no street" (without it they put the table outdoors) and "real worn wooden table, real paper, real plastic"; the opening keyframe the same way at 0.95 so all three agree. **Picks:** `S49_v4_s2002` (opening; every seed added a stray sheet at the table's front edge, which leaves frame in the push), `S49_mid_v4_s2002`, `S49_end_v4_s2002`. V v5 seed 1 (`takes/v/S49/S49_v5_s1.mp4`), prompt `log/prompts/v/S49_depth_v4.txt`. The EXPIRED badge is now pasted lit by the take (`sign_matte.py --materials prop.img.badge_expired` → `sign_paste.py S49 … --blur 10`), the phone screen over it (`overlay_add.py --bloom 0`) → `takes/fx/S49/S49_overlay.mp4`. Superseded takes in `archive/takes/S49_v3_saucer/`, `archive/takes/S49_v4_mismatched_open/`.
 - **Cut:** `renders/m6/bookends_v2.mp4`; v1 moved to `archive/renders/m6/`.
+
+## 2026-11-02T06:08:45-05:00 — M5: keyframes (S49_mid, S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid S49_end --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v5 | 2001 | 0.6 | renders/m6/s49_reproj/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v5_s2001.png` | 86.2 | pending (R1) |
+| S49_mid_v5 | 2002 | 0.6 | renders/m6/s49_reproj/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v5_s2002.png` | 60.3 | pending (R1) |
+| S49_end_v5 | 2001 | 0.6 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_s2001.png` | 61.1 | pending (R1) |
+| S49_end_v5 | 2002 | 0.6 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_s2002.png` | 58.1 | pending (R1) |
+
+## 2026-11-02T06:13:26-05:00 — M5: keyframes (S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_end --seeds 2001,2002 --denoise 0.75`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_end_v5_d75 | 2001 | 0.75 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_d75_s2001.png` | 73.1 | pending (R1) |
+| S49_end_v5_d75 | 2002 | 0.75 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_d75_s2002.png` | 73.2 | pending (R1) |
+
+## 2026-11-02T06:16:00-05:00 — M5: keyframes (S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_end --seeds 2001,2002 --denoise 0.88`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_end_v5_d88 | 2001 | 0.88 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_d88_s2001.png` | 88.1 | pending (R1) |
+| S49_end_v5_d88 | 2002 | 0.88 | renders/m6/s49_reproj/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v5_d88_s2002.png` | 98.1 | pending (R1) |
+
+## 2026-11-02T20:30:00-05:00 — M6: bookends v3 (the human's notes on v2)
+- **"The intro is a little washed out":** the pre-roll's daylight was a flat blue sky fill at strength 1.0 with a sun of 4.0, the night haze volume stayed on by day (lit by the sun it lifted every black), and the shop glass (`glass_a`, alpha 0.18) laid a pale sheet over S01a's push through the eatery window. `scenes/blender/shots.py`: by day (before the song) the haze density is keyed to 0, the sky fill to 0.4 and the sun to 5.5 (`DAY_SKY`, `DAY_SUN`), and the glass alpha to 0.06 (`DAY_GLASS`); from the song on everything is as approved. Opener stills: the 5th-percentile luminance went from ~60 to ~40 (Act 1 sits at 13–28); the colour came back. Re-rendered: `renders/m6/preroll_v3/` (436 frames; `preroll_v2` was the same without the glass change).
+- **S49 "wall appears to travel":** the three FLUX anchors (opening, middle, end) were each painted at 0.95 from the Blender frames, and each put the eatery's wall corner and a window in a different place, so the take morphed between them. New `scenes/blender/cams.py` dumps the shot's camera per frame and its planar depth (`renders/m5/plates/S49/cams.json`, `depth_z/`); new `scripts/reproject.py` carries an image from one frame into another's camera through that depth (checked on the plates: frame 5236's beauty reprojected onto 5427 lines up with 5427's own). The opening anchor `S49_v4_s2002` reprojected to frame 5332 (holes 0.7%, Telea-filled) → `renders/m6/s49_reproj/`, then FLUX at 0.6 only re-details it (`config/keyframes.json` S49_mid v5, layout `renders/m6/s49_reproj`): pick `S49_mid_v5_s2001` (2002 put a dark patch on the screen). The end frame (5427) reprojected has the tray rim doubled (the anchor painted the tray a few cm larger than the set's) — at 0.6/0.75 it stays doubled and soft, at 0.88 it invents keychains — so S49 v6 has no end anchor: clip 0 from the opening anchor to the middle anchor, clip 1 chained from clip 0's last frame on the depth guide alone. `takes/v/S49/S49_v6_s{1,2}.mp4`; **pick seed 1** (seed 2's second half goes grey). The wall corner and window now stay put through the push. v5 and its anchors → `archive/takes/S49_v5_travelling_wall/`; the end-anchor attempts (`takes/keyframes/S49_end/S49_end_v5*`) are unused.
+- **"EXPIRED" hard to read:** the badge texture v2 (`scripts/gen_bookend_props.py`): a full-width white band across the badge with "EXPIRED" in heavy red capitals filling it; v1 → `archive/assets/gen/props/badge_expired_v1.png`. Matte re-rendered (`sign_matte.py -- S49 --materials prop.img.badge_expired`), pasted on v6 (`sign_paste.py S49 takes/v/S49/S49_v6_s1.mp4 --blur 10`).
+- **Phone screen's white border:** the take's own lit screen is a little larger than the rendered one, and its edge showed round the overlay. `scripts/overlay_add.py` gains `--bezel R`: a ring R px round the overlay is painted the phone's black glass before the screen goes on. `overlay_add.py S49 takes/fx/S49/S49_sign.mp4 --bloom 0 --bezel 6` → `takes/fx/S49/S49_overlay.mp4`. The v5 fx → `archive/takes/S49_v5_fx/`.

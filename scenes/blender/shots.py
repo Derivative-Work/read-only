@@ -150,6 +150,11 @@ def walk(o, sid, p0, p1, bob=0.04):
 
 # ---------------------------------------------------------------- the light: day (pre-roll), night (the song on)
 
+# the pre-roll's daylight: a dimmer sky fill and a stronger sun, so the morning has shadows and blacks (at sky 1.0,
+# sun 4.0 the flat blue fill washed the opener out: the human, "the intro is a little washed out")
+DAY_SKY, DAY_SUN, DAY_GLASS = 0.4, 5.5, 0.06
+
+
 def light(S, final=False):
     sc = bpy.context.scene
     w = bpy.data.worlds.new("sky")
@@ -161,11 +166,11 @@ def light(S, final=False):
         gb.keys(w.node_tree, 'nodes["Background"].inputs[0].default_value',
                 [(0, day[i], "CONSTANT"), (F(0.14), night[i], "CONSTANT")], index=i, interp="CONSTANT")
     gb.keys(w.node_tree, 'nodes["Background"].inputs[1].default_value',
-            [(0, 1.0, "CONSTANT"), (F(0.14), 1.0, "CONSTANT")], interp="CONSTANT")
+            [(0, DAY_SKY, "CONSTANT"), (F(0.14), 1.0, "CONSTANT")], interp="CONSTANT")
     sun = bpy.data.lights.new("sun", "SUN")
     so = gb.link(bpy.data.objects.new("sun", sun))
     so.rotation_euler = (math.radians(50), 0, math.radians(200))
-    gb.keys(sun, "energy", [(0, 4.0, "CONSTANT"), (F(0.14), 0.0, "CONSTANT")], interp="CONSTANT")
+    gb.keys(sun, "energy", [(0, DAY_SUN, "CONSTANT"), (F(0.14), 0.0, "CONSTANT")], interp="CONSTANT")
     moon = bpy.data.lights.new("moon", "SUN")
     moon.color = (0.6, 0.7, 1.0)
     mo = gb.link(bpy.data.objects.new("moon", moon))
@@ -189,8 +194,19 @@ def light(S, final=False):
         vol.inputs["Density"].default_value = gb.LOOK["haze_density"]
         nt.links.new(vol.outputs[0], nt.nodes["Material Output"].inputs["Volume"])
         gb.box("haze", (0, 0, 30), (300, 300, 60), hm)
+        # by day (the pre-roll) no haze: in the sun it lifted every black (the human: "the intro is a little washed out")
+        gb.keys(nt, f'nodes["{vol.name}"].inputs["Density"].default_value',
+                [(0, 0.0, "CONSTANT"), (F(0.14), gb.LOOK["haze_density"], "CONSTANT")], interp="CONSTANT")
         import detail
         detail.sky(w)
+    # by day the shop glass is clearer: at 0.18 it laid a pale sheet over the push into the eatery (S01a; the human: "the
+    # intro is a little washed out"); at night (Act 1, approved) it stays as it was
+    ga = bpy.data.materials.get("glass_a")
+    if ga and ga.node_tree:
+        b = next(n for n in ga.node_tree.nodes if n.type == "BSDF_PRINCIPLED")
+        a_night = b.inputs["Alpha"].default_value
+        gb.keys(ga.node_tree, f'nodes["{b.name}"].inputs["Alpha"].default_value',
+                [(0, DAY_GLASS, "CONSTANT"), (F(0.14), a_night, "CONSTANT")], interp="CONSTANT")
     gb.keys(moon, "energy", [(0, 0.0, "CONSTANT"), (F(0.14), moon_e, "CONSTANT")], interp="CONSTANT")
     # by day the street lamps, upper windows and neon are off; the shops' interiors are lit
     for ctl, lo in S["lamps"]:

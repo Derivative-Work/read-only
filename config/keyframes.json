@@ -112,20 +112,32 @@
    "denoise": 0.95
   },
   "S49_end": {
-   "plate": "S49",
    "frame": 5427,
    "refs": [],
-   "prompt": "A close night shot looking down at the corner of a table in a small eatery after closing. Reference image 1 gives the camera angle, the framing and where everything stands: keep the phone, the badge, the papers and the tray's edge exactly where they are. A smartphone lies face up on the dark wooden table, its screen glowing softly; above it a small printed visitor badge with red diagonal stripes; a folded printed page tucked under the tray's corner; the edge of a black textured tray on the right. Indoors, inside the eatery: the left of the frame is the eatery's yellow-painted wall in deep shadow, right beside the table; no window, no street and no sky in this view. Dim warm light inside, cold blue light from the street, the phone's screen lighting the tabletop; a real worn wooden table, real paper, real plastic. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
-   "v": 4,
-   "denoise": 0.95
+   "prompt": "A night photograph inside a small, informal Filipino eatery after closing, close over a table by the front window. Reference image 1 is this exact picture, already composed and lit: keep everything in it exactly where it is and as it is — the yellow-painted wall on the left and its window frame, the table, the phone, the badge, the papers and the tray — and only make it a sharp, clean, real photograph: repair any smeared, stretched or doubled edges, give the tray one clean rim, the phone a crisp black glass body with straight edges and its screen lit. The edge of the black textured tray on the right. A real worn dark wooden table, real paper, real plastic, dim light, cold blue light from the street, the phone's screen lighting the tabletop. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
+   "v": 5,
+   "denoise": 0.6,
+   "_v4": {
+    "prompt": "A close night shot looking down at the corner of a table in a small eatery after closing. Reference image 1 gives the camera angle, the framing and where everything stands: keep the phone, the badge, the papers and the tray's edge exactly where they are. A smartphone lies face up on the dark wooden table, its screen glowing softly; above it a small printed visitor badge with red diagonal stripes; a folded printed page tucked under the tray's corner; the edge of a black textured tray on the right. Indoors, inside the eatery: the left of the frame is the eatery's yellow-painted wall in deep shadow, right beside the table; no window, no street and no sky in this view. Dim warm light inside, cold blue light from the street, the phone's screen lighting the tabletop; a real worn wooden table, real paper, real plastic. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
+    "denoise": 0.95,
+    "plate": "S49"
+   },
+   "layout": "renders/m6/s49_reproj",
+   "_doc": "v5: the layout is S49_v4_s2002 (the opening anchor) reprojected into this frame through the Blender depth (scripts/reproject.py), so the wall and window stay put (the human: the wall 'appears to travel'); FLUX only re-details it."
   },
   "S49_mid": {
-   "plate": "S49",
    "frame": 5332,
    "refs": [],
-   "prompt": "A night shot moving in over a table in a small eatery after closing. Reference image 1 gives the camera angle, the framing and where everything stands: keep the phone, the badge, the papers, the tray, the plate and the cup exactly where they are. A smartphone lies face up on the dark wooden table, its screen glowing softly; above it a small printed visitor badge with red diagonal stripes; a folded printed page tucked under the tray's corner; a black textured tray with a half-eaten breakfast on a paper plate on the right. Indoors, inside the eatery: the left of the frame is the eatery's yellow-painted wall in deep shadow, right beside the table; no window, no street and no sky in this view. Dim warm light inside, cold blue light from the street, the phone's screen lighting the tabletop; a real worn wooden table, real paper, real plastic. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
-   "v": 4,
-   "denoise": 0.95
+   "prompt": "A night photograph inside a small, informal Filipino eatery after closing, close over a table by the front window. Reference image 1 is this exact picture, already composed and lit: keep everything in it exactly where it is and as it is — the yellow-painted wall on the left and its window frame, the table, the phone, the badge, the papers and the tray — and only make it a sharp, clean, real photograph: repair any smeared, stretched or doubled edges, give the tray one clean rim, the phone a crisp black glass body with straight edges and its screen lit. A half-eaten breakfast on a paper plate on the black textured tray on the right. A real worn dark wooden table, real paper, real plastic, dim light, cold blue light from the street, the phone's screen lighting the tabletop. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
+   "v": 5,
+   "denoise": 0.6,
+   "_v4": {
+    "prompt": "A night shot moving in over a table in a small eatery after closing. Reference image 1 gives the camera angle, the framing and where everything stands: keep the phone, the badge, the papers, the tray, the plate and the cup exactly where they are. A smartphone lies face up on the dark wooden table, its screen glowing softly; above it a small printed visitor badge with red diagonal stripes; a folded printed page tucked under the tray's corner; a black textured tray with a half-eaten breakfast on a paper plate on the right. Indoors, inside the eatery: the left of the frame is the eatery's yellow-painted wall in deep shadow, right beside the table; no window, no street and no sky in this view. Dim warm light inside, cold blue light from the street, the phone's screen lighting the tabletop; a real worn wooden table, real paper, real plastic. Photorealistic cinematic night photograph, 35mm film, shallow depth of field. Every screen, sign and label is plain and blank, with no text, letters, numbers or logos.",
+    "denoise": 0.95,
+    "plate": "S49"
+   },
+   "layout": "renders/m6/s49_reproj",
+   "_doc": "v5: the layout is S49_v4_s2002 (the opening anchor) reprojected into this frame through the Blender depth (scripts/reproject.py), so the wall and window stay put (the human: the wall 'appears to travel'); FLUX only re-details it."
   }
  },
  "tenderloin": "The street is in San Francisco's Tenderloin: six- and seven-story early-1900s apartment hotels with flat fronts in pale gray, cream and beige painted stucco and terracotta, ornate cornices at the roofline, stacked bay windows, black fire escapes zigzagging down the facades, vertical neon blade signs on the hotels, black scissor security gates and roll-down shutters on the ground-floor shops, a slim gray parking meter, Muni trolley-bus wires strung across the street overhead, and in the distance the street climbs a steep hill."

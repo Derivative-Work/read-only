@@ -65,12 +65,13 @@ def badge(kind):
     d.text((340, 320), DATE if kind != "vip" else "ALL ACCESS", font=font(44), fill=ink)
     d.text((340, 390), "Valid today only" if kind != "vip" else "No expiry", font=font(36),
            fill=(90, 90, 92) if kind != "vip" else (90, 66, 20))
-    if kind == "expired":
-        st = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        sd = ImageDraw.Draw(st)
-        sd.rounded_rectangle([210, 470, 840, 620], 18, outline=(255, 255, 255, 255), width=10)
-        sd.text((525, 545), "EXPIRED", font=font(110), fill=(255, 255, 255, 255), anchor="mm")
-        im = Image.alpha_composite(im.convert("RGBA"), st.rotate(-4, resample=Image.BICUBIC, center=(525, 545))).convert("RGB")
+    if kind == "expired":  # v2 (the human: "'EXPIRED' is very hard to read"): a full-width white band over the
+        # stripes and the details, "EXPIRED" in heavy red capitals filling it, so it reads at a few dozen pixels wide
+        d.rectangle([0, 300, W, 610], fill=(250, 250, 248))
+        d.line([(0, 300), (W, 300)], fill=(150, 20, 28), width=8)
+        d.line([(0, 610), (W, 610)], fill=(150, 20, 28), width=8)
+        d.text((W / 2, 458), "EXPIRED", font=font(196), fill=(186, 18, 30), anchor="mm", stroke_width=5,
+               stroke_fill=(186, 18, 30))
     elif kind == "vip":
         d.text((W / 2, 545), "★  VIP  ★", font=font(90), fill=ink, anchor="mm")
     else:

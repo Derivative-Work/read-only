@@ -8,7 +8,12 @@ the overlay's highlights, added), so the lights sit in the rain.
 --clean R: the take's own copy of the lettering (keyframes made from the layout keep it, a little off) is blurred out
 under the overlay's ink, dilated by R px, before the overlay goes on, so the letters don't double.
 
+--bezel R (S49's phone; the human: "the ending's phone screen has a white border on the edges"): the take's own lit
+screen is a little larger than the rendered one, so a ring R px wide round the overlay is painted the phone's black
+glass first (soft-edged), covering the take's screen edge.
+
 Usage: .venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v4_s1.mp4 [--glow 6] [--clean 5] [--bloom 0.8]
+       [--bezel 6]
 Output: takes/fx/<shot>/<shot>_overlay.mp4 (picture only) and _audio.mp4 (with the master, for review).
 """
 import argparse
@@ -30,6 +35,7 @@ def main():
     ap.add_argument("--glow", type=float, default=6)
     ap.add_argument("--clean", type=int, default=0)
     ap.add_argument("--bloom", type=float, default=0.8, help="how much of the lights' glow is added (0: none, S49's phone)")
+    ap.add_argument("--bezel", type=int, default=0, help="px of black glass round the overlay (S49's phone)")
     a = ap.parse_args()
     plate = Path("renders/m5/plates") / a.shot
     meta = json.load(open(plate / "shot.json"))
@@ -57,6 +63,11 @@ def main():
             zone = cv2.GaussianBlur(cv2.dilate(ink, np.ones((2 * a.clean + 1,) * 2, np.uint8)).astype(np.float32),
                                     (0, 0), 2)[..., None]
             img = img * (1 - zone) + cv2.GaussianBlur(img, (0, 0), 3 * a.clean) * zone
+        if a.bezel:  # the take's oversized lit screen edge, under black glass
+            solid = (ov[..., 3] > 127).astype(np.uint8)
+            ring = cv2.dilate(solid, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * a.bezel + 1,) * 2))
+            ring = cv2.GaussianBlur(ring.astype(np.float32), (0, 0), 1.2)[..., None]
+            img = img * (1 - ring) + np.array([10, 10, 12], np.float32) * ring
         comp = img * (1 - alpha) + rgb * alpha
         hi = rgb * alpha * (rgb.max(2, keepdims=True) > 150)  # the lights, not the ink
         glow = cv2.GaussianBlur(hi, (0, 0), a.glow)
