@@ -227,3 +227,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M5: the Act 2 cut, the tag — R1
 - **What:** "this is great, just use the record scratches at the end to fade directly to the login screen (skip the fade to black first)". The Act 2 cut approved but for the S48a → S48b transition.
 - **Rule:** R1. The agent changes the transition (production log, next entry).
+
+## 2026-11-02 — M5 approved — R1
+- **What:** "approved, go ahead with M6". Act 2 (`renders/m5/act2_v2.mp4`: S40–S48b) approved; M5 closed.
+- **Rule:** R1 (the M5 gate).

@@ -1383,3 +1383,6 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **The scratches:** the track ends with vinyl scratches, in the Other stem from 194.65 to 195.75 s (measured in 50 ms windows; drums and percussion hit there too), in S48a's last seconds; the piano plays out from 187 s before them.
 - **Login prompt:** its cue (`scripts/overlay_cues.py`, "login_prompt") now starts at 194.65, drawn in full (no fade from black), with `"scratch": [194.65, 195.75]`; re-rendered (133 frames from timeline frame 5104). The other cues are unchanged (checked).
 - **`scripts/act2_assemble.py`:** from the first scratch the grave fades straight into the prompt, its opacity following the Other stem's energy accumulated over the scratches, so it moves with each stroke; the prompt then holds, cursor blinking, to the cut at 200.16. No fade to black. → `renders/m5/act2_v2.mp4` (48.5 s). v1 moved to `archive/renders/m5/act2_v1.mp4`, superseded.
+
+## 2026-11-02T03:50:00-05:00 — Log: M5 approved (R1); M6 starts
+- Approved cut: `renders/m5/act2_v2.mp4`. Next, M6: the bookends (S01a–S01d, S49), the end card (S50) and the badge props.
