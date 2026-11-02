@@ -282,3 +282,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** The human, while the cutlery fix was rendering: "hm, the S49 cutlery is also visibly wrong -- regenerate it once that's done".
 - **Why:** Review note on the M7 cut.
 - **Rule:** R1.
+
+## 2026-11-02 — M7: full cut v3 notes — R1
+- **What:** The human, on `renders/m7/m7_full_v3.mp4`: "add camera shake timed with the downvotes landing"; "the band and the check are not laying on the ground, and the brooms and crate next to them are not reading right"; "the \"IPO\" doesn't look like it's rolling out".
+- **Why:** Review notes on the M7 cut.
+- **Rule:** R1.

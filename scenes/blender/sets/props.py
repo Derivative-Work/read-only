@@ -757,12 +757,80 @@ def podium():
 
 
 def banner():
+    """The banner's top rod and the sheet hanging from it (scaled down as it unrolls); the roll at its foot is
+    banner_roll()."""
     o = obj("banner")
     m = mk.MK()
     m.box((0, 0, -2.5), (5.0, 0.02, 5.0), mat("banner", "#f2efe6", rough=0.9))
     m.cyl((0, 0, 0.03), 0.04, 5.3, mat("banner.rod", gb.LOOK["palette"]["gold"], metal=0.9, rough=0.3), axis="X")
-    m.cyl((0, 0, -5.0), 0.03, 5.1, mat("banner.rod", gb.LOOK["palette"]["gold"], metal=0.9, rough=0.3), axis="X")
     kit.mesh_swap(o, m.mesh("prop.banner"))
+
+
+def banner_roll(S, SP):
+    """S30: the banner pays out from a roll (the human, on the M7 cut: "the 'IPO' doesn't look like it's rolling
+    out"). The roll hangs at the sheet's foot, in front of its plane (toward the camera, which looks up at it; behind
+    it the roll was hidden by the sheet), the paper leaving it from the back:
+    furled under the top rod before the bell, it runs down with the sheet's edge, turning as the paper comes off it
+    (angle = the length paid out over the roll's mean radius) and slimming from 0.26 m to the 3 cm of its gold core,
+    which is the banner's bottom rod once it's out. Its ends show the paper's turns (rings) round the core, and the
+    paper's free edge, a faint line along it, shows it turning. The IPO lettering is printed on the sheet at full size
+    and appears only above the roll's axis (a marker that follows the roll down without turning), as the roll passes
+    it."""
+    bn = obj("banner")
+    unroll = S["banner_unroll"]
+    L, R0, R1 = 5.0, 0.26, 0.03
+    paper = mat("banner", "#f2efe6", rough=0.9)
+    gold = mat("banner.rod", gb.LOOK["palette"]["gold"], metal=0.9, rough=0.3)
+    edge = mat("banner.roll.edge", "#d9d4c6", rough=0.95)
+    m = mk.MK()
+    m.cyl((0, 0, 0), 1.0, 5.0, paper, axis="X", n=40)  # unit radius: scaled to the roll's radius
+    for sx in (-1, 1):
+        for k, r in enumerate((0.85, 0.66, 0.47, 0.28)):  # the turns of paper seen at each end
+            m.torus((sx * 2.501, 0, 0), r, 0.012, edge, rot=(0, math.pi / 2, 0), n=40, k=4)
+    m.box((0, 0.0, 1.004), (5.0, 0.06, 0.012), edge)  # the paper's free edge, on the roll's surface (unit radius)
+    ro = gb.link(bpy.data.objects.new("banner.roll", m.mesh("prop.banner.roll")))
+    m = mk.MK()  # the core: the gold rod, out past the paper (not scaled with the roll)
+    m.cyl((0, 0, 0), R1, 5.1, gold, axis="X", n=16)
+    core = gb.link(bpy.data.objects.new("banner.core", m.mesh("prop.banner.core")))
+    x, y, z = bn.location
+    foot = gb.empty("banner.foot")  # the roll's axis, not turning: the lettering's cutoff
+    # the roll's centre: on the sheet's foot, R in front of its plane; it falls L as the sheet comes out
+    for o, scaled in ((ro, True), (core, False), (foot, False)):
+        gb.keys(o, "location", [(f, z - L * u) for f, u in unroll], index=2, interp="BEZIER")
+        o.location.x = x
+        gb.keys(o, "location", [(f, y - 0.01 - (R0 + (R1 - R0) * u)) for f, u in unroll], index=1, interp="BEZIER")
+        if o is not foot:
+            gb.keys(o, "rotation_euler", [(f, L * u / ((R0 + R1) / 2)) for f, u in unroll], index=0, interp="BEZIER")
+        if scaled:
+            for i in (1, 2):
+                gb.keys(o, "scale", [(f, R0 + (R1 - R0) * u) for f, u in unroll], index=i, interp="BEZIER")
+            o.scale.x = 1.0
+        if o is not foot:
+            shots.only(o, "S30", t1=shots.TM["duration_s"])
+    # the lettering: shown only above the roll's axis (its own copy of the ink, a cutout by the roll's object space)
+    t = obj("banner.t")
+    if t:
+        ink = t.data.materials[0].copy() if t.data.materials else mat("banner.ink", "#111111")
+        ink.name = "banner.ink"
+        nt = ink.node_tree
+        out = next(n for n in nt.nodes if n.type == "OUTPUT_MATERIAL")
+        surf = out.inputs["Surface"].links[0].from_socket
+        tc = nt.nodes.new("ShaderNodeTexCoord")
+        tc.object = foot
+        sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+        nt.links.new(tc.outputs["Object"], sep.inputs[0])
+        gt = nt.nodes.new("ShaderNodeMath")
+        gt.operation = "GREATER_THAN"
+        gt.inputs[1].default_value = 0.0
+        nt.links.new(sep.outputs["Z"], gt.inputs[0])
+        tr = nt.nodes.new("ShaderNodeBsdfTransparent")
+        mix = nt.nodes.new("ShaderNodeMixShader")
+        nt.links.new(gt.outputs[0], mix.inputs[0])
+        nt.links.new(tr.outputs[0], mix.inputs[1])
+        nt.links.new(surf, mix.inputs[2])
+        nt.links.new(mix.outputs[0], out.inputs["Surface"])
+        t.data.materials.clear()
+        t.data.materials.append(ink)
 
 
 def stickies():
@@ -786,30 +854,111 @@ def funnel():
     kit.mesh_swap(o, m.mesh("prop.funnel"))
 
 
+def paving(x0, y0, x1, y1):
+    """The pavement's pieces under a footprint (the sidewalk, the curb, the raised paving squares): ray targets."""
+    import fnmatch
+    out = []
+    for o in bpy.data.objects:
+        if o.type != "MESH" or not any(fnmatch.fnmatchcase(o.name, p) for p in ("sidewalk*", "curb*", "sq.*")):
+            continue
+        bb = [o.matrix_world @ __import__("mathutils").Vector(c) for c in o.bound_box]
+        if min(p.x for p in bb) <= x1 and max(p.x for p in bb) >= x0 and min(p.y for p in bb) <= y1 and \
+                max(p.y for p in bb) >= y0:
+            out.append(o)
+    return out
+
+
+def ground_at(pts, targets, floor=0.0):
+    """The highest surface under any of pts [(x, y)] among targets."""
+    from mathutils import Vector
+    from mathutils.bvhtree import BVHTree
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    best = floor
+    for t in targets:
+        tr, mw = bvh(t, dg), t.matrix_world
+        inv = mw.inverted()
+        for x, y in pts:
+            hit = tr.ray_cast(inv @ Vector((x, y, 3.0)), (inv.to_3x3() @ Vector((0, 0, -1))).normalized(), 10.0)
+            if hit[0] is not None:
+                best = max(best, (mw @ hit[0]).z)
+    return best
+
+
+# S32's pile: (head end x, y, heading): the brief's "the mods' brooms stacked by the curb": a bundle laid down, heads
+# together, handles fanning out, each one settled on the pavement and the ones under it, in this order (they stood in a
+# crate before, their 49 cm heads through its sides: the human, on the M7 cut, "the brooms and crate next to them are
+# not reading right"; the crate is gone; head to tail they read as a ladder)
+BROOM_PILE = [(-8.95, -6.78, 0.10), (-8.8, -6.30, -0.07), (-9.05, -6.55, 0.03), (-8.85, -6.45, -0.14),
+              (-8.98, -6.66, 0.17)]
+
+
 def brooms(SP):
+    """S32: the mods' brooms laid down in a pile by the curb, each set down rigid on the paving and the brooms under it
+    (rest()); the model's handle runs up its Z from the bristles at 0 and its head is wide in X, so it is turned to
+    lie along X on the head's broad face."""
+    import numpy as np
+    from mathutils import Matrix
     r = random.Random(32)
-    for k in range(5):
+    under = paving(-9.6, -7.4, -6.8, -5.8)
+    placed = []
+    for k, (hx, hy, yaw) in enumerate(BROOM_PILE):
         o = obj(f"broomstack{k}")
-        kit.swap(o, "wooden_broom", scale=0.95, offset=(0, 0, -0.68), rot=(r.uniform(-0.06, 0.06), r.uniform(-0.05, 0.05),
-                                                                              r.uniform(0, math.pi)))
-    cr = kit.place("broomstack.crate", "plastic_crate_02", (-7.8, -6.3, 0.15), rot_z=0.1)
-    shots.only(cr, "S32")
+        reset_rot(o)
+        me = kit.load("wooden_broom").copy()
+        me.name = f"{o.name}.kit"
+        # model (x, y, z) -> (z, x, y): the length along X, the head's width across (Y), its thickness up (Z)
+        me.transform(Matrix(((0, 0, 1, 0), (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 0, 1))) @ Matrix.Scale(0.95, 4))
+        co = np.array([v.co[:] for v in me.vertices])
+        me.transform(Matrix.Translation((-co[:, 0].min(), 0, -co[:, 2].min())))
+        o.data = me
+        o.location = (hx, hy, 1.0)
+        rest(o, (hx, hy), yaw + r.uniform(-0.04, 0.04), under + placed, floor=0.15)
+        placed.append(o)
+
+
+# the envelope and the band, clear of the pile (the human, on the M7 cut: "the band and the check are not laying on the
+# ground": they sat 1-2 cm over the paving, which is 0.150-0.156 m, not the 0.16 they were set at)
+PAYROLL_AT, BAND_AT = (-7.15, -6.45, 0.25), (-6.8, -6.62)
 
 
 def payroll():
+    """The empty payroll envelope, lying on the paving: a little bowed (its middle 3 mm up), its underside on the
+    highest point under it."""
     o = obj("payroll")
+    reset_rot(o)
     m = mk.MK()
-    m.box((0, 0, 0), (0.24, 0.12, 0.004), mat("payroll", "#c4a070"))
-    m.quad((0, 0, 0.0025), (0.24, 0.12), img("payroll"), facing="+Z")
+    m.box((0, 0, 0.002), (0.24, 0.12, 0.004), mat("payroll", "#c4a070"))
+    m.quad((0, 0, 0.0042), (0.24, 0.12), img("payroll"), facing="+Z")
     kit.mesh_swap(o, m.mesh("prop.payroll"))
+    x, y, a = PAYROLL_AT
+    corners = [(x + cx * math.cos(a) - cy * math.sin(a), y + cx * math.sin(a) + cy * math.cos(a))
+               for cx in (-0.12, 0, 0.12) for cy in (-0.06, 0, 0.06)]
+    o.location = (x, y, ground_at(corners, paving(x - 0.3, y - 0.3, x + 0.3, y + 0.3), 0.15) + 0.0004)
+    o.rotation_euler = (0, 0, a)
 
 
 def rubberband():
+    """The bare rubber band: it drops (shots.py keys its fall) and lies flat on the paving, its underside on it."""
     o = obj("rubberband")
     reset_rot(o)
     m = mk.MK()
     m.torus((0, 0, 0), 0.04, 0.003, mat("band", "#c79a5c", rough=0.6), n=24, k=6)
     kit.mesh_swap(o, m.mesh("prop.band"))
+    x, y = BAND_AT
+    pts = [(x + 0.043 * math.cos(t), y + 0.043 * math.sin(t)) for t in [i * math.pi / 6 for i in range(12)]]
+    z = ground_at(pts, paving(x - 0.2, y - 0.2, x + 0.2, y + 0.2), 0.15) + 0.0032
+    o.location.x, o.location.y = x, y
+    fc = gb.fcurve(o, "location", 2)  # the fall's keys: its last key is where it lands
+    if fc.keyframe_points:
+        last = max(fc.keyframe_points, key=lambda k: k.co.x)
+        dz = z - last.co.y
+        last.co.y += dz
+        last.handle_left.y += dz
+        last.handle_right.y += dz
+        fc.update()
+    else:
+        o.location.z = z
 
 
 def chalk(S, SP):
@@ -1188,6 +1337,17 @@ def utensil(kind, m, t=0.0019):
     return me
 
 
+def bvh(o, dg):
+    """A ray tree of o's surface in its own space: evaluated when it can be, else from its mesh data (an object hidden at
+    the current frame, as a shot's props are outside their shot, has no evaluated mesh)."""
+    from mathutils.bvhtree import BVHTree
+    try:
+        return BVHTree.FromObject(o, dg)
+    except ValueError:
+        me = o.data
+        return BVHTree.FromPolygons([v.co.copy() for v in me.vertices], [tuple(f.vertices) for f in me.polygons])
+
+
 def rest(ob, at, yaw, targets, floor=-1.0, lift=0.0003):
     """Set a rigid piece down on what's under it: its underside sampled along its length (across its width too), the
     surface under each sample found by rays down onto `targets`; the piece rests on the upper hull of (surface minus
@@ -1198,7 +1358,7 @@ def rest(ob, at, yaw, targets, floor=-1.0, lift=0.0003):
     from mathutils.bvhtree import BVHTree
     bpy.context.view_layer.update()
     dg = bpy.context.evaluated_depsgraph_get()
-    trees = [(BVHTree.FromObject(t, dg), t.matrix_world.copy()) for t in targets]
+    trees = [(bvh(t, dg), t.matrix_world.copy()) for t in targets]
     co = np.array([v.co[:] for v in ob.data.vertices])
     L = co[:, 0].max()
     cs, sn = math.cos(yaw), math.sin(yaw)
@@ -1383,6 +1543,7 @@ def build(S, SP):
         f()
     brickwall(SP)
     brooms(SP)
+    banner_roll(S, SP)
     chalk(S, SP)
     import os
     only = os.environ.get("DETAIL_ONLY")

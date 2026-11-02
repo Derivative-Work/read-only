@@ -588,7 +588,22 @@ def stage(S):
                                      (f0 + 4, (x, y, zc))])
         gb.key_vec(arr, "rotation_euler", [(f0 - 6, (0, lean * 0.5, 0)), (f0, (0, lean, 0)), (f0 + 2, (0.05, lean * 1.6, 0)),
                                            (f0 + 4, (-0.03, lean * 0.8, 0)), (f0 + 6, (0, lean, 0))], interp="BEZIER")
-    cam("S22", [(0, (9, 1.5, 8.9), (9, 9.4, 9.0)), (1, (9, 2.6, 8.9), (9, 9.4, 9.0))], lens=30)
+    c22 = cam("S22", [(0, (9, 1.5, 8.9), (9, 9.4, 9.0)), (1, (9, 2.6, 8.9), (9, 9.4, 9.0))], lens=30)
+    # the camera shakes as each arrow lands (the human, on the M7 cut: "add camera shake timed with the downvotes
+    # landing"): a jolt on the impact frame, then a decaying shudder over half a second; the camera and its target are
+    # nudged apart (delta_location: on top of their keys), so the frame both bumps and tips
+    impacts = [F(w["start"]) for w in dv]
+    rs = random.Random(22)
+    jolts = {o: [] for o in ("cam", "tgt")}
+    for f0 in impacts:
+        for j, amp in enumerate((1.0, -0.75, 0.55, -0.38, 0.25, -0.15, 0.08, -0.03, 0.0)):
+            for o, size in (("cam", 0.035), ("tgt", 0.11)):
+                jolts[o].append((f0 + j * 1.5, (amp * size * rs.uniform(0.4, 0.9) * (1 if j % 2 else -1),
+                                                0.0, -amp * size * rs.uniform(0.8, 1.0))))
+    tgt22 = bpy.data.objects["cam.S22.target"]
+    for o, ob in (("cam", c22), ("tgt", tgt22)):
+        pts = [(impacts[0] - 1, (0.0, 0.0, 0.0))] + jolts[o]
+        gb.key_vec(ob, "delta_location", pts, interp="BEZIER")
     c23 = only(B.ceo((9, 9.4, 8.15), name="ceo23"), "S23")
     sing(c23, "S23")
     for k, i in enumerate((1, 2, 3, 5)):
@@ -743,15 +758,17 @@ def stage(S):
     a, b = SP["S30"]
     gb.keys(S["bell"], "rotation_euler", [(F(t) + d, v) for t in gb.beats_between(a, b) for d, v in ((0, 0.4), (8, -0.3))],
             index=0, interp="BEZIER")
-    gb.keys(S["banner"], "scale", [(0, 0.0), (F(a + 0.4), 0.0), (F(a + 1.6), 1.0)], index=2)
+    UNROLL = [(0, 0.0), (F(a + 0.4), 0.0), (F(a + 1.9), 1.0)]  # how much of the banner is out (0..1): 1.5 s (it was
+    # 1.2 s, as a stretch; as a roll paying out it reads at 1.5)
+    gb.keys(S["banner"], "scale", UNROLL, index=2)
     gb.keys(S["ticker"], '["on"]', [(0, 0.0, "CONSTANT"), (F(a + 0.4), 1.0, "CONSTANT")], interp="CONSTANT")
     gb.text("banner.t", "IPO", 1.5, B.M("ink"), (B.LOBBY_DOOR_X, 10.5 - 2.6, 5.6), facing="-Y")
     ipo = bpy.data.objects["banner.t"]
     only(ipo, "S30", t1=TM["duration_s"])
-    # printed on the banner: it unrolls with it (it hung in the air before the banner came down: the human, M4 v6)
-    bn = S["banner"]  # the inverse at full size (keyed at scale 0 before the shot, its world matrix has no inverse)
-    ipo.parent = bn
-    ipo.matrix_parent_inverse = Matrix.LocRotScale(bn.location, bn.rotation_euler, (1, 1, 1)).inverted()
+    # printed on the banner, revealed as the roll passes it (props.banner_roll): it used to be parented to the banner
+    # and squashed with it, so the banner read as a blind stretching, not a roll paying out (the human, on the M7
+    # cut: "the 'IPO' doesn't look like it's rolling out"); before that it hung in the air (the human, M4 v6)
+    S["banner_unroll"] = UNROLL
     cam("S30", [(0, (10, -3.5, 1.8), (12, 9, 10.2)), (1, (9, -5.0, 1.6), (9, 9, 13.0))], lens=24)
     # S31: the notes are on PAWN's shutter (down since S14) at eye height, close enough to read; they hold 1.2 s,
     # peel one at a time 0.22 s apart and arc into the funnel on the truck in the near lane, the camera following;
