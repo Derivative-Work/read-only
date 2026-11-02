@@ -148,6 +148,18 @@ def grade(img):
     return (np.clip(x, 0, 1) * 255).astype(np.uint8)
 
 
+def opener_frame(pre, f, SP):
+    """The opener's picture at video frame f (before the cut to S02): the graded render, S01a's caption, S01b's
+    camera. Also used by scripts/assemble.py."""
+    img = grade(cv2.cvtColor(cv2.imread(str(Path(pre) / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB))
+    t = f / FPS - aa.PRE
+    if SP["S01a"][0] <= t < SP["S01a"][1]:
+        img = caption(img, t, SP["S01a"][0] + 0.8, SP["S01a"][1] - 0.3)
+    elif SP["S01b"][0] <= t < SP["S01b"][1]:
+        img = s01b(img, t - SP["S01b"][0])
+    return img
+
+
 def frames_of(path):
     raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", str(path), "-map", "0:v", "-f", "rawvideo",
                                    "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-"])
@@ -174,14 +186,9 @@ def main():
     f_cut = F(SP["S02"][0])
     for f in range(0, f_cut + int(a.tail * FPS)):
         if f < f_cut:
-            img = grade(cv2.cvtColor(cv2.imread(str(pre / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB))
+            img = opener_frame(pre, f, SP)
         else:
             img = cv2.cvtColor(cv2.imread(str(ACT1 / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB)
-        t = f / FPS - aa.PRE
-        if SP["S01a"][0] <= t < SP["S01a"][1]:
-            img = caption(img, t, SP["S01a"][0] + 0.8, SP["S01a"][1] - 0.3)
-        elif SP["S01b"][0] <= t < SP["S01b"][1]:
-            img = s01b(img, t - SP["S01b"][0])
         enc.stdin.write(np.ascontiguousarray(img).tobytes())
     enc.stdin.close()
     enc.wait()

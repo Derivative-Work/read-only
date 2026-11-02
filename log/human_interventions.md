@@ -263,3 +263,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-03 — M6: the tape hiss's entrance — R1
 - **What:** "Make it ease in from the previous scene as the tape recorder is visible, but don't have it go to full volume until we're back at the eatery".
 - **Rule:** R1 (a note on the cut). The agent changes it (production log, next entry).
+
+## 2026-11-02 — M6 approved; caption direction — R1
+- **What:** "This is great, keep going. For the captions I think a VHS/old-school closed caption font would work best".
+- **Rule:** R1 (the M6 gate approved: bookends v8, Act 2 v3, the ending cut; and a creative note given in words). The agent makes the captions to it (production log, next entry).

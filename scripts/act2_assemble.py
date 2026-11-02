@@ -18,7 +18,8 @@ is seen, rising under the song's end and the silence; full only from S49 (the bo
 Act 2 takes are 1280×704; they are scaled to cover 1280×720 (centre crop). The master plays from the lead-in's start
 to its end (196.16 s); S48b is silent.
 
-Usage: .venv/bin/python scripts/act2_assemble.py OUT.mp4 [--lead 2.0]
+Usage: .venv/bin/python scripts/act2_assemble.py OUT.mp4 [--lead 2.0] [--act1 FRAMES_DIR]
+(class Act2: the per-frame picture, for scripts/assemble.py)
 """
 import argparse
 import subprocess
@@ -95,23 +96,60 @@ def rewind_look(img, k, rng):
     return np.clip(out, 0, 255).astype(np.uint8)
 
 
+class Act2:
+    """Act 2's picture, frame by frame (video frames F(S40 start) .. F(S48b end), and the lead-in before them from
+    Act 1): also used by scripts/assemble.py (M7's full edit)."""
+
+    def __init__(self, act1_dir=None):
+        global ACT1
+        if act1_dir:
+            ACT1 = Path(act1_dir)
+        SP = self.SP = aa.spans()
+        F = aa.F
+        self.fa, self.fb = F(SP["S40"][0]), F(SP["S40"][1])
+        self.hold = self.fa + int(round(aa.REWIND_HOLD * FPS))
+        self.back = list(range(self.fa - 1, F(SP["S02"][0]) - 1, -1))
+        self.rng = np.random.default_rng(40)
+        self.takes = {sid: frames(p) for sid, p in TAKES.items()}
+        self.cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
+        self.first = json.load(open(LOGIN / "range.json"))["first_frame"]
+        self.curve = scratch_curve(*self.cue["scratch"])
+
+    def frame(self, f):
+        SP, F = self.SP, aa.F
+        fa, fb, hold, back = self.fa, self.fb, self.hold, self.back
+        if f < fa:
+            return act1(f)
+        if f < fb:
+            if f < hold:
+                return act1(fa - 1)
+            k = f - hold
+            return rewind_look(act1(back[int(k * len(back) / (fb - hold))]), k, self.rng)
+        if f >= F(self.cue["from"]):
+            i = f - self.first
+            scr = cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB).astype(np.float32)
+            k = self.curve(f / FPS - aa.PRE)
+            if k < 1 and f < F(SP["S48a"][1]):
+                tk = self.takes["S48a"]
+                grave = cover(tk[min(f - F(SP["S48a"][0]), len(tk) - 1)]).astype(np.float32)
+                scr = grave * (1 - k) + scr * k
+            return np.clip(scr, 0, 255).astype(np.uint8)
+        sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
+        tk = self.takes[sid]
+        return cover(tk[min(f - F(SP[sid][0]), len(tk) - 1)])
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--lead", type=float, default=2.0)
+    ap.add_argument("--act1", help="Act 1's frames (default: the approved M4 frames)")
     a = ap.parse_args()
-    SP = aa.spans()
+    act2 = Act2(a.act1)
+    SP = act2.SP
     F = aa.F
     t0 = SP["S40"][0] - a.lead
     f0, f_end = F(t0), F(SP["S48b"][1])
-    fa, fb = F(SP["S40"][0]), F(SP["S40"][1])
-    hold = fa + int(round(aa.REWIND_HOLD * FPS))
-    back = list(range(fa - 1, F(SP["S02"][0]) - 1, -1))
-    rng = np.random.default_rng(40)
-    takes = {sid: frames(p) for sid, p in TAKES.items()}
-    cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
-    first = json.load(open(LOGIN / "range.json"))["first_frame"]
-    curve = scratch_curve(*cue["scratch"])
     enc = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-ss", f"{t0:.4f}", "-t", f"{SP['S48a'][1] - t0:.4f}", "-i",
                             aa.MASTER, *(["-i", str(TAPE)] if TAPE.exists() else []), "-filter_complex",
@@ -122,27 +160,7 @@ def main():
                             "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k",
                             a.out], stdin=subprocess.PIPE)
     for f in range(f0, f_end):
-        if f < fa:
-            img = act1(f)
-        elif f < fb:
-            if f < hold:
-                img = act1(fa - 1)
-            else:
-                k = f - hold
-                img = rewind_look(act1(back[int(k * len(back) / (fb - hold))]), k, rng)
-        elif f >= F(cue["from"]):
-            i = f - first
-            scr = cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB).astype(np.float32)
-            k = curve(f / FPS - aa.PRE)
-            if k < 1 and f < F(SP["S48a"][1]):
-                grave = cover(takes["S48a"][min(f - F(SP["S48a"][0]), len(takes["S48a"]) - 1)]).astype(np.float32)
-                scr = grave * (1 - k) + scr * k
-            img = np.clip(scr, 0, 255).astype(np.uint8)
-        else:
-            sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
-            tk = takes[sid]
-            img = cover(tk[min(f - F(SP[sid][0]), len(tk) - 1)])
-        enc.stdin.write(np.ascontiguousarray(img).tobytes())
+        enc.stdin.write(np.ascontiguousarray(act2.frame(f)).tobytes())
     enc.stdin.close()
     enc.wait()
     print(f"{a.out}: {(f_end - f0) / FPS:.2f} s, frames {f0}..{f_end - 1}", flush=True)
