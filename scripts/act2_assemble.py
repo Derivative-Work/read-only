@@ -10,9 +10,11 @@ then Act 2 shots (S41–S48)"; S40 and S48b are the edit's, built here).
 - S41–S48a: the approved M5 takes (TAKES below).
 - S48b: the human: "use the record scratches at the end to fade directly to the login screen (skip the fade to black
   first)". On the scratches at the end of the track (overlays/cues.json login_prompt "scratch", 194.65-195.75 s, in
-  S48a's last seconds) the grave fades straight into the login prompt (renders/screens/login_prompt), its opacity
-  following the scratch stem's accumulated energy, so it moves with each stroke; the prompt then holds, its cursor
-  blinking, to the cut.
+  S48a's last seconds) the grave goes straight to the login prompt (renders/screens/login_prompt). M6 faded it, its
+  opacity following the scratch stem's accumulated energy; M7 (the human: "instead of fading from the gravestone, do a
+  VHS tracking effect between it and the login screen, still synced to the record scratches") rolls a tracking bar up
+  the frame instead, its height the same accumulated energy, the login prompt below it, each stroke tearing and
+  rolling the picture (tracking()); the prompt then holds, its cursor blinking, to the cut.
 Under S47-S48b, the tape bed (audio/sfx/tape_bed_s47_s49.wav, scripts/tape_hiss.py): hiss easing in as the recorder
 is seen, rising under the song's end and the silence; full only from S49 (the bookends).
 Act 2 takes are 1280×704; they are scaled to cover 1280×720 (centre crop). The master plays from the lead-in's start
@@ -52,6 +54,55 @@ def scratch_curve(t0, t1):
     e = x.mean(1)[int(t0 * sr):int(t1 * sr)] ** 2
     c = np.cumsum(e) / e.sum()
     return lambda t: float(np.interp((t - t0) * sr, np.arange(len(c)), c))
+
+
+def scratch_energy(t0, t1):
+    """0..1 per video frame time: the Other stem's energy in the frame around t (over [t0, t1]), over its loudest
+    frame's: each scratch stroke's jolt."""
+    x, sr = sf.read(SCRATCH_STEM, always_2d=True)
+    e = x.mean(1) ** 2
+    hop = sr // FPS
+    ts = np.arange(t0 - 0.2, t1 + 0.4, 1 / FPS)
+    v = np.array([e[int(t * sr) - hop // 2:int(t * sr) + hop // 2].mean() for t in ts])
+    v = np.sqrt(v / v.max())
+    return lambda t: float(np.interp(t, ts, v, left=0.0, right=0.0))
+
+
+def tracking(old, new, k, jolt, seed):
+    """VHS tracking between two pictures (the human, on the M7 cut: "instead of fading from the gravestone, do a VHS
+    tracking effect between it and the login screen, still synced to the record scratches"). k (0..1, the scratches'
+    accumulated energy) moves the tracking bar up the frame from below: above it the old recording, below it the new
+    one, as when a tape cuts between two recordings; jolt (0..1, the stroke under this frame) tears the lines sideways,
+    rolls the picture a few lines, pulls the colour apart and lifts the snow. Both float32 RGB (H, W, 3)."""
+    rng = np.random.default_rng(seed)
+    amt = max(np.sin(np.pi * min(max(k, 0.0), 1.0)) * 0.6, jolt)  # the disturbance: the stroke, at least the crossing's
+    yb = int(round(H * (1.12 - 1.3 * k)))  # the bar's centre: below the frame at k 0, above it at 1
+    rows = np.arange(H)[:, None, None]
+    img = np.where(rows < yb, old, new)
+    # the picture rolls a few lines on each stroke
+    img = np.roll(img, int(round(rng.normal(0, 6) * jolt)), axis=0)
+    # the lines tear sideways: slow wobble in blocks, and a hard skew near the bar (the head switching)
+    blocks = np.repeat(rng.normal(0, 1, H // 4 + 1), 4)[:H]
+    near = np.exp(-((np.arange(H) - yb) / 55.0) ** 2)
+    off = blocks * 14 * amt + near * (60 + 50 * jolt) * (1 if seed % 2 else -1) * min(1.0, amt * 2)
+    for y in np.nonzero(np.abs(off) >= 1)[0]:
+        img[y] = np.roll(img[y], int(off[y]), axis=0)
+    # the colour pulls apart and drains
+    sh = int(round(2 + 8 * amt))
+    img[..., 0] = np.roll(img[..., 0], sh, axis=1)
+    img[..., 2] = np.roll(img[..., 2], -sh, axis=1)
+    lum = img.mean(2, keepdims=True)
+    img = lum + (img - lum) * (1 - 0.5 * amt)
+    # the bar: a band of snow with white streaks, and snow through the rest in proportion
+    y0, y1 = max(0, yb - 38), min(H, yb + 38)
+    if y1 > y0:
+        snow = rng.random((y1 - y0, W, 1)) * 255
+        img[y0:y1] = img[y0:y1] * 0.25 + snow * 0.75
+    streaks = (rng.random((H, 1, 1)) < 0.015 * amt) * (rng.random((H, W, 1)) < 0.35) * 255.0
+    img = np.maximum(img, streaks)
+    img = img * (1 - 0.18 * amt) + rng.random((H, W, 1)) * 255 * 0.18 * amt
+    img[::3] *= 1 - 0.25 * amt  # the scan lines show
+    return img
 
 
 def frames(path):
@@ -114,6 +165,7 @@ class Act2:
         self.cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
         self.first = json.load(open(LOGIN / "range.json"))["first_frame"]
         self.curve = scratch_curve(*self.cue["scratch"])
+        self.jolt = scratch_energy(*self.cue["scratch"])
 
     def frame(self, f):
         SP, F = self.SP, aa.F
@@ -129,10 +181,13 @@ class Act2:
             i = f - self.first
             scr = cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB).astype(np.float32)
             k = self.curve(f / FPS - aa.PRE)
-            if k < 1 and f < F(SP["S48a"][1]):
+            j = self.jolt(f / FPS - aa.PRE)
+            if (k < 1 or j > 0.02) and f < F(SP["S48a"][1]):
                 tk = self.takes["S48a"]
                 grave = cover(tk[min(f - F(SP["S48a"][0]), len(tk) - 1)]).astype(np.float32)
-                scr = grave * (1 - k) + scr * k
+                scr = tracking(grave, scr, k, j, f)
+            elif j > 0.02:
+                scr = tracking(scr, scr, 1.0, j, f)
             return np.clip(scr, 0, 255).astype(np.uint8)
         sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
         tk = self.takes[sid]

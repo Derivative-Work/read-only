@@ -6,7 +6,8 @@ Picture, by video frame (song time t is at video time PRE + t; timing/timing_map
 - S01a-S01d: the opener render (--preroll), graded, with S01a's location caption and S01b's camera
   (bookends_assemble.opener_frame).
 - S02-S39e (the match cut on the first piano chord to S40): Act 1's frames (--act1), each with its code-drawn
-  overlay (renders/overlays/act1, 1080p RGBA, scaled), as the M4 cut.
+  overlay (renders/overlays/act1, 1080p RGBA, scaled), as the M4 cut; over S02's start the timecard "Five years later"
+  (TIMECARD), set like S01a's location caption.
 - S40-S48b: Act 2 (act2_assemble.Act2: the rewind from the same Act 1 frames, the takes, the login prompt).
 - S49: the photoreal take with its sign and screen (takes/fx/S49/S49_overlay.mp4), scaled to cover the frame like
   Act 2's takes (the M6 cut stretched its 1280x704 to 720 high; this crops 8 px top and bottom instead).
@@ -48,6 +49,10 @@ W, H = ba.W, ba.H
 OVERLAY = Path("renders/overlays/act1")
 S49 = Path("takes/fx/S49/S49_overlay.mp4")
 END_CARD = Path("renders/screens/end_card")
+# the time jump at the cut (the human, on the M7 cut: 'This needs a "five years later" or similar at the cut to the start
+# of the music'): the opener is 2018 (S01a's "San Francisco, 2018"), the song 2023; set as S01a's caption is (lower
+# left, fading), from just after the cut to before "Yeah, hello?" paints on its row (song 3.08 s)
+TIMECARD = ("Five years later", 0.5, 3.05)
 AMBIENCE, TAPE, CARDS = ba.AMBIENCE, ba.S49_FOLEY, ba.CARDS
 
 
@@ -173,6 +178,9 @@ def main():
             img = ba.opener_frame(a.preroll, f, SP)
         elif f < f40:
             img = with_overlay(read(act1 / f"f_{f:05d}.png"), f)
+            text, t0, t1 = TIMECARD
+            if t0 <= f / FPS - aa.PRE < t1:
+                img = ba.caption(img, f / FPS - aa.PRE, t0, t1, text)
         elif f < f49:
             img = act2.frame(f)
         elif f < f50:

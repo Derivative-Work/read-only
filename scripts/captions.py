@@ -52,7 +52,7 @@ NOTE = ["..#..",      # the eighth note, on VT323's pixel grid (a row above the 
 # grid to keep them off on-screen text); "top" rows sit high.
 TAGS = [
     (-17.7, -14.6, "[INDISTINCT CHATTER]", "right"),  # S01a: the eatery in the morning
-    (0.14, 3.0, "♪♪", "bottom"),                      # the first piano chord, before "Yeah, hello?"
+    (0.14, 3.0, "♪♪", "right"),                       # the first piano chord (lower right, clear of the timecard)
     (187.9, 190.9, "[TAPE HISSES]", "bottom"),         # S48a's silence after "So was everything else."
     (194.65, 196.1, "[RECORD SCRATCH]", "bottom"),     # the scratches into the login prompt
 ]

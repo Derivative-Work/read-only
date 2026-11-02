@@ -267,3 +267,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M6 approved; caption direction — R1
 - **What:** "This is great, keep going. For the captions I think a VHS/old-school closed caption font would work best".
 - **Rule:** R1 (the M6 gate approved: bookends v8, Act 2 v3, the ending cut; and a creative note given in words). The agent makes the captions to it (production log, next entry).
+
+## 2026-11-02 — M7: full cut v1 notes — R1
+- **What:** The human, on `renders/m7/m7_full_v1.mp4`: "This needs a \"five years later\" or similar at the cut to the start of the music. Also instead of fading from the gravestone, do a VHS tracking effect between it and the login screen, still synced to the record scratches".
+- **Why:** Review notes on the M7 cut.
+- **Rule:** R1.
