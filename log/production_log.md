@@ -1673,6 +1673,6 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Full cut:** `scripts/assemble.py renders/m7/m7_full_v1.mp4 --preroll renders/m6/preroll_v6 --act1 renders/m7/act1/frames --srt deliverables/read_only.srt`: 268.21 s, 6437 frames, 1280×720 (the draft720 tier; the final render's resolution is for the M7 gate), −16.8 LUFS integrated. Contact sheet checked: captions on every section, none over the end card.
 - **Vertical cut:** `--vertical` → `renders/m7/vertical_v1.mp4` (48.12 s, 1080×1920, S34–S45) and `deliverables/read_only_vertical.srt`.
 - **Thumbnails:** `scripts/thumbnail.py renders/m7/thumbs --act1 renders/m7/act1/frames` → `thumb_{a,b,c}.jpg` for the human to choose (R1).
-- **Review copies:** `renders/review/m7_full_v1_review.mp4` (CRF 25, 41 MB), `renders/review/m7_vertical_v1_review.mp4` (540×960, 6 MB).
+- **Review copies:** `renders/review/m7_full_v1_review.mp4` (CRF 25, 41 MB; over the 30 MiB send limit, so also `m7_full_v1_review_small.mp4`, two-pass 750 kb/s, 28 MiB, the one sent), `renders/review/m7_vertical_v1_review.mp4` (540×960, 6 MB).
 - **Found for the final render:** the end card's intervention count was drawn at 40; `log/human_interventions.md` now has 49 entries (and M7/M8 will add more): re-render `end_card` from the final count.
 - **`scripts/manifest.sh`:** its filter loop returned 1 when the last file it checked was tracked (under `pipefail` the script stopped before its summary line; the manifest itself was complete). The loop now uses `if … then … fi`; the manifest is byte-identical.
