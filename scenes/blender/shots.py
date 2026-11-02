@@ -256,17 +256,27 @@ def stage(S):
         only(B.person(f"cust{k}", (-27 + dx, B.FRONT + dy, 0.16), "stucco2", rot_z=math.pi), "S01a", t1=SP["S01d"][1])
     ph = S["phone"]
     a, b = SP["S01b"]
-    gb.key_vec(ph, "location", [(F(a), (tx + 0.05, ty - 0.33, tz + 0.25)), (F(SP["S01c"][0]), (tx + 0.05, ty - 0.33, tz + 0.25)),
-                                (F(SP["S01c"][0] + 1.5), (tx + 0.05, ty - 0.45, tz + 0.05)),
-                                (F(SP["S01d"][0]), (tx - 0.05, ty - 0.45, tz + 0.2)),
-                                (F(SP["S01d"][1] - 0.8), (tx - 0.05, ty - 0.45, tz + 0.2)),
-                                (F(SP["S01d"][1] - 0.1), (tx - 0.3, ty - 0.7, tz - 0.3))])
-    gb.keys(ph, "rotation_euler", [(F(a), math.radians(-35))], index=0)
+    # M6: the phone's keys for the opener and for S49 are written together at S49 (gb.keys replaces an F-curve's keys:
+    # S49's single key had wiped these, so the phone lay in its S49 pose through the whole opener)
+    held = (tx - 0.05, ty - 0.45, tz + 0.2)
+    S["phone_loc"] = [(F(a), (tx + 0.05, ty - 0.33, tz + 0.25)), (F(SP["S01c"][0]), (tx + 0.05, ty - 0.33, tz + 0.25)),
+                      (F(SP["S01c"][0] + 1.5), (tx + 0.05, ty - 0.45, tz + 0.05)),
+                      (F(SP["S01d"][0]), held), (F(SP["S01d"][1] - 0.8), held),
+                      (F(SP["S01d"][1] - 0.1), (tx - 0.3, ty - 0.7, tz - 0.3))]
+    S["phone_rot"] = [(F(a), math.radians(-35)), (F(SP["S01d"][1] - 0.1), math.radians(-35))]
+    # S01b is the phone camera's own view (the camera UI and the photo are the overlay's): the phone is hidden
+    for part in ph.children:
+        gb.keys(part, "hide_render", [(0, 0.0, "CONSTANT"), (F(a), 1.0, "CONSTANT"), (F(b), 0.0, "CONSTANT")],
+                interp="CONSTANT")
     cam("S01b", [(0, (tx + 0.05, ty - 0.46, tz + 0.33), (tx + 0.08, ty - 0.08, tz))], lens=26)
     cam("S01c", [(0, (tx + 0.25, ty - 0.55, tz + 0.45), (tx, ty - 0.1, tz)),
                  (1, (tx - 0.35, ty - 0.4, tz + 0.35), (tx - 0.22, ty + 0.12, tz))], lens=35)
-    cam("S01d", [(0, (tx - 0.05, ty - 0.62, tz + 0.32), (tx - 0.05, ty - 0.45, tz + 0.2)),
-                 (1, (tx - 0.1, ty - 0.75, tz + 0.4), (tx - 0.2, ty - 0.5, tz + 0.05))], lens=40)
+    # S01d: the phone in hand, seen down its screen's normal (the screen faces local -Y; the phone is tilted -35
+    # degrees about X), close enough that it fills most of the frame; the hand lowers it to pocket at the end
+    n = (0.0, -math.cos(math.radians(35)), math.sin(math.radians(35)))
+    eye = tuple(h + 0.42 * k for h, k in zip(held, n))
+    cam("S01d", [(0, eye, held), (0.8, (eye[0], eye[1] - 0.02, eye[2] + 0.01), held),
+                 (1, (eye[0], eye[1] - 0.05, eye[2] + 0.03), (held[0] - 0.1, held[1] - 0.1, held[2] - 0.12))], lens=40)
 
     # lobby screen and rooftop billboard: one text object per shot that shows something
     for sid, body in (("S05", "NEW! OUR OWN APP"), ("S10", "BLACKMAIL"), ("S20", "TRAFFIC  \\_/")):
@@ -859,8 +869,8 @@ def stage(S):
     exp = gb.text("eat.badge.expired", "EXPIRED", 0.018, B.M("lease"), (tx - 0.25, ty - 0.18, tz + 0.009), facing="+Z")
     during(exp, a, 1e5)
     during(bpy.data.objects[S["badge_text"]], -1e5, a)
-    gb.key_vec(ph, "location", [(F(a - 0.1), (tx + 0.05, ty - 0.3, tz + 0.012))])
-    gb.keys(ph, "rotation_euler", [(F(a - 0.1), math.radians(-90))], index=0)
+    gb.key_vec(ph, "location", S["phone_loc"] + [(F(a - 0.1), (tx + 0.05, ty - 0.3, tz + 0.012))])
+    gb.keys(ph, "rotation_euler", S["phone_rot"] + [(F(a - 0.1), math.radians(-90))], index=0)
     cam("S49", [(0, (tx + 0.5, ty - 1.0, tz + 0.7), (tx - 0.05, ty - 0.15, tz)),
                 (1, (tx + 0.3, ty - 0.75, tz + 0.55), (tx - 0.05, ty - 0.15, tz))], lens=35)
     cam("S50", [(0, (0, 0, -50), (0, 0, -60))], lens=35)  # black: the end card is drawn by the assembler

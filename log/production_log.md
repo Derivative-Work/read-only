@@ -1386,3 +1386,8 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
 ## 2026-11-02T03:50:00-05:00 — Log: M5 approved (R1); M6 starts
 - Approved cut: `renders/m5/act2_v2.mp4`. Next, M6: the bookends (S01a–S01d, S49), the end card (S50) and the badge props.
+
+## 2026-11-02T05:10:00-05:00 — M6: the bookend props and the opener's staging
+- **Printed props (new, `scripts/gen_bookend_props.py`):** the visitor badge, its EXPIRED version (red stripes bled through, stamped) and the gold VIP version; the day schedule, folded in thirds → `assets/gen/props/`. From the human's real schedule and badge (`reference/private/`, read only for this) only the eight time slots with each meeting's kind and the badge's date and time (Mar 27, 2018 · 10:51 AM) are used; every name, title and the room are redaction bars; no company, logo or mascot. `.venv/bin/python -I scripts/gen_bookend_props.py`
+- **The breakfast (`sets/props.py` `breakfast`):** modelled after the human's plate photo (`assets/real/plate.jpg`, the phone's photo in S01b): bangsilog on a paper plate (garlic rice of 700 grains with toasted garlic, two fried eggs with broken runny yolks, a butterflied fried milkfish with its backbone and tail), a white plastic fork and spoon, the black textured tray, a paper napkin and cup; the printed badge (VISITOR to S49, EXPIRED from S49) and schedule replace the grey-box boxes and lettering.
+- **Fixes (`shots.py`):** S49's phone keys had replaced the opener's (`gb.keys` rewrites an F-curve), so the phone lay in its S49 pose through S01a–S01d; both sets of keys are now written together. The phone is hidden in S01b (the phone camera's own view). S01d's camera looks down the screen's normal from 0.42 m, so the phone fills about 70% of the frame.

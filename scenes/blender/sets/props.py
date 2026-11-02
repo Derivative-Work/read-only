@@ -1016,7 +1016,152 @@ def shovel():
     blank(obj("shovel.blade"))
 
 
+# ---------------------------------------------------------------- the bookends (M6)
+
+PROPS6 = gb.ROOT / "assets" / "gen" / "props"
+
+
+def food(key, c1, c2, scale=60.0, bump=0.4, rough=0.6, detail=6.0):
+    """A food surface: two colours mixed by noise, with a matching bump (rice grains, crisp fish skin, egg white)."""
+    name = f"prop.food.{key}"
+    if name in gb._MATS:
+        return gb._MATS[name]
+    m = gb.mat(name, c1, rough=rough)
+    nt = m.node_tree
+    b = nt.nodes["Principled BSDF"]
+    n = nt.nodes.new("ShaderNodeTexNoise")
+    n.inputs["Scale"].default_value = scale
+    n.inputs["Detail"].default_value = detail
+    mix = nt.nodes.new("ShaderNodeMix")
+    mix.data_type = "RGBA"
+    mix.inputs[6].default_value = gb.lin(c1)
+    mix.inputs[7].default_value = gb.lin(c2)
+    nt.links.new(n.outputs["Fac"], mix.inputs["Factor"])
+    nt.links.new(mix.outputs[2], b.inputs["Base Color"])
+    bp = nt.nodes.new("ShaderNodeBump")
+    bp.inputs["Strength"].default_value = bump
+    bp.inputs["Distance"].default_value = 0.002
+    nt.links.new(n.outputs["Fac"], bp.inputs["Height"])
+    nt.links.new(bp.outputs["Normal"], b.inputs["Normal"])
+    return m
+
+
+def breakfast(S, SP):
+    """S01a-S01d, S49: the breakfast as in the human's plate photo (assets/real/plate.jpg, which the phone shows in
+    S01b): bangsilog on a paper plate (garlic rice, two fried eggs with runny yolks, a butterflied fried milkfish),
+    a white plastic fork and spoon, on a black textured tray with a paper napkin and a paper cup; the visitor badge
+    beside it and the folded schedule (assets/gen/props/, scripts/gen_bookend_props.py) under the saucer. S49: the
+    badge has expired."""
+    tx, ty, tz = S["table"]
+    cx, cy, top = tx + 0.1, ty - 0.1, tz + 0.0175  # the plate's centre on the tray
+    paper = mat("paperplate", "#f1efe8", rough=0.85)
+    m = mk.MK()  # the paper plate: a shallow dish with a rolled rim
+    m.lathe([(0, 0.002), (0.095, 0.002), (0.112, 0.008), (0.127, 0.016), (0.131, 0.017), (0.132, 0.015),
+             (0.113, 0.006), (0.096, 0.0005), (0, 0.0005)], paper, c=(0, 0, 0), n=48)
+    o = obj("eat.plate")
+    o.location = (cx, cy, top)
+    mk_ = m.mesh("prop.paperplate")
+    kit.mesh_swap(o, mk_)
+    rice = food("rice", "#efe6d2", "#c9b48c", scale=180, bump=0.9, rough=0.7)
+    egg = food("eggwhite", "#fbfaf4", "#e9e2c8", scale=25, bump=0.25, rough=0.35)
+    yolk = mat("yolk", "#f2b51c", rough=0.15)
+    fish = food("milkfish", "#b8793c", "#5a3a1f", scale=22, bump=1.0, rough=0.45, detail=8)
+    skin = mat("milkfish.skin", "#3d3a36", rough=0.4)
+    m = mk.MK()
+    rng = random.Random(27)
+    m.sphere((0.035, -0.025, 0.004), 0.085, rice, s=(1.0, 0.85, 0.3))  # the garlic rice, mounded on the right
+    grain = mat("ricegrain", "#f3ecdc", rough=0.5)
+    toast = mat("garlic", "#b98a45", rough=0.6)
+    for k in range(700):  # its grains, over the mound (and a few toasted garlic bits)
+        a, r = rng.uniform(0, 2 * math.pi), 0.088 * math.sqrt(rng.random())
+        x, y = 0.035 + r * math.cos(a), -0.025 + 0.85 * r * math.sin(a)
+        z = 0.004 + 0.3 * 0.085 * math.sqrt(max(0.0, 1 - (r / 0.088) ** 2)) + 0.001
+        m.sphere((x, y, z), 0.0036, toast if k % 23 == 0 else grain, s=(1.0, 0.42, 0.38),
+                 rot=(rng.uniform(-0.4, 0.4), rng.uniform(-0.4, 0.4), rng.uniform(0, math.pi)), u=6, v=4)
+    for (ex, ey, ez, sx, sy, rz) in ((-0.03, -0.04, 0.02, 0.055, 0.043, 0.4), (0.025, -0.012, 0.028, 0.05, 0.04, -0.3)):
+        m.sphere((ex, ey, ez), 1.0, egg, s=(sx, sy, 0.006), rot=(0, 0, rz), u=20, v=8)  # the whites, frilled flat
+        m.sphere((ex + 0.006, ey + 0.004, ez + 0.006), 0.015, yolk, s=(1.2, 1.0, 0.45), u=16, v=8)  # the yolks, broken
+        m.sphere((ex - 0.01, ey - 0.012, ez + 0.003), 0.011, yolk, s=(1.6, 0.8, 0.2), u=12, v=6)  # the runny spill
+    kit.mesh_swap(obj("eat.fish"), m.mesh("prop.bangsilog"))
+    obj("eat.fish").location = (cx, cy, top)
+    # the milkfish, butterflied and fried: two rounded fillets side by side, joined at the dark backbone, tapering to
+    # the tail, across the back of the plate: mottled golden-brown crisp flesh, dark skin showing at the edges
+    flesh = food("milkfish.v2", "#c98f4c", "#7a4a22", scale=45, bump=1.6, rough=0.35, detail=10)
+    skin = mat("milkfish.skin", "#2e2a26", rough=0.35)
+    m = mk.MK()
+    for side in (1, -1):
+        m.sphere((0.0, side * 0.03, 0.0), 1.0, skin, s=(0.11, 0.036, 0.005), rot=(side * 0.08, 0, side * 0.04), u=36, v=10)
+        m.sphere((-0.004, side * 0.029, 0.0025), 1.0, flesh, s=(0.104, 0.032, 0.005), rot=(side * 0.08, 0, side * 0.04),
+                 u=36, v=10)
+    m.box((0.0, 0.0, 0.006), (0.17, 0.007, 0.003), skin, bevel=0.0015)  # the backbone
+    m.prism([(0.1, 0.0), (0.135, 0.03), (0.126, 0.0), (0.135, -0.03)], 0.003, skin, c=(0, 0, 0.001),
+            rot=(math.pi / 2, 0, 0))  # the tail
+    fi = gb.link(bpy.data.objects.new("eat.milkfish", m.mesh("prop.milkfish")))
+    fi.location = (cx - 0.01, cy + 0.058, top + 0.01)
+    fi.rotation_euler = (0.05, 0, 0.12)
+    plast = mat("plasticware", "#f6f5f0", rough=0.3)
+    m = mk.MK()  # the fork (across the front left, handle off the rim) and the spoon (on the rice, back right)
+    m.box((-0.09, -0.06, 0.03), (0.1, 0.009, 0.0025), plast, rot=(0, 0.08, -0.12), bevel=0.001)
+    m.box((-0.03, -0.068, 0.034), (0.025, 0.016, 0.002), plast, rot=(0, 0.0, -0.12), bevel=0.0006)
+    for k in range(4):
+        m.box((-0.008, -0.074 + k * 0.0045, 0.035), (0.026, 0.002, 0.0016), plast, rot=(0, 0, -0.12))
+    m.box((0.12, 0.03, 0.04), (0.09, 0.009, 0.0025), plast, rot=(0, -0.12, 0.3), bevel=0.001)
+    m.sphere((0.07, 0.015, 0.045), 0.02, plast, s=(1.0, 0.7, 0.22), rot=(0, 0, 0.3), u=14, v=6)
+    ware = gb.link(bpy.data.objects.new("eat.plasticware", m.mesh("prop.plasticware")))
+    ware.location = (cx, cy, top)
+    tray_o = obj("eat.mytray")
+    tray = food("tray", "#1d1e20", "#2a2b2e", scale=140, bump=0.6, rough=0.55, detail=2)
+    m = mk.MK()
+    m.box((0, 0, 0), (0.5, 0.36, 0.008), tray, bevel=0.004)
+    for s in (-1, 1):  # the raised rim
+        m.box((0, s * 0.177, 0.007), (0.5, 0.008, 0.012), tray, bevel=0.003)
+        m.box((s * 0.247, 0, 0.007), (0.008, 0.36, 0.012), tray, bevel=0.003)
+    kit.mesh_swap(tray_o, m.mesh("prop.tray"))
+    m = mk.MK()  # the paper cup (tapered) and the napkin folded on the tray's back right
+    cup = mat("papercup", "#f4f2ec", rough=0.75)
+    m.lathe([(0, 0), (0.028, 0), (0.037, 0.095), (0.039, 0.097), (0.036, 0.097), (0.026, 0.004), (0, 0.004)], cup, n=32)
+    co = obj("eat.cup")
+    co.location = (tx + 0.3, ty + 0.05, tz + 0.012)
+    kit.mesh_swap(co, m.mesh("prop.papercup"))
+    m = mk.MK()
+    m.box((0, 0, 0), (0.15, 0.1, 0.003), mat("napkin", "#f7f6f2", rough=0.9), rot=(0, 0, 0.35), bevel=0.001)
+    m.box((0.01, 0.0, 0.003), (0.13, 0.08, 0.002), mat("napkin", "#f7f6f2", rough=0.9), rot=(0.05, 0, 0.3), bevel=0.001)
+    nap = gb.link(bpy.data.objects.new("eat.napkin", m.mesh("prop.napkin")))
+    nap.location = (tx + 0.22, ty + 0.03, tz + 0.02)
+    # the badge and the schedule, printed
+    for name, key, during_ in (("eat.badge", "badge_visitor", (-1e5, SP["S49"][0])),
+                               ("eat.badge.exp", "badge_expired", (SP["S49"][0], 1e5))):
+        m = mk.MK()
+        m.box((0, 0, -0.0006), (0.0889, 0.0572, 0.0008), mat("badge.back", "#f4f4f2", rough=0.6))
+        m.quad((0, 0, 0.0002), (0.0889, 0.0572), mk.img_mat(f"prop.img.{key}", PROPS6 / f"{key}.png", rough=0.5),
+               facing="+Z")
+        if name == "eat.badge":
+            bo = obj("eat.badge")
+            bo.scale = (1, 1, 1)
+            kit.mesh_swap(bo, m.mesh(f"prop.{key}"))
+        else:
+            bo = gb.link(bpy.data.objects.new(name, m.mesh(f"prop.{key}")))
+            bo.location = obj("eat.badge").location
+        bo.location = (tx - 0.2, ty - 0.08, tz + 0.006)  # beside the tray, where S01c's drift passes
+        bo.rotation_euler = (0, 0, 0.18)
+        gb.show_between(bo, *during_)
+    for t in ("eat.badge.t", "eat.badge.expired"):  # the grey-box lettering (text curves): the print replaces it
+        o = obj(t)
+        if o:
+            o.animation_data_clear()
+            o.hide_render = o.hide_viewport = True
+    m = mk.MK()  # the schedule folded in thirds, one panel lifted where it pokes out from under the saucer
+    sched = mk.img_mat("prop.img.schedule", PROPS6 / "schedule.png", rough=0.85)
+    m.quad((0, 0, 0), (0.2159, 0.2794), sched, facing="+Z")
+    so = obj("eat.schedule")
+    so.scale = (1, 1, 1)
+    kit.mesh_swap(so, m.mesh("prop.schedule"))
+    so.rotation_euler = (0.0, 0.0, -0.22)
+    so.location.z = tz + 0.0015
+
+
 def build(S, SP):
+    breakfast(S, SP)
     for f in (payphone, adding_machine, calendar, envelope, notice, cassette, boombox, magnifier, vehicles, crates, arrows,
               hoses, ball, forklift, auction_sign, briefcase, keys25, balcony_rail, balcony_light, bell, podium, banner, stickies, funnel, payroll, rubberband, coffin,
               doghouse, lanterns, shovel):
