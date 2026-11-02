@@ -1152,14 +1152,31 @@ def breakfast(S, SP):
         if o:
             o.animation_data_clear()
             o.hide_render = o.hide_viewport = True
-    m = mk.MK()  # the schedule folded in thirds, one panel lifted where it pokes out from under the saucer
+    # the schedule, folded in thirds and opened out again (its creases ride up a little), one corner tucked under the
+    # tray (the human: the saucer "on top of the interview schedule is not reading correctly"; the saucer is gone)
+    import bmesh
     sched = mk.img_mat("prop.img.schedule", PROPS6 / "schedule.png", rough=0.85)
-    m.quad((0, 0, 0), (0.2159, 0.2794), sched, facing="+Z")
+    w, h = 0.2159, 0.2794
+    rows = [(-h / 2, 0.0, 0.0), (-h / 6, 0.005, 1 / 3), (h / 6, 0.001, 2 / 3), (h / 2, 0.007, 1.0)]  # (y, z, v)
+    bm = bmesh.new()
+    uvl = bm.loops.layers.uv.new()
+    vs = [[bm.verts.new((x, y, z)) for x in (-w / 2, w / 2)] for y, z, _ in rows]
+    for i in range(3):
+        f = bm.faces.new((vs[i][0], vs[i][1], vs[i + 1][1], vs[i + 1][0]))
+        for loop, (u, v) in zip(f.loops, ((0, rows[i][2]), (1, rows[i][2]), (1, rows[i + 1][2]), (0, rows[i + 1][2]))):
+            loop[uvl].uv = (u, v)
+    me = bpy.data.meshes.new("prop.schedule")
+    bm.to_mesh(me)
+    bm.free()
+    me.materials.append(sched)
     so = obj("eat.schedule")
     so.scale = (1, 1, 1)
-    kit.mesh_swap(so, m.mesh("prop.schedule"))
+    kit.mesh_swap(so, me)
     so.rotation_euler = (0.0, 0.0, -0.22)
-    so.location.z = tz + 0.0015
+    so.location = (tx - 0.2, ty + 0.13, tz + 0.0015)
+    sau = obj("eat.saucer")
+    if sau:
+        sau.hide_render = sau.hide_viewport = True
 
 
 def build(S, SP):

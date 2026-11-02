@@ -8,6 +8,7 @@ While it runs, GPU memory, RAM and swap are sampled once a second; peaks are pri
 
 Usage: .venv/bin/python scripts/ltx_v.py <control.mp4> <first_frame.png> <out.mp4> --prompt "..." [--seed N]
        [--control depth|moge] [--guide 1.0] [--end last.png] [--key 48:mid.png ...] [--end-strength 1.0]
+--dev: the full LTX-2.3 model at 30 steps, cfg 3.5, in place of the distilled one at 8 (cleaner audio).
 --init beauty.mp4 --denoise D: video-to-video: the clip starts from the Blender beauty pass, VAE-encoded, noised to
 D, instead of an empty latent, so the take keeps the set's layout and its continuity frame to frame (S48: from depth
 alone the road read as a roof and the block changed character along the crane).
@@ -37,7 +38,7 @@ NEGATIVE = ("blurry, out of focus, overexposed, low contrast, washed out colors,
 
 
 def build(control_name, image_name, prompt, seed, width, height, prefix, control="depth", guide=1.0, keys=None,
-          key_strength=1.0, init_name=None, denoise=1.0):
+          key_strength=1.0, init_name=None, denoise=1.0, dev=False):
     """control="depth": the control video is a depth pass, fed to LTXVAddGuide directly (the MoGe group is dropped).
     control="moge": the control video is the Blender beauty pass, and the template's MoGe group estimates its depth.
     guide: LTXVAddGuide strength. Below 1 the take follows the depth loosely, so a person can move in ways the rigid
@@ -69,6 +70,10 @@ def build(control_name, image_name, prompt, seed, width, height, prefix, control
         g["init_enc"] = {"class_type": "VAEEncode", "inputs": {"pixels": ["init_frames", 0], "vae": g["129:115"]["inputs"]["vae"]}}
         g["129:198"]["inputs"]["latent"] = ["init_enc", 0]
         g["129:704"]["inputs"]["denoise"] = denoise
+    if dev:  # the full (non-distilled) model at full steps: cleaner audio (M6: the distilled model's ambience was garbled)
+        for k in ("129:127", "129:126", "129:103"):
+            g[k]["inputs"]["ckpt_name"] = "ltx-2.3-22b-dev-fp8.safetensors"
+        g["129:704"]["inputs"].update({"steps": 30, "cfg": 3.5, "sampler_name": "euler", "scheduler": "simple"})
     prev = "129:115"
     for k, (idx, name) in enumerate(keys or []):  # keyframes at other frames, each guided after the one before
         g[f"key{k}_load"] = {"class_type": "LoadImage", "inputs": {"image": name}}
@@ -119,6 +124,7 @@ def main():
     ap.add_argument("--end")
     ap.add_argument("--key", action="append", default=[], help="IDX:IMAGE, a keyframe at frame IDX (repeatable)")
     ap.add_argument("--end-strength", type=float, default=1.0)
+    ap.add_argument("--dev", action="store_true", help="the full model, 30 steps, cfg 3.5 (not the distilled 8)")
     ap.add_argument("--init")
     ap.add_argument("--denoise", type=float, default=1.0)
     a = ap.parse_args()
@@ -132,7 +138,7 @@ def main():
         keys.append((length - 1, a.end))
     keys = [(i, cc.upload_image(p)) for i, p in sorted(keys)]
     g = build(control_name, image_name, a.prompt, a.seed, a.width, a.height, f"readonly/v_{Path(a.out).stem}", a.control,
-              a.guide, keys, a.end_strength, cc.upload_image(a.init) if a.init else None, a.denoise)
+              a.guide, keys, a.end_strength, cc.upload_image(a.init) if a.init else None, a.denoise, a.dev)
     mon = Monitor()
     mon.start()
     outputs, secs = cc.run(g, timeout=7200)

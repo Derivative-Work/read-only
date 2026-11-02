@@ -231,3 +231,11 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M5 approved — R1
 - **What:** "approved, go ahead with M6". Act 2 (`renders/m5/act2_v2.mp4`: S40–S48b) approved; M5 closed.
 - **Rule:** R1 (the M5 gate).
+
+## 2026-11-02 — M6: bookends v1 notes — R1
+- **What:** "the foley at the beginning doesn't sound quite right, and neither does the generated video at the end. The plate (?) on top of the interview schedule is not reading correctly either". Asked to narrow it down: the ambience is "Synthetic or garbled"; S49 is "Too CG".
+- **Rule:** R1 (rejections). The agent fixes them (production log, next entries).
+
+## 2026-11-02 — M6: the ambience pick — R1
+- **What:** after an A/B file (the distilled model's clip, then three from the full LTX-2.3 model): "for the audio, go with seed 2" (`takes/sfx/amb_dev_s2.wav`).
+- **Rule:** R1 (picking a take).

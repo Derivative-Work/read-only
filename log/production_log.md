@@ -1456,3 +1456,90 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **S49 (B→V+JS):** `shots.py`: the camera now pushes in from the M3 framing to end close over the phone and the badge (the notice was 70 px wide, unreadable). Plates `renders/m5/plates/S49/` (192 frames). Keyframes (`config/keyframes.json`; rows auto-logged above): S49 v1 drew a whole fish with its head, so v2 asks for it butterflied: **v2 0.9 seed 2001**; anchors referencing it: **S49_mid seed 2002** (frame 5332) and **S49_end seed 2002** (frame 5427; seeds 2001 drifted to a wider view with the window). V: two 97-frame clips on the depth, clip 0 `--end` the mid anchor, clip 1 from clip 0's last frame `--end` the end anchor, prompt `log/prompts/v/S49_depth.txt`: **seed 1** `takes/v/S49/S49_v3_s1.mp4` (seed 2 much the same). Earlier takes (unanchored, exposure creeping up; one ending on the wrong anchor) in `archive/takes/S49_v1/`, `archive/takes/S49_v2_wrong_end/`.
   - **Overlay:** the phone's screen (`phone_s49`, its glow cut 2.0 → 0.35: at night it blew out to white) and the EXPIRED badge rendered in their own colours (`sign_matte.py -- S49 --own --subdir overlay --objects 'screen.phone_s49.face' 'eat.badge.exp'`), laid over with no bloom (`overlay_add.py` gains `--bloom`; at 0.8 the glow washed out the notice's text): `takes/fx/S49/S49_overlay.mp4`. The notice reads at the end of the push.
 - **Bookends cut:** `.venv/bin/python -I scripts/bookends_assemble.py renders/m6/bookends_v1.mp4 --preroll renders/m6/preroll_v1 --s49 takes/fx/S49/S49_overlay.mp4 --s50 renders/screens/end_card` → `renders/m6/bookends_v1.mp4` (71.2 s: the opener with ambience to the match cut and 3 s of S02 with the music; S49; the end card).
+
+## 2026-11-01T22:41:28-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v3_d90 | 2001 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v3_d90_s2001.png` | 103.4 | pending (R1) |
+| S49_v3_d90 | 2002 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v3_d90_s2002.png` | 73.1 | pending (R1) |
+
+## 2026-11-01T22:44:35-05:00 — M5: keyframes (S49_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v2 | 2001 | 0.97 | renders/m5/plates/S49/beauty/05332.png, takes/keyframes/S49/S49_v3_d90_s2001.png | `takes/keyframes/S49_mid/S49_mid_v2_s2001.png` | 115.5 | pending (R1) |
+| S49_mid_v2 | 2002 | 0.97 | renders/m5/plates/S49/beauty/05332.png, takes/keyframes/S49/S49_v3_d90_s2001.png | `takes/keyframes/S49_mid/S49_mid_v2_s2002.png` | 110.2 | pending (R1) |
+
+## 2026-11-01T22:48:21-05:00 — M5: keyframes (S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_end --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_end_v2 | 2001 | 0.97 | renders/m5/plates/S49/beauty/05427.png, takes/keyframes/S49/S49_v3_d90_s2001.png | `takes/keyframes/S49_end/S49_end_v2_s2001.png` | 111.4 | pending (R1) |
+| S49_end_v2 | 2002 | 0.97 | renders/m5/plates/S49/beauty/05427.png, takes/keyframes/S49/S49_v3_d90_s2001.png | `takes/keyframes/S49_end/S49_end_v2_s2002.png` | 110.3 | pending (R1) |
+
+## 2026-11-01T22:52:28-05:00 — M5: keyframes (S49_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v3 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v3_s2001.png` | 80.1 | pending (R1) |
+| S49_mid_v3 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v3_s2002.png` | 79.2 | pending (R1) |
+
+## 2026-11-01T22:55:08-05:00 — M5: keyframes (S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_end --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_end_v3 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v3_s2001.png` | 80.2 | pending (R1) |
+| S49_end_v3 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v3_s2002.png` | 79.2 | pending (R1) |
+
+## 2026-11-01T22:58:05-05:00 — M5: keyframes (S49_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v4 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v4_s2001.png` | 80.1 | pending (R1) |
+| S49_mid_v4 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v4_s2002.png` | 79.2 | pending (R1) |
+
+## 2026-11-01T23:00:45-05:00 — M5: keyframes (S49_end)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_end --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_end_v4 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v4_s2001.png` | 80.2 | pending (R1) |
+| S49_end_v4 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05427.png | `takes/keyframes/S49_end/S49_end_v4_s2002.png` | 79.2 | pending (R1) |
+
+## 2026-11-01T23:05:22-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002,2003`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v4 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v4_s2001.png` | 105.5 | pending (R1) |
+| S49_v4 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v4_s2002.png` | 79.2 | pending (R1) |
+| S49_v4 | 2003 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v4_s2003.png` | 79.3 | pending (R1) |
+
+## 2026-11-02T17:00:00-05:00 — M6: bookends v2 (the human's notes)
+- **Ambience:** the distilled model's audio was "synthetic or garbled". `scripts/ltx_v.py` gains `--dev` (the full LTX-2.3 model, `ltx-2.3-22b-dev-fp8`, 30 steps, cfg 3.5, euler/simple): three clips, seeds 1–3 (`takes/sfx/amb_dev_s<seed>.mp4`, ~190 s each), sent as an A/B with the old one. The human picked seed 2. It is 4.0 s, so `audio/sfx/diner_ambience.wav` is now that clip loudness-normalised (−26 LUFS) and looped six times with 1 s crossfades (19.06 s). The distilled bed moved to `archive/audio/sfx/diner_ambience_distilled_v1.wav`, superseded.
+- **The schedule:** the saucer on it "is not reading correctly": it is gone (hidden), and the schedule is a three-panel page (folded in thirds and opened out, its creases riding up a few millimetres), one corner tucked under the tray. S01b–S01d re-rendered (`renders/m6/preroll_v1/`, frames 120–435) and S49's plates.
+- **S49 "too CG":** the anchors at 0.9 from the Blender frames stayed CG. v3–v4: the close-up anchors at 0.95 with no style reference (with S49's opening keyframe as reference they copied its whole composition), the prompt saying "indoors … the eatery's yellow-painted wall … no window, no street" (without it they put the table outdoors) and "real worn wooden table, real paper, real plastic"; the opening keyframe the same way at 0.95 so all three agree. **Picks:** `S49_v4_s2002` (opening; every seed added a stray sheet at the table's front edge, which leaves frame in the push), `S49_mid_v4_s2002`, `S49_end_v4_s2002`. V v5 seed 1 (`takes/v/S49/S49_v5_s1.mp4`), prompt `log/prompts/v/S49_depth_v4.txt`. The EXPIRED badge is now pasted lit by the take (`sign_matte.py --materials prop.img.badge_expired` → `sign_paste.py S49 … --blur 10`), the phone screen over it (`overlay_add.py --bloom 0`) → `takes/fx/S49/S49_overlay.mp4`. Superseded takes in `archive/takes/S49_v3_saucer/`, `archive/takes/S49_v4_mismatched_open/`.
+- **Cut:** `renders/m6/bookends_v2.mp4`; v1 moved to `archive/renders/m6/`.
