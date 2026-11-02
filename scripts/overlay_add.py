@@ -13,7 +13,10 @@ screen is a little larger than the rendered one, so a ring R px wide round the o
 glass first (soft-edged), covering the take's screen edge.
 
 Usage: .venv/bin/python scripts/overlay_add.py S48 takes/v/S48/S48_v4_s1.mp4 [--glow 6] [--clean 5] [--bloom 0.8]
-       [--bezel 6]
+       [--bezel 6] [--halo 30]
+--halo R: past the bezel, out to R px, the take's own screen glow (a bright rim round the phone in S49 v7) is pulled
+down to the surrounding table: each pixel there is kept at most as bright as the take blurred with the phone region
+left out (normalised convolution), easing off toward R.
 Output: takes/fx/<shot>/<shot>_overlay.mp4 (picture only) and _audio.mp4 (with the master, for review).
 """
 import argparse
@@ -36,6 +39,7 @@ def main():
     ap.add_argument("--clean", type=int, default=0)
     ap.add_argument("--bloom", type=float, default=0.8, help="how much of the lights' glow is added (0: none, S49's phone)")
     ap.add_argument("--bezel", type=int, default=0, help="px of black glass round the overlay (S49's phone)")
+    ap.add_argument("--halo", type=int, default=0, help="px past the bezel where the take's screen glow is pulled down")
     a = ap.parse_args()
     plate = Path("renders/m5/plates") / a.shot
     meta = json.load(open(plate / "shot.json"))
@@ -68,6 +72,18 @@ def main():
             ring = cv2.dilate(solid, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * a.bezel + 1,) * 2))
             ring = cv2.GaussianBlur(ring.astype(np.float32), (0, 0), 1.2)[..., None]
             img = img * (1 - ring) + np.array([10, 10, 12], np.float32) * ring
+            if a.halo:
+                k = lambda r: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1,) * 2)  # noqa: E731
+                inner = cv2.dilate(solid, k(a.bezel)).astype(np.float32)
+                outer = cv2.dilate(solid, k(a.halo)).astype(np.float32)
+                keep = 1 - outer  # the table round about, phone and glow left out
+                sig = a.halo * 1.5
+                bg = cv2.GaussianBlur(img * keep[..., None], (0, 0), sig) / \
+                    np.maximum(cv2.GaussianBlur(keep, (0, 0), sig), 1e-3)[..., None]
+                dist = cv2.distanceTransform((1 - inner).astype(np.uint8), cv2.DIST_L2, 5)
+                w = np.clip(1 - (dist - 0) / max(a.halo - a.bezel, 1), 0, 1)
+                w = (w * w * (3 - 2 * w) * (1 - inner))[..., None]
+                img = img * (1 - w) + np.minimum(img, bg * 1.1) * w
         comp = img * (1 - alpha) + rgb * alpha
         hi = rgb * alpha * (rgb.max(2, keepdims=True) > 150)  # the lights, not the ink
         glow = cv2.GaussianBlur(hi, (0, 0), a.glow)

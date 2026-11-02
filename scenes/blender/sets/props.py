@@ -1046,6 +1046,66 @@ def food(key, c1, c2, scale=60.0, bump=0.4, rough=0.6, detail=6.0):
     return m
 
 
+def drape(ob, targets, lift=0.0012, slope=0.25, cell=0.002, reach=0.03):
+    """Lay a flat object onto what's under it, like the receipt tape (tape_points), in place of a cloth simulation
+    (the human: "the fish is clipping into the plate -- it may be useful to simulate it much like the paper"). The
+    surface under its footprint is sampled on a grid (rays down onto `targets`), then stiffened: the object can't bend
+    sharper than `slope` (rise per run), so it rides over the rice's grains and the plate's rim in gentle ramps, smoothed
+    only upward, so it never goes into what it lies on. Each vertex keeps its height above the object's underside and
+    is set on that surface. The object's rotation must be about z only; its location's z is kept, its mesh moved."""
+    import numpy as np
+    from mathutils import Vector
+    from mathutils.bvhtree import BVHTree
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    trees = [BVHTree.FromObject(t, dg) for t in targets]
+    mws = [t.matrix_world.copy() for t in targets]
+    me = ob.data
+    if tuple(ob.scale) != (1.0, 1.0, 1.0):  # bake the scale into the mesh (heights below are in world units)
+        me.transform(__import__("mathutils").Matrix.Diagonal((*ob.scale, 1.0)))
+        ob.scale = (1.0, 1.0, 1.0)
+        bpy.context.view_layer.update()
+    M = ob.matrix_world.copy()
+    co = np.array([v.co[:] for v in me.vertices])
+    world = np.array([(M @ Vector(c))[:] for c in co])
+    zmin = co[:, 2].min()
+    x0, y0 = world[:, :2].min(0) - reach
+    x1, y1 = world[:, :2].max(0) + reach
+    nx, ny = int((x1 - x0) / cell) + 1, int((y1 - y0) / cell) + 1
+    h = np.zeros((ny, nx))
+    for j in range(ny):
+        for i in range(nx):
+            best = 0.0
+            for tr, mw in zip(trees, mws):
+                inv = mw.inverted()
+                org = inv @ Vector((x0 + i * cell, y0 + j * cell, M.translation.z + 0.2))
+                d = (inv.to_3x3() @ Vector((0, 0, -1))).normalized()
+                hit = tr.ray_cast(org, d, 1.0)
+                if hit[0] is not None:
+                    best = max(best, (mw @ hit[0]).z)
+            h[j, i] = best
+    k = int(reach / cell)  # the stiffness: a cone dilation (each cell at least each neighbour minus slope x distance)
+    hs = h.copy()
+    for dj in range(-k, k + 1):
+        for di in range(-k, k + 1):
+            r = math.hypot(di, dj) * cell
+            if r == 0 or r > reach:
+                continue
+            sh = np.full_like(h, -1.0)
+            sh[max(dj, 0):ny + min(dj, 0), max(di, 0):nx + min(di, 0)] = \
+                h[max(-dj, 0):ny + min(-dj, 0), max(-di, 0):nx + min(-di, 0)]
+            hs = np.maximum(hs, sh - slope * r)
+    fx, fy = (world[:, 0] - x0) / cell, (world[:, 1] - y0) / cell
+    i0, j0 = np.clip(np.floor(fx).astype(int), 0, nx - 2), np.clip(np.floor(fy).astype(int), 0, ny - 2)
+    u, v = np.clip(fx - i0, 0, 1), np.clip(fy - j0, 0, 1)
+    under = (hs[j0, i0] * (1 - u) * (1 - v) + hs[j0, i0 + 1] * u * (1 - v) + hs[j0 + 1, i0] * (1 - u) * v
+             + hs[j0 + 1, i0 + 1] * u * v)
+    zw = under + lift + (co[:, 2] - zmin)  # world z for each vertex
+    co[:, 2] = zw - M.translation.z
+    me.vertices.foreach_set("co", co.ravel())
+    me.update()
+
+
 def breakfast(S, SP):
     """S01a-S01d, S49: the breakfast as in the human's plate photo (assets/real/plate.jpg, which the phone shows in
     S01b): bangsilog on a paper plate (garlic rice, two fried eggs with runny yolks, a butterflied fried milkfish),
@@ -1091,24 +1151,27 @@ def breakfast(S, SP):
     m = mk.MK()
     for side in (1, -1):
         m.sphere((0.0, side * 0.03, 0.0), 1.0, skin, s=(0.11, 0.036, 0.005), rot=(side * 0.08, 0, side * 0.04), u=36, v=10)
-        m.sphere((-0.004, side * 0.029, 0.0025), 1.0, flesh, s=(0.104, 0.032, 0.005), rot=(side * 0.08, 0, side * 0.04),
+        # the flesh 4 mm over the skin (at 2.5 the draped bends let the skin through)
+        m.sphere((-0.004, side * 0.029, 0.004), 1.0, flesh, s=(0.104, 0.032, 0.005), rot=(side * 0.08, 0, side * 0.04),
                  u=36, v=10)
     m.box((0.0, 0.0, 0.006), (0.17, 0.007, 0.003), skin, bevel=0.0015)  # the backbone
     m.prism([(0.1, 0.0), (0.135, 0.03), (0.126, 0.0), (0.135, -0.03)], 0.003, skin, c=(0, 0, 0.001),
             rot=(math.pi / 2, 0, 0))  # the tail
     fi = gb.link(bpy.data.objects.new("eat.milkfish", m.mesh("prop.milkfish")))
-    fi.location = (cx - 0.01, cy + 0.058, top + 0.01)
-    fi.rotation_euler = (0.05, 0, 0.12)
+    fi.location = (cx - 0.01, cy + 0.07, top + 0.01)  # smaller and further back than v1, so it crowds the eggs and
+    fi.rotation_euler = (0, 0, 0.12)                    # the rice less once it lies on the plate (drape, below)
+    fi.scale = (0.85, 0.85, 0.85)
     plast = mat("plasticware", "#f6f5f0", rough=0.3)
     m = mk.MK()  # the fork (across the front left, handle off the rim) and the spoon (on the rice, back right)
     m.box((-0.09, -0.06, 0.03), (0.1, 0.009, 0.0025), plast, rot=(0, 0.08, -0.12), bevel=0.001)
     m.box((-0.03, -0.068, 0.034), (0.025, 0.016, 0.002), plast, rot=(0, 0.0, -0.12), bevel=0.0006)
     for k in range(4):
         m.box((-0.008, -0.074 + k * 0.0045, 0.035), (0.026, 0.002, 0.0016), plast, rot=(0, 0, -0.12))
-    m.box((0.12, 0.03, 0.04), (0.09, 0.009, 0.0025), plast, rot=(0, -0.12, 0.3), bevel=0.001)
-    m.sphere((0.07, 0.015, 0.045), 0.02, plast, s=(1.0, 0.7, 0.22), rot=(0, 0, 0.3), u=14, v=6)
+    m.box((0.125, -0.07, 0.04), (0.09, 0.009, 0.0025), plast, rot=(0, -0.12, -0.3), bevel=0.001)  # (front right now:
+    m.sphere((0.075, -0.055, 0.045), 0.02, plast, s=(1.0, 0.7, 0.22), rot=(0, 0, -0.3), u=14, v=6)  # the fish's back)
     ware = gb.link(bpy.data.objects.new("eat.plasticware", m.mesh("prop.plasticware")))
     ware.location = (cx, cy, top)
+    drape(fi, [o, obj("eat.fish"), ware])
     tray_o = obj("eat.mytray")
     tray = food("tray", "#1d1e20", "#2a2b2e", scale=140, bump=0.6, rough=0.55, detail=2)
     m = mk.MK()

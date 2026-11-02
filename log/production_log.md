@@ -1581,3 +1581,53 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **S49 "wall appears to travel":** the three FLUX anchors (opening, middle, end) were each painted at 0.95 from the Blender frames, and each put the eatery's wall corner and a window in a different place, so the take morphed between them. New `scenes/blender/cams.py` dumps the shot's camera per frame and its planar depth (`renders/m5/plates/S49/cams.json`, `depth_z/`); new `scripts/reproject.py` carries an image from one frame into another's camera through that depth (checked on the plates: frame 5236's beauty reprojected onto 5427 lines up with 5427's own). The opening anchor `S49_v4_s2002` reprojected to frame 5332 (holes 0.7%, Telea-filled) → `renders/m6/s49_reproj/`, then FLUX at 0.6 only re-details it (`config/keyframes.json` S49_mid v5, layout `renders/m6/s49_reproj`): pick `S49_mid_v5_s2001` (2002 put a dark patch on the screen). The end frame (5427) reprojected has the tray rim doubled (the anchor painted the tray a few cm larger than the set's) — at 0.6/0.75 it stays doubled and soft, at 0.88 it invents keychains — so S49 v6 has no end anchor: clip 0 from the opening anchor to the middle anchor, clip 1 chained from clip 0's last frame on the depth guide alone. `takes/v/S49/S49_v6_s{1,2}.mp4`; **pick seed 1** (seed 2's second half goes grey). The wall corner and window now stay put through the push. v5 and its anchors → `archive/takes/S49_v5_travelling_wall/`; the end-anchor attempts (`takes/keyframes/S49_end/S49_end_v5*`) are unused.
 - **"EXPIRED" hard to read:** the badge texture v2 (`scripts/gen_bookend_props.py`): a full-width white band across the badge with "EXPIRED" in heavy red capitals filling it; v1 → `archive/assets/gen/props/badge_expired_v1.png`. Matte re-rendered (`sign_matte.py -- S49 --materials prop.img.badge_expired`), pasted on v6 (`sign_paste.py S49 takes/v/S49/S49_v6_s1.mp4 --blur 10`).
 - **Phone screen's white border:** the take's own lit screen is a little larger than the rendered one, and its edge showed round the overlay. `scripts/overlay_add.py` gains `--bezel R`: a ring R px round the overlay is painted the phone's black glass before the screen goes on. `overlay_add.py S49 takes/fx/S49/S49_sign.mp4 --bloom 0 --bezel 6` → `takes/fx/S49/S49_overlay.mp4`. The v5 fx → `archive/takes/S49_v5_fx/`.
+
+## 2026-11-02T07:17:36-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002,2003,2004`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v5 | 2001 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_s2001.png` | 109.2 | pending (R1) |
+| S49_v5 | 2002 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_s2002.png` | 102.2 | pending (R1) |
+| S49_v5 | 2003 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_s2003.png` | 104.1 | pending (R1) |
+| S49_v5 | 2004 | 0.95 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_s2004.png` | 108.1 | pending (R1) |
+
+## 2026-11-02T07:25:04-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002 --denoise 0.9`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v5_d90 | 2001 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_d90_s2001.png` | 97.1 | pending (R1) |
+| S49_v5_d90 | 2002 | 0.9 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_d90_s2002.png` | 92.1 | pending (R1) |
+
+## 2026-11-02T07:28:14-05:00 — M5: keyframes (S49)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49 --seeds 2001,2002 --denoise 0.92`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_v5_d92 | 2001 | 0.92 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_d92_s2001.png` | 91.4 | pending (R1) |
+| S49_v5_d92 | 2002 | 0.92 | renders/m5/plates/S49/beauty/05236.png | `takes/keyframes/S49/S49_v5_d92_s2002.png` | 91.3 | pending (R1) |
+
+## 2026-11-02T07:31:43-05:00 — M5: keyframes (S49_mid)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, `mistral_3_small_flux2_fp4_mixed.safetensors`, `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0, denoise from the layout per row (1.0 = none); reference editing (ReferenceLatent, 1 MP per reference), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>.txt`. **Command:** `.venv/bin/python scripts/keyframes.py S49_mid --seeds 2001,2002`
+
+| Shot | Seed | Denoise | Inputs (reference 1 = layout) | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S49_mid_v6 | 2001 | 0.6 | renders/m6/s49_reproj_v2/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v6_s2001.png` | 63.1 | pending (R1) |
+| S49_mid_v6 | 2002 | 0.6 | renders/m6/s49_reproj_v2/beauty/05332.png | `takes/keyframes/S49_mid/S49_mid_v6_s2002.png` | 60.1 | pending (R1) |
+
+## 2026-11-02T23:30:00-05:00 — M6: bookends v4 (the human's notes on v3)
+- **The fish clipping into the plate:** the fillets were one rigid flat shape tilted over a dished plate, a rice mound and an egg. `props.drape()` lays a flat object onto what's under it the way the receipt tape is laid (in place of a cloth simulation): the surface under its footprint sampled on a 2 mm grid (rays onto the plate, the rice and eggs, the plasticware), stiffened by a cone dilation (it can't bend sharper than a 0.25 rise per run, and it's only ever smoothed upward, so it never goes into what it lies on), each vertex set on that surface at its own height above the fish's underside. The fish is also 15% smaller and 1.2 cm further back, and the spoon moved to the front of the rice, so it crowds the plate less; its flesh sits 4 mm over the skin (at 2.5 mm the bends let the skin show through). (A mis-placed comment briefly turned the flesh into a 1 m sphere in a test still; caught and fixed before any render.)
+- **"All of the chairs appear to be facing the wrong way":** the eatery's side chairs (`interiors.eatery`) were turned +90°, which faced the chair's front (-Y) away from its table; now -90°. The end chair (180°) was right. This changes the eatery interior in Act 1 too (its approved frames were rendered before the fix); the final render picks it up.
+- **The opener render:** `renders/m6/preroll_v5/` (436 frames, draft720); `preroll_v3`/`v4` were the same without these fixes.
+- **S49 "the table and the road warp together":** the opening anchor `S49_v4_s2002` painted the back half of the table as the wet street (the Blender table runs back to the window sill), so in the take the street was on the table's plane and moved with it. New opening anchor: the prompt pins the table ("its whole top is dry, dark worn wood all the way back to the window sill … the street is only ever seen through the glass, never on the table"; and one page only, nothing at the table's front edge). At 0.95 the composition drifted from the layout (seeds 2001–2004); at 0.92 the window spilled over the table; at 0.9 seed 2002 follows the set's outline: **pick `S49_v5_d90_s2002`**. Reprojected to frame 5332 (`renders/m6/s49_reproj_v2/`) → `S49_mid_v6_s2001` (FLUX 0.6). V v7 (clip 0 first → middle anchor, clip 1 on the depth alone): seeds 1–2, **pick seed 1** (seed 2 greys in its second half) → `takes/v/S49/S49_v7_s1.mp4`. v6 and its anchors → `archive/takes/S49_v6_road_on_table/`, its fx → `archive/takes/S49_v6_fx/`.
+- **S49 phone:** in v7 the take's screen glows past the phone: `overlay_add.py` gains `--halo R` (past the bezel, out to R px, each pixel kept no brighter than the table round about, the take blurred with the phone region left out). `sign_paste.py S49 takes/v/S49/S49_v7_s1.mp4 --blur 10` → `overlay_add.py S49 takes/fx/S49/S49_sign.mp4 --bloom 0 --bezel 9 --halo 30` → `takes/fx/S49/S49_overlay.mp4` (the first v7 overlay, bezel 6 and no halo, → `archive/takes/S49_v7_fx_halo/`).
+- **The foley repeating; "use seed 3 and mix them together":** new `scripts/ambience_bed.py`: two layers, each a chain of 1.5–2.6 s pieces from random places in `takes/sfx/amb_dev_s2.wav` and `amb_dev_s3.wav` (level-matched; never the same clip and place twice running), 0.5 s equal-power crossfades, the second layer offset 1 s; summed at −3 dB each, loudness-normalised to −26 LUFS → `audio/sfx/diner_ambience.wav` (19.5 s). Its envelope's autocorrelation is ≤ 0.09 at every lag from 2 to 8 s (no period). The seed-2 loop → `archive/audio/sfx/diner_ambience_s2_loop_v2.wav`.

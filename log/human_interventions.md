@@ -243,3 +243,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M6: bookends v2 notes — R1
 - **What:** "the intro is a little washed out", "the ending's phone screen has a white border on the edges -- it's probably not masked correctly", "the ending's wall appears to travel"; then, mid-fix, "also, \"EXPIRED\" is very hard to read".
 - **Rule:** R1 (rejections). The agent fixes them (production log, next entry).
+
+## 2026-11-02 — M6: bookends v3 notes — R1
+- **What:** "the fish is clipping into the plate -- it may be useful to simulate it much like the paper. at the end, the table and the road warp together slightly. I am hearing the foley repeat -- also use seed 3 and mix them together"; then, mid-fix, "I unfortunately just noticed now that all of the chairs appear to be facing the wrong way".
+- **Rule:** R1 (rejections; seed 3 is a pick of an existing take). The agent fixes them (production log, next entry).

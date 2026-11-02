@@ -717,7 +717,9 @@ def eatery(S):
         for dx in (-0.33, 0.33):
             for dy in (-0.48, 0.48):
                 mb.box((-2.3 + dx, y + dy, 0.43), (0.035, 0.035, 0.56), black, col="#202020")
-        ladder_chair(mb, (-1.62, y + (0.0 if k else 0.15), F0), math.pi / 2 + rng.uniform(-0.12, 0.12), black)
+        # facing the table (-X; the chair's front is -Y, so -90 degrees: at +90 every one faced away from its table, the
+        # human: "all of the chairs appear to be facing the wrong way")
+        ladder_chair(mb, (-1.62, y + (0.0 if k else 0.15), F0), -math.pi / 2 + rng.uniform(-0.12, 0.12), black)
         if k:  # the condiment caddy at the wall end (the breakfast table stays clear)
             cx, cy = -2.58, y + 0.32
             mb.box((cx, cy, 0.79), (0.16, 0.24, 0.015), steel, col="#b8bcc0")
