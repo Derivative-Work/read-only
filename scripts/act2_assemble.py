@@ -8,8 +8,11 @@ then Act 2 shots (S41–S48)"; S40 and S48b are the edit's, built here).
   rolling up the frame, the colour channels pulled apart, a little horizontal jitter, the picture crushed and
   desaturated. The freeze itself stays clean.
 - S41–S48a: the approved M5 takes (TAKES below).
-- S48b: S48a's last frame fades to black over 0.8 s, under the login prompt (renders/screens/login_prompt, which is
-  black until its own fade-in), then the prompt holds with its cursor blinking; then cut.
+- S48b: the human: "use the record scratches at the end to fade directly to the login screen (skip the fade to black
+  first)". On the scratches at the end of the track (overlays/cues.json login_prompt "scratch", 194.65-195.75 s, in
+  S48a's last seconds) the grave fades straight into the login prompt (renders/screens/login_prompt), its opacity
+  following the scratch stem's accumulated energy, so it moves with each stroke; the prompt then holds, its cursor
+  blinking, to the cut.
 Act 2 takes are 1280×704; they are scaled to cover 1280×720 (centre crop). The master plays from the lead-in's start
 to its end (196.16 s); S48b is silent.
 
@@ -21,7 +24,9 @@ import sys
 from pathlib import Path
 
 import cv2
+import json
 import numpy as np
+import soundfile as sf
 
 sys.path.insert(0, str(Path(__file__).parent))
 import animatic_assemble as aa  # noqa: E402
@@ -34,6 +39,15 @@ TAKES = {"S41": "takes/fx/S41/S41_reveal.mp4", "S42": "takes/fx/S42/S42_glitch.m
          "S45": "takes/fx/S45/S45_sign.mp4", "S47": "takes/fx/S47/S47_rec.mp4",
          "S48": "takes/fx/S48/S48_overlay.mp4", "S48a": "takes/v/S48a/S48a_joined.mp4"}
 LOGIN = Path("renders/screens/login_prompt")
+SCRATCH_STEM = "audio/stems/9 Other.wav"
+
+
+def scratch_curve(t0, t1):
+    """0..1 through the scratches: the Other stem's energy accumulated over [t0, t1], per frame time."""
+    x, sr = sf.read(SCRATCH_STEM, always_2d=True)
+    e = x.mean(1)[int(t0 * sr):int(t1 * sr)] ** 2
+    c = np.cumsum(e) / e.sum()
+    return lambda t: float(np.interp((t - t0) * sr, np.arange(len(c)), c))
 
 
 def frames(path):
@@ -92,7 +106,9 @@ def main():
     back = list(range(fa - 1, F(SP["S02"][0]) - 1, -1))
     rng = np.random.default_rng(40)
     takes = {sid: frames(p) for sid, p in TAKES.items()}
-    last48a = cover(takes["S48a"][-1])
+    cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
+    first = json.load(open(LOGIN / "range.json"))["first_frame"]
+    curve = scratch_curve(*cue["scratch"])
     enc = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-ss", f"{t0:.4f}", "-t", f"{SP['S48a'][1] - t0:.4f}", "-i",
                             aa.MASTER, "-filter_complex", "[1:a]apad[a]", "-map", "0:v", "-map", "[a]", "-shortest",
@@ -107,11 +123,14 @@ def main():
             else:
                 k = f - hold
                 img = rewind_look(act1(back[int(k * len(back) / (fb - hold))]), k, rng)
-        elif f >= F(SP["S48b"][0]):
-            i = f - F(SP["S48b"][0])
+        elif f >= F(cue["from"]):
+            i = f - first
             scr = cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB).astype(np.float32)
-            fade = max(0.0, 1 - i / (0.8 * FPS))
-            img = np.clip(last48a * fade + scr * (1 - fade), 0, 255).astype(np.uint8) if fade > 0 else scr.astype(np.uint8)
+            k = curve(f / FPS - aa.PRE)
+            if k < 1 and f < F(SP["S48a"][1]):
+                grave = cover(takes["S48a"][min(f - F(SP["S48a"][0]), len(takes["S48a"]) - 1)]).astype(np.float32)
+                scr = grave * (1 - k) + scr * k
+            img = np.clip(scr, 0, 255).astype(np.uint8)
         else:
             sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
             tk = takes[sid]

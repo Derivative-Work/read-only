@@ -223,3 +223,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M5: S48a approved — R1
 - **What:** "Good, keep going". S48a (`takes/v/S48a/S48a_joined.mp4`) approved. The agent builds S40 and S48b and assembles Act 2 for the M5 gate.
 - **Rule:** R1.
+
+## 2026-11-02 — M5: the Act 2 cut, the tag — R1
+- **What:** "this is great, just use the record scratches at the end to fade directly to the login screen (skip the fade to black first)". The Act 2 cut approved but for the S48a → S48b transition.
+- **Rule:** R1. The agent changes the transition (production log, next entry).

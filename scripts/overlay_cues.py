@@ -97,11 +97,13 @@ def main():
             # "Reply below." waits in the field and the cursor blinks on the beat (brief: "Cursor blinks in tempo")
             "billboard_reply": {"size": [2300, 900], "shot": "S44", "from": s44[0], "to": s44[1],
                                 "blink": beats(s44[0] - 1.0, s44[1] + 0.5)},
-            # M5: S48b, the tag after the last word: black, then a generic login prompt fades in and its cursor blinks in
-            # the username field (twice a second, the music has stopped), then cut. The grave's fade to black is the
-            # assembler's.
-            "login_prompt": {"size": [1280, 720], "shot": "S48b", "from": s48b[0], "to": s48b[1],
-                             "fade_in": [round(s48b[0] + 0.8, 3), round(s48b[0] + 1.6, 3)]},
+            # M5: S48b, the tag: the login prompt, its cursor blinking in the username field twice a second. The human: "use
+            # the record scratches at the end to fade directly to the login screen (skip the fade to black first)": it
+            # starts on the scratches at the end of the track (the Other stem, 194.65-195.75 s, measured), drawn in full;
+            # scripts/act2_assemble.py fades the grave into it with the scratches.
+            "login_prompt": {"size": [1280, 720], "shot": "S48b", "from": 194.65, "to": s48b[1],
+                             "fade_in": [194.64, 194.65], "scratch": [194.65, 195.75]},
+
         },
     }
     Path("overlays").mkdir(exist_ok=True)
