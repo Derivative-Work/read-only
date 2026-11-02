@@ -1,0 +1,83 @@
+{
+ "_doc": "M6: the end card (S50; brief, 'End card contents'), read by scripts/overlay_cues.py into overlays/cues.json and drawn by overlays/screens.html (end_card). Four pages on black (credits; 2023; since then; the notes). Fact lines are the wording of the M6 fact check (log/audits/m6_end_card_fact_check.md), checked 2026-11-02; the lawsuit line is its status at that date and must be re-checked at release (brief). The conflict-of-interest line names its reviewer after the M8 audit. {interventions}: the count of entries in log/human_interventions.md.",
+ "facts_checked_on": "2026-11-02",
+ "pages": [
+  {
+   "title": "AI-generated satire",
+   "lines": [
+    "Concept and bookends: the creator",
+    "Lyrics: drafted by Claude (Anthropic)",
+    "Music: Suno, post-filtered with music-deslop",
+    "Video: Claude Code, with Blender, FLUX.2 [dev], LTX-2.3 and LatentSync",
+    "The only real image: the creator's breakfast photo, March 2018",
+    "Human interventions: {interventions}, each logged"
+   ]
+  },
+  {
+   "title": "2023",
+   "facts": [
+    [
+     "Apr 2023: Reddit says it will charge for API access. On May 31, Apollo's developer reveals the price: $12,000 per 50 million calls, about $0.24 per 1,000.",
+     "TechCrunch"
+    ],
+    [
+     "He estimates the fees at about $20 million a year.",
+     "TechCrunch"
+    ],
+    [
+     "June 12, 2023: more than 8,000 subreddits go private or read-only in a 48-hour blackout. Some stay dark longer.",
+     "TechCrunch"
+    ],
+    [
+     "July 2023: the anti-spam bot BotDefense shuts down over the changes. Its ban list stood at 144,926 accounts.",
+     "BotDefense"
+    ]
+   ]
+  },
+  {
+   "title": "Since then",
+   "facts": [
+    [
+     "Feb 2024: Reddit licenses its data to Google for AI, reported at about $60 million a year.",
+     "Reuters"
+    ],
+    [
+     "July 2024: Reddit's robots.txt shuts out crawlers. Google, which pays Reddit, stays the only major search engine with fresh Reddit results.",
+     "9to5Mac"
+    ],
+    [
+     "June 2025: Reddit sues Anthropic, alleging it scraped Reddit without a license. In September 2026 a San Francisco judge lets its contract and unfair-competition claims proceed.",
+     "Bloomberg Law"
+    ],
+    [
+     "Aug 2025: Reddit blocks the Wayback Machine from archiving most of the site, citing AI scraping.",
+     "Nieman Lab"
+    ],
+    [
+     "Sept 30, 2026: Reddit says RSS feeds end Nov 13, 2026, and its free public API closes in March 2027.",
+     "PPC Land; Decrypt"
+    ],
+    [
+     "Oct 29, 2026: Reddit says it will shift to a primarily logged-in experience, testing first outside the US.",
+     "TechCrunch"
+    ]
+   ]
+  },
+  {
+   "title": "",
+   "lines": [
+    "The block is a composite, not a real address. The eatery is fictional.",
+    "Hip-hop is a human tradition, built by Black and Latino artists in the Bronx. This one was generated from it.",
+    "Lyrics drafted by Claude (Anthropic). Reddit has sued Anthropic for scraping its posts without a license, and AI companies buying user data is this song's subject. Reviewed by {reviewer}; changes logged.",
+    "The creator interviewed at Reddit in 2018. The badge and schedule in the opener are recreations."
+   ]
+  }
+ ],
+ "reviewer": "[the M8 auditor]",
+ "seconds": [
+  8,
+  10,
+  12,
+  12
+ ]
+}

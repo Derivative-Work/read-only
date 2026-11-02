@@ -4,6 +4,8 @@ their surfaces, in place of the grey-box's static text.
   lobby_traffic    the lobby screen, S20 (the traffic chart dipping and bouncing back)
   pawn_led         the pawn shop's LED sign (48:00:00 counting down in S16, holding its last value after)
   ticker           the LED band's street face, looping from S30 on (it lights with the band's own control)
+  phone_s01d       M6: the phone's screen in the opener (the photo just taken, the swipe to the reader app, the scroll)
+  phone_s49        M6: the phone's screen in S49 (the thread's end under the app's shut-down notice), its own face
 
 Each sequence's range.json gives the timeline frame of its first image; frames before it show the first image and
 frames after it the last (or loop).
@@ -67,3 +69,18 @@ def build(S, SP):
     bpy.data.objects.remove(bpy.data.objects["pawn.led.txt"])
     surface("ticker", ((x0 + x1) / 2, y0 - 0.21, 13.6), (x1 - x0 + 0.4, 1.2),
             seq_mat("ticker", 8.0, S["ticker"], "on"), "-Y")
+    # M6: the phone's screens, faces on the phone (child of its empty, just proud of the grey-box screen, which goes)
+    ph = S["phone"]
+    old_screen = bpy.data.objects.get("phone.screen")
+    faces = []
+    for name in ("phone_s01d", "phone_s49"):
+        o = surface(name, (0, 0, 0), (0.068, 0.145), seq_mat(name, 2.0), "-Y")
+        o.parent = ph
+        o.location = (0, -0.0052, 0)
+        faces.append(o)
+    if old_screen:
+        bpy.data.objects.remove(old_screen)
+    f49 = gb.F(SP["S49"][0])  # the opener's face until S49, S49's after (keyed directly: show_between's keys assume t0 >= 0)
+    for o, before, after in ((faces[0], 0.0, 1.0), (faces[1], 1.0, 0.0)):
+        for path in ("hide_render", "hide_viewport"):
+            gb.keys(o, path, [(0, before, "CONSTANT"), (f49, after, "CONSTANT")], interp="CONSTANT")

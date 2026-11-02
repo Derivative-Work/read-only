@@ -23,8 +23,11 @@ let C, P, S, W, H;
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = x => x * x * (3 - 2 * x);
 
+let PLATE = null;  // the human's plate photo (assets/real/plate.jpg): the phone's photo in S01b and S01d
 async function setup(cues) {
   C = cues; P = C.palette;
+  PLATE = new Image(); PLATE.src = "../assets/real/plate.jpg";
+  await PLATE.decode();
   await Promise.all(['72px "Inter"', '72px "JetBrains Mono"'].map(f => document.fonts.load(f)));
   await document.fonts.ready;
   return document.fonts.check('72px "Inter"') && document.fonts.check('72px "JetBrains Mono"');
@@ -180,7 +183,131 @@ function login_prompt(t) {
   g.restore();
 }
 
-const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker, billboard_reply, login_prompt };
+// M6: the phone's screens (540 x 1152, the phone's screen face). An invented third-party reader app, never named:
+// a neutral list UI, no site's layout, colours, icons or fonts; an invented community and invented accounts.
+const THREAD = {
+  community: "SF Breakfast", title: "Best silog near the Tenderloin?", op: "garlicrice_4ever", age: "3h",
+  comments: [
+    ["LunchMapBot", "bot", "I'm a bot. I mapped the 4 places mentioned in this thread, with today's hours."],
+    ["nightshift_lola", "", "good bot"],
+    ["tapsilog_tito", "", "good bot"],
+    ["fogcity_eats", "", "good bot. the one on the corner is the one"],
+    ["sinangag_sam", "", "good bot"],
+    ["early_bus_ed", "", "good bot"],
+  ]};
+
+function wrap(text, x, y, maxw, lh) {
+  const words = text.split(" "); let line = "";
+  for (const w of words) {
+    const t = line ? line + " " + w : w;
+    if (g.measureText(t).width > maxw && line) { g.fillText(line, x, y); y += lh; line = w; } else line = t;
+  }
+  if (line) { g.fillText(line, x, y); y += lh; }
+  return y;
+}
+
+// the reader app's thread view, scrolled by `scroll` px; `tail`: the thread's end with an empty reply box
+function reader(scroll, tail) {
+  g.fillStyle = "#f6f7f9"; g.fillRect(0, 0, W, H);
+  g.save(); g.translate(0, -scroll);
+  let y = 160;
+  g.fillStyle = "#6b7380"; g.font = `24px "Inter"`; g.textAlign = "left"; g.textBaseline = "alphabetic";
+  g.fillText(`${THREAD.community} · ${THREAD.op} · ${THREAD.age}`, 32, y); y += 52;
+  g.fillStyle = "#16191d"; g.font = `600 40px "Inter"`; y = wrap(THREAD.title, 32, y, W - 64, 50) + 24;
+  g.fillStyle = "#e3e6ea"; g.fillRect(0, y, W, 2); y += 40;
+  for (const [who, tag, text] of THREAD.comments) {
+    g.fillStyle = "#d9dde3"; g.beginPath(); g.arc(52, y - 8, 20, 0, 7); g.fill();
+    g.fillStyle = "#3a4048"; g.font = `600 24px "Inter"`; g.fillText(who, 84, y);
+    if (tag) { const wx = 84 + g.measureText(who).width + 12; g.fillStyle = "#e3e6ea"; rrect(wx, y - 22, 52, 28, 6); g.fill();
+      g.fillStyle = "#5b6470"; g.font = `18px "Inter"`; g.fillText("BOT", wx + 8, y - 2); }
+    g.fillStyle = "#16191d"; g.font = `30px "Inter"`; y = wrap(text, 84, y + 44, W - 120, 40);
+    if (tag) {  // the bot's little map card
+      g.fillStyle = "#e8ecef"; rrect(84, y - 10, W - 120, 150, 12); g.fill();
+      g.strokeStyle = "#c8cfd6"; g.lineWidth = 3;
+      for (let k = 0; k < 5; k++) { g.beginPath(); g.moveTo(84, y + 20 + k * 28); g.lineTo(W - 36, y + 4 + k * 30); g.stroke(); }
+      g.fillStyle = "#4a5562"; for (const [mx, my] of [[150, 40], [260, 90], [340, 50], [420, 110]]) {
+        g.beginPath(); g.arc(mx, y + my, 9, 0, 7); g.fill(); }
+      y += 160;
+    }
+    g.fillStyle = "#8a929c"; g.font = `22px "Inter"`; g.fillText("Reply", 84, y + 4); y += 56;
+  }
+  if (tail) {  // the empty reply box at the thread's end
+    g.fillStyle = "#ffffff"; rrect(32, y, W - 64, 90, 14); g.fill();
+    g.strokeStyle = "#c3c8cf"; g.lineWidth = 2; rrect(32, y, W - 64, 90, 14); g.stroke();
+    g.fillStyle = "#9aa2ac"; g.font = `28px "Inter"`; g.fillText("Add a reply", 60, y + 55);
+  }
+  g.restore();
+  g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, 110);  // the top bar
+  g.fillStyle = "#e3e6ea"; g.fillRect(0, 108, W, 2);
+  g.fillStyle = "#3a4048"; g.font = `30px "Inter"`; g.textAlign = "left"; g.fillText("‹", 28, 72);
+  g.font = `600 28px "Inter"`; g.textAlign = "center"; g.fillText(THREAD.community, W / 2, 70);
+  g.textAlign = "left";
+}
+
+function photo_review() {  // the photo just taken, in a plain photo viewer
+  g.fillStyle = "#000"; g.fillRect(0, 0, W, H);
+  const ih = W * PLATE.height / PLATE.width;  // landscape photo, fitted to the width
+  g.drawImage(PLATE, 0, (H - ih) / 2, W, ih);
+  g.fillStyle = "rgba(255,255,255,0.85)"; g.font = `26px "Inter"`; g.textAlign = "center"; g.fillText("Just now", W / 2, 90);
+  g.textAlign = "left";
+}
+
+function statusbar(dark, clock) {
+  g.fillStyle = dark ? "#ffffff" : "#16191d"; g.font = `600 22px "Inter"`; g.textAlign = "left"; g.fillText(clock || "8:12", 32, 34);
+  g.textAlign = "right"; g.fillText("▮▮▮  ▭", W - 28, 34); g.textAlign = "left";
+}
+
+// S01d: the photo, a swipe to the reader app, the thread scrolling past the bot's reply and its "good bot"s
+function phone_s01d(t) {
+  const [s0, s1] = S.swipe, [c0, c1] = S.scroll;
+  const k = ease(clamp((t - s0) / (s1 - s0)));
+  if (k < 1) { g.save(); g.translate(-k * W, 0); photo_review(); statusbar(true); g.restore(); }
+  if (k > 0) { g.save(); g.translate((1 - k) * W, 0); reader(ease(clamp((t - c0) / (c1 - c0))) * S.scroll_px, false); statusbar(false); g.restore(); }
+}
+
+// S49: the same thread at its end, an empty reply box, under the app's shut-down notice
+function phone_s49(t) {
+  reader(S.scroll_px_end, true); statusbar(false, "11:47");
+  g.fillStyle = "rgba(10,12,14,0.55)"; g.fillRect(0, 0, W, H);
+  const cw = W - 80, ch = 330, cx = 40, cy = (H - ch) / 2;
+  g.fillStyle = "#ffffff"; rrect(cx, cy, cw, ch, 22); g.fill();
+  g.fillStyle = "#16191d"; g.font = `600 34px "Inter"`; g.textAlign = "center"; g.fillText("This app has shut down", W / 2, cy + 74);
+  g.fillStyle = "#4a5260"; g.font = `26px "Inter"`;
+  g.fillText("It stopped working on June 30, 2023,", W / 2, cy + 132);
+  g.fillText("when access to the API ended.", W / 2, cy + 168);
+  g.fillText("Thanks for reading with us.", W / 2, cy + 220);
+  g.fillStyle = "#c3c8cf"; g.fillRect(cx, cy + 258, cw, 2);
+  g.fillStyle = "#9aa2ac"; g.font = `600 28px "Inter"`; g.fillText("OK", W / 2, cy + 303);
+  g.textAlign = "left";
+}
+
+// S50 (M6): the end card on black, its pages (overlays/cards.json) one after another, each fading in and out
+function end_card(t) {
+  g.fillStyle = "#000"; g.fillRect(0, 0, W, H);
+  let t0 = S.from, k = 0;
+  while (k < S.seconds.length - 1 && t >= t0 + S.seconds[k]) { t0 += S.seconds[k]; k++; }
+  const P = S.pages[k], dur = S.seconds[k];
+  const a = clamp(Math.min((t - t0) / 0.5, (t0 + dur - t) / 0.5));
+  g.save(); g.globalAlpha = a; g.textAlign = "left"; g.textBaseline = "alphabetic";
+  const L = 120, R = W - 120;
+  let y = P.facts ? 110 : 170;
+  if (P.title) { g.fillStyle = "#ffffff"; g.font = `600 44px "Inter"`; g.fillText(P.title, L, y); y += P.facts ? 66 : 80; }
+  if (P.lines) {
+    g.font = `26px "Inter"`;
+    for (const line of P.lines) { g.fillStyle = "#e6e6e6"; y = wrap(line, L, y, R - L, 36) + 22; }
+  }
+  if (P.facts) {
+    for (const [text, src] of P.facts) {
+      g.fillStyle = "#e6e6e6"; g.font = `24px "Inter"`;
+      const y1 = wrap(text, L, y, R - L - 210, 32);
+      g.fillStyle = "#8a8f96"; g.font = `19px "Inter"`; g.textAlign = "right"; g.fillText(src, R, y); g.textAlign = "left";
+      y = y1 + 18;
+    }
+  }
+  g.restore();
+}
+
+const SHOW = { lobby_blackmail, lobby_traffic, pawn_led, ticker, billboard_reply, login_prompt, phone_s01d, phone_s49, end_card };
 function show(name, t) { if (!S || S !== C.screens[name]) { size(name); dotSrc = null; } SHOW[name](t); }
 </script>
 </body>

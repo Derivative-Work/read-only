@@ -27,6 +27,9 @@ WORDS = json.loads(Path("timing/words.json").read_text())["lines"]
 BOOK = json.loads(Path("config/bookends.json").read_text())
 PRE = sum(BOOK["preroll"].values())
 SHOT = {s["id"]: (s["t"], s["end"]) for s in TM["shots"] if s["t"] is not None}
+_cards = json.loads(Path("overlays/cards.json").read_text())
+_n = Path("log/human_interventions.md").read_text().count("\n## ")
+CARDS = json.loads(json.dumps(_cards).replace("{interventions}", str(_n)).replace("{reviewer}", _cards["reviewer"]))
 
 
 def word(line_id, prefix):
@@ -62,6 +65,8 @@ def main():
     s10, s16, s20, s30 = (SHOT[k] for k in ("S10", "S16", "S20", "S30"))
     s44 = SHOT["S44"]
     s48b = (TM["duration_s"], TM["duration_s"] + BOOK["postroll"]["S48b"])  # after the audio (config/bookends.json)
+    s49 = (s48b[1], s48b[1] + BOOK["postroll"]["S49"])
+    s01d = (-BOOK["preroll"]["S01d"], SHOT["S02"][0])  # the pre-roll's last shot, to the S01e cut
     dark, bounced = word("L21", "dark"), word("L22", "bounced")
     beat_in = [b for a, b in TM["drum_dropouts"] if b < 12][-1]
     cues = {
@@ -103,6 +108,16 @@ def main():
             # scripts/act2_assemble.py fades the grave into it with the scratches.
             "login_prompt": {"size": [1280, 720], "shot": "S48b", "from": 194.65, "to": s48b[1],
                              "fade_in": [194.64, 194.65], "scratch": [194.65, 195.75]},
+            # M6: the phone's screens. S01d: the photo just taken (the human's plate photo), a swipe to an invented
+            # reader app (never named), the thread scrolling past a helper bot's reply to its "good bot"s; S49: the
+            # thread's end, an empty reply box, under the app's shut-down notice
+            "phone_s01d": {"size": [540, 1152], "shot": "S01d", "from": s01d[0], "to": s01d[1],
+                           "swipe": [round(s01d[0] + 0.6, 3), round(s01d[0] + 1.1, 3)],
+                           "scroll": [round(s01d[0] + 1.6, 3), round(s01d[1] - 1.0, 3)], "scroll_px": 420},
+            "phone_s49": {"size": [540, 1152], "shot": "S49", "from": s49[0], "to": s49[1], "scroll_px_end": 520},
+            # M6: S50, the end card (overlays/cards.json), its pages one after another
+            "end_card": {"size": [1280, 720], "shot": "S50", "from": s49[1], "to": s49[1] + sum(CARDS["seconds"]),
+                         "pages": CARDS["pages"], "seconds": CARDS["seconds"]},
 
         },
     }
