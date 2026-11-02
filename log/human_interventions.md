@@ -247,3 +247,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-02 — M6: bookends v3 notes — R1
 - **What:** "the fish is clipping into the plate -- it may be useful to simulate it much like the paper. at the end, the table and the road warp together slightly. I am hearing the foley repeat -- also use seed 3 and mix them together"; then, mid-fix, "I unfortunately just noticed now that all of the chairs appear to be facing the wrong way".
 - **Rule:** R1 (rejections; seed 3 is a pick of an existing take). The agent fixes them (production log, next entry).
+
+## 2026-11-03 — M6: bookends v4 notes — R1
+- **What:** "much better, but it's still a little washed out in the beginning, particularly in the SF Breakfast screencast".
+- **Rule:** R1 (a rejection). The agent fixes it (production log, next entry).

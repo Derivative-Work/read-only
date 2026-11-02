@@ -132,6 +132,17 @@ def caption(frame, t, t0, t1, text="San Francisco, 2018"):
     return np.asarray(Image.alpha_composite(im, ov).convert("RGB"))
 
 
+def grade(img):
+    """The opener's render, a touch more contrast (the human, on v4: "still a little washed out in the beginning"): the
+    black point down 6%, a gentle S round the middle, saturation +8%. Not on the real photo or the camera UI."""
+    x = img.astype(np.float32) / 255
+    x = np.clip((x - 0.06) / 0.94, 0, 1)
+    x = x + 0.2 * (x - 0.5) * (1 - np.abs(2 * x - 1))
+    lum = x.mean(2, keepdims=True)
+    x = lum + (x - lum) * 1.08
+    return (np.clip(x, 0, 1) * 255).astype(np.uint8)
+
+
 def frames_of(path):
     raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", str(path), "-map", "0:v", "-f", "rawvideo",
                                    "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-"])
@@ -158,7 +169,7 @@ def main():
     f_cut = F(SP["S02"][0])
     for f in range(0, f_cut + int(a.tail * FPS)):
         if f < f_cut:
-            img = cv2.cvtColor(cv2.imread(str(pre / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB)
+            img = grade(cv2.cvtColor(cv2.imread(str(pre / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB))
         else:
             img = cv2.cvtColor(cv2.imread(str(ACT1 / f"f_{f:05d}.png")), cv2.COLOR_BGR2RGB)
         t = f / FPS - aa.PRE

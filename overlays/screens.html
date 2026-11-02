@@ -263,7 +263,11 @@ function phone_s01d(t) {
   const [s0, s1] = S.swipe, [c0, c1] = S.scroll;
   const k = ease(clamp((t - s0) / (s1 - s0)));
   if (k < 1) { g.save(); g.translate(-k * W, 0); photo_review(); statusbar(true); g.restore(); }
-  if (k > 0) { g.save(); g.translate((1 - k) * W, 0); reader(ease(clamp((t - c0) / (c1 - c0))) * S.scroll_px, false); statusbar(false); g.restore(); }
+  // two flicks with a reading pause after each (a steady 2.5 s scroll left every frame mid-motion, so the render's
+  // motion blur greyed the text out: the human, "washed out ... particularly in the SF Breakfast screencast")
+  const out = (x) => 1 - Math.pow(1 - x, 3);
+  const sc = 0.55 * out(clamp((t - c0) / 0.3)) + 0.45 * out(clamp((t - c0 - 1.25) / 0.3));
+  if (k > 0) { g.save(); g.translate((1 - k) * W, 0); reader(sc * S.scroll_px, false); statusbar(false); g.restore(); }
 }
 
 // S49: the same thread at its end, an empty reply box, under the app's shut-down notice

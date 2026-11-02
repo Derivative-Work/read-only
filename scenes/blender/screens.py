@@ -74,7 +74,20 @@ def build(S, SP):
     old_screen = bpy.data.objects.get("phone.screen")
     faces = []
     for name, glow in (("phone_s01d", 2.0), ("phone_s49", 0.35)):  # S49 is at night: at 2.0 (then 0.7) its screen blew out
-        o = surface(name, (0, 0, 0), (0.068, 0.145), seq_mat(name, glow), "-Y")
+        m = seq_mat(name, glow)
+        # a phone's anti-glare glass: at full specular the black glass mirrored the daylit room over the whole screen
+        # and washed its text out (the human: "still a little washed out ... particularly in the SF Breakfast screencast")
+        bs = m.node_tree.nodes["Principled BSDF"]
+        bs.inputs["Specular IOR Level"].default_value = 0.08
+        bs.inputs["Roughness"].default_value = 0.45
+        # and the text kept dark: shrunk to ~40% on screen its thin strokes averaged to mid-grey; a gamma of 1.6 on the
+        # texture brings them back toward the source's near-black (white stays white)
+        tex = next(n for n in m.node_tree.nodes if n.type == "TEX_IMAGE")
+        gm = m.node_tree.nodes.new("ShaderNodeGamma")
+        gm.inputs["Gamma"].default_value = 1.6
+        m.node_tree.links.new(tex.outputs["Color"], gm.inputs["Color"])
+        m.node_tree.links.new(gm.outputs["Color"], bs.inputs["Emission Color"])
+        o = surface(name, (0, 0, 0), (0.068, 0.145), m, "-Y")
         o.parent = ph
         o.location = (0, -0.0052, 0)
         faces.append(o)
