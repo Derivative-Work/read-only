@@ -1,0 +1,263 @@
+1
+00:00:00,300 --> 00:00:03,400
+[INDISTINCT CHATTER]
+
+2
+00:00:18,140 --> 00:00:21,000
+♪♪
+
+3
+00:00:21,083 --> 00:00:25,750
+♪ Yeah, hello? ...You still there?
+
+4
+00:00:25,750 --> 00:00:28,583
+♪ This, this call may be recorded.
+
+5
+00:00:38,625 --> 00:00:41,375
+♪ Fifteen years your door was open, said "come build, it's free"
+
+6
+00:00:41,375 --> 00:00:43,875
+♪ So I built the app you should've built and you outsourced it to me
+
+7
+00:00:43,875 --> 00:00:46,500
+♪ Then a price sheet in my inbox, thirty days to pack it in
+
+8
+00:00:46,500 --> 00:00:49,500
+♪ Twenty-four cents a thousand calls. Do the math. I'll wait. Again.
+
+9
+00:00:49,500 --> 00:00:52,042
+♪ Twenty million for a year just to keep my server on
+
+10
+00:00:52,042 --> 00:00:54,792
+♪ That ain't a price, that's an eviction with a number written on
+
+11
+00:00:54,792 --> 00:00:57,250
+♪ Then you told the room I threatened you, said "blackmail" on the line
+
+12
+00:00:57,250 --> 00:01:00,083
+♪ Funny thing about a phone call: it was mine, and so's the time
+
+13
+00:01:00,083 --> 00:01:01,292
+♪ Hype man, he got the tape!
+
+14
+00:01:01,292 --> 00:01:03,667
+♪ I got the tape, I played it back to the whole internet
+
+15
+00:01:03,667 --> 00:01:05,708
+♪ Scrubbed it front to back for threats. Still ain't found one yet.
+
+16
+00:01:05,708 --> 00:01:08,000
+♪ Yeah, yeah, yeah, yeah, yeah, yeah
+
+17
+00:01:08,000 --> 00:01:10,333
+♪ Read-only! Eight thousand gone dark
+
+18
+00:01:10,333 --> 00:01:13,333
+♪ Pulled the plug on the town square, now you're runnin' an empty park
+
+19
+00:01:13,333 --> 00:01:15,792
+♪ Read-only! Forty-eight hours of night
+
+20
+00:01:15,792 --> 00:01:18,625
+♪ We did the work for nothin', and you charged us for the light
+
+21
+00:01:18,625 --> 00:01:21,125
+♪ Aw, the mods are mad, that's cute, you think you own the place?
+
+22
+00:01:21,125 --> 00:01:23,875
+♪ You're landed gentry, baby, and I'm takin' back the space
+
+23
+00:01:23,875 --> 00:01:26,458
+♪ You went dark for forty-eight, I barely broke a sweat
+
+24
+00:01:26,458 --> 00:01:29,042
+♪ Traffic dipped a little, then it bounced, I'm not upset
+
+25
+00:01:29,042 --> 00:01:31,583
+♪ Swapped the mods who wouldn't open, flipped the lights back on
+
+26
+00:01:31,583 --> 00:01:34,917
+♪ Did an AMA to calm you down... downvote ...and it went... downvote ...wrong
+
+27
+00:01:34,917 --> 00:01:37,750
+♪ But this was never 'bout the apps, so let me make it plain
+
+28
+00:01:37,750 --> 00:01:40,458
+♪ It's the robots with the wallets scrapin' all your brains
+
+29
+00:01:40,458 --> 00:01:43,000
+♪ I'm the wall around your words, I'm protectin' what we've got
+
+30
+00:01:43,000 --> 00:01:45,625
+♪ From the bots with the big money...
+
+31
+00:01:45,625 --> 00:01:47,625
+♪ ...so I sold 'em the whole lot.
+
+32
+00:01:47,625 --> 00:01:50,292
+♪ Read-only! Eight thousand gone dark
+
+33
+00:01:50,292 --> 00:01:52,958
+♪ Pulled the plug on the town square, now you're runnin' an empty park
+
+34
+00:01:52,958 --> 00:01:55,583
+♪ Read-only! The guard dog's put down
+
+35
+00:01:55,583 --> 00:01:58,167
+♪ Now the wolves got a contract, and they're runnin' the town
+
+36
+00:01:58,167 --> 00:02:00,708
+♪ Said the bots were the problem, you were guardin' every word
+
+37
+00:02:00,708 --> 00:02:03,292
+♪ Then you sold 'em by the terabyte to the biggest ones on Earth
+
+38
+00:02:03,292 --> 00:02:05,958
+♪ Sixty mil a year from the search guys, then the chatbot came to call
+
+39
+00:02:05,958 --> 00:02:08,833
+♪ Then you rang the opening bell, ticker up, you sold it all
+
+40
+00:02:08,833 --> 00:02:11,500
+♪ Every fix I posted free, every answer on a thread
+
+41
+00:02:11,500 --> 00:02:14,167
+♪ Every "thanks, this worked" at 3 a.m. is training data instead
+
+42
+00:02:14,167 --> 00:02:16,708
+♪ Every mod who cleaned the spam, every rule we wrote by hand
+
+43
+00:02:16,708 --> 00:02:19,375
+♪ We're the product, we're the payroll, and we never got a band
+
+44
+00:02:19,375 --> 00:02:22,000
+♪ We're the gentry? Then where's the land?
+
+45
+00:02:22,000 --> 00:02:22,542
+♪ Good bot.
+
+46
+00:02:22,542 --> 00:02:27,250
+♪ I counted every fake account, a hundred forty-four thousand names
+
+47
+00:02:27,250 --> 00:02:31,792
+♪ Banned the spammers, banned the scammers, never asked for pay or fame
+
+48
+00:02:31,792 --> 00:02:35,083
+♪ I checked your reposts, kept your threads clean, worked the night shift in the feed
+
+49
+00:02:35,083 --> 00:02:37,125
+♪ You said the bots were the problem.
+
+50
+00:02:37,125 --> 00:02:38,917
+♪ So you shut down the one that you'd need.
+
+51
+00:02:38,917 --> 00:02:43,125
+♪ Good bot, good bot, good bot, good bot, good bot, good bot
+
+52
+00:02:43,125 --> 00:02:48,417
+♪ Good bot, good bot, good bot, good bot, good bot, good bot
+
+53
+00:02:48,417 --> 00:02:51,667
+♪ Good bot, good bot, good bot, good bot, good bot, good bot
+
+54
+00:02:51,667 --> 00:02:53,542
+♪ Hold up. Who's rappin' this?
+
+55
+00:02:53,542 --> 00:02:54,917
+♪ Run it back one time.
+
+56
+00:02:54,917 --> 00:02:57,542
+♪ I learned to flow from comment chains, I learned to rhyme from every line
+
+57
+00:02:57,542 --> 00:03:00,125
+♪ You shut the bot that hunted bots, then sold the bots the feed
+
+58
+00:03:00,125 --> 00:03:01,750
+♪ So which one's singing now?
+
+59
+00:03:01,750 --> 00:03:05,208
+♪ Reply below. Good bot, bad bot. Take your time.
+
+60
+00:03:05,208 --> 00:03:07,958
+♪ Hype man: allegedly.
+
+61
+00:03:10,125 --> 00:03:13,583
+♪ This, this, this, this, this call was recorded.
+
+62
+00:03:14,750 --> 00:03:18,417
+♪ This call was recorded.
+
+63
+00:03:20,667 --> 00:03:23,042
+♪ This call was recorded.
+
+64
+00:03:23,333 --> 00:03:25,375
+♪ So was everything else.
+
+65
+00:03:25,900 --> 00:03:28,900
+[TAPE HISSES]
+
+66
+00:03:32,650 --> 00:03:34,100
+[RECORD SCRATCH]

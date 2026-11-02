@@ -80,10 +80,14 @@ if __name__ == "__main__":
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--look", choices=["greybox", "final"], default="greybox")
+    ap.add_argument("--mb-start", action="store_true", help="the shutter opens on the frame (not centred on it): for "
+                    "the cut frame, so its blur doesn't sample the pre-roll's daylight a half frame earlier")
     ap.add_argument("--times", nargs="*", type=float, help="stills at these song seconds -> <out>/t_<s>.png")
     args = ap.parse_args(sys.argv[sys.argv.index("--") + 1:])
     prof = PROFILES[args.profile]
     sc, SP = build(prof["size"], prof["samples"], args.look, prof.get("motion_blur_steps", 1))
+    if args.mb_start:
+        sc.render.motion_blur_position = "START"
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     sc.render.image_settings.file_format = "PNG"
