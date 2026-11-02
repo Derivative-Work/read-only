@@ -11,7 +11,7 @@ Opener (pre-roll, no music; brief S01a-S01e):
 Under the opener: the diner ambience (audio/sfx/diner_ambience.wav), out by the cut.
 
 Closing (post-roll): S49 (the photoreal take with its overlay) under tape hiss and crackle
-(audio/sfx/s49_tape.wav), S50 (the end card) under the instrumental bounce (audio/post/cards_audio.wav, -4 dB).
+(audio/sfx/tape_bed_s47_s49.wav from S49's offset), S50 (the end card) under the instrumental bounce (audio/post/cards_audio.wav, -4 dB).
 
 Usage: .venv/bin/python -I scripts/bookends_assemble.py OUT.mp4 --preroll renders/m6/preroll_v1 [--s49 take.mp4]
        [--s50 renders/screens/end_card] [--tail 3.0]
@@ -35,7 +35,8 @@ FONT = "assets/fonts/Inter-Medium-flat.ttf"
 PLATE = "assets/real/plate.jpg"
 ACT1 = Path("renders/m4/act1_v8/frames")
 AMBIENCE = Path("audio/sfx/diner_ambience.wav")
-S49_FOLEY = Path("audio/sfx/s49_tape.wav")  # tape hiss and crackle, the tape running on past the song (scripts/tape_hiss.py)
+S49_FOLEY = Path("audio/sfx/tape_bed_s47_s49.wav")  # tape hiss and crackle (scripts/tape_hiss.py), from S47: S49 takes
+TAPE_FROM = "S47"                                   # it from S49's offset into it, where it has come up to full
 CARDS = Path("audio/post/cards_audio.wav")  # the instrumental under the end card (scripts/cards_audio.py)
 CARDS_GAIN_DB = -4.0  # under reading: about -20 LUFS against the song's -16
 S01B = {"focus": 0.35, "thumb_in": 1.0, "tap": 1.7, "flash": 0.12, "review": 1.85}  # seconds into S01b
@@ -214,7 +215,9 @@ def main():
         ins, fl = ["-i", str(tmp / "closing.mp4")], []
         if S49_FOLEY.exists():
             ins += ["-i", str(S49_FOLEY)]
-            fl.append(f"[{len(ins) // 2 - 1}:a]atrim=0:{n49 + 1.0},afade=t=in:d=1.0,afade=t=out:st={n49 - 0.2}:d=1.2[f]")
+            off = SP["S49"][0] - SP[TAPE_FROM][0]  # the bed is already easing up through S48b: no fade-in here
+            fl.append(f"[{len(ins) // 2 - 1}:a]atrim={off}:{off + n49 + 1.0},asetpts=PTS-STARTPTS,"
+                      f"afade=t=out:st={n49 - 0.2}:d=1.2[f]")
         if CARDS.exists() and a.s50:
             ins += ["-i", str(CARDS)]
             fl.append(f"[{len(ins) // 2 - 1}:a]volume={CARDS_GAIN_DB}dB,adelay={int(n49 * 1000)}:all=1[c]")

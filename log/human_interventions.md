@@ -259,3 +259,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-03 — M6: S49 foley rejected; tape hiss instead — R1
 - **What:** "None of the generated end foley is good (far too noisy for what it was going for). But that gave me a better idea: make tape hiss and crackle".
 - **Rule:** R1 (a rejection, with the direction). The agent makes it (production log, next entry).
+
+## 2026-11-03 — M6: the tape hiss's entrance — R1
+- **What:** "Make it ease in from the previous scene as the tape recorder is visible, but don't have it go to full volume until we're back at the eatery".
+- **Rule:** R1 (a note on the cut). The agent changes it (production log, next entry).

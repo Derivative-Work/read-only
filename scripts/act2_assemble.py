@@ -13,6 +13,8 @@ then Act 2 shots (S41–S48)"; S40 and S48b are the edit's, built here).
   S48a's last seconds) the grave fades straight into the login prompt (renders/screens/login_prompt), its opacity
   following the scratch stem's accumulated energy, so it moves with each stroke; the prompt then holds, its cursor
   blinking, to the cut.
+Under S47-S48b, the tape bed (audio/sfx/tape_bed_s47_s49.wav, scripts/tape_hiss.py): hiss easing in as the recorder
+is seen, rising under the song's end and the silence; full only from S49 (the bookends).
 Act 2 takes are 1280×704; they are scaled to cover 1280×720 (centre crop). The master plays from the lead-in's start
 to its end (196.16 s); S48b is silent.
 
@@ -40,6 +42,7 @@ TAKES = {"S41": "takes/fx/S41/S41_reveal.mp4", "S42": "takes/fx/S42/S42_glitch.m
          "S48": "takes/fx/S48/S48_overlay.mp4", "S48a": "takes/v/S48a/S48a_joined.mp4"}
 LOGIN = Path("renders/screens/login_prompt")
 SCRATCH_STEM = "audio/stems/9 Other.wav"
+TAPE = Path("audio/sfx/tape_bed_s47_s49.wav")  # tape hiss and crackle from S47 (the recorder), easing up to S49 (M6)
 
 
 def scratch_curve(t0, t1):
@@ -111,7 +114,11 @@ def main():
     curve = scratch_curve(*cue["scratch"])
     enc = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-ss", f"{t0:.4f}", "-t", f"{SP['S48a'][1] - t0:.4f}", "-i",
-                            aa.MASTER, "-filter_complex", "[1:a]apad[a]", "-map", "0:v", "-map", "[a]", "-shortest",
+                            aa.MASTER, *(["-i", str(TAPE)] if TAPE.exists() else []), "-filter_complex",
+                            "[1:a]apad[a]" if not TAPE.exists() else
+                            f"[1:a]apad[m];[2:a]adelay={int(round((SP['S47'][0] - t0) * 1000))}:all=1[h];"
+                            "[m][h]amix=inputs=2:duration=first:normalize=0[a]",
+                            "-map", "0:v", "-map", "[a]", "-shortest",
                             "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k",
                             a.out], stdin=subprocess.PIPE)
     for f in range(f0, f_end):

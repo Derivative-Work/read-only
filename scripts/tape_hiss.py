@@ -9,7 +9,12 @@ the tape running on after the song's last track.
   log-normal; a bigger, duller pop about every 2 s. Left and right differ a little.
 - A 0.25 s fade-in (the head engaging) and loudness-normalised to LUFS (default -30, under the opener's -26 room).
 
-Usage: .venv/bin/python -I scripts/tape_hiss.py OUT.wav [--seconds 9.5] [--seed 49] [--lufs -30]
+--ease "T:DB,T:DB,...": a gain envelope over the file (seconds into it : dB, linear in dB between points; before
+the first point, silence), applied after the loudness normalisation, so 0 dB is the --lufs level. The human: "make it
+ease in from the previous scene as the tape recorder is visible, but don't have it go to full volume until we're back
+at the eatery": the bed starts at S47 (the recorder at the payphone) and is full only from S49.
+
+Usage: .venv/bin/python -I scripts/tape_hiss.py OUT.wav [--seconds 9.5] [--seed 49] [--lufs -30] [--ease ...]
 """
 import argparse
 import subprocess
@@ -38,6 +43,7 @@ def main():
     ap.add_argument("--seconds", type=float, default=9.5)
     ap.add_argument("--seed", type=int, default=49)
     ap.add_argument("--lufs", type=float, default=-30.0)
+    ap.add_argument("--ease", default="")
     a = ap.parse_args()
     rng = np.random.default_rng(a.seed)
     n = int(a.seconds * SR)
@@ -78,10 +84,18 @@ def main():
     out = hiss + hum + crack
     fi = int(0.25 * SR)
     out[:fi] *= np.linspace(0, 1, fi)[:, None] ** 2
-    with tempfile.NamedTemporaryFile(suffix=".wav") as tf:
+    with tempfile.NamedTemporaryFile(suffix=".wav") as tf, tempfile.NamedTemporaryFile(suffix=".wav") as tn:
         sf.write(tf.name, out / np.abs(out).max() * 0.5, SR, subtype="FLOAT")
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", tf.name, "-af", f"loudnorm=I={a.lufs}:TP=-6:LRA=11",
-                        "-ar", str(SR), "-c:a", "pcm_s24le", a.out], check=True)
+                        "-ar", str(SR), "-c:a", "pcm_f32le", tn.name], check=True)
+        y, _ = sf.read(tn.name, always_2d=True)
+    if a.ease:
+        pts = [tuple(float(v) for v in p.split(":")) for p in a.ease.split(",")]
+        ts, dbs = np.array([p[0] for p in pts]), np.array([p[1] for p in pts])
+        tt = np.arange(len(y)) / SR
+        g = 10 ** (np.interp(tt, ts, dbs) / 20) * (tt >= ts[0])
+        y = y * g[:, None]
+    sf.write(a.out, y, SR, subtype="PCM_24")
     print(f"{a.out}: {a.seconds} s of tape hiss and crackle (seed {a.seed}, {a.lufs} LUFS)", flush=True)
 
 
