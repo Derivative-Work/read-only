@@ -10,7 +10,8 @@ Opener (pre-roll, no music; brief S01a-S01e):
   S01e  the match cut to S02 on the first piano chord: the first --tail s of the approved Act 1 frames, with the music
 Under the opener: the diner ambience (audio/sfx/diner_ambience.wav), out by the cut.
 
-Closing (post-roll): S48b's last second (Act 2), S49 (the photoreal take with its overlay), S50 (the end card).
+Closing (post-roll): S49 (the photoreal take with its overlay) under the eatery's room sound after closing
+(audio/sfx/s49_room.wav), S50 (the end card) under the instrumental bounce (audio/post/cards_audio.wav, -4 dB).
 
 Usage: .venv/bin/python -I scripts/bookends_assemble.py OUT.mp4 --preroll renders/m6/preroll_v1 [--s49 take.mp4]
        [--s50 renders/screens/end_card] [--tail 3.0]
@@ -34,6 +35,9 @@ FONT = "assets/fonts/Inter-Medium-flat.ttf"
 PLATE = "assets/real/plate.jpg"
 ACT1 = Path("renders/m4/act1_v8/frames")
 AMBIENCE = Path("audio/sfx/diner_ambience.wav")
+S49_FOLEY = Path("audio/sfx/s49_room.wav")  # the eatery after closing: rain, the fridge, the neon (scripts/ambience_bed.py)
+CARDS = Path("audio/post/cards_audio.wav")  # the instrumental under the end card (scripts/cards_audio.py)
+CARDS_GAIN_DB = -4.0  # under reading: about -20 LUFS against the song's -16
 S01B = {"focus": 0.35, "thumb_in": 1.0, "tap": 1.7, "flash": 0.12, "review": 1.85}  # seconds into S01b
 
 
@@ -204,6 +208,25 @@ def main():
                 clo.stdin.write(np.ascontiguousarray(cv2.cvtColor(cv2.imread(str(p)), cv2.COLOR_BGR2RGB)).tobytes())
         clo.stdin.close()
         clo.wait()
+        # the closing's sound: S49's room (faded in over 1 s after the song's silence, out under the card's first
+        # second), then the instrumental from the end card's first frame
+        n49 = len(frames_of(a.s49)) / FPS
+        ins, fl = ["-i", str(tmp / "closing.mp4")], []
+        if S49_FOLEY.exists():
+            ins += ["-i", str(S49_FOLEY)]
+            fl.append(f"[{len(ins) // 2 - 1}:a]atrim=0:{n49 + 1.0},afade=t=in:d=1.0,afade=t=out:st={n49 - 0.2}:d=1.2[f]")
+        if CARDS.exists() and a.s50:
+            ins += ["-i", str(CARDS)]
+            fl.append(f"[{len(ins) // 2 - 1}:a]volume={CARDS_GAIN_DB}dB,adelay={int(n49 * 1000)}:all=1[c]")
+        if fl:
+            labels = "".join(x[x.rindex("["):] for x in fl)
+            fl.append(f"{labels}amix=inputs={len(fl)}:duration=longest:normalize=0[a]")
+            subprocess.run(["ffmpeg", "-y", "-v", "error", *ins, "-filter_complex", ";".join(fl), "-map", "0:v",
+                            "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-t",
+                            f"{n49 + (len(list(Path(a.s50).glob('f_*.png'))) / FPS if a.s50 else 0):.3f}",
+                            str(tmp / "closing_a.mp4")], check=True)
+            (tmp / "closing.mp4").unlink()
+            (tmp / "closing_a.mp4").rename(tmp / "closing.mp4")
         parts.append(tmp / "closing.mp4")
     (tmp / "list.txt").write_text("".join(f"file '{p.resolve()}'\n" for p in parts))
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(tmp / "list.txt"), "-c:v",

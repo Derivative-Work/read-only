@@ -251,3 +251,7 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 ## 2026-11-03 — M6: bookends v4 notes — R1
 - **What:** "much better, but it's still a little washed out in the beginning, particularly in the SF Breakfast screencast".
 - **Rule:** R1 (a rejection). The agent fixes it (production log, next entry).
+
+## 2026-11-03 — M6: bookends v5 notes — R1
+- **What:** "Much better. I assume the chairs will be fixed in the other scenes in the subsequent render, right? This could use some foley at the end scene that shows the app being shut down, then make an instrumental bounce for the text afterwards (please make sure to run it through the post filter)".
+- **Rule:** R1 (notes on the cut). The agent runs the post-filter itself (it is installed locally, as in Not Yet's C6 bounce); no R4 needed.

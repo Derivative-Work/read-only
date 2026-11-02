@@ -1,0 +1,35 @@
+{
+ "stems": [
+  "2 Drums.wav",
+  "3 Bass.wav",
+  "4 Guitar.wav",
+  "5 Keyboard.wav",
+  "6 Percussion.wav",
+  "7 Strings.wav",
+  "8 Synth.wav"
+ ],
+ "muted": [
+  "Backing Vocals",
+  "Lead Vocals",
+  "Other"
+ ],
+ "limiter": {
+  "ceiling_db": -1.0,
+  "lookahead_s": 0.005,
+  "release_s": 0.08,
+  "in_peak_dbfs": 0.5,
+  "out_peak_dbfs": -1.0,
+  "max_reduction_db": 7.44,
+  "time_reducing_s": 0.18
+ },
+ "start_song_s": 154.68,
+ "preroll_s": 4.0,
+ "fade_out_s": 1.0,
+ "at": "S50 start",
+ "duration_s": 41.48,
+ "peak_dbfs": -0.95,
+ "postfilter": "python -m postfilter.infer --in /home/antiai-aiclub/Projects/read-only/audio/post/cards_bounce_raw.wav --out /home/antiai-aiclub/Projects/read-only/audio/post/cards_bounce_deslop.wav --ckpt /home/antiai-aiclub/Code/music-deslop-data/release/m6f_10k.safetensors --source suno",
+ "postfilter_repo": "/home/antiai-aiclub/Code/music-deslop",
+ "postfilter_commit": "68441e2c57381d09a180d20a57830f2ab8605db3",
+ "output": "audio/post/cards_audio.wav"
+}

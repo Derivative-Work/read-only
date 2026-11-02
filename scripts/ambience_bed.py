@@ -7,7 +7,8 @@ clips (never the same clip and place twice running), joined with 0.5 s equal-pow
 offset by half a piece. The layers are summed (each at -3 dB), so no stretch repeats at a fixed period and the two
 clips play over each other throughout. Then loudness-normalised to -26 LUFS (the old bed's level).
 
-Usage: .venv/bin/python -I scripts/ambience_bed.py OUT.wav [--seconds 19.5] [--seed 7]
+Usage: .venv/bin/python -I scripts/ambience_bed.py OUT.wav [--seconds 19.5] [--seed 7] [--sources A.wav B.wav ...]
+(S49's room sound: --sources takes/sfx/s49_dev_s<seed>.wav ...)
 """
 import argparse
 import subprocess
@@ -51,9 +52,10 @@ def main():
     ap.add_argument("out")
     ap.add_argument("--seconds", type=float, default=19.5)
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--sources", nargs="+", default=SOURCES)
     a = ap.parse_args()
     clips, sr = [], None
-    for p in SOURCES:
+    for p in a.sources:
         x, r = sf.read(p, always_2d=True)
         sr = sr or r
         assert r == sr
@@ -66,7 +68,7 @@ def main():
         sf.write(t.name, bed / np.abs(bed).max() * 0.5, sr, subtype="FLOAT")
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", t.name, "-af", "loudnorm=I=-26:TP=-3:LRA=11",
                         "-ar", str(sr), "-c:a", "pcm_s24le", a.out], check=True)
-    print(f"{a.out}: {a.seconds} s from {', '.join(SOURCES)}", flush=True)
+    print(f"{a.out}: {a.seconds} s from {', '.join(a.sources)}", flush=True)
 
 
 if __name__ == "__main__":
