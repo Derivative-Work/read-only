@@ -171,5 +171,11 @@
   "S42": "takes/fx/S42/S42_glitch.mp4",
   "S43": "takes/fx/S43_a/S43_a_glitch.mp4"
  },
- "denoise_note": "c, f and g at 0.95 kept the approved man's curly hair and face shape (S43 review); at 0.99 they read as other men. An identity's own denoise overrides the default; its outputs carry a _d<NN> suffix."
+ "denoise_note": "c, f and g at 0.95 kept the approved man's curly hair and face shape (S43 review); at 0.99 they read as other men. An identity's own denoise overrides the default; its outputs carry a _d<NN> suffix.",
+ "switch": {
+  "before": 2,
+  "after": 2,
+  "grow": 1.5,
+  "note": "M8 (the human, R1: \"add VHS and similar era appropriate glitch transitions between the faces (masked to just the parts that change)\"): scripts/act2_assemble.py face_switch(), the 2 frames before and after each cut within a shot. Styles rotate tracking, snow, roll, fields. Masked to where the two identities' frames differ, inside the repaint ellipses grown 1.5x."
+ }
 }

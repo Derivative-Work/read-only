@@ -347,3 +347,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "After human review by others, the photoreal rapper at the end is being interpreted by some as AI blackface. Let's try a version where it cuts rapidly between a number of different generated rappers of different ethnicities to emphasize the point that this is affecting everybody", and then: "Make sure to keep the Black rapper in there as one of the faces that is swapped in".
 - **Why:** The M8 gate, after outside reviewers' reading of S41–S43.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: VHS transitions between the faces — R1
+- **What:** "Hm add VHS and similar era appropriate glitch transitions between the faces (masked to just the parts that change)".
+- **Why:** The M8 gate, on the recast v1 cuts.
+- **Rule:** R1.

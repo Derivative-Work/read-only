@@ -2036,3 +2036,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Assembled** (`scripts/assemble.py`, unchanged; Act 2 reads `config/recast.json`): `renders/m8/read_only_recast_v1.mp4` (268.21 s, 1920×1080) and `renders/m8/read_only_vertical_recast_v1.mp4` (52.75 s, 1080×1920; S34–S47, so it carries the recast too). The SRTs are identical to the current deliverables'. Every face sits inside the vertical's crop, clear of the captions.
 - **Review copies:** `renders/review/m8_recast_v1_review_small.mp4`, `renders/review/m8_recast_v1_vertical_review_small.mp4` (two-pass 750k, sent to the human).
 - **Not yet in `deliverables/`:** the current v5 cuts stay until the human approves the recast. If approved, the recast cuts replace them (v5 → archive) and the end card's count is re-rendered (65 interventions are now logged; the card reads 64).
+
+## 2026-11-03T14:05:00-05:00 — M8: VHS transitions between the faces (the human's note, R1)
+- **`scripts/act2_assemble.py` `face_switch()`:** a transition over the 2 frames before and the 2 after each cut within a shot (11 cuts; the S41→S42 and S42→S43 camera cuts get none). It is masked to where the two identities' frames differ (`change_mask()`: the per-pixel difference, closed, dilated and feathered), inside the repaint ellipses grown 1.5×, so the street and costume stay untouched. Four late-'90s tape styles, rotated cut by cut:
+  - tracking: a snow band sweeps down through the face, the old face above and the new below, with the lines torn;
+  - snow: a dissolve through tape snow and white dropouts;
+  - roll: a head switch that rolls and skews the lines, swapping mid-roll;
+  - fields: a paused tape's interlaced fields, alternating old and new lines.
+  Every style adds chroma split and desaturation, strongest at the cut. Seeded per frame. Config `config/recast.json` `switch`.
+- **Checked:** every transition's four frames on a contact sheet, four at full size.
+- **Outputs:** `renders/m8/act2_recast_v4.mp4`, `renders/review/m8_recast_v4_verse4.mp4`, and the full cuts `renders/m8/read_only_recast_v2.mp4` and `renders/m8/read_only_vertical_recast_v2.mp4`, with review copies `renders/review/m8_recast_v2_*review_small.mp4`. The v1 cuts are kept in `renders/m8/` for comparison. `deliverables/` is unchanged until the recast is approved. 66 interventions are now logged.

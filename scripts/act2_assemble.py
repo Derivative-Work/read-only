@@ -120,6 +120,75 @@ def tracking(old, new, k, jolt, seed):
     return img
 
 
+SWITCH_STYLES = ("tracking", "snow", "roll", "fields")
+
+
+def change_mask(old, new, gate):
+    """Where two identities' frames differ (the face, hair, neck, hands), inside the recast's gate: soft 0..1."""
+    d = np.abs(old.astype(np.int16) - new.astype(np.int16)).mean(2).astype(np.float32)
+    d = cv2.GaussianBlur(d, (0, 0), 2)
+    m = (d > 16).astype(np.uint8)
+    h = old.shape[0]
+    r = max(3, int(h * 0.02))
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1)))
+    m = cv2.dilate(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1)))
+    m = cv2.GaussianBlur(m.astype(np.float32), (0, 0), r * 0.7)
+    return (np.clip(m * 1.4, 0, 1) * gate)[..., None]
+
+
+def face_switch(old, new, k, style, gate, seed):
+    """M8 (the human: "add VHS and similar era appropriate glitch transitions between the faces (masked to just the
+    parts that change)"): one identity becoming the next, as a late-'90s tape would fumble it, only where the two
+    frames differ. k runs 0..1 over the transition (the cut at 0.5). Styles, rotated cut by cut:
+      tracking  a band of snow sweeps down through the face, the old one above it, the new below, the lines torn
+      snow      the face dissolves through tape snow and white dropout streaks
+      roll      the face's lines roll and skew sideways (a head switch), the picture swapping mid-roll
+      fields    the two faces interlaced line by line (a paused tape's jittering fields), colour pulled apart
+    old/new uint8 RGB at the take's size; returns uint8."""
+    rng = np.random.default_rng(seed)
+    h, w = old.shape[:2]
+    o, n = old.astype(np.float32), new.astype(np.float32)
+    amt = np.sin(np.pi * k)  # strongest at the cut
+    rows = np.arange(h)[:, None, None]
+    u = h / 720
+    if style == "tracking":
+        yb = int(h * (-0.1 + 1.2 * k))
+        img = np.where(rows < yb, n, o)
+        y0, y1 = max(0, yb - int(30 * u)), min(h, yb + int(30 * u))
+        if y1 > y0:
+            img[y0:y1] = img[y0:y1] * 0.2 + rng.random((y1 - y0, w, 1)) * 255 * 0.8
+        near = np.exp(-((np.arange(h) - yb) / (50.0 * u)) ** 2)
+        off = (rng.normal(0, 1, h) * 8 * amt + near * 40 * amt) * u
+        for y in np.nonzero(np.abs(off) >= 1)[0]:
+            img[y] = np.roll(img[y], int(off[y]), axis=0)
+    elif style == "snow":
+        mix = np.clip((k - 0.25) / 0.5, 0, 1)
+        img = o * (1 - mix) + n * mix
+        img = img * (1 - 0.7 * amt) + rng.random((h, w, 1)) * 255 * 0.7 * amt
+        streak = (rng.random((h, 1, 1)) < 0.04 * amt) * (rng.random((h, w, 1)) < 0.5) * 255.0
+        img = np.maximum(img, streak)
+    elif style == "roll":
+        img = (o if k < 0.5 else n).copy()
+        img = np.roll(img, int(amt * h * 0.12 * (1 if seed % 2 else -1)), axis=0)
+        bl = max(2, int(6 * u))
+        blocks = np.repeat(rng.normal(0, 1, h // bl + 1), bl)[:h]
+        skew = (np.linspace(-1, 1, h) * 30 + blocks * 12) * amt * u
+        for y in np.nonzero(np.abs(skew) >= 1)[0]:
+            img[y] = np.roll(img[y], int(skew[y]), axis=0)
+    else:  # fields
+        odd = (np.arange(h) // max(1, int(round(u)))) % 2 == 1
+        img = np.where(odd[:, None, None], n, o) if 0.15 < k < 0.85 else (o if k <= 0.15 else n).copy()
+        img = np.roll(img, int(rng.integers(-3, 4) * amt * u), axis=0)  # the paused frame jitters
+    sh = int(round((2 + 9 * amt) * u))  # chroma pulls apart and bleeds, as on tape
+    img[..., 0] = np.roll(img[..., 0], sh, axis=1)
+    img[..., 2] = np.roll(img[..., 2], -sh, axis=1)
+    lum = img.mean(2, keepdims=True)
+    img = lum + (img - lum) * (1 - 0.45 * amt)
+    m = change_mask(old, new, gate)
+    base = n if k >= 0.5 else o
+    return np.clip(base * (1 - m) + img * m, 0, 255).astype(np.uint8)
+
+
 def frames(path):
     w, h = (int(x) for x in subprocess.check_output(
         ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0",
@@ -186,6 +255,18 @@ class Act2:
         self.cuts = {sid: [(F(t), i) for t, i in cl] for sid, cl in rc["cuts"].items()}
         self.recast = {(sid, i): frames(rc["takes_a"][sid] if i == "a" else rc["takes"][sid].format(id=i))
                        for sid, cl in rc["cuts"].items() for _, i in cl}
+        # the transitions' gate: the recast's repaint ellipses (keyframe pixels) at the take's size, grown so the
+        # head can move inside it; the change mask does the rest
+        self.switch = rc.get("switch", {"before": 2, "after": 2, "grow": 1.5})
+        self.gates = {}
+        for sid in rc["cuts"]:
+            th, tw = self.recast[(sid, rc["cuts"][sid][0][1])].shape[1:3]
+            s = tw / rc["size"][0]
+            g = np.zeros((th, tw), np.float32)
+            for cx, cy, rx, ry in rc["shots"][sid]["ellipses"]:
+                gr = self.switch["grow"]
+                cv2.ellipse(g, (int(cx * s), int(cy * s)), (int(rx * s * gr), int(ry * s * gr)), 0, 0, 360, 1.0, -1)
+            self.gates[sid] = cv2.GaussianBlur(g, (0, 0), th * 0.02)
         self.cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
         self.first = json.load(open(LOGIN / "range.json"))["first_frame"]
         self.curve = scratch_curve(*self.cue["scratch"])
@@ -215,9 +296,22 @@ class Act2:
             return np.clip(scr, 0, 255).astype(np.uint8)
         sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
         tk = self.takes[sid]
+        j = min(f - F(SP[sid][0]), len(tk) - 1)
         if sid in self.cuts:
-            tk = self.recast[(sid, ([i for fc, i in self.cuts[sid] if fc <= f] or [self.cuts[sid][0][1]])[-1])]
-        return cover(tk[min(f - F(SP[sid][0]), len(tk) - 1)])
+            cl = self.cuts[sid]
+            tk = self.recast[(sid, ([i for fc, i in cl if fc <= f] or [cl[0][1]])[-1])]
+            j = min(f - F(SP[sid][0]), len(tk) - 1)
+            b, a = self.switch["before"], self.switch["after"]
+            for n_cut in range(1, len(cl)):  # a shot's first entry is a camera cut: no transition
+                fc = cl[n_cut][0]
+                if fc - b <= f < fc + a:
+                    old, new = self.recast[(sid, cl[n_cut - 1][1])], self.recast[(sid, cl[n_cut][1])]
+                    k = (f - (fc - b) + 0.5) / (a + b)
+                    style = SWITCH_STYLES[(sum(len(self.cuts[s]) - 1 for s in list(self.cuts)[:list(self.cuts).index(sid)])
+                                           + n_cut - 1) % len(SWITCH_STYLES)]
+                    jo, jn = min(j, len(old) - 1), min(j, len(new) - 1)
+                    return cover(face_switch(old[jo], new[jn], k, style, self.gates[sid], f))
+        return cover(tk[j])
 
 
 def main():
