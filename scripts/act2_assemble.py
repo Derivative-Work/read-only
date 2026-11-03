@@ -47,6 +47,7 @@ TAKES = {"S41": "takes/fx/S41/S41_reveal.mp4", "S42": "takes/fx/S42/S42_glitch.m
          "S48": "takes/fx/S48/S48_overlay.mp4", "S48a": "takes/v/S48a/S48a_joined.mp4"}
 LOGIN = Path("renders/screens/login_prompt")
 SCRATCH_STEM = "audio/stems/9 Other.wav"
+RECAST = Path("config/recast.json")  # M8: the Verse 4 recast's cut list and takes (scripts/recast.py)
 TAPE = Path("audio/sfx/tape_bed_s47_s49.wav")  # tape hiss and crackle from S47 (the recorder), easing up to S49 (M6)
 
 
@@ -180,6 +181,11 @@ class Act2:
         self.back = list(range(self.fa - 1, F(SP["S02"][0]) - 1, -1))
         self.rng = np.random.default_rng(40)
         self.takes = {sid: frames(p) for sid, p in TAKES.items()}
+        # M8 recast (config/recast.json): S41-S43 cut on the beat between seven rappers' takes
+        rc = json.load(open(RECAST))
+        self.cuts = {sid: [(F(t), i) for t, i in cl] for sid, cl in rc["cuts"].items()}
+        self.recast = {(sid, i): frames(rc["takes_a"][sid] if i == "a" else rc["takes"][sid].format(id=i))
+                       for sid, cl in rc["cuts"].items() for _, i in cl}
         self.cue = json.load(open("overlays/cues.json"))["screens"]["login_prompt"]
         self.first = json.load(open(LOGIN / "range.json"))["first_frame"]
         self.curve = scratch_curve(*self.cue["scratch"])
@@ -209,6 +215,8 @@ class Act2:
             return np.clip(scr, 0, 255).astype(np.uint8)
         sid = next(s for s in TAKES if F(SP[s][0]) <= f < F(SP[s][1]))
         tk = self.takes[sid]
+        if sid in self.cuts:
+            tk = self.recast[(sid, ([i for fc, i in self.cuts[sid] if fc <= f] or [self.cuts[sid][0][1]])[-1])]
         return cover(tk[min(f - F(SP[sid][0]), len(tk) - 1)])
 
 

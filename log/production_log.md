@@ -1901,3 +1901,133 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Plan:** Verse 4's rapper (S41–S43, 156.91–163.77 s) cuts on the beat between seven invented men: the approved rapper (identity a, sheet `rapper_s1002`, kept as the human asked) and six new sheets (b East Asian, about 45; c South Asian, about 25; d white, about 35; e Latino, about 55; f Middle Eastern, about 30; g Pacific Islander, about 30). Everyone wears the Dev's costume and has the same expression, so only the face changes. The sheet prompts are the approved rapper's with the man's description swapped (`config/stills.json`).
 - **Sheets:** two seeds each (rows above). **Picks:** seed 1001 for all six: one face across the four views, and the costume matches.
 - **Method (new `scripts/recast.py`, `config/recast.json`):** the approved keyframes are repainted inside a feathered mask over the man's head, neck and hands only (FLUX.2 reference editing: ref 1 the keyframe, ref 2 the sheet, denoise 0.95). The street, light, pose and costume stay the approved frame's, so the cuts match. Then the approved V recipe per identity (same control video and seed, the man's description swapped in the prompt), lip sync, the face glitch and S41's reveal, and the edit cuts on the beat.
+
+## 2026-11-03T12:15:41-05:00 — M8: recast keyframes (S42, S43, S41; b, c, d, e, f, g)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`; 28 steps, guidance 4.0; reference editing from the approved keyframe inside a feathered mask (`takes/keyframes/recast_masks/`), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>_<id>.txt`. **Command:** `.venv/bin/python scripts/recast.py S42 S43 S41`
+
+| Shot | Seed | Denoise | Inputs | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S42_b | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_b/rapper_b_s1001.png | `takes/keyframes/S42_b/S42_b_s2001.png` | 113.2 | pending (R1) |
+| S42_c | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S42_c/S42_c_s2001.png` | 111.1 | pending (R1) |
+| S42_d | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_d/rapper_d_s1001.png | `takes/keyframes/S42_d/S42_d_s2001.png` | 111.1 | pending (R1) |
+| S42_e | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_e/rapper_e_s1001.png | `takes/keyframes/S42_e/S42_e_s2001.png` | 110.5 | pending (R1) |
+| S42_f | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S42_f/S42_f_s2001.png` | 110.6 | pending (R1) |
+| S42_g | 2001 | 0.95 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S42_g/S42_g_s2001.png` | 110.5 | pending (R1) |
+| S43_b | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_b/rapper_b_s1001.png | `takes/keyframes/S43_b/S43_b_s2001.png` | 111.2 | pending (R1) |
+| S43_c | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S43_c/S43_c_s2001.png` | 110.6 | pending (R1) |
+| S43_d | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_d/rapper_d_s1001.png | `takes/keyframes/S43_d/S43_d_s2001.png` | 110.5 | pending (R1) |
+| S43_e | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_e/rapper_e_s1001.png | `takes/keyframes/S43_e/S43_e_s2001.png` | 110.3 | pending (R1) |
+| S43_f | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S43_f/S43_f_s2001.png` | 110.3 | pending (R1) |
+| S43_g | 2001 | 0.95 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S43_g/S43_g_s2001.png` | 110.6 | pending (R1) |
+| S41_b | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_b/rapper_b_s1001.png | `takes/keyframes/S41_b/S41_b_s2001.png` | 111.2 | pending (R1) |
+| S41_c | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S41_c/S41_c_s2001.png` | 110.4 | pending (R1) |
+| S41_d | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_d/rapper_d_s1001.png | `takes/keyframes/S41_d/S41_d_s2001.png` | 110.4 | pending (R1) |
+| S41_e | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_e/rapper_e_s1001.png | `takes/keyframes/S41_e/S41_e_s2001.png` | 110.4 | pending (R1) |
+| S41_f | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S41_f/S41_f_s2001.png` | 111.1 | pending (R1) |
+| S41_g | 2001 | 0.95 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S41_g/S41_g_s2001.png` | 110.5 | pending (R1) |
+
+## 2026-11-03T12:49:14-05:00 — M8: recast keyframes (S43; c, f, g)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`; 28 steps, guidance 4.0; reference editing from the approved keyframe inside a feathered mask (`takes/keyframes/recast_masks/`), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>_<id>.txt`. **Command:** `.venv/bin/python scripts/recast.py S43 --ids c,f,g --denoise 0.99`
+
+| Shot | Seed | Denoise | Inputs | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S43_c_d99 | 2001 | 0.99 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S43_c/S43_c_d99_s2001.png` | 116.1 | pending (R1) |
+| S43_f_d99 | 2001 | 0.99 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S43_f/S43_f_d99_s2001.png` | 115.4 | pending (R1) |
+| S43_g_d99 | 2001 | 0.99 | takes/keyframes/S43/S43_v4_s2002.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S43_g/S43_g_d99_s2001.png` | 115.1 | pending (R1) |
+
+## 2026-11-03T12:55:33-05:00 — M8: recast keyframes (S42, S41; c, f, g)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`; 28 steps, guidance 4.0; reference editing from the approved keyframe inside a feathered mask (`takes/keyframes/recast_masks/`), 1920×1056.
+- **Prompts:** `log/prompts/keyframes/<shot>_<id>.txt`. **Command:** `.venv/bin/python scripts/recast.py S42 S41 --ids c,f,g`
+
+| Shot | Seed | Denoise | Inputs | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| S42_c_d99 | 2001 | 0.99 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S42_c/S42_c_d99_s2001.png` | 114.4 | pending (R1) |
+| S42_f_d99 | 2001 | 0.99 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S42_f/S42_f_d99_s2001.png` | 114.4 | pending (R1) |
+| S42_g_d99 | 2001 | 0.99 | takes/keyframes/S42/S42_s2003.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S42_g/S42_g_d99_s2001.png` | 114.7 | pending (R1) |
+| S41_c_d99 | 2001 | 0.99 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_c/rapper_c_s1001.png | `takes/keyframes/S41_c/S41_c_d99_s2001.png` | 115.2 | pending (R1) |
+| S41_f_d99 | 2001 | 0.99 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_f/rapper_f_s1001.png | `takes/keyframes/S41_f/S41_f_d99_s2001.png` | 114.6 | pending (R1) |
+| S41_g_d99 | 2001 | 0.99 | takes/keyframes/S41/S41_d96_s2002.png, takes/stills/rapper_g/rapper_g_s1001.png | `takes/keyframes/S41_g/S41_g_d99_s2001.png` | 114.4 | pending (R1) |
+
+## 2026-11-03T13:07:03-05:00 — M8: recast V (S41, S42, S43; b, c, d, e, f, g)
+
+- **Recipe:** each approved take's (control, control type, guide, seed 2), the man's description swapped in its prompt (`log/prompts/v/<shot>_<id>.txt`). LTX-2.3 22B distilled fp8 + IC-LoRA union control, 1280×704. **Command:** `.venv/bin/python scripts/recast_v.py `
+
+| Shot | Identity | First frame | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- |
+| S41 | b | `takes/keyframes/S41_b/S41_b_s2001_first.png` | `takes/v/S41_b/S41_b_s2.mp4` | 43.7 | pending (R1) |
+| S41 | c | `takes/keyframes/S41_c/S41_c_d99_s2001_first.png` | `takes/v/S41_c/S41_c_s2.mp4` | 21.0 | pending (R1) |
+| S41 | d | `takes/keyframes/S41_d/S41_d_s2001_first.png` | `takes/v/S41_d/S41_d_s2.mp4` | 19.1 | pending (R1) |
+| S41 | e | `takes/keyframes/S41_e/S41_e_s2001_first.png` | `takes/v/S41_e/S41_e_s2.mp4` | 19.0 | pending (R1) |
+| S41 | f | `takes/keyframes/S41_f/S41_f_d99_s2001_first.png` | `takes/v/S41_f/S41_f_s2.mp4` | 19.0 | pending (R1) |
+| S41 | g | `takes/keyframes/S41_g/S41_g_d99_s2001_first.png` | `takes/v/S41_g/S41_g_s2.mp4` | 19.0 | pending (R1) |
+| S42 | b | `takes/keyframes/S42_b/S42_b_s2001_first.png` | `takes/v/S42_b/S42_b_s2.mp4` | 30.5 | pending (R1) |
+| S42 | c | `takes/keyframes/S42_c/S42_c_d99_s2001_first.png` | `takes/v/S42_c/S42_c_s2.mp4` | 30.1 | pending (R1) |
+| S42 | d | `takes/keyframes/S42_d/S42_d_s2001_first.png` | `takes/v/S42_d/S42_d_s2.mp4` | 30.0 | pending (R1) |
+| S42 | e | `takes/keyframes/S42_e/S42_e_s2001_first.png` | `takes/v/S42_e/S42_e_s2.mp4` | 29.1 | pending (R1) |
+| S42 | f | `takes/keyframes/S42_f/S42_f_d99_s2001_first.png` | `takes/v/S42_f/S42_f_s2.mp4` | 29.1 | pending (R1) |
+| S42 | g | `takes/keyframes/S42_g/S42_g_d99_s2001_first.png` | `takes/v/S42_g/S42_g_s2.mp4` | 31.0 | pending (R1) |
+| S43 | b | `takes/keyframes/S43_b/S43_b_s2001_first.png` | `takes/v/S43_b/S43_b_s2.mp4` | 20.0 | pending (R1) |
+| S43 | c | `takes/keyframes/S43_c/S43_c_d99_s2001_first.png` | `takes/v/S43_c/S43_c_s2.mp4` | 20.0 | pending (R1) |
+| S43 | d | `takes/keyframes/S43_d/S43_d_s2001_first.png` | `takes/v/S43_d/S43_d_s2.mp4` | 20.0 | pending (R1) |
+| S43 | e | `takes/keyframes/S43_e/S43_e_s2001_first.png` | `takes/v/S43_e/S43_e_s2.mp4` | 19.5 | pending (R1) |
+| S43 | f | `takes/keyframes/S43_f/S43_f_d99_s2001_first.png` | `takes/v/S43_f/S43_f_s2.mp4` | 20.0 | pending (R1) |
+| S43 | g | `takes/keyframes/S43_g/S43_g_d99_s2001_first.png` | `takes/v/S43_g/S43_g_s2.mp4` | 20.0 | pending (R1) |
+
+## 2026-11-03T13:14:34-05:00 — M5: lip sync with LatentSync 1.6 (S42_b S42_c S42_d S42_e S42_f S42_g S43_b S43_c S43_d S43_e S43_f S43_g --seeds 2)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S42_b S42_c S42_d S42_e S42_f S42_g S43_b S43_c S43_d S43_e S43_f S43_g --seeds 2`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S42_b | 2 | 62 | 64 | `takes/v/S42_b/S42_b_s2.mp4` | `takes/l/S42_b/S42_b_s2.mp4` | 28.3 | pending (R1) |
+| S42_c | 2 | 62 | 64 | `takes/v/S42_c/S42_c_s2.mp4` | `takes/l/S42_c/S42_c_s2.mp4` | 25.4 | pending (R1) |
+| S42_d | 2 | 62 | 64 | `takes/v/S42_d/S42_d_s2.mp4` | `takes/l/S42_d/S42_d_s2.mp4` | 25.3 | pending (R1) |
+| S42_e | 2 | 62 | 64 | `takes/v/S42_e/S42_e_s2.mp4` | `takes/l/S42_e/S42_e_s2.mp4` | 25.3 | pending (R1) |
+| S42_f | 2 | 62 | 64 | `takes/v/S42_f/S42_f_s2.mp4` | `takes/l/S42_f/S42_f_s2.mp4` | 25.3 | pending (R1) |
+| S42_g | 2 | 62 | 64 | `takes/v/S42_g/S42_g_s2.mp4` | `takes/l/S42_g/S42_g_s2.mp4` | 25.2 | pending (R1) |
+| S43_b | 2 | 39 | 41 | `takes/v/S43_b/S43_b_s2.mp4` | `takes/l/S43_b/S43_b_s2.mp4` | 19.5 | pending (R1) |
+| S43_c | 2 | 39 | 41 | `takes/v/S43_c/S43_c_s2.mp4` | `takes/l/S43_c/S43_c_s2.mp4` | 19.4 | pending (R1) |
+| S43_d | 2 | 39 | 41 | `takes/v/S43_d/S43_d_s2.mp4` | `takes/l/S43_d/S43_d_s2.mp4` | 19.5 | pending (R1) |
+| S43_e | 2 | 39 | 41 | `takes/v/S43_e/S43_e_s2.mp4` | `takes/l/S43_e/S43_e_s2.mp4` | 19.4 | pending (R1) |
+| S43_f | 2 | 39 | 41 | `takes/v/S43_f/S43_f_s2.mp4` | `takes/l/S43_f/S43_f_s2.mp4` | 19.5 | pending (R1) |
+| S43_g | 2 | 39 | 41 | `takes/v/S43_g/S43_g_s2.mp4` | `takes/l/S43_g/S43_g_s2.mp4` | 19.5 | pending (R1) |
+
+## 2026-11-03T13:24:48-05:00 — M8: recast V (S43; b, c, d, e, f, g)
+
+- **Recipe:** each approved take's (control, control type, guide, seed 2), the man's description swapped in its prompt (`log/prompts/v/<shot>_<id>.txt`). LTX-2.3 22B distilled fp8 + IC-LoRA union control, 1280×704. **Command:** `.venv/bin/python scripts/recast_v.py S43`
+
+| Shot | Identity | First frame | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- |
+| S43 | b | `takes/keyframes/S43_b/S43_b_s2001_first.png` | `takes/v/S43_b/S43_b_v2_s2.mp4` | 63.4 | pending (R1) |
+| S43 | c | `takes/keyframes/S43_c/S43_c_d99_s2001_first.png` | `takes/v/S43_c/S43_c_v2_s2.mp4` | 22.1 | pending (R1) |
+| S43 | d | `takes/keyframes/S43_d/S43_d_s2001_first.png` | `takes/v/S43_d/S43_d_v2_s2.mp4` | 19.3 | pending (R1) |
+| S43 | e | `takes/keyframes/S43_e/S43_e_s2001_first.png` | `takes/v/S43_e/S43_e_v2_s2.mp4` | 19.4 | pending (R1) |
+| S43 | f | `takes/keyframes/S43_f/S43_f_d99_s2001_first.png` | `takes/v/S43_f/S43_f_v2_s2.mp4` | 20.0 | pending (R1) |
+| S43 | g | `takes/keyframes/S43_g/S43_g_d99_s2001_first.png` | `takes/v/S43_g/S43_g_v2_s2.mp4` | 20.1 | pending (R1) |
+
+## 2026-11-03T13:27:40-05:00 — M5: lip sync with LatentSync 1.6 (S43_b S43_c S43_d S43_e S43_f S43_g --seeds 2)
+
+- **Model:** LatentSync 1.6 (`ByteDance/LatentSync-1.6` `latentsync_unet.pt`, code `bytedance/LatentSync` a229c39), 20 steps, guidance 2.5, DeepCache.
+- **Inputs:** the V take (`config/l.json`), `audio/stems/0 Lead Vocals.wav`; a face crop of 2.6 face heights from `takes/l/<shot>/faces.json` (`scripts/l_faces.py`), 512 px, 24 fps frames labelled 25 fps with the vocal sped up 25/24. Pasted back through a feathered ellipse around the face. **Command:** `.venv/bin/python scripts/l_batch.py S43_b S43_c S43_d S43_e S43_f S43_g --seeds 2`
+
+| Shot | Seed | Frames | Synced | Input | Output | Seconds | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S43_b | 2 | 39 | 41 | `takes/v/S43_b/S43_b_v2_s2.mp4` | `takes/l/S43_b/S43_b_s2.mp4` | 22.6 | pending (R1) |
+| S43_c | 2 | 39 | 41 | `takes/v/S43_c/S43_c_v2_s2.mp4` | `takes/l/S43_c/S43_c_s2.mp4` | 19.5 | pending (R1) |
+| S43_d | 2 | 39 | 41 | `takes/v/S43_d/S43_d_v2_s2.mp4` | `takes/l/S43_d/S43_d_s2.mp4` | 19.5 | pending (R1) |
+| S43_e | 2 | 39 | 41 | `takes/v/S43_e/S43_e_v2_s2.mp4` | `takes/l/S43_e/S43_e_s2.mp4` | 19.6 | pending (R1) |
+| S43_f | 2 | 39 | 41 | `takes/v/S43_f/S43_f_v2_s2.mp4` | `takes/l/S43_f/S43_f_s2.mp4` | 19.8 | pending (R1) |
+| S43_g | 2 | 39 | 41 | `takes/v/S43_g/S43_g_v2_s2.mp4` | `takes/l/S43_g/S43_g_s2.mp4` | 19.6 | pending (R1) |
+
+## 2026-11-03T13:35:00-05:00 — M8: the recast cut (S41–S43), v1–v3
+- **Keyframes:** b, d, e at denoise 0.95 (rows above). c, f, g at 0.95 kept the approved man's curly hair and face shape, so they were redone at 0.99, set per identity in `config/recast.json`. The 0.95 c/f/g keyframes → `archive/takes/keyframes/recast_d95_cfg/`, superseded.
+- **V, lip sync, glitch, reveal:** `scripts/recast_v.py` (new; the approved recipes, seed 2), `l_faces.py`, `l_batch.py --seeds 2`, `glitch_face.py`, and `reveal.py --tag <id>` (new option; the approved reveal is unchanged). Entries `<shot>_<id>` in `config/l.json` and `config/glitch.json`. Log: `renders/m5/recast_pipeline.log`.
+- **S43 v2:** all six S43 takes drew thin white rings around the head from about frame 20. The approved control is MoGe over the approved man's own pulled-back frame, and it no longer matched the new heads. Each identity's control is now its own first frame pulled back the same way (`own_control` in `recast_v.py`, which matches `S43_v4_control.mp4` to codec noise) → `takes/v/S43_<id>/S43_<id>_v2_s2.mp4`, then lip sync and glitch again. No rings. The v1 takes → `archive/takes/recast_S43_v1/`, superseded (LatentSync working frames not archived).
+- **Edit (`scripts/act2_assemble.py`):** S41–S43 cut between identities at `config/recast.json` `cuts` (on the beat, faster through S43). The glitch tears the face on each S43 cut (`config/glitch.json`). v1 gave a, the approved rapper, only the Blender stand-in and 0.3 s before S42's waveform. v2 gives him a close-up in S43. v3 moves it one slot so he isn't next to g, who reads closest to him at a glance. Everyone else appears twice.
+- **Review:** `renders/m8/act2_recast_v3.mp4` (Act 2); `renders/review/m8_recast_v3_verse4.mp4` (S40–S44, sent to the human). v1 and v2 of the Act 2 cut are kept in `renders/m8/` for comparison.

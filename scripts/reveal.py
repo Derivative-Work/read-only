@@ -8,7 +8,7 @@ The shop sign's lettering (renders/m5/plates/<shot>/sign/, scenes/blender/sign_m
 take's blank sign band before the dissolve, as ink that darkens the band, so it takes the real light (the human's note:
 "put the text back for continuity").
 
-Usage: .venv/bin/python scripts/reveal.py S41 takes/v/S41/S41_depth_s2.mp4 [--start 0.25 --end 2.0] [--seed 1]
+Usage: .venv/bin/python scripts/reveal.py S41 takes/v/S41/S41_depth_s2.mp4 [--start 0.25 --end 2.0] [--seed 1] [--tag b]
        --start/--end: seconds into the shot where the reveal begins and ends.
 Output: takes/fx/<shot>/<shot>_reveal.mp4 (picture only) and _audio.mp4 (with the master, for review).
 """
@@ -37,7 +37,9 @@ def main():
     ap.add_argument("--start", type=float, default=0.25)
     ap.add_argument("--end", type=float, default=2.0)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--tag", help="M8 recast: an identity; output takes/fx/<shot>_<tag>/<shot>_<tag>_reveal.mp4")
     a = ap.parse_args()
+    name = f"{a.shot}_{a.tag}" if a.tag else a.shot
     plate = Path("renders/m5/plates") / a.shot
     meta = json.load(open(plate / "shot.json"))
     s0, s1 = meta["frames_shot"]
@@ -49,9 +51,9 @@ def main():
     noise = Image.fromarray((rng.random((h // 8, w // 8)) * 255).astype(np.uint8)).resize((w, h), Image.BICUBIC)
     noise = np.asarray(noise.filter(ImageFilter.GaussianBlur(10)), np.float32) / 255
     noise = (noise - noise.min()) / (noise.max() - noise.min())
-    out_dir = Path("takes/fx") / a.shot
+    out_dir = Path("takes/fx") / name
     out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f"{a.shot}_reveal.mp4"
+    out = out_dir / f"{name}_reveal.mp4"
     enc = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{w}x{h}",
                             "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-crf", "12", "-pix_fmt", "yuv420p", str(out)],
                            stdin=subprocess.PIPE)
@@ -75,8 +77,8 @@ def main():
     t0 = meta["song_time"][0]
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(out), "-ss", f"{t0:.3f}", "-t", f"{n / FPS:.3f}", "-i",
                     MASTER, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-shortest",
-                    str(out_dir / f"{a.shot}_reveal_audio.mp4")], check=True)
-    print(f"{a.shot}: {n} frames -> {out}", flush=True)
+                    str(out_dir / f"{name}_reveal_audio.mp4")], check=True)
+    print(f"{name}: {n} frames -> {out}", flush=True)
 
 
 if __name__ == "__main__":

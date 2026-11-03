@@ -24,6 +24,98 @@
     159.548,
     162.11
    ]
+  },
+  "S42_b": {
+   "take": "takes/v/S42_b/S42_b_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_b": {
+   "take": "takes/v/S43_b/S43_b_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42_c": {
+   "take": "takes/v/S42_c/S42_c_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_c": {
+   "take": "takes/v/S43_c/S43_c_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42_d": {
+   "take": "takes/v/S42_d/S42_d_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_d": {
+   "take": "takes/v/S43_d/S43_d_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42_e": {
+   "take": "takes/v/S42_e/S42_e_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_e": {
+   "take": "takes/v/S43_e/S43_e_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42_f": {
+   "take": "takes/v/S42_f/S42_f_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_f": {
+   "take": "takes/v/S43_f/S43_f_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S42_g": {
+   "take": "takes/v/S42_g/S42_g_s2.mp4",
+   "song_time": [
+    159.548,
+    162.11
+   ]
+  },
+  "S43_g": {
+   "take": "takes/v/S43_g/S43_g_v2_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
+  },
+  "S43_a": {
+   "take": "takes/v/S43/S43_v4_moge_s2.mp4",
+   "song_time": [
+    162.11,
+    163.77
+   ]
   }
- }
+ },
+ "note_m8": "M8 recast: <shot>_<id> takes are the recast identities' V (scripts/recast_v.py), lip-synced with the approved seed 2. S43_a is the approved take, listed only for its face boxes (the glitch's new events)."
 }

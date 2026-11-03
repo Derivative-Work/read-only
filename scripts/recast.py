@@ -45,7 +45,7 @@ def mask(shot):
     return p
 
 
-def review(shot, cells):
+def review(shot, cells, tag=""):
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 22)
     tw = 480
     th = round(tw * CFG["size"][1] / CFG["size"][0])
@@ -58,7 +58,7 @@ def review(shot, cells):
         x, y = 8 + (k % cols) * (tw + 8), 40 + (k // cols) * (th + 8)
         g.paste(Image.open(p).convert("RGB").resize((tw, th)), (x, y))
         d.text((x + 6, y + 4), label, fill=(255, 210, 0), font=font)
-    out = OUT / f"review_{shot}_recast.png"
+    out = OUT / f"review_{shot}_recast{'_' + tag if tag else ''}.png"
     g.save(out)
     return out
 
@@ -90,22 +90,23 @@ def main():
         for i in ids:
             ident = CFG["identities"][i]
             prompt = CFG["prompt"].format(desc=ident["desc"])
-            stem = f"{shot}_{i}" + (f"_d{round(dn * 100)}" if a.denoise is not None else "")
+            idn = a.denoise if a.denoise is not None else ident.get("denoise", dn)
+            stem = f"{shot}_{i}" + (f"_d{round(idn * 100)}" if idn != CFG["denoise"] else "")
             PROMPTS.mkdir(parents=True, exist_ok=True)
             for seed in seeds:
                 dest = OUT / f"{shot}_{i}" / f"{stem}_s{seed}.png"
                 if not dest.exists():
                     (PROMPTS / f"{stem}.txt").write_text(prompt + "\n")
                     names = [up(spec["keyframe"]), up(ident["sheet"])]
-                    outputs, secs = cc.run(graph(prompt, names, seed, w, h, f"readonly/recast_{stem}_s{seed}", dn,
+                    outputs, secs = cc.run(graph(prompt, names, seed, w, h, f"readonly/recast_{stem}_s{seed}", idn,
                                                  mname))
                     cc.download(outputs["9"]["images"][0], dest)
                     Image.open(dest).convert("RGB").resize(V_SIZE, Image.LANCZOS).save(
                         dest.with_name(f"{stem}_s{seed}_first.png"))
-                    rows.append((stem, seed, dn, f"{spec['keyframe']}, {ident['sheet']}", str(dest), round(secs, 1)))
+                    rows.append((stem, seed, idn, f"{spec['keyframe']}, {ident['sheet']}", str(dest), round(secs, 1)))
                     print(f"{stem} seed {seed}: {dest} ({secs:.1f} s)", flush=True)
                 cells.append((f"{i} s{seed}", dest))
-        print("review:", review(shot, cells), flush=True)
+        print("review:", review(shot, cells, "_".join(ids) if a.ids else ""), flush=True)
     if rows:
         m = STILLS["model"]
         with open(LOG, "a") as f:
