@@ -295,7 +295,7 @@ def stage(S):
                  (1, (eye[0], eye[1] - 0.05, eye[2] + 0.03), (held[0] - 0.1, held[1] - 0.1, held[2] - 0.12))], lens=40)
 
     # lobby screen and rooftop billboard: one text object per shot that shows something
-    for sid, body in (("S05", "NEW! OUR OWN APP"), ("S10", "BLACKMAIL"), ("S20", "TRAFFIC  \\_/")):
+    for sid, body in (("S05", "NEW! OUR OWN APP"), ("S10", "HE'S THREATENING US"), ("S20", "TRAFFIC  \\_/")):
         only(gb.text(f"screen.{sid}", body, 0.8, B.M("screen", emit=4.0), (B.LOBBY_DOOR_X, 23.72, 3.6), facing="-Y"), sid)
     for sid, body in (("S31", "People found\nthis helpful."), ("S44", "Reply below.  |")):
         bt = only(gb.text(f"billboard.{sid}", body, 3.0 if sid == "S31" else 1.6, B.M("ink"), (9, B.TOWER_Y[0] + 0.2, 76),

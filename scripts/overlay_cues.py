@@ -118,7 +118,7 @@ def main():
                            "scroll": [round(s01d[0] + 1.6, 3), round(s01d[1] - 1.0, 3)], "scroll_px": 420},
             "phone_s49": {"size": [540, 1152], "shot": "S49", "from": s49[0], "to": s49[1], "scroll_px_end": 520},
             # M6: S50, the end card (overlays/cards.json), its pages one after another
-            "end_card": {"size": [1280, 720], "shot": "S50", "from": s49[1], "to": s49[1] + sum(CARDS["seconds"]),
+            "end_card": {"size": [1920, 1080], "shot": "S50", "from": s49[1], "to": s49[1] + sum(CARDS["seconds"]),
                          "pages": CARDS["pages"], "seconds": CARDS["seconds"]},
 
         },

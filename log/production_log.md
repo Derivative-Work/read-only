@@ -1793,3 +1793,19 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - On screen: S10's BLACKMAIL → "HE'S THREATENING US"; Boost's headstone → 2023; r/IAmA → "celebrity bookings"; the $20M total labelled as Apollo's estimate; S49's notice "free access"; a disclosure after "allegedly".
   - End card: BotDefense reworded; the IPO (with the directed share program) and the OpenAI deal added; the lawsuit line with Reddit's allegations, Anthropic's denial and no ruling on the merits; the conflict-of-interest note with Reddit's anti-scraping rationale and the reviewers.
   - The description; the declined flags, with reasons.
+
+## 2026-11-03T00:40:00-05:00 — M8: the audit fixes applied (text); the repository link
+- **Approved (human interventions, 2026-11-03, R1)**; the fixes from `log/audits/m8_resolution.md`:
+  - **S10's lobby screen** (`overlays/screens.html` `lobby_blackmail`): BLACKMAIL → "HE'S / THREATENING US" in two lines, sized to fit, flashing as before; the grey-box's text (`shots.py`) matches. Re-rendered `renders/screens/lobby_blackmail/` (60 frames).
+  - **Headstones** (`sets/block.py` TONES): "Boost for Reddit / 2023"; "r/IAmA celebrity / bookings / July 2023". Renders with Act 1.
+  - **The running total** (`overlays/overlay.html`): the panel 30 px taller, "APOLLO'S ESTIMATE, PER YEAR" under the figure. `renders/overlays/act1/` re-rendered (443 frames, 1080p).
+  - **S49's notice** (`phone_s49`): "when free access to the API ended." Re-rendered `renders/screens/phone_s49/`; the S49 overlay pass follows.
+  - **The disclosure** (`scripts/captions.py` NOTICES): at the top of the frame in the captions' boxes, 169.1–176.4 s (after "allegedly" to before the second "This call was recorded"): "CLAUDE (ANTHROPIC) WROTE THESE LYRICS. REDDIT IS SUING ANTHROPIC, ALLEGING IT SCRAPED REDDIT WITHOUT A LICENSE. ANTHROPIC DISPUTES IT. NO RULING YET." It is six rows in the main cut and eight in the vertical. It is burned in, not in the SRT.
+  - **The vertical cut** (`config/reframe.json`): it runs on through S47 (176.74 s, whole frame over the blurred fill), so the disclosure holds 7 s; S45's end gave it 3.
+  - **End card** (`overlays/cards.json`): five pages in the same 42 s (the card's music is fixed at 41.48 s), timed 6/8/9/9/10 s:
+    - credits, plus the repository link (the human: "the end cards also need the link to where this repository will be hosted (https://github.com/Derivative-Work/read-only)"), as "Full production log: …", as in Not Yet;
+    - 2023, with BotDefense reworded;
+    - 2024 (new): Google; the IPO and the directed share program; OpenAI; robots.txt;
+    - since then, with the lawsuit line rewritten;
+    - notes: the conflict-of-interest line with Reddit's rationale and "Reviewed by Gemini and ChatGPT".
+    The card is now drawn at 1920×1080 (laid out at 1280×720, scaled; `overlay_cues.py` size); a long source narrows its fact's column (TechCrunch; Bloomberg Law overlapped). Re-rendered `renders/screens/end_card/` (1009 frames). The intervention count, 59 now, is regenerated before the final assembly.

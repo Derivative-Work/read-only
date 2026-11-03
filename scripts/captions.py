@@ -56,6 +56,13 @@ TAGS = [
     (187.9, 190.9, "[TAPE HISSES]", "bottom"),         # S48a's silence after "So was everything else."
     (194.65, 196.1, "[RECORD SCRATCH]", "bottom"),     # the scratches into the login prompt
 ]
+# M8 (log/audits/m8_resolution.md, approved by the human): the conflict-of-interest disclosure after "allegedly" (Verse 4
+# ends 168.96 s), at the top of the frame in the captions' own boxes, held until the second "This call was recorded":
+# (on, off, text), song seconds. Burned in, not in the SRT (it isn't sound).
+NOTICES = [
+    (169.1, 176.4, "CLAUDE (ANTHROPIC) WROTE THESE LYRICS. REDDIT IS SUING ANTHROPIC, ALLEGING IT SCRAPED REDDIT "
+                   "WITHOUT A LICENSE. ANTHROPIC DISPUTES IT. NO RULING YET."),
+]
 STYLES = {  # per output: columns, row height (fraction of frame height), the bottom row's bottom, the top row's top
     "main": {"cols": 32, "row": 50 / 1080, "bottom": 0.92, "top": 0.08},
     "vertical": {"cols": 22, "row": 60 / 1920, "bottom": 0.76, "top": 0.12},
@@ -149,8 +156,20 @@ class Captions:
         self.font = ImageFont.truetype(str(FONT), self.row)
         self.rows, self.runs = build_rows(self.cols)
 
+    def notice(self, t):
+        """The NOTICES rows on screen at song time t, as state entries at the top (slot k: the k-th row down)."""
+        for on, off, text in NOTICES:
+            if on <= t < off:
+                words = text.split()
+                return tuple((" ".join(words[i] for i in grp), "top", float(k))
+                             for k, grp in enumerate(wrap(words, self.cols)))
+        return ()
+
     def state(self, t):
         """The rows on screen at song time t: [(text, where, slot offset)]: slot 0 is the base row, 1 above it."""
+        return self.lyric_state(t) + self.notice(t)
+
+    def lyric_state(self, t):
         f = round(t * FPS)
         live = [r for r in self.rows if r["t"] - ROLL <= t < self.runs[r["run"]]]
         if not live:

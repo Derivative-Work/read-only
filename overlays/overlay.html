@@ -112,14 +112,15 @@ function total(o, t) {
     v = Math.min(N - 1, n) * o.step;
   }
   const x0 = W - 740 * u, y0 = 70 * u;
-  panel(x0, y0, 650 * u, 170 * u, a);
+  panel(x0, y0, 650 * u, 200 * u, a);
   label("RUNNING TOTAL", x0 + 28 * u, y0 + 46 * u, a);
+  label("APOLLO'S ESTIMATE, PER YEAR", x0 + 28 * u, y0 + 180 * u, a, P.dim, 18);  // M8: Selig's estimate, not a bill
   label("at $0.24 / 1,000 calls", x0 + 420 * u, y0 + 46 * u, a, P.dim, 18);
   figure(money(v), x0 + 622 * u, y0 + 132 * u, a, 64, P.ui, "right");
   if (t >= o.land) {  // the landing: a brief flash
     const fl = clamp(1 - (t - o.land) / 0.4);
     g.save(); g.globalAlpha = a * fl * 0.5; g.strokeStyle = P.ui; g.lineWidth = 4 * u;
-    g.beginPath(); g.roundRect(x0, y0, 650 * u, 170 * u, 10 * u); g.stroke(); g.restore();
+    g.beginPath(); g.roundRect(x0, y0, 650 * u, 200 * u, 10 * u); g.stroke(); g.restore();
   }
   return true;
 }

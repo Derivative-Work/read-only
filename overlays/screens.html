@@ -44,15 +44,23 @@ function scanlines(a = 0.12) {
   g.restore();
 }
 
-// S10: BLACKMAIL, flashing on the eighth notes: red ground and white letters, then dark ground and red letters
+// S10: the CEO's words on the moderator call (June 7, 2023), flashing on the eighth notes: red ground and white
+// letters, then dark ground and red letters. M8 (log/audits/m8_resolution.md): was BLACKMAIL, a word he isn't recorded
+// saying ("He's threatening us"); the sung line stays, the screen shows what was said. Two lines, sized to fit.
 function lobby_blackmail(t) {
   const k = S.flash.filter(b => b <= t).length;
   const hot = k % 2 === 1;
   g.fillStyle = hot ? P.rec : "#0b0d12"; g.fillRect(0, 0, W, H);
   g.fillStyle = hot ? "#fff6f0" : P.rec;
-  g.font = `${H * 0.34}px "Inter"`; g.textAlign = "center"; g.textBaseline = "middle";
+  g.textAlign = "center"; g.textBaseline = "middle";
+  const rows = ["\u201cHE\u2019S", "THREATENING US\u201d"];
+  let px = H * 0.34;
+  g.font = `${px}px "Inter"`;
+  const wide = Math.max(...rows.map(r => g.measureText(r).width));
+  if (wide > W * 0.9) px *= W * 0.9 / wide;
+  g.font = `${px}px "Inter"`;
   if (!hot) { g.shadowColor = P.rec; g.shadowBlur = 40; }
-  g.fillText("BLACKMAIL", W / 2, H / 2);
+  rows.forEach((r, i) => g.fillText(r, W / 2, H / 2 + (i - 0.5) * px * 1.1));
   g.shadowBlur = 0;
   scanlines();
 }
@@ -279,7 +287,7 @@ function phone_s49(t) {
   g.fillStyle = "#16191d"; g.font = `600 34px "Inter"`; g.textAlign = "center"; g.fillText("This app has shut down", W / 2, cy + 74);
   g.fillStyle = "#4a5260"; g.font = `26px "Inter"`;
   g.fillText("It stopped working on June 30, 2023,", W / 2, cy + 132);
-  g.fillText("when access to the API ended.", W / 2, cy + 168);
+  g.fillText("when free access to the API ended.", W / 2, cy + 168);
   g.fillText("Thanks for reading with us.", W / 2, cy + 220);
   g.fillStyle = "#c3c8cf"; g.fillRect(cx, cy + 258, cw, 2);
   g.fillStyle = "#9aa2ac"; g.font = `600 28px "Inter"`; g.fillText("OK", W / 2, cy + 303);
@@ -294,7 +302,8 @@ function end_card(t) {
   const P = S.pages[k], dur = S.seconds[k];
   const a = clamp(Math.min((t - t0) / 0.5, (t0 + dur - t) / 0.5));
   g.save(); g.globalAlpha = a; g.textAlign = "left"; g.textBaseline = "alphabetic";
-  const L = 120, R = W - 120;
+  g.scale(W / 1280, H / 720);  // laid out at 1280x720, drawn at the canvas's size (1920x1080 for the final)
+  const L = 120, R = 1280 - 120;
   let y = P.facts ? 110 : 170;
   if (P.title) { g.fillStyle = "#ffffff"; g.font = `600 44px "Inter"`; g.fillText(P.title, L, y); y += P.facts ? 66 : 80; }
   if (P.lines) {
@@ -303,8 +312,9 @@ function end_card(t) {
   }
   if (P.facts) {
     for (const [text, src] of P.facts) {
+      g.font = `19px "Inter"`; const sw = Math.max(180, g.measureText(src).width);  // M8: room for a long source
       g.fillStyle = "#e6e6e6"; g.font = `24px "Inter"`;
-      const y1 = wrap(text, L, y, R - L - 210, 32);
+      const y1 = wrap(text, L, y, R - L - sw - 30, 32);
       g.fillStyle = "#8a8f96"; g.font = `19px "Inter"`; g.textAlign = "right"; g.fillText(src, R, y); g.textAlign = "left";
       y = y1 + 18;
     }

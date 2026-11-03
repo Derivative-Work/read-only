@@ -1,7 +1,7 @@
 {
- "_doc": "M7: the vertical cut's 9:16 window (brief: \"Vertical cut (9:16): S34-S45\"), per shot: the window's centre as a fraction of the frame's width, keyed in song seconds (linear between keys, held outside). mode \"fit\" instead shows the whole 16:9 frame across the width over a blurred, darkened copy that fills the rest: S36's epitaph is wider than any 9:16 window. Picked from contact sheets of each shot's start, middle and end (log). M7 (the human: 'we're missing some of the gravestones -- most importantly Apollo. You'll have to drive the pan a bit more'): S39b, S39c and S39e re-keyed from strips every 0.25-0.3 s with a ruler, the window following each name across the frame (Apollo first, at the left edge as S39b opens).",
+ "_doc": "M7: the vertical cut's 9:16 window (brief: \"Vertical cut (9:16): S34-S45\"), per shot: the window's centre as a fraction of the frame's width, keyed in song seconds (linear between keys, held outside). mode \"fit\" instead shows the whole 16:9 frame across the width over a blurred, darkened copy that fills the rest: S36's epitaph is wider than any 9:16 window. Picked from contact sheets of each shot's start, middle and end (log). M7 (the human: 'we're missing some of the gravestones -- most importantly Apollo. You'll have to drive the pan a bit more'): S39b, S39c and S39e re-keyed from strips every 0.25-0.3 s with a ruler, the window following each name across the frame (Apollo first, at the left edge as S39b opens). M8 (log/audits/m8_resolution.md, approved by the human: the disclosure after \"allegedly\" also in the vertical cut): the cut runs on through S47 (to 176.74 s, the first \"This call was recorded\"), so the disclosure (169.1-176.4 s) holds long enough to read; S47 whole, over the blurred fill.",
  "from": "S34",
- "to": "S45",
+ "to": "S47",
  "fade_out_s": 2.0,
  "shots": {
   "S34": {
@@ -250,6 +250,9 @@
      0.46
     ]
    ]
+  },
+  "S47": {
+   "mode": "fit"
   }
  }
 }

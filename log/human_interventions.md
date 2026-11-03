@@ -307,3 +307,13 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "okay go ahead", on the agent's plan: archive the audits, verify every flag against primary sources, then bring a fix list for approval before changing any text.
 - **Why:** The human had asked for a summary before any changes.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: the audit fixes approved — R1
+- **What:** "these are all good to me, go ahead", on the fixes proposed in `log/audits/m8_resolution.md` (on screen: S10's lobby screen, Boost's and r/IAmA's headstones, the $20M label, S49's notice, the disclosure after "allegedly"; the end card's BotDefense, IPO, OpenAI, lawsuit and conflict-of-interest lines; the description; the declined flags).
+- **Why:** The M8 gate.
+- **Rule:** R1.
+
+## 2026-11-03 — M8: the repository link on the end card — R1
+- **What:** "oh the end cards also need the link to where this repository will be hosted (https://github.com/Derivative-Work/read-only)".
+- **Why:** The end card's credits; Not Yet's ended on its repository link.
+- **Rule:** R1.

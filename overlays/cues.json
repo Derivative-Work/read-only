@@ -2201,8 +2201,8 @@
   },
   "end_card": {
    "size": [
-    1280,
-    720
+    1920,
+    1080
    ],
    "shot": "S50",
    "from": 208.16,
@@ -2216,7 +2216,8 @@
       "Music: Suno, post-filtered with music-deslop",
       "Video: Claude Code, with Blender, FLUX.2 [dev], LTX-2.3 and LatentSync",
       "The only real image: the creator's breakfast photo, March 2018",
-      "Human interventions: 40, each logged"
+      "Human interventions: 59, each logged",
+      "Full production log: https://github.com/Derivative-Work/read-only"
      ]
     },
     {
@@ -2235,8 +2236,29 @@
        "TechCrunch"
       ],
       [
-       "July 2023: the anti-spam bot BotDefense shuts down over the changes. Its ban list stood at 144,926 accounts.",
-       "BotDefense"
+       "July 2023: BotDefense's volunteers shut the anti-spam bot down, blaming the API changes and Reddit's treatment of moderators and developers. Their shutdown post put its ban list at 144,926 accounts.",
+       "BotDefense; Ars Technica"
+      ]
+     ]
+    },
+    {
+     "title": "2024",
+     "facts": [
+      [
+       "Feb 2024: Reddit licenses its data to Google for AI, reported at about $60 million a year.",
+       "Reuters"
+      ],
+      [
+       "Mar 2024: Reddit goes public. It lets some users and moderators buy shares at the offering price.",
+       "CNBC"
+      ],
+      [
+       "May 2024: Reddit announces a data partnership with OpenAI.",
+       "OpenAI"
+      ],
+      [
+       "July 2024: Reddit's robots.txt shuts out crawlers. Google, which pays Reddit, stays the only major search engine with fresh Reddit results.",
+       "9to5Mac"
       ]
      ]
     },
@@ -2244,16 +2266,8 @@
      "title": "Since then",
      "facts": [
       [
-       "Feb 2024: Reddit licenses its data to Google for AI, reported at about $60 million a year.",
-       "Reuters"
-      ],
-      [
-       "July 2024: Reddit's robots.txt shuts out crawlers. Google, which pays Reddit, stays the only major search engine with fresh Reddit results.",
-       "9to5Mac"
-      ],
-      [
-       "June 2025: Reddit sues Anthropic, alleging it scraped Reddit without a license. In September 2026 a San Francisco judge lets its contract and unfair-competition claims proceed.",
-       "Bloomberg Law"
+       "June 2025: Reddit sues Anthropic, alleging it scraped Reddit without a license, kept accessing the site after saying it had stopped, and used posts users had deleted. Anthropic disputes the claims. In September 2026 a San Francisco judge lets the contract and unfair-competition claims proceed; there is no ruling on the merits.",
+       "TechCrunch; Bloomberg Law"
       ],
       [
        "Aug 2025: Reddit blocks the Wayback Machine from archiving most of the site, citing AI scraping.",
@@ -2274,16 +2288,17 @@
      "lines": [
       "The block is a composite, not a real address. The eatery is fictional.",
       "Hip-hop is a human tradition, built by Black and Latino artists in the Bronx. This one was generated from it.",
-      "Lyrics drafted by Claude (Anthropic). Reddit has sued Anthropic for scraping its posts without a license, and AI companies buying user data is this song's subject. Reviewed by [the M8 auditor]; changes logged.",
+      "Lyrics drafted by Claude (Anthropic). Reddit has sued Anthropic for scraping its posts without a license, and AI companies buying user data is this song's subject. Reddit says its lockdowns since 2024 target AI companies that scrape without paying, as it alleges Anthropic did. Reviewed by Gemini and ChatGPT; changes logged.",
       "The creator interviewed at Reddit in 2018. The badge and schedule in the opener are recreations."
      ]
     }
    ],
    "seconds": [
+    6,
     8,
-    10,
-    12,
-    12
+    9,
+    9,
+    10
    ]
   }
  }
