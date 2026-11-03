@@ -297,3 +297,13 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "vertical cut is good; let's go with B".
 - **Why:** The M7 gate: with the full cut (approved earlier the same day), the vertical cut `renders/m7/vertical_v2.mp4` and thumbnail option B (`renders/m7/thumbs/thumb_b.jpg`, "WHO'S RAPPIN' THIS?") are approved.
 - **Rule:** R1.
+
+## 2026-11-02 — M8: the other-lab audits — R4
+- **What:** The human ran the M8 audit prompt in Gemini (selected: Gemini 4 Argon; it reported itself as Gemini 3.1 Pro, with no fallback shown in the UI) and ChatGPT, and saved both responses to `~/Downloads/`.
+- **Why:** The agent has no access to other labs' models.
+- **Rule:** R4.
+
+## 2026-11-02 — M8: go-ahead to check the flags — R1
+- **What:** "okay go ahead", on the agent's plan: archive the audits, verify every flag against primary sources, then bring a fix list for approval before changing any text.
+- **Why:** The human had asked for a summary before any changes.
+- **Rule:** R1.
