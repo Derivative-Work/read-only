@@ -13,7 +13,8 @@ is logged.
 
 AI-generated satire about real events. The characters are fictional stand-ins: no real person is named or shown, and
 the rappers in Verse 4 are generated people. The block is a composite and the eatery is fictional. The end card says
-what actually happened, with sources; [docs/fact_check_2026-11-03.md](docs/fact_check_2026-11-03.md) checks each line
+what actually happened, with sources;
+[log/audits/release_fact_check_2026-11-03.md](log/audits/release_fact_check_2026-11-03.md) re-checks each line
 against them on the day before release.
 
 **Conflict of interest:** Claude, made by Anthropic, drafted the lyrics. Reddit is suing Anthropic over scraping, and

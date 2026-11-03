@@ -5,7 +5,7 @@ AI-generated satire: a late-'90s boom-bap diss track about Reddit's 2023 API cha
 Full production log, prompts and audits: https://github.com/Derivative-Work/read-only
 
 CONFLICT OF INTEREST
-Claude, made by Anthropic, drafted these lyrics. Reddit is suing Anthropic (filed June 2025, San Francisco Superior Court). It alleges that Anthropic scraped Reddit without a license, kept accessing the site more than 100,000 times after saying it had stopped, and used posts that users had deleted. It also alleges that, unlike the AI companies that license Reddit's data and agree to honour deletions, Anthropic did neither. Anthropic disputes the claims. In September 2026 the judge let the breach-of-contract, interference-with-contract and unfair-competition claims proceed. There has been no ruling on the merits. [Re-check the status on the release date.]
+Claude, made by Anthropic, drafted these lyrics. Reddit is suing Anthropic (filed June 2025, San Francisco Superior Court). It alleges that Anthropic scraped Reddit without a license, accessed or tried to access the site more than 100,000 times after saying it had stopped. It also alleges that, unlike the AI companies that license Reddit's data and agree to honour deletions, Anthropic did neither. Anthropic disputes the claims. In September 2026 the judge let the breach-of-contract, interference-with-contract and unfair-competition claims proceed. As of Anthropic's November 2, 2026 SEC filing, the case is pending, with no ruling on the merits.
 
 The song criticizes Reddit for selling its users' work to AI companies. The same criticism applies to the AI companies, including the one whose model wrote the song. Reddit says its lockdowns since 2024 (the robots.txt change, the Wayback Machine block, the end of RSS and the public API, the move to logged-in browsing) are aimed at AI companies that scrape without paying. That the lyrics were drafted by Claude says nothing about what Claude was trained on. Suno's training data is its own open question.
 
@@ -20,7 +20,7 @@ THE HEADSTONES
 - Sync for Reddit, June 30, 2023: Android and iOS app (9to5Google)
 - BaconReader, June 30, 2023: Android app (Android Authority)
 - Boost for Reddit, 2023: Android app, due to stop with the June 30 deadline; its key kept working into July (9to5Google; Droid Life)
-- ReddPlanet, June 30, 2023: app, shut down citing pricing and short notice (AndroidHeadlines)
+- ReddPlanet, June 2023: app, announced its shutdown citing pricing and short notice (AndroidHeadlines)
 - Pushshift, May 2023: Reddit cut off its API access; moderator tools that depended on it degraded (r/modnews, May 1, 2023)
 - BotDefense, 2023: volunteer anti-spam bot. Its volunteers stopped it in July 2023, blaming Reddit's API changes and its treatment of moderators and developers. Their shutdown post put its ban list at 144,926 accounts (BotDefense; Ars Technica)
 - r/IAmA celebrity bookings, July 2023: the moderators stopped soliciting and coordinating AMAs with notable figures (Social Media Today; The Verge)

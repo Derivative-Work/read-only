@@ -12,3 +12,5 @@ M8, the other-lab fact check and conflict-of-interest audit (brief: "Fact check 
 The raw files are copied byte for byte from the human's saves, `~/Downloads/read-only-audit-gemini-argon.md` and `~/Downloads/read-only-audit-chatgpt.md`. The ChatGPT save carries the web UI's citation chips as text ("TechCrunch", "+2").
 
 The agent checks every flag against primary sources before proposing a fix (the auditors disagree in places, and Not Yet's audit showed confident errors pass several models); the checks and the resolution of each flag go in `m8_resolution.md`.
+
+`release_fact_check_2026-11-03.md`: the release-day re-check of the end card and the video description (a Claude research subagent, 2026-11-03), verbatim, with what changed in response. Nothing on the end card changed. The description's ReddPlanet date was corrected and its lawsuit wording tightened.

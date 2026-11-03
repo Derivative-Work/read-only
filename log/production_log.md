@@ -2071,3 +2071,24 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **`README.md`:** what the video is, the conflict of interest, the making-of record, how it was made (including the Verse 4 recast and why), files, rebuilding, licences and credits. The credits list only libraries the scripts import. The YouTube links are added at upload.
 - **Release staging (scratchpad, not in the repo):** lossless FLACs of the master and the card bounce (ffmpeg, compression 8; the decoded samples match the WAVs), symlinks to the two cuts, SRTs, thumbnail and the Suno WAV, MP3 and stems, and `SHA256SUMS.txt`. The cuts' and the Suno WAV's hashes match `MANIFEST.sha256`.
 - **Left out of the release:** the Claude Code session transcript (Not Yet published its transcript). This one holds the human's private reference images, including the interview scan, and the account context, so it isn't published unless the human decides otherwise.
+
+## 2026-11-03T16:30:00-05:00 — Release: the facts re-checked; METADATA, sources; the Reference Guide corrected
+- **Fact check (a research subagent, verbatim in `log/audits/release_fact_check_2026-11-03.md`):** every end-card line holds as of today. The newest source is Anthropic's S-1/A (SEC, filed 2026-11-02): the suit is pending, narrowed in September 2026 to the contract, interference and unfair-competition claims. The agent read the filing's Reddit passages itself, and they say what the report quotes. Nothing new on the logged-in plan or the RSS/API dates. Google's deal with Reddit is "in negotiations" (CNBC, Oct 29 2026), so "pays Reddit" should be re-checked on the morning of release.
+- **One error:** ReddPlanet announced its shutdown in June 2023, but no source confirms June 30. It's on screen as well as in the description. `scenes/blender/sets/block.py` TONES: "ReddPlanet / June 2023". S39b was re-rendered at final into `renders/final/fix_s39b/` (`--from 142.82 --to 146.78`, 96 frames, log `renders/final/render_s39b.log`). Diffed against `renders/final/act1/`, only the stone's date changes. Check stills across S35–S39e (`renders/final/fix_s39b_check/`) show the stone readable in S35 and S39a too, so S35–S39a are being re-rendered (`--from 125.92 --to 142.82`, log `renders/final/render_s35_s39a.log`).
+- **The description:** `deliverables/description.md` (the M8 draft) → `archive/deliverables/description_m8_draft.md`, superseded by `METADATA.md`. Changes:
+  - ReddPlanet is "June 2023, announced its shutdown";
+  - the lawsuit reads "accessed or tried to access … more than 100,000 times", and its status as of the S-1/A;
+  - Wayback is cited to Engadget;
+  - trimmed to 4,527 characters (YouTube's limit is 5,000).
+- **`METADATA.md` (new, after Not Yet's):** titles, the main description with chapters, tags, settings, thumbnail D and the end screen (from 4:18, the bottom corners, below the last page's text), and the vertical cut's Short metadata.
+- **`docs/sources.md` (new):** every end-card claim with the URL that was opened, and the full "blackmail" note (linked from the description).
+- **The Reference Guide** (Claude Doc 5KCzixyz4DRBiT9wqovwkW, rev 11 → 12; the README links it), corrected where the M6, M8 and release checks found it wrong:
+  - "Aug 2026: judge signals doubt" (unsourced) is now the September ruling;
+  - the price is dated May 31 and credited to Apollo's developer;
+  - the blackout is "Jun 12, 2023" (48 hours);
+  - the CEO's "threatened" replaces "blackmail", and the recording's apology is added;
+  - robots.txt: Google is the only engine with fresh results, and Reddit denies the link to the deal;
+  - "primarily logged-in", not "logged-in only".
+
+  The brief's headstone table is left as planned, as at M8: the fixes are recorded in the audits and in `docs/sources.md`.
+- **Release notes** drafted (scratchpad `release_notes.md`) for a draft v1.0 GitHub Release, as Not Yet's.

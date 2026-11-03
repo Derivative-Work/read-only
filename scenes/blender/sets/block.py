@@ -438,10 +438,12 @@ def tower(S):
 
 
 TONES = [  # the brief's "Memorial headstones" (shot, inscription); M8 (log/audits/m8_resolution.md): Boost's end
-    # date is undocumented (its key kept working into July), so just 2023; r/IAmA's mods stopped booking celebrities
+    # date is undocumented (its key kept working into July), so just 2023; r/IAmA's mods stopped booking celebrities.
+    # Release check (log/audits/release_fact_check_2026-11-03.md): ReddPlanet announced its shutdown in June 2023, but
+    # no source confirms it went dark on June 30, so June 2023
     ("S39b", "Apollo\nJune 30, 2023"), ("S39b", "rif is fun\nJune 30, 2023"), ("S39b", "Sync for Reddit\nJune 30, 2023"),
     ("S39b", "BaconReader\nJune 30, 2023"), ("S39b", "Boost for Reddit\n2023"),
-    ("S39b", "ReddPlanet\nJune 30, 2023"),
+    ("S39b", "ReddPlanet\nJune 2023"),
     ("S39c", "Pushshift\nMay 2023"), ("S39c", "BotDefense\n2023"),
     ("S39d", "r/IAmA celebrity\nbookings\nJuly 2023"), ("S39d", "Mobile moderation\non r/Blind\nJuly 2023"),
     ("S39d", "Search engines\nother than Google\nJuly 2024"), ("S39d", "Wayback Machine\narchiving\nAugust 2025"),
