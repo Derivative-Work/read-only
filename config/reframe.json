@@ -1,25 +1,255 @@
 {
- "_doc": "M7: the vertical cut's 9:16 window (brief: \"Vertical cut (9:16): S34-S45\"), per shot: the window's centre as a fraction of the frame's width, keyed in song seconds (linear between keys, held outside). mode \"fit\" instead shows the whole 16:9 frame across the width over a blurred, darkened copy that fills the rest: S36's epitaph is wider than any 9:16 window. Picked from contact sheets of each shot's start, middle and end (log).",
+ "_doc": "M7: the vertical cut's 9:16 window (brief: \"Vertical cut (9:16): S34-S45\"), per shot: the window's centre as a fraction of the frame's width, keyed in song seconds (linear between keys, held outside). mode \"fit\" instead shows the whole 16:9 frame across the width over a blurred, darkened copy that fills the rest: S36's epitaph is wider than any 9:16 window. Picked from contact sheets of each shot's start, middle and end (log). M7 (the human: 'we're missing some of the gravestones -- most importantly Apollo. You'll have to drive the pan a bit more'): S39b, S39c and S39e re-keyed from strips every 0.25-0.3 s with a ruler, the window following each name across the frame (Apollo first, at the left edge as S39b opens).",
  "from": "S34",
  "to": "S45",
  "fade_out_s": 2.0,
  "shots": {
-  "S34": {"cx": [[124.0, 0.5]]},
-  "S35": {"cx": [[126.3, 0.48], [128.9, 0.6]]},
-  "S36": {"mode": "fit"},
-  "S37": {"cx": [[134.0, 0.3]]},
-  "S38": {"cx": [[137.3, 0.48], [138.1, 0.7], [138.9, 0.56]]},
-  "S39": {"cx": [[139.14, 0.3]]},
-  "S39a": {"cx": [[140.92, 0.5]]},
-  "S39b": {"cx": [[142.82, 0.42], [144.8, 0.44], [146.4, 0.25]]},
-  "S39c": {"cx": [[147.0, 0.49], [147.8, 0.5], [148.6, 0.69]]},
-  "S39d": {"cx": [[149.0, 0.52], [150.1, 0.46], [151.1, 0.4]]},
-  "S39e": {"cx": [[151.6, 0.2], [152.5, 0.43], [153.5, 0.51]]},
-  "S40": {"cx": [[153.68, 0.51], [154.1, 0.51], [154.3, 0.5]]},
-  "S41": {"cx": [[156.905, 0.5]]},
-  "S42": {"cx": [[159.548, 0.5]]},
-  "S43": {"cx": [[162.11, 0.47]]},
-  "S44": {"cx": [[163.77, 0.42]]},
-  "S45": {"cx": [[168.41, 0.46]]}
+  "S34": {
+   "cx": [
+    [
+     124.0,
+     0.5
+    ]
+   ]
+  },
+  "S35": {
+   "cx": [
+    [
+     126.3,
+     0.48
+    ],
+    [
+     128.9,
+     0.6
+    ]
+   ]
+  },
+  "S36": {
+   "mode": "fit"
+  },
+  "S37": {
+   "cx": [
+    [
+     134.0,
+     0.3
+    ]
+   ]
+  },
+  "S38": {
+   "cx": [
+    [
+     137.3,
+     0.48
+    ],
+    [
+     138.1,
+     0.7
+    ],
+    [
+     138.9,
+     0.56
+    ]
+   ]
+  },
+  "S39": {
+   "cx": [
+    [
+     139.14,
+     0.3
+    ]
+   ]
+  },
+  "S39a": {
+   "cx": [
+    [
+     140.92,
+     0.5
+    ]
+   ]
+  },
+  "S39b": {
+   "cx": [
+    [
+     142.82,
+     0.16
+    ],
+    [
+     143.25,
+     0.16
+    ],
+    [
+     143.55,
+     0.38
+    ],
+    [
+     144.0,
+     0.27
+    ],
+    [
+     144.3,
+     0.47
+    ],
+    [
+     144.9,
+     0.33
+    ],
+    [
+     145.2,
+     0.47
+    ],
+    [
+     146.1,
+     0.3
+    ],
+    [
+     146.45,
+     0.47
+    ],
+    [
+     146.78,
+     0.45
+    ]
+   ]
+  },
+  "S39c": {
+   "cx": [
+    [
+     146.78,
+     0.49
+    ],
+    [
+     147.8,
+     0.46
+    ],
+    [
+     148.1,
+     0.5
+    ],
+    [
+     148.3,
+     0.69
+    ],
+    [
+     148.6,
+     0.62
+    ],
+    [
+     148.76,
+     0.61
+    ]
+   ]
+  },
+  "S39d": {
+   "cx": [
+    [
+     149.0,
+     0.52
+    ],
+    [
+     150.1,
+     0.46
+    ],
+    [
+     151.1,
+     0.4
+    ]
+   ]
+  },
+  "S39e": {
+   "cx": [
+    [
+     151.38,
+     0.23
+    ],
+    [
+     151.7,
+     0.24
+    ],
+    [
+     152.0,
+     0.54
+    ],
+    [
+     152.2,
+     0.57
+    ],
+    [
+     152.55,
+     0.45
+    ],
+    [
+     152.8,
+     0.6
+    ],
+    [
+     153.15,
+     0.6
+    ],
+    [
+     153.4,
+     0.5
+    ],
+    [
+     153.68,
+     0.5
+    ]
+   ]
+  },
+  "S40": {
+   "cx": [
+    [
+     153.68,
+     0.51
+    ],
+    [
+     154.1,
+     0.51
+    ],
+    [
+     154.3,
+     0.5
+    ]
+   ]
+  },
+  "S41": {
+   "cx": [
+    [
+     156.905,
+     0.5
+    ]
+   ]
+  },
+  "S42": {
+   "cx": [
+    [
+     159.548,
+     0.5
+    ]
+   ]
+  },
+  "S43": {
+   "cx": [
+    [
+     162.11,
+     0.47
+    ]
+   ]
+  },
+  "S44": {
+   "cx": [
+    [
+     163.77,
+     0.42
+    ]
+   ]
+  },
+  "S45": {
+   "cx": [
+    [
+     168.41,
+     0.46
+    ]
+   ]
+  }
  }
 }

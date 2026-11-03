@@ -287,3 +287,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** The human, on `renders/m7/m7_full_v3.mp4`: "add camera shake timed with the downvotes landing"; "the band and the check are not laying on the ground, and the brooms and crate next to them are not reading right"; "the \"IPO\" doesn't look like it's rolling out".
 - **Why:** Review notes on the M7 cut.
 - **Rule:** R1.
+
+## 2026-11-02 — M7: full cut approved; the vertical cut's gravestones; 1080p — R1
+- **What:** "Full cut is good. In the vertical cut, we're missing some of the gravestones -- most importantly Apollo. You'll have to drive the pan a bit more. 1080p is fine for this. What were the thumbnail options again".
+- **Why:** Review of the M7 cut (`renders/m7/m7_full_v4.mp4`) and the vertical cut; the final render's resolution (the agent had raised 4K vs the brief's 1080p).
+- **Rule:** R1.
