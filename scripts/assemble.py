@@ -98,7 +98,9 @@ def vertical(a):
     fade = RF["fade_out_s"]
     act2 = a2.Act2(a.act1)
     act1 = Path(a.act1)
-    cap = None if a.no_captions else captions.Captions((VW, VH), "vertical")
+    # the cut's own start (it's posted alone), below S34's ACCOUNTS BANNED counter (top left, to 0.27 of the height)
+    opening = [(t0 + 0.4, t0 + 0.4 + captions.OPENING_S, captions.OPENING, 0.30)]
+    cap = None if a.no_captions else captions.Captions((VW, VH), "vertical", notices=opening)
     order = list(SP)
     shots = order[order.index(RF["from"]):order.index(RF["to"]) + 1]
     g = (f"[1:a]atrim={t0}:{t1},asetpts=PTS-STARTPTS,afade=t=in:d=0.4,afade=t=out:st={dur - fade}:d={fade}[a]")

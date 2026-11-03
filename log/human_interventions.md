@@ -322,3 +322,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "I created the repository and gave you access -- go ahead and push what you currently have there (we'll clean it up for release later)". https://github.com/Derivative-Work/read-only, private.
 - **Why:** The agent can't create repositories under the organization.
 - **Rule:** R4.
+
+## 2026-11-03 — M8: a notice at the beginning — R1
+- **What:** On the final cut: "This is great, but it needs something along the lines of "AI generated satire. Not investment advice." at the beginning, likely in the same closed caption style".
+- **Why:** The M8 gate: the video opens with no disclaimer, and its subject includes Reddit's IPO and shares.
+- **Rule:** R1.

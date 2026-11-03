@@ -59,7 +59,13 @@ TAGS = [
 # M8 (log/audits/m8_resolution.md, approved by the human): the conflict-of-interest disclosure after "allegedly" (Verse 4
 # ends 168.96 s), at the top of the frame in the captions' own boxes, held until the second "This call was recorded":
 # (on, off, text), song seconds. Burned in, not in the SRT (it isn't sound).
+# M8 (the human, on the final cut): "AI generated satire. Not investment advice." at the beginning, in the same style:
+# the main cut's first seconds (song -17.6 to -13.0 s: video 0.4-5.0 s, over S01a), and the vertical cut's (OPENING
+# passed with its own start; Captions(notices=...)).
+OPENING = "AI-GENERATED SATIRE. NOT INVESTMENT ADVICE."
+OPENING_S = 4.6
 NOTICES = [
+    (-17.6, -17.6 + OPENING_S, OPENING),
     (169.1, 176.4, "CLAUDE (ANTHROPIC) WROTE THESE LYRICS. REDDIT IS SUING ANTHROPIC, ALLEGING IT SCRAPED REDDIT "
                    "WITHOUT A LICENSE. ANTHROPIC DISPUTES IT. NO RULING YET."),
 ]
@@ -144,7 +150,7 @@ def build_rows(cols):
 
 
 class Captions:
-    def __init__(self, size, style="main"):
+    def __init__(self, size, style="main", notices=()):
         self.W, self.H = size
         st = STYLES[style]
         self.cols = st["cols"]
@@ -155,13 +161,15 @@ class Captions:
         self.top = round(st["top"] * self.H)
         self.font = ImageFont.truetype(str(FONT), self.row)
         self.rows, self.runs = build_rows(self.cols)
+        self.notices = list(NOTICES) + list(notices)
 
     def notice(self, t):
         """The NOTICES rows on screen at song time t, as state entries at the top (slot k: the k-th row down)."""
-        for on, off, text in NOTICES:
+        for on, off, text, *top in self.notices:  # an optional 4th: the first row's top, as a fraction of the height
             if on <= t < off:
                 words = text.split()
-                return tuple((" ".join(words[i] for i in grp), "top", float(k))
+                k0 = (top[0] * self.H - self.top) / self.row if top else 0.0  # in rows below the usual top
+                return tuple((" ".join(words[i] for i in grp), "top", k0 + k)
                              for k, grp in enumerate(wrap(words, self.cols)))
         return ()
 

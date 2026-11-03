@@ -1842,3 +1842,11 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Checked:** contact sheets of both (every 7.5 s and 5 s): the opener's caption and camera, the lobby screen, the total's label, the headstones, the disclosure over S45 (main) and S47 (vertical), the login prompt, S49, all five end card pages (60 interventions; the repository link). Logs `renders/final/assemble_{main,vertical}.log`.
 - **Review copies** (two-pass x264, 750 kb/s): `renders/review/m8_final_review_small.mp4`, `renders/review/m8_final_vertical_review_small.mp4`. Manifest updated.
 - **The M8 gate:** awaiting the human's approval (R1). Approving logs a 61st intervention; the end card would then read 60, one behind (re-render the card and re-assemble if wanted).
+
+## 2026-11-03T06:40:00-05:00 — M8: "AI-generated satire. Not investment advice." at the beginning
+- **The human (R1, human interventions, same date):** a notice at the beginning, in the closed-caption style.
+- **`scripts/captions.py`:** `OPENING` ("AI-GENERATED SATIRE. NOT INVESTMENT ADVICE.", held `OPENING_S` 4.6 s) in `NOTICES` at song −17.6 s (video 0.4–5.0 s, over S01a; two rows at the top, clear of "San Francisco, 2018" and "[INDISTINCT CHATTER]"). `Captions(notices=...)` adds a cut's own notices; a notice's optional 4th field sets its first row's top. Burned in, not in the SRTs (unchanged).
+- **`scripts/assemble.py` (vertical):** the same notice from the vertical cut's own start (S34 + 0.4 s), its top at 0.30 of the height: at the usual top it covered S34's ACCOUNTS BANNED counter (first try, `renders/final/out/read_only_vertical_v2.mp4`, not used).
+- **End card:** the count is now 61 (this request); `overlay_cues.py`, `renders/screens/end_card/` re-rendered.
+- **Reassembled:** `deliverables/read_only.mp4` (268.21 s) and `deliverables/read_only_vertical.mp4` (52.75 s); the earlier M8 cuts → `archive/deliverables/*_m8_v1.mp4`, their review copies → `archive/renders/review/`. New review copies `renders/review/m8_final_v2_review_small.mp4`, `renders/review/m8_final_v2_vertical_review_small.mp4`. Manifest updated.
+- **The M8 gate:** awaiting approval (R1). Approving logs a 62nd intervention; the card would read 61.
