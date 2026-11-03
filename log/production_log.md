@@ -2098,3 +2098,19 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** 68 interventions (`overlay_cues.py`; `renders/screens/end_card/` re-rendered).
 - **Assembled:** `renders/m8/read_only_v7.mp4` (268.21 s) and `renders/m8/read_only_vertical_v7.mp4` (52.75 s), log `renders/m8/final_v7.log`. The SRTs are byte-identical to the deliverables'. Checked on frame: "ReddPlanet / June 2023" in S35 and S39b, and the card reads "Human interventions: 68, each logged".
 - **Deliverables:** the v6 cuts → `archive/deliverables/*_m8_v6.mp4`, the v7 cuts → `deliverables/`, the v6 review copies → `archive/renders/review/`. New review copies: `renders/review/m8_final_v7_review_small.mp4`, `m8_final_v7_vertical_review_small.mp4`. Manifest updated. The release staging's `SHA256SUMS.txt` was regenerated; the main cut's hash matches the manifest.
+
+## 2026-11-03T17:05:00-05:00 — Release: draft GitHub Release v1.0
+- **Draft release:** `gh release create v1.0 --draft --target main` on the private repo (https://github.com/Derivative-Work/read-only/releases, draft; the tag is created when it's published). Notes: scratchpad `release_notes.md` (absolute links; the YouTube links are placeholders until upload).
+- **Files**, under clean names, as Not Yet's:
+  - the v7 main cut (256 MB) and vertical cut;
+  - the two SRTs and thumbnail D;
+  - the Suno WAV, MP3 and stems zip, as downloaded;
+  - the master and the card bounce as 24-bit FLAC;
+  - `SHA256SUMS.txt`.
+
+  Each uploaded asset's SHA-256 digest (GitHub's) matches the local file. The cuts' and the Suno WAV's hashes match `MANIFEST.sha256`.
+- **No session transcript,** unlike Not Yet: it holds the human's private reference material, including the interview scan's names. It goes in only if the human decides.
+- **Left for the human (R4):**
+  - upload to YouTube with `METADATA.md`;
+  - fill in the links (README, METADATA's vertical footer, the release notes);
+  - make the repository public and publish the release.
