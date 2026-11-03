@@ -317,3 +317,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "oh the end cards also need the link to where this repository will be hosted (https://github.com/Derivative-Work/read-only)".
 - **Why:** The end card's credits; Not Yet's ended on its repository link.
 - **Rule:** R1.
+
+## 2026-11-03 — The GitHub repository — R4
+- **What:** "I created the repository and gave you access -- go ahead and push what you currently have there (we'll clean it up for release later)". https://github.com/Derivative-Work/read-only, private.
+- **Why:** The agent can't create repositories under the organization.
+- **Rule:** R4.

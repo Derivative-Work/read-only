@@ -1822,3 +1822,10 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
 ## 2026-11-03T01:45:00-05:00 — M8: the description drafted
 - `deliverables/description.md` (fix 12–14 in `log/audits/m8_resolution.md`): what made what; the repository link; the conflict-of-interest disclosure (Reddit's allegations as allegations, Anthropic's dispute, the September 2026 ruling, no ruling on the merits, Reddit's anti-scraping rationale, nothing implied about Claude's training data, Suno's open question, the audits); a note on "blackmail" (what was said on the June 7, 2023 call, the recording and the apology on it); every headstone with what stopped and its source (Boost, BotDefense and r/IAmA as corrected); the tradition line; the creator's disclosure. The lawsuit's status is marked for re-checking on the release date.
+
+## 2026-11-03T02:00:00-05:00 — The repository pushed (private)
+- The human created https://github.com/Derivative-Work/read-only (private) and gave access (human interventions, same date, R4). Checked before pushing:
+  - nothing from `reference/private/` or `assets/real/` in any commit (only `assets/real/README.md`);
+  - no blob over 2 MB in the history;
+  - the user's email address appears nowhere in the tracked files.
+  `origin` set over HTTPS, as Not Yet's (SSH had no key); `main` pushed. A clean-up for release comes later (the human).
