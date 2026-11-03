@@ -54,13 +54,14 @@ function lobby_blackmail(t) {
   g.fillStyle = hot ? "#fff6f0" : P.rec;
   g.textAlign = "center"; g.textBaseline = "middle";
   const rows = ["\u201cHE\u2019S", "THREATENING US\u201d"];
-  let px = H * 0.34;
+  // M8: both rows in the screen's top half; from S10's camera the server racks cover its lower middle
+  let px = H * 0.21;
   g.font = `${px}px "Inter"`;
   const wide = Math.max(...rows.map(r => g.measureText(r).width));
   if (wide > W * 0.9) px *= W * 0.9 / wide;
   g.font = `${px}px "Inter"`;
   if (!hot) { g.shadowColor = P.rec; g.shadowBlur = 40; }
-  rows.forEach((r, i) => g.fillText(r, W / 2, H / 2 + (i - 0.5) * px * 1.1));
+  rows.forEach((r, i) => g.fillText(r, W / 2, H * 0.17 + i * px * 1.08));
   g.shadowBlur = 0;
   scanlines();
 }

@@ -1829,3 +1829,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - no blob over 2 MB in the history;
   - the user's email address appears nowhere in the tracked files.
   `origin` set over HTTPS, as Not Yet's (SSH had no key); `main` pushed. A clean-up for release comes later (the human).
+
+## 2026-11-03T05:50:00-05:00 — M8: the final render done; S10's screen re-laid out
+- **Final render finished** (exit 0): the opener (0–434), the cut frame, and Act 1 (436–4120, 3,685 frames, none missing) at 1080p. A contact sheet of every 100th frame matches the approved look.
+- **S10, found in the survey:** the two-row "HE'S / THREATENING US" fell behind the server racks ("THREAT▮▮NG US"). `overlays/screens.html` `lobby_blackmail`: both rows now sit in the screen's top half (0.21 H text from 0.17 H). `renders/screens/lobby_blackmail/` re-rendered (60 frames); S10 re-rendered at final (frames 1315–1373, `--from 36.79 --to 39.21`, log `renders/final/render_s10.log`). Readable from the first to the last frame, in both flash states. The headstones (Boost "2023"; r/IAmA "celebrity bookings") read correctly.
