@@ -1780,3 +1780,16 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-11-02T23:05:00-05:00 — M8: the audits are in (Gemini, ChatGPT)
 - **Inputs (human interventions, same date, R4):** the human ran `log/prompts/audit/m8_audit_prompt.md` in Gemini and ChatGPT. Copied byte for byte to `log/audits/01_gemini_raw.md` and `log/audits/02_chatgpt_raw.md`; `log/audits/README.md` records each auditor and version. Gemini 4 Argon was selected in the UI, but the response calls itself "Gemini 3.1 Pro" (no fallback notice in the UI); both are recorded.
 - **Next:** check each flag against primary sources (the two disagree on BotDefense's count, Boost's date, the September 2026 ruling and the "blackmail" wording), then propose fixes for the human's approval (R1). The final render waits.
+
+## 2026-11-02T23:55:00-05:00 — M8: the audit flags checked; fixes proposed
+- **Checked** every flag from the two audits against reporting and mirrors (Reddit-hosted originals unreachable; an archive-API fetch of the BotDefense post was refused as bot-check circumvention and not retried). Results, sources and the proposed fixes are in `log/audits/m8_resolution.md`.
+- **Where they disagreed:**
+  - The September 2026 ruling: ChatGPT is right; Gemini has unjust enrichment and interference swapped. The end card's line stands.
+  - BotDefense's 144,926: it is in the July 5, 2023 shutdown post, worded ambiguously ("In January… our ban list which now stands at 144,926"). The card will attribute it to the post rather than date it.
+  - Who ended BotDefense: its volunteers (ChatGPT).
+  - Boost's June 30 date is unsupported (Gemini).
+  - Huffman's documented words were "threatening" and "coercing"; "blackmail" is Selig's report of what Huffman told staff (both auditors).
+- **Proposed (R1 pending):**
+  - On screen: S10's BLACKMAIL → "HE'S THREATENING US"; Boost's headstone → 2023; r/IAmA → "celebrity bookings"; the $20M total labelled as Apollo's estimate; S49's notice "free access"; a disclosure after "allegedly".
+  - End card: BotDefense reworded; the IPO (with the directed share program) and the OpenAI deal added; the lawsuit line with Reddit's allegations, Anthropic's denial and no ruling on the merits; the conflict-of-interest note with Reddit's anti-scraping rationale and the reviewers.
+  - The description; the declined flags, with reasons.
