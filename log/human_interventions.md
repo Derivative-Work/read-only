@@ -292,3 +292,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "Full cut is good. In the vertical cut, we're missing some of the gravestones -- most importantly Apollo. You'll have to drive the pan a bit more. 1080p is fine for this. What were the thumbnail options again".
 - **Why:** Review of the M7 cut (`renders/m7/m7_full_v4.mp4`) and the vertical cut; the final render's resolution (the agent had raised 4K vs the brief's 1080p).
 - **Rule:** R1.
+
+## 2026-11-02 — M7 approved; thumbnail B — R1
+- **What:** "vertical cut is good; let's go with B".
+- **Why:** The M7 gate: with the full cut (approved earlier the same day), the vertical cut `renders/m7/vertical_v2.mp4` and thumbnail option B (`renders/m7/thumbs/thumb_b.jpg`, "WHO'S RAPPIN' THIS?") are approved.
+- **Rule:** R1.
