@@ -1858,3 +1858,11 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** 62 interventions (`overlay_cues.py`, `renders/screens/end_card/` re-rendered).
 - **Reassembled:** `deliverables/read_only.mp4`, `deliverables/read_only_vertical.mp4` (SRTs unchanged); the v2 cuts → `archive/deliverables/*_m8_v2.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v3_review_small.mp4`, `renders/review/m8_final_v3_vertical_review_small.mp4`. Manifest updated.
 - **The M8 gate:** awaiting approval (R1). Approving logs a 63rd intervention; the card would read 62.
+
+## 2026-11-03T08:10:00-05:00 — M8: the disclaimer clear of the cassette; the trucks lit
+- **The human (R1, human interventions, same date):** the closing disclaimer hid the tape recorder; SEARCH and CHAT need to be brighter to read on mobile.
+- **Disclaimer (`scripts/captions.py`):** a notice's 4th field may be `{style: [(from t, top)]}`. In the main cut the disclaimer stays at the top over S45, then from the cut to S47 (172.12 s) sits at 0.52 of the height, just above the lyric rows, over the payphone's post; the cassette stays clear for all of S47 (test `assemble.py --from 186 --to 195`). In the vertical cut S47 is letterboxed; the disclaimer stays above it (its last row just reaches the picture's top edge, away from the cassette).
+- **Trucks (`scenes/blender/shots.py`, S29):** an area light `S29.fill` (14 × 3 m, 700 W, warm) from above the camera onto the trucks' near sides, S29 only. A first try at 2400 W washed the night out and turned the lettering grey. S29 re-rendered at final (frames 2959–3022, `--from 105.28 --to 107.92`, log `renders/final/render_s29.log`); S28 and S30 untouched.
+- **End card:** 63 interventions.
+- **Reassembled:** `deliverables/read_only.mp4`, `deliverables/read_only_vertical.mp4` (SRTs unchanged); the v3 cuts → `archive/deliverables/*_m8_v3.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v4_review_small.mp4`, `renders/review/m8_final_v4_vertical_review_small.mp4`. Manifest updated.
+- **The M8 gate:** awaiting approval (R1). Approving logs a 64th intervention; the card would read 63.

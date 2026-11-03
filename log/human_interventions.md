@@ -332,3 +332,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "Put the source in the "ACCOUNTS BANNED" counter".
 - **Why:** The M8 gate: the figure 144,926 appears on screen without its source.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: the disclaimer over the tape recorder; the trucks' names — R1
+- **What:** "The Claude disclaimer at the end is occluding the tape recorder, and the "SEARCH" and "CHAT" trucks need to be brighter to read on mobile".
+- **Why:** The M8 gate.
+- **Rule:** R1.

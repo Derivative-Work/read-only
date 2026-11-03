@@ -67,7 +67,10 @@ OPENING_S = 4.6
 NOTICES = [
     (-17.6, -17.6 + OPENING_S, OPENING),
     (169.1, 176.4, "CLAUDE (ANTHROPIC) WROTE THESE LYRICS. REDDIT IS SUING ANTHROPIC, ALLEGING IT SCRAPED REDDIT "
-                   "WITHOUT A LICENSE. ANTHROPIC DISPUTES IT. NO RULING YET."),
+                   "WITHOUT A LICENSE. ANTHROPIC DISPUTES IT. NO RULING YET.",
+     # the human, on the final cut: at the top it hid S47's cassette; from the cut to S47 (172.12 s) it sits just
+     # above the lyric rows, over the payphone's post. In the vertical cut S47 is letterboxed and it stays above it.
+     {"main": [(172.12, 0.52)]}),
 ]
 STYLES = {  # per output: columns, row height (fraction of frame height), the bottom row's bottom, the top row's top
     "main": {"cols": 32, "row": 50 / 1080, "bottom": 0.92, "top": 0.08},
@@ -153,6 +156,7 @@ class Captions:
     def __init__(self, size, style="main", notices=()):
         self.W, self.H = size
         st = STYLES[style]
+        self.style = style
         self.cols = st["cols"]
         self.row = round(st["row"] * self.H)               # row height = the font's em (ascent + descent)
         self.cell = self.row * 0.4 * STRETCH                # the 608 cell's width
@@ -165,10 +169,14 @@ class Captions:
 
     def notice(self, t):
         """The NOTICES rows on screen at song time t, as state entries at the top (slot k: the k-th row down)."""
-        for on, off, text, *top in self.notices:  # an optional 4th: the first row's top, as a fraction of the height
+        for on, off, text, *top in self.notices:
+            # an optional 4th: the first row's top, as a fraction of the height, or {style: [(from t, top)]}
             if on <= t < off:
                 words = text.split()
-                k0 = (top[0] * self.H - self.top) / self.row if top else 0.0  # in rows below the usual top
+                y = top[0] if top else None
+                if isinstance(y, dict):
+                    y = next((v for at, v in reversed(y.get(self.style, [])) if t >= at), None)
+                k0 = (y * self.H - self.top) / self.row if y is not None else 0.0  # in rows below the usual top
                 return tuple((" ".join(words[i] for i in grp), "top", k0 + k)
                              for k, grp in enumerate(wrap(words, self.cols)))
         return ()

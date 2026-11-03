@@ -747,6 +747,15 @@ def stage(S):
         gb.text(f"truck.{nm}.t", nm, 0.85, B.M("ink"), (-1.0, 1.21, 0.35), facing="+Y", parent=tr)  # on the box (x -3..1)
         gb.keys(tr, "location", [(F(a), x0, "LINEAR"), (F(a + 0.4), x0 + (x1 - x0) * 0.35), (F(t1), x1), (F(b), x1)],
                 index=0, interp="BEZIER")
+    # the human, on the final cut: SEARCH and CHAT "need to be brighter to read on mobile": a soft fill on the trucks'
+    # near sides (y 2.3), from above the camera, for S29 only
+    fl = bpy.data.lights.new("S29.fill", "AREA")
+    fl.shape, fl.size, fl.size_y = "RECTANGLE", 14.0, 3.0
+    fl.energy, fl.color = 700.0, (1.0, 0.95, 0.88)
+    flo = gb.link(bpy.data.objects.new("S29.fill", fl))
+    flo.location = (-1.0, -3.0, 4.5)
+    flo.rotation_euler = gb.look_rot(flo.location, (-1.0, 2.3, 1.6))
+    only(flo, "S29")
     av = only(gb.box("archivevan", (10, 3.5, 1.0), (4.0, 2.0, 2.0), B.M("van")), "S29")
     gb.text("archivevan.t", "ARCHIVE", 0.4, B.M("ink"), (0, 1.01, 0.2), facing="+Y", parent=av)
     gb.keys(av, "location", [(F(a), 10.0), (F(a + 1.0), 10.0), (F(b), 20.0)], index=0)
