@@ -357,3 +357,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "*Much* better, and it passes human review. Suggest new thumbnails with the edit in mind".
 - **Why:** The M8 gate, on the recast v2 cuts (VHS transitions between the faces), after outside review.
 - **Rule:** R1. The recast v2 cuts become the deliverables.
+
+## 2026-11-03 — M8: thumbnail D; the release — R1
+- **What:** "Let's do D. I'm planning on publishing this tomorrow morning, so check the facts and prepare the repo much like the others".
+- **Why:** The M8 gate: the thumbnail options for the recast (D, the lineup; E, the splice; F, the index; or the earlier A). Release planned for the morning of 2026-11-04.
+- **Rule:** R1.

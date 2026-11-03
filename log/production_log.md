@@ -2059,3 +2059,8 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-11-03T14:50:00-05:00 — M8: final cuts v6 (the recast) in deliverables
 - `deliverables/read_only.mp4` (268.21 s, 1920×1080) and `deliverables/read_only_vertical.mp4` (52.75 s, 1080×1920), with the recast and its VHS transitions. The end card reads "Human interventions: 67, each logged" (checked on frame). The SRTs are unchanged from v5. Review copies: `renders/review/m8_final_v6_review_small.mp4` and `m8_final_v6_vertical_review_small.mp4`. Manifest updated.
 - **Open (R1):** the thumbnail (D, E or F, or the earlier A); D recommended.
+
+## 2026-11-03T15:10:00-05:00 — M8: thumbnail D chosen; release prep begins
+- **Chosen** (human interventions, same date, R1): thumbnail D, the lineup. `renders/m8/thumbs/thumb_d.jpg` → `deliverables/read_only_thumbnail.jpg` (1280×720, in git like Not Yet's). E and F stay in `renders/m8/thumbs/` as the options not taken.
+- **Also committed:** `overlays/cues.json` with the end card's count at 67, rendered into the v6 cuts but left out of the previous commit.
+- **Release (the human: publishing the morning of 2026-11-04):** the facts are being re-checked against today's reporting (a research subagent), and the repo is being prepared after Not Yet (README, licences, upload metadata, a privacy check). 68 interventions are now logged; the card reads 67 (see the next entry).
