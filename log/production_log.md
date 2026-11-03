@@ -1833,3 +1833,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-11-03T05:50:00-05:00 — M8: the final render done; S10's screen re-laid out
 - **Final render finished** (exit 0): the opener (0–434), the cut frame, and Act 1 (436–4120, 3,685 frames, none missing) at 1080p. A contact sheet of every 100th frame matches the approved look.
 - **S10, found in the survey:** the two-row "HE'S / THREATENING US" fell behind the server racks ("THREAT▮▮NG US"). `overlays/screens.html` `lobby_blackmail`: both rows now sit in the screen's top half (0.21 H text from 0.17 H). `renders/screens/lobby_blackmail/` re-rendered (60 frames); S10 re-rendered at final (frames 1315–1373, `--from 36.79 --to 39.21`, log `renders/final/render_s10.log`). Readable from the first to the last frame, in both flash states. The headstones (Boost "2023"; r/IAmA "celebrity bookings") read correctly.
+
+## 2026-11-03T06:00:00-05:00 — M8: the final cuts assembled
+- **End card:** `overlay_cues.py` (interventions: 60), `renders/screens/end_card/` re-rendered (1009 frames).
+- **Act 1 frames:** `renders/final/act1_frames/` links the cut frame (`act1_cut/f_00435.png`) and `renders/final/act1/` (3686 frames, with S10's re-render).
+- **Main:** `scripts/assemble.py renders/final/out/read_only_main.mp4 --preroll renders/final/preroll --act1 renders/final/act1_frames --srt …` → `deliverables/read_only.mp4`: 268.21 s, 1920×1080, 24 fps, −16.8 LUFS integrated (as M7). The SRT is unchanged from `deliverables/read_only.srt`.
+- **Vertical:** `--vertical` → `deliverables/read_only_vertical.mp4`: 52.75 s (S34–S47), 1080×1920. Its SRT (now through S47) → `deliverables/read_only_vertical.srt`; the M7 one → `archive/deliverables/read_only_vertical_m7.srt`.
+- **Checked:** contact sheets of both (every 7.5 s and 5 s): the opener's caption and camera, the lobby screen, the total's label, the headstones, the disclosure over S45 (main) and S47 (vertical), the login prompt, S49, all five end card pages (60 interventions; the repository link). Logs `renders/final/assemble_{main,vertical}.log`.
+- **Review copies** (two-pass x264, 750 kb/s): `renders/review/m8_final_review_small.mp4`, `renders/review/m8_final_vertical_review_small.mp4`. Manifest updated.
+- **The M8 gate:** awaiting the human's approval (R1). Approving logs a 61st intervention; the end card would then read 60, one behind (re-render the card and re-assemble if wanted).
