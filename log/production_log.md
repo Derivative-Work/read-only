@@ -1866,3 +1866,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** 63 interventions.
 - **Reassembled:** `deliverables/read_only.mp4`, `deliverables/read_only_vertical.mp4` (SRTs unchanged); the v3 cuts → `archive/deliverables/*_m8_v3.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v4_review_small.mp4`, `renders/review/m8_final_v4_vertical_review_small.mp4`. Manifest updated.
 - **The M8 gate:** awaiting approval (R1). Approving logs a 64th intervention; the card would read 63.
+
+## 2026-11-03T10:15:00-05:00 — M8: S05's flicker (the shadow pool)
+- **The human (R1, human interventions, same date):** "visible flicker in the repair shop scene, likely z fighting".
+- **Found:** not z-fighting. A motion-compensated flicker check over S02–S17 (each frame against its warped neighbours) put flat-area flicker on S05's pillar and wall by the window; consecutive full-resolution crops showed patches of light switching frame to frame. Ray casts from S05's camera through the area found no coplanar surfaces within 3 mm. `renders/final/render.log` has Eevee's "Shadow buffer full, may result in missing shadows" (~4500 / 4096 pages) on every S05 frame and one S04 frame, and on no other Act 1 frame: each frame dropped different shadow tiles.
+- **Fix (`scenes/blender/animatic.py`):** the final look's `shadow_pool_size` 1024 → 2048 MB (the RTX 5090 has 32 GB). Frames that fit the old pool are unchanged.
+- **Re-rendered** S04–S05 at final (frames 927–1052, `--from 20.62 --to 25.84`, log `renders/final/render_s04_s05.log`): no overflow. S05's worst frame drops from 7245 flagged pixels to 456 (the check's noise floor from camera motion); the crops are steady. (A first launch before the setting was saved was stopped; its frames were overwritten.)
+- **End card:** 64 interventions.
+- **Reassembled:** both cuts (the vertical too: Act 2's rewind runs back through S05's frames). The v4 cuts → `archive/deliverables/*_m8_v4.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v5_review_small.mp4`, `renders/review/m8_final_v5_vertical_review_small.mp4`. SRTs unchanged. Manifest updated.
+- **The M8 gate:** awaiting approval (R1). Approving logs a 65th intervention; the card would read 64.

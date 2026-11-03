@@ -52,7 +52,9 @@ def build(size, samples, look="greybox", mb_steps=1):
         sc.render.motion_blur_shutter = gb.LOOK["motion_blur_shutter"]
         sc.eevee.motion_blur_steps = mb_steps
         sc.eevee.use_raytracing = True
-        sc.eevee.shadow_pool_size = "1024"
+        # 2 GB: at 1 GB, S05 (the Dev's shop, looking out) overflowed it (~4500 / 4096 pages, "Shadow buffer full"),
+        # dropping different shadow tiles every frame: the human saw flicker. Frames that fit are unchanged.
+        sc.eevee.shadow_pool_size = "2048"
         sc.eevee.volumetric_end = 120
     S = block.build()
     shots.light(S, final=look == "final")

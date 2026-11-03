@@ -337,3 +337,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "The Claude disclaimer at the end is occluding the tape recorder, and the "SEARCH" and "CHAT" trucks need to be brighter to read on mobile".
 - **Why:** The M8 gate.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: flicker in the repair shop — R1
+- **What:** "There's visible flicker in the repair shop scene, likely z fighting".
+- **Why:** The M8 gate.
+- **Rule:** R1.
