@@ -2055,3 +2055,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **F, the index:** a 4×2 grid of the seven close-ups with the waveform face among them, "WHO'S RAPPIN' THIS?".
   - S43 frame 6 is used for every man: all mid-word, none glitched. The v1 drafts of E and F → `archive/renders/m8/thumbs_v1/`: E's eyes band caught b mid-blink, F's waveform tile was frame 0 (it only tears), and F's headline hid the top row's mouths.
   - **Command:** `.venv/bin/python -I scripts/thumbnail_recast.py renders/m8/thumbs [--only ef]` → `renders/m8/thumbs/thumb_{d,e,f}.jpg` (1280×720), for the human to choose (R1).
+
+## 2026-11-03T14:50:00-05:00 — M8: final cuts v6 (the recast) in deliverables
+- `deliverables/read_only.mp4` (268.21 s, 1920×1080) and `deliverables/read_only_vertical.mp4` (52.75 s, 1080×1920), with the recast and its VHS transitions. The end card reads "Human interventions: 67, each logged" (checked on frame). The SRTs are unchanged from v5. Review copies: `renders/review/m8_final_v6_review_small.mp4` and `m8_final_v6_vertical_review_small.mp4`. Manifest updated.
+- **Open (R1):** the thumbnail (D, E or F, or the earlier A); D recommended.
