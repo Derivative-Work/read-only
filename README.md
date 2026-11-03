@@ -35,6 +35,7 @@ made in response.
   [Reference Guide](https://claude.ai/artifact/5KCzixyz4DRBiT9wqovwkW) that explains every reference.
 - [log/production_log.md](log/production_log.md): every action the agent took, with commands and outputs.
 - [log/human_interventions.md](log/human_interventions.md): every human action, with the rule that allowed it.
+- [docs/sources.md](docs/sources.md): every end-card claim with the source it was checked against.
 - [log/audits/](log/audits/README.md): the end-card fact check and the two outside audits, and how each flag was
   resolved.
 - [log/prompts/](log/prompts/): the prompts sent to Suno, FLUX.2, LTX-2.3 and the other models, and Suno's record of

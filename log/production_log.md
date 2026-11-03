@@ -2092,3 +2092,9 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
   The brief's headstone table is left as planned, as at M8: the fixes are recorded in the audits and in `docs/sources.md`.
 - **Release notes** drafted (scratchpad `release_notes.md`) for a draft v1.0 GitHub Release, as Not Yet's.
+
+## 2026-11-03T16:45:00-05:00 — Release: final cuts v7 (ReddPlanet's stone; the card at 68)
+- **Act 1:** S35–S39b re-rendered at final with the ReddPlanet stone fixed (`renders/final/fix_s39b/`, 502 frames: the S39b run, and `--from 125.92 --to 142.82`, log `renders/final/render_s35_s39a.log`). Diffed against `renders/final/act1/`, 228 frames change, in five runs (3454–3533, 3722–3734, 3771–3779, 3826–3954), at most 2,832 px a frame: the stone's date only. They were copied over `renders/final/act1/` (working frames, as S10 and S29 at M8). The check stills in `renders/final/fix_s39b_check/` show the stone nowhere in S39c–S39e.
+- **End card:** 68 interventions (`overlay_cues.py`; `renders/screens/end_card/` re-rendered).
+- **Assembled:** `renders/m8/read_only_v7.mp4` (268.21 s) and `renders/m8/read_only_vertical_v7.mp4` (52.75 s), log `renders/m8/final_v7.log`. The SRTs are byte-identical to the deliverables'. Checked on frame: "ReddPlanet / June 2023" in S35 and S39b, and the card reads "Human interventions: 68, each logged".
+- **Deliverables:** the v6 cuts → `archive/deliverables/*_m8_v6.mp4`, the v7 cuts → `deliverables/`, the v6 review copies → `archive/renders/review/`. New review copies: `renders/review/m8_final_v7_review_small.mp4`, `m8_final_v7_vertical_review_small.mp4`. Manifest updated. The release staging's `SHA256SUMS.txt` was regenerated; the main cut's hash matches the manifest.
