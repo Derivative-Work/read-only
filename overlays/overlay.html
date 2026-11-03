@@ -148,8 +148,9 @@ function counter(o, t) {
   const p = ease(clamp((t - o.on) / (o.land - o.on)));
   const v = t >= o.land ? o.value : Math.floor(o.value * (1 - Math.pow(1 - p, 3)));
   const w = 520 * u, x0 = (W - w) / 2, y0 = 70 * u;
-  panel(x0, y0, w, 170 * u, a);
+  panel(x0, y0, w, 200 * u, a);
   label("ACCOUNTS BANNED", x0 + 28 * u, y0 + 46 * u, a);
+  label("PER BOTDEFENSE'S SHUTDOWN POST, JULY 2023", x0 + 28 * u, y0 + 180 * u, a, P.dim, 18);  // M8: the source
   figure(v.toLocaleString("en-US"), x0 + w - 28 * u, y0 + 138 * u, a, 84, P.ui, "right");
   return true;
 }

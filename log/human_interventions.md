@@ -327,3 +327,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** On the final cut: "This is great, but it needs something along the lines of "AI generated satire. Not investment advice." at the beginning, likely in the same closed caption style".
 - **Why:** The M8 gate: the video opens with no disclaimer, and its subject includes Reddit's IPO and shares.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: the counter's source — R1
+- **What:** "Put the source in the "ACCOUNTS BANNED" counter".
+- **Why:** The M8 gate: the figure 144,926 appears on screen without its source.
+- **Rule:** R1.

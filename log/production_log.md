@@ -1850,3 +1850,11 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** the count is now 61 (this request); `overlay_cues.py`, `renders/screens/end_card/` re-rendered.
 - **Reassembled:** `deliverables/read_only.mp4` (268.21 s) and `deliverables/read_only_vertical.mp4` (52.75 s); the earlier M8 cuts → `archive/deliverables/*_m8_v1.mp4`, their review copies → `archive/renders/review/`. New review copies `renders/review/m8_final_v2_review_small.mp4`, `renders/review/m8_final_v2_vertical_review_small.mp4`. Manifest updated.
 - **The M8 gate:** awaiting approval (R1). Approving logs a 62nd intervention; the card would read 61.
+
+## 2026-11-03T07:20:00-05:00 — M8: the counter's source
+- **The human (R1, human interventions, same date):** the source in the ACCOUNTS BANNED counter.
+- **`overlays/overlay.html` `counter`:** the panel 30 px taller, "PER BOTDEFENSE'S SHUTDOWN POST, JULY 2023" under the figure (as the running total's "APOLLO'S ESTIMATE, PER YEAR"). `renders/overlays/act1/` re-rendered (443 frames).
+- **Vertical:** S35's pan (`config/reframe.json`) now ends at cx 0.52, not 0.6: the crop had cut the panel's left edge (already "NTS BANNED" before; now also the source). The panel needs cx 0.477–0.523 to fit the 9:16 crop. The opening notice moves to 0.33 of the height, below the taller panel. Trials `renders/final/out/read_only_vertical_v4.mp4`, `_v5.mp4` (v5 = the final v6, byte for byte).
+- **End card:** 62 interventions (`overlay_cues.py`, `renders/screens/end_card/` re-rendered).
+- **Reassembled:** `deliverables/read_only.mp4`, `deliverables/read_only_vertical.mp4` (SRTs unchanged); the v2 cuts → `archive/deliverables/*_m8_v2.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v3_review_small.mp4`, `renders/review/m8_final_v3_vertical_review_small.mp4`. Manifest updated.
+- **The M8 gate:** awaiting approval (R1). Approving logs a 63rd intervention; the card would read 62.

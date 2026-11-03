@@ -98,8 +98,8 @@ def vertical(a):
     fade = RF["fade_out_s"]
     act2 = a2.Act2(a.act1)
     act1 = Path(a.act1)
-    # the cut's own start (it's posted alone), below S34's ACCOUNTS BANNED counter (top left, to 0.27 of the height)
-    opening = [(t0 + 0.4, t0 + 0.4 + captions.OPENING_S, captions.OPENING, 0.30)]
+    # the cut's own start (it's posted alone), below S34's ACCOUNTS BANNED counter (top left, to 0.30 of the height with its source line)
+    opening = [(t0 + 0.4, t0 + 0.4 + captions.OPENING_S, captions.OPENING, 0.33)]
     cap = None if a.no_captions else captions.Captions((VW, VH), "vertical", notices=opening)
     order = list(SP)
     shots = order[order.index(RF["from"]):order.index(RF["to"]) + 1]
