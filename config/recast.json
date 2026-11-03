@@ -1,0 +1,24 @@
+{
+ "note": "M8 recast (2026-11-03, the human, R1: reviewers read the photoreal Verse 4 rapper as AI blackface; \"cuts rapidly between a number of different generated rappers of different ethnicities to emphasize the point that this is affecting everybody\"). scripts/recast.py repaints only the man's head, neck and hands in each approved keyframe (S41-S43) from another reference sheet (config/stills.json rapper_b..g), through a feathered mask, so the street, the light, the pose and the costume stay the approved frame's. Identity a is the approved rapper (sheet rapper_s1002) and keeps its approved takes. Each new keyframe then runs the approved V recipe (same control, seed and prompt, the man's description swapped), lip sync and glitch; the edit cuts between identities on the beat (cuts below, song seconds).",
+ "size": [1920, 1056],
+ "denoise": 0.95,
+ "seeds": [2001],
+ "identities": {
+  "a": {"sheet": "takes/stills/rapper/rapper_s1002.png", "desc": "a man about 30 years old with warm brown skin and short thick black curly hair"},
+  "b": {"sheet": "takes/stills/rapper_b/rapper_b_s1001.png", "desc": "an East Asian man about 45 years old with short straight black hair greying at the temples"},
+  "c": {"sheet": "takes/stills/rapper_c/rapper_c_s1001.png", "desc": "a South Asian man about 25 years old with medium-brown skin, short wavy black hair and light stubble"},
+  "d": {"sheet": "takes/stills/rapper_d/rapper_d_s1001.png", "desc": "a white man about 35 years old with pale freckled skin, short ginger hair and a short ginger beard"},
+  "e": {"sheet": "takes/stills/rapper_e/rapper_e_s1001.png", "desc": "a Latino man about 55 years old with tan skin, short salt-and-pepper hair and a trimmed grey mustache"},
+  "f": {"sheet": "takes/stills/rapper_f/rapper_f_s1001.png", "desc": "a Middle Eastern man about 30 years old with olive skin, short dark brown hair and a short neat dark beard"},
+  "g": {"sheet": "takes/stills/rapper_g/rapper_g_s1001.png", "desc": "a Pacific Islander man about 30 years old with deep tan skin and short black wavy hair"}
+ },
+ "prompt": "Reference image 1 is a photograph of a man rapping on a rainy San Francisco street corner at night. Keep the photograph exactly as it is: the same camera, framing, street, buildings, light and rain, the same body pose, the same teal hoodie with white drawstrings, tan canvas apron and leather tool belt. Only his head, face, hair, neck and hands change: he is now the man from reference image 2, {desc}, a real adult man with natural human proportions, with the same head position, the same expression and the same mouth shape as in reference image 1, mouth open mid-word, looking straight into the camera. Natural skin texture, raindrops on his face and hair, lit by the same cool white streetlight and colored neon as the rest of the photograph. No text, letters or logos.",
+ "shots": {
+  "S41": {"keyframe": "takes/keyframes/S41/S41_d96_s2002.png", "feather": 6,
+          "ellipses": [[960, 455, 58, 80]]},
+  "S42": {"keyframe": "takes/keyframes/S42/S42_s2003.png", "feather": 14,
+          "ellipses": [[965, 360, 150, 170], [815, 650, 75, 95], [1205, 650, 80, 95]]},
+  "S43": {"keyframe": "takes/keyframes/S43/S43_v4_s2002.png", "feather": 18,
+          "ellipses": [[945, 320, 265, 360]]}
+ }
+}

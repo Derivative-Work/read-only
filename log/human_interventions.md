@@ -342,3 +342,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "There's visible flicker in the repair shop scene, likely z fighting".
 - **Why:** The M8 gate.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: the Verse 4 rapper recast — R1
+- **What:** "After human review by others, the photoreal rapper at the end is being interpreted by some as AI blackface. Let's try a version where it cuts rapidly between a number of different generated rappers of different ethnicities to emphasize the point that this is affecting everybody", and then: "Make sure to keep the Black rapper in there as one of the faces that is swapped in".
+- **Why:** The M8 gate, after outside reviewers' reading of S41–S43.
+- **Rule:** R1.

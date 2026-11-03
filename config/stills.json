@@ -1,11 +1,69 @@
 {
  "note": "M5: reference sheets for the Act 2 performers (brief: \"Character stills: FLUX.2 via ComfyUI. Reference sheets for the Act 2 performers, kept consistent with the Act 1 designs\"). scripts/stills.py renders one candidate per seed; the human keeps one (R1). Characters are invented: no names, no likenesses (guardrails). The rapper is the Dev's Act 1 design made real (shots.py builds S41-S43's rapper from B.dev): brown skin, short black curly hair, a teal hoodie with white drawstrings, a tan canvas shop apron and a tool belt, jeans. Not a likeness of the Apollo developer (brief). No legible text or logos.",
- "model": {"unet": "flux2_dev_fp8mixed.safetensors", "clip": "mistral_3_small_flux2_fp4_mixed.safetensors", "vae": "flux2-vae.safetensors", "steps": 28, "guidance": 4.0, "sampler": "euler"},
- "seeds": [1001, 1002, 1003, 1004],
+ "model": {
+  "unet": "flux2_dev_fp8mixed.safetensors",
+  "clip": "mistral_3_small_flux2_fp4_mixed.safetensors",
+  "vae": "flux2-vae.safetensors",
+  "steps": 28,
+  "guidance": 4.0,
+  "sampler": "euler"
+ },
+ "seeds": [
+  1001,
+  1002,
+  1003,
+  1004
+ ],
  "items": {
   "rapper": {
-   "size": [1920, 1088],
+   "size": [
+    1920,
+    1088
+   ],
    "prompt": "Character reference sheet of one invented man, about 30 years old, with warm brown skin, short thick black curly hair, a clean-shaven face with a thin, slightly tired, knowing half-smile, dark eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_b": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented East Asian man, about 45 years old, with short straight black hair greying at the temples, a clean-shaven face with a thin, slightly tired, knowing half-smile, dark eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_c": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented South Asian man, about 25 years old, with medium-brown skin, short wavy black hair, light stubble and a thin, slightly tired, knowing half-smile, dark eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_d": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented white man, about 35 years old, with pale freckled skin, short ginger hair and a short ginger beard, a thin, slightly tired, knowing half-smile, blue-grey eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_e": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented Latino man, about 55 years old, with tan skin, short salt-and-pepper hair, a trimmed grey mustache and a thin, slightly tired, knowing half-smile, brown eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_f": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented Middle Eastern man, about 30 years old, with olive skin, short dark brown hair, a short neat dark beard and a thin, slightly tired, knowing half-smile, brown eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
+  },
+  "rapper_g": {
+   "size": [
+    1920,
+    1088
+   ],
+   "prompt": "Character reference sheet of one invented Pacific Islander man, about 30 years old, with deep tan skin, short black wavy hair, a broad clean-shaven face with a thin, slightly tired, knowing half-smile, dark eyes. He wears a teal pullover hoodie with white drawstrings, a tan canvas shop apron over it with a small chest pocket, a brown leather tool belt with a screwdriver and pliers at his hips, dark blue jeans and worn black sneakers. Four views of the same man side by side on a plain mid-gray studio backdrop: full body from the front, full body three-quarter view, full body side profile, and a head-and-shoulders close-up. Identical face, hair and clothes in every view. Soft, even studio light, photorealistic, natural skin texture, no text, no letters, no logos."
   }
- }
+ },
+ "note_m8_recast": "M8 (2026-11-03, the human, R1): reviewers read the photoreal Verse 4 rapper as AI blackface. The recast: Verse 4 cuts rapidly between generated rappers of different ethnicities, to say this affects everybody. rapper_b..rapper_g are six more invented men in the Dev's costume (the same teal hoodie, apron and tool belt), varied in age, with the same expression; only the face changes. The original sheet (rapper_s1002) stays one of the seven. Seeds 1001, 1002 each; the agent picks the one with the most consistent face across the four views."
 }

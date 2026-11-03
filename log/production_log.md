@@ -1875,3 +1875,29 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** 64 interventions.
 - **Reassembled:** both cuts (the vertical too: Act 2's rewind runs back through S05's frames). The v4 cuts → `archive/deliverables/*_m8_v4.mp4`, their review copies → `archive/renders/review/`. Review copies `renders/review/m8_final_v5_review_small.mp4`, `renders/review/m8_final_v5_vertical_review_small.mp4`. SRTs unchanged. Manifest updated.
 - **The M8 gate:** awaiting approval (R1). Approving logs a 65th intervention; the card would read 64.
+
+## 2026-11-03T12:05:04-05:00 — M5: reference sheets (rapper_b, rapper_c, rapper_d, rapper_e, rapper_f, rapper_g)
+
+- **Model:** FLUX.2 [dev] `flux2_dev_fp8mixed.safetensors`, text encoder `mistral_3_small_flux2_fp4_mixed.safetensors`, VAE `flux2-vae.safetensors`; 28 steps, euler, guidance 4.0; ComfyUI (`scripts/stills.py`, graph as the `image_flux2_fp8` template, text-to-image).
+- **Prompts:** `log/prompts/stills/<item>.txt`. **Inputs:** none (text only).
+- **Command:** `.venv/bin/python scripts/stills.py rapper_b rapper_c rapper_d rapper_e rapper_f rapper_g --seeds 1001,1002`
+
+| Item | Seed | Output | Seconds | Status |
+| --- | --- | --- | --- | --- |
+| rapper_b | 1001 | `takes/stills/rapper_b/rapper_b_s1001.png` | 65.2 | pending (R1) |
+| rapper_b | 1002 | `takes/stills/rapper_b/rapper_b_s1002.png` | 50.1 | pending (R1) |
+| rapper_c | 1001 | `takes/stills/rapper_c/rapper_c_s1001.png` | 51.1 | pending (R1) |
+| rapper_c | 1002 | `takes/stills/rapper_c/rapper_c_s1002.png` | 50.1 | pending (R1) |
+| rapper_d | 1001 | `takes/stills/rapper_d/rapper_d_s1001.png` | 51.1 | pending (R1) |
+| rapper_d | 1002 | `takes/stills/rapper_d/rapper_d_s1002.png` | 50.1 | pending (R1) |
+| rapper_e | 1001 | `takes/stills/rapper_e/rapper_e_s1001.png` | 51.1 | pending (R1) |
+| rapper_e | 1002 | `takes/stills/rapper_e/rapper_e_s1002.png` | 50.1 | pending (R1) |
+| rapper_f | 1001 | `takes/stills/rapper_f/rapper_f_s1001.png` | 51.1 | pending (R1) |
+| rapper_f | 1002 | `takes/stills/rapper_f/rapper_f_s1002.png` | 50.1 | pending (R1) |
+| rapper_g | 1001 | `takes/stills/rapper_g/rapper_g_s1001.png` | 51.1 | pending (R1) |
+| rapper_g | 1002 | `takes/stills/rapper_g/rapper_g_s1002.png` | 50.1 | pending (R1) |
+
+## 2026-11-03T12:20:00-05:00 — M8: the recast begins (S41–S43; the human's note, R1)
+- **Plan:** Verse 4's rapper (S41–S43, 156.91–163.77 s) cuts on the beat between seven invented men: the approved rapper (identity a, sheet `rapper_s1002`, kept as the human asked) and six new sheets (b East Asian, about 45; c South Asian, about 25; d white, about 35; e Latino, about 55; f Middle Eastern, about 30; g Pacific Islander, about 30). Everyone wears the Dev's costume and has the same expression, so only the face changes. The sheet prompts are the approved rapper's with the man's description swapped (`config/stills.json`).
+- **Sheets:** two seeds each (rows above). **Picks:** seed 1001 for all six: one face across the four views, and the costume matches.
+- **Method (new `scripts/recast.py`, `config/recast.json`):** the approved keyframes are repainted inside a feathered mask over the man's head, neck and hands only (FLUX.2 reference editing: ref 1 the keyframe, ref 2 the sheet, denoise 0.95). The street, light, pose and costume stay the approved frame's, so the cuts match. Then the approved V recipe per identity (same control video and seed, the man's description swapped in the prompt), lip sync, the face glitch and S41's reveal, and the edit cuts on the beat.
