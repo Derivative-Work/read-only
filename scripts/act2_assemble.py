@@ -37,7 +37,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 import animatic_assemble as aa  # noqa: E402
 
 FPS = aa.FPS
-W, H = 1280, 720
+W, H = 1280, 720  # the review cuts' size; scripts/assemble.py sets the final's (set_size); the effects' pixel
+                  # measures are at 720 lines, scaled by U
+U = 1.0
 ACT1 = Path("renders/m4/act1_v8/frames")
 TAKES = {"S41": "takes/fx/S41/S41_reveal.mp4", "S42": "takes/fx/S42/S42_glitch.mp4",
          "S43": "takes/fx/S43/S43_glitch.mp4", "S44": "takes/fx/S44/S44_billboard.mp4",
@@ -46,6 +48,17 @@ TAKES = {"S41": "takes/fx/S41/S41_reveal.mp4", "S42": "takes/fx/S42/S42_glitch.m
 LOGIN = Path("renders/screens/login_prompt")
 SCRATCH_STEM = "audio/stems/9 Other.wav"
 TAPE = Path("audio/sfx/tape_bed_s47_s49.wav")  # tape hiss and crackle from S47 (the recorder), easing up to S49 (M6)
+
+
+def set_size(w, h):
+    """M8: the frame size (the final is 1920x1080)."""
+    global W, H, U
+    W, H, U = w, h, h / 720
+
+
+def scan_rows():
+    """Every third line at 720 lines, at the current height (a 720-line tape's scan lines)."""
+    return np.nonzero(np.floor(np.arange(H) / U) % 3 == 0)[0]
 
 
 def scratch_curve(t0, t1):
@@ -80,28 +93,29 @@ def tracking(old, new, k, jolt, seed):
     rows = np.arange(H)[:, None, None]
     img = np.where(rows < yb, old, new)
     # the picture rolls a few lines on each stroke
-    img = np.roll(img, int(round(rng.normal(0, 6) * jolt)), axis=0)
+    img = np.roll(img, int(round(rng.normal(0, 6) * jolt * U)), axis=0)
     # the lines tear sideways: slow wobble in blocks, and a hard skew near the bar (the head switching)
-    blocks = np.repeat(rng.normal(0, 1, H // 4 + 1), 4)[:H]
-    near = np.exp(-((np.arange(H) - yb) / 55.0) ** 2)
-    off = blocks * 14 * amt + near * (60 + 50 * jolt) * (1 if seed % 2 else -1) * min(1.0, amt * 2)
+    bl = max(1, round(4 * U))
+    blocks = np.repeat(rng.normal(0, 1, H // bl + 1), bl)[:H]
+    near = np.exp(-((np.arange(H) - yb) / (55.0 * U)) ** 2)
+    off = (blocks * 14 * amt + near * (60 + 50 * jolt) * (1 if seed % 2 else -1) * min(1.0, amt * 2)) * U
     for y in np.nonzero(np.abs(off) >= 1)[0]:
         img[y] = np.roll(img[y], int(off[y]), axis=0)
     # the colour pulls apart and drains
-    sh = int(round(2 + 8 * amt))
+    sh = int(round((2 + 8 * amt) * U))
     img[..., 0] = np.roll(img[..., 0], sh, axis=1)
     img[..., 2] = np.roll(img[..., 2], -sh, axis=1)
     lum = img.mean(2, keepdims=True)
     img = lum + (img - lum) * (1 - 0.5 * amt)
     # the bar: a band of snow with white streaks, and snow through the rest in proportion
-    y0, y1 = max(0, yb - 38), min(H, yb + 38)
+    y0, y1 = max(0, yb - round(38 * U)), min(H, yb + round(38 * U))
     if y1 > y0:
         snow = rng.random((y1 - y0, W, 1)) * 255
         img[y0:y1] = img[y0:y1] * 0.25 + snow * 0.75
     streaks = (rng.random((H, 1, 1)) < 0.015 * amt) * (rng.random((H, W, 1)) < 0.35) * 255.0
     img = np.maximum(img, streaks)
     img = img * (1 - 0.18 * amt) + rng.random((H, W, 1)) * 255 * 0.18 * amt
-    img[::3] *= 1 - 0.25 * amt  # the scan lines show
+    img[scan_rows()] *= 1 - 0.25 * amt  # the scan lines show
     return img
 
 
@@ -116,6 +130,8 @@ def frames(path):
 
 def cover(img):
     h, w = img.shape[:2]
+    if (h, w) == (H, W):
+        return img
     s = max(W / w, H / h)
     r = cv2.resize(img, (round(w * s), round(h * s)), interpolation=cv2.INTER_LANCZOS4)
     y, x = (r.shape[0] - H) // 2, (r.shape[1] - W) // 2
@@ -124,7 +140,8 @@ def cover(img):
 
 def act1(f):
     have = ACT1 / f"f_{f:05d}.png"
-    return cv2.cvtColor(cv2.imread(str(have)), cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(cv2.imread(str(have)), cv2.COLOR_BGR2RGB)
+    return img if img.shape[:2] == (H, W) else cover(img)
 
 
 def rewind_look(img, k, rng):
@@ -133,17 +150,18 @@ def rewind_look(img, k, rng):
     lum = out.mean(2, keepdims=True)
     out = lum + (out - lum) * 0.6  # desaturated
     out = np.clip((out - 20) * 1.15, 0, 255)  # crushed
-    out[..., 0] = np.roll(out[..., 0], 4, axis=1)  # the channels pulled apart
-    out[..., 2] = np.roll(out[..., 2], -4, axis=1)
-    for y in range(0, H, 24):  # a little line jitter
-        out[y:y + 24] = np.roll(out[y:y + 24], int(rng.normal(0, 2.5)), axis=1)
-    band_y = int(H - (k * 37) % (H + 160)) - 80  # the tracking band rolling up
-    y0, y1 = max(0, band_y), min(H, band_y + 70)
+    out[..., 0] = np.roll(out[..., 0], round(4 * U), axis=1)  # the channels pulled apart
+    out[..., 2] = np.roll(out[..., 2], -round(4 * U), axis=1)
+    sl = round(24 * U)
+    for y in range(0, H, sl):  # a little line jitter
+        out[y:y + sl] = np.roll(out[y:y + sl], int(rng.normal(0, 2.5) * U), axis=1)
+    band_y = int(H - (k * 37 * U) % (H + 160 * U) - 80 * U)  # the tracking band rolling up
+    y0, y1 = max(0, band_y), min(H, band_y + round(70 * U))
     if y1 > y0:
         noise = rng.random((y1 - y0, W, 1)) * 255
         out[y0:y1] = out[y0:y1] * 0.35 + noise * 0.65
-        out[y0:y1] = np.roll(out[y0:y1], 30, axis=1)
-    out[::3] *= 0.72  # scan lines
+        out[y0:y1] = np.roll(out[y0:y1], round(30 * U), axis=1)
+    out[scan_rows()] *= 0.72  # scan lines
     return np.clip(out, 0, 255).astype(np.uint8)
 
 
@@ -179,7 +197,7 @@ class Act2:
             return rewind_look(act1(back[int(k * len(back) / (fb - hold))]), k, self.rng)
         if f >= F(self.cue["from"]):
             i = f - self.first
-            scr = cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB).astype(np.float32)
+            scr = cover(cv2.cvtColor(cv2.imread(str(LOGIN / f"f_{i + 1:04d}.png")), cv2.COLOR_BGR2RGB)).astype(np.float32)
             k = self.curve(f / FPS - aa.PRE)
             j = self.jolt(f / FPS - aa.PRE)
             if (k < 1 or j > 0.02) and f < F(SP["S48a"][1]):

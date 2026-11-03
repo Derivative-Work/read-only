@@ -45,7 +45,7 @@ import bookends_assemble as ba  # noqa: E402
 import captions  # noqa: E402
 
 FPS = aa.FPS
-W, H = ba.W, ba.H
+W, H = ba.W, ba.H  # set from the Act 1 frames' size (sizes(): the final's 1920x1080, the review cuts' 1280x720)
 OVERLAY = Path("renders/overlays/act1")
 S49 = Path("takes/fx/S49/S49_overlay.mp4")
 END_CARD = Path("renders/screens/end_card")
@@ -57,7 +57,17 @@ AMBIENCE, TAPE, CARDS = ba.AMBIENCE, ba.S49_FOLEY, ba.CARDS
 
 
 def read(p):
-    return cv2.cvtColor(cv2.imread(str(p)), cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(cv2.imread(str(p)), cv2.COLOR_BGR2RGB)
+    return img if img.shape[:2] == (H, W) else a2.cover(img)
+
+
+def sizes(act1):
+    """M8: the edit's frame size is the Act 1 render's; the opener, Act 2 and the cards follow it."""
+    global W, H
+    h, w = cv2.imread(str(min(Path(act1).glob("f_*.png")))).shape[:2]
+    W, H = w, h
+    ba.set_size(w, h)
+    a2.set_size(w, h)
 
 
 def with_overlay(img, f):
@@ -142,6 +152,7 @@ def main():
     a = ap.parse_args()
     if Path(a.out).exists():
         raise SystemExit(f"{a.out} exists: archive it first (never overwrite an asset)")
+    sizes(a.act1)
     if a.vertical:
         return vertical(a)
     SP, F = aa.spans(), aa.F

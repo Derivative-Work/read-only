@@ -1809,3 +1809,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
     - since then, with the lawsuit line rewritten;
     - notes: the conflict-of-interest line with Reddit's rationale and "Reviewed by Gemini and ChatGPT".
     The card is now drawn at 1920×1080 (laid out at 1280×720, scaled; `overlay_cues.py` size); a long source narrows its fact's column (TechCrunch; Bloomberg Law overlapped). Re-rendered `renders/screens/end_card/` (1009 frames). The intervention count, 59 now, is regenerated before the final assembly.
+
+## 2026-11-03T01:30:00-05:00 — M8: S49's notice; the final render started; the assembly at 1080p
+- **S49:** the overlay pass re-rendered with the new notice (`sign_matte.py -- S49 --own --subdir overlay --objects 'screen.phone_s49.face' 'eat.badge.exp'`, 192 frames), then `overlay_add.py S49 takes/fx/S49/S49_sign.mp4 --bloom 0 --bezel 9 --halo 30` → `takes/fx/S49/S49_overlay.mp4` ("when free access to the API ended" reads at the push's end). The M7 overlay and its audio copy → `archive/takes/S49_v8_fx_m7/`.
+- **Final render (running, background):** `animatic.py --profile final --look final`: the cut frame with `--mb-start` → `renders/final/act1_cut/` (done); the opener (frames 0–434) → `renders/final/preroll/`; Act 1 (436–4120) → `renders/final/act1/`; log `renders/final/render.log`.
+- **Assembly at the render's size:**
+  - `scripts/assemble.py` sizes the edit from the Act 1 frames (`sizes()`: 1920×1080 for the final; the M7 review frames still give 1280×720).
+  - `bookends_assemble.set_size()`: the camera UI, the photo viewer and the captions are drawn at 720-line measures scaled by `u()`.
+  - `act2_assemble.set_size()`: the rewind's and the tracking's pixel measures are scaled; scan lines are every third 720-line row; Act 2's takes, the login prompt and S49 are scaled to cover the frame (1280×704 and 1280×720 sources).
+  - End card frames are 1920×1080 (`overlay_cues.py`).
+- **Tested** over the M7 frames plus the new 1080p cut frame: 1080p sections at video 184–196 s (the disclosure over S45, above the lyric captions) and 211–232 s (the tracking into the login prompt, S49, the end card's credits with the link), and the vertical cut (52.75 s, S34–S47; the disclosure over S47's fitted frame and "THIS CALL WAS RECORDED."). All as intended.

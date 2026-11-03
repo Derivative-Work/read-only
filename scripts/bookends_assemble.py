@@ -30,7 +30,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 import animatic_assemble as aa  # noqa: E402
 
 FPS = aa.FPS
-W, H = 1280, 720
+W, H = 1280, 720  # the review cuts' size; scripts/assemble.py sets the final's (set_size): every pixel measure below
+                  # is drawn at 720 lines and scaled by u()
 FONT = "assets/fonts/Inter-Medium-flat.ttf"
 PLATE = "assets/real/plate.jpg"
 ACT1 = Path("renders/m4/act1_v8/frames")
@@ -42,8 +43,19 @@ CARDS_GAIN_DB = -4.0  # under reading: about -20 LUFS against the song's -16
 S01B = {"focus": 0.35, "thumb_in": 1.0, "tap": 1.7, "flash": 0.12, "review": 1.85}  # seconds into S01b
 
 
+def set_size(w, h):
+    """M8: the frame size (the final is 1920x1080); the drawing scales with the height."""
+    global W, H, _PHOTO
+    W, H, _PHOTO = w, h, None
+
+
+def u(v=1.0):
+    """v pixels at 720 lines, at the current frame height."""
+    return v * H / 720
+
+
 def font(px):
-    return ImageFont.truetype(FONT, px)
+    return ImageFont.truetype(FONT, round(u(px)))
 
 
 _PHOTO = None
@@ -58,7 +70,7 @@ def photo_review():
         base = Image.new("RGB", (W, H), (0, 0, 0))
         base.paste(im, ((W - im.width) // 2, (H - im.height) // 2))
         d = ImageDraw.Draw(base)
-        d.text((W / 2, 34), "Just now", font=font(24), fill=(240, 240, 240), anchor="mm")
+        d.text((W / 2, u(34)), "Just now", font=font(24), fill=(240, 240, 240), anchor="mm")
         _PHOTO = np.asarray(base)
     return _PHOTO
 
@@ -66,9 +78,10 @@ def photo_review():
 def thumb(d, x, y, press):
     """A toy thumb (Act 1's figures' style): a rounded skin-tone capsule from the lower right, a pale nail."""
     skin, shade, nail = (196, 140, 104), (168, 114, 84), (232, 196, 178)
-    d.rounded_rectangle([x - 40, y - 30 + press, x + 60, y + 400], 48, fill=shade)
-    d.rounded_rectangle([x - 48, y - 40 + press, x + 52, y + 400], 50, fill=skin)
-    d.rounded_rectangle([x - 26, y - 26 + press, x + 26, y + 26 + press], 20, fill=nail)
+    p = u(press)
+    d.rounded_rectangle([x - u(40), y - u(30) + p, x + u(60), y + u(400)], u(48), fill=shade)
+    d.rounded_rectangle([x - u(48), y - u(40) + p, x + u(52), y + u(400)], u(50), fill=skin)
+    d.rounded_rectangle([x - u(26), y - u(26) + p, x + u(26), y + u(26) + p], u(20), fill=nail)
 
 
 def camera_ui(frame, t):
@@ -77,34 +90,37 @@ def camera_ui(frame, t):
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)
     for k in (1, 2):  # thirds grid
-        d.line([(W * k / 3, 0), (W * k / 3, H)], fill=(255, 255, 255, 60), width=1)
-        d.line([(0, H * k / 3), (W, H * k / 3)], fill=(255, 255, 255, 60), width=1)
-    d.rectangle([0, 0, W, 56], fill=(0, 0, 0, 120))  # top bar: flash, a dot menu
-    d.polygon([(42, 12), (30, 31), (39, 31), (34, 45), (48, 24), (39, 24)], fill=(255, 255, 255, 230))  # the flash
+        d.line([(W * k / 3, 0), (W * k / 3, H)], fill=(255, 255, 255, 60), width=round(u(1)))
+        d.line([(0, H * k / 3), (W, H * k / 3)], fill=(255, 255, 255, 60), width=round(u(1)))
+    d.rectangle([0, 0, W, u(56)], fill=(0, 0, 0, 120))  # top bar: flash, a dot menu
+    d.polygon([(u(x), u(y)) for x, y in ((42, 12), (30, 31), (39, 31), (34, 45), (48, 24), (39, 24))],
+              fill=(255, 255, 255, 230))  # the flash
     for k in range(3):
-        d.ellipse([W - 52 + k * 10, 25, W - 46 + k * 10, 31], fill=(255, 255, 255, 230))
-    d.rectangle([0, H - 150, W, H], fill=(0, 0, 0, 130))  # bottom bar: last photo, shutter, switch
-    d.rounded_rectangle([90, H - 106, 150, H - 46], 10, fill=(70, 70, 72, 255), outline=(255, 255, 255, 200), width=2)
-    d.text((W / 2, H - 132), "Photo", font=font(20), fill=(255, 214, 90, 255), anchor="mm")
+        d.ellipse([W - u(52 - k * 10), u(25), W - u(46 - k * 10), u(31)], fill=(255, 255, 255, 230))
+    d.rectangle([0, H - u(150), W, H], fill=(0, 0, 0, 130))  # bottom bar: last photo, shutter, switch
+    d.rounded_rectangle([u(90), H - u(106), u(150), H - u(46)], u(10), fill=(70, 70, 72, 255),
+                        outline=(255, 255, 255, 200), width=round(u(2)))
+    d.text((W / 2, H - u(132)), "Photo", font=font(20), fill=(255, 214, 90, 255), anchor="mm")
     press = 6 if S01B["tap"] - 0.08 <= t <= S01B["tap"] + 0.1 else 0
-    cx, cy, r = W / 2, H - 70, 40
-    d.ellipse([cx - r - 8, cy - r - 8, cx + r + 8, cy + r + 8], outline=(255, 255, 255, 255), width=5)
-    d.ellipse([cx - r + press, cy - r + press, cx + r - press, cy + r - press], fill=(255, 255, 255, 255))
-    d.ellipse([W - 150, H - 100, W - 98, H - 48], outline=(255, 255, 255, 200), width=3)
+    cx, cy, r, pr = W / 2, H - u(70), u(40), u(press)
+    d.ellipse([cx - r - u(8), cy - r - u(8), cx + r + u(8), cy + r + u(8)], outline=(255, 255, 255, 255),
+              width=round(u(5)))
+    d.ellipse([cx - r + pr, cy - r + pr, cx + r - pr, cy + r - pr], fill=(255, 255, 255, 255))
+    d.ellipse([W - u(150), H - u(100), W - u(98), H - u(48)], outline=(255, 255, 255, 200), width=round(u(3)))
     if t >= S01B["focus"]:  # the focus box settling on the plate
         k = min(1.0, (t - S01B["focus"]) / 0.3)
-        s = 120 - 30 * k
+        s = u(120 - 30 * k)
         fx, fy = W * 0.52, H * 0.42
         for (ax, ay) in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
             x0, y0 = fx + ax * s, fy + ay * s
-            d.line([(x0, y0), (x0 - ax * 26, y0)], fill=(255, 214, 90, 255), width=3)
-            d.line([(x0, y0), (x0, y0 - ay * 26)], fill=(255, 214, 90, 255), width=3)
+            d.line([(x0, y0), (x0 - ax * u(26), y0)], fill=(255, 214, 90, 255), width=round(u(3)))
+            d.line([(x0, y0), (x0, y0 - ay * u(26))], fill=(255, 214, 90, 255), width=round(u(3)))
     if t >= S01B["thumb_in"]:  # the thumb: in from the lower right, onto the shutter, back out
         a = min(1.0, (t - S01B["thumb_in"]) / (S01B["tap"] - S01B["thumb_in"]))
         a = a * a * (3 - 2 * a)
         out = max(0.0, (t - S01B["tap"] - 0.12) / 0.25)
-        tx = cx + (1 - a) * 420 + out * 380
-        ty = cy + (1 - a) * 260 + out * 240 - 8
+        tx = cx + u((1 - a) * 420 + out * 380)
+        ty = cy + u((1 - a) * 260 + out * 240 - 8)
         thumb(d, tx, ty, press)
     im = Image.alpha_composite(im, ov).convert("RGB")
     return np.asarray(im)
@@ -131,9 +147,9 @@ def caption(frame, t, t0, t1, text="San Francisco, 2018"):
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)
     sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(sh).text((64, H - 80), text, font=font(34), fill=(0, 0, 0, int(160 * a)))
-    ov = Image.alpha_composite(ov, sh.filter(ImageFilter.GaussianBlur(3)))
-    ImageDraw.Draw(ov).text((62, H - 82), text, font=font(34), fill=(255, 255, 255, int(255 * a)))
+    ImageDraw.Draw(sh).text((u(64), H - u(80)), text, font=font(34), fill=(0, 0, 0, int(160 * a)))
+    ov = Image.alpha_composite(ov, sh.filter(ImageFilter.GaussianBlur(u(3))))
+    ImageDraw.Draw(ov).text((u(62), H - u(82)), text, font=font(34), fill=(255, 255, 255, int(255 * a)))
     return np.asarray(Image.alpha_composite(im, ov).convert("RGB"))
 
 
