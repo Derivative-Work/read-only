@@ -2046,3 +2046,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   Every style adds chroma split and desaturation, strongest at the cut. Seeded per frame. Config `config/recast.json` `switch`.
 - **Checked:** every transition's four frames on a contact sheet, four at full size.
 - **Outputs:** `renders/m8/act2_recast_v4.mp4`, `renders/review/m8_recast_v4_verse4.mp4`, and the full cuts `renders/m8/read_only_recast_v2.mp4` and `renders/m8/read_only_vertical_recast_v2.mp4`, with review copies `renders/review/m8_recast_v2_*review_small.mp4`. The v1 cuts are kept in `renders/m8/` for comparison. `deliverables/` is unchanged until the recast is approved. 66 interventions are now logged.
+
+## 2026-11-03T14:30:00-05:00 — M8: the recast approved; thumbnail options for the recast
+- **Approved** (human interventions, same date, R1): the recast v2 cuts ("passes human review"). The v5 deliverables → `archive/deliverables/*_m8_v5.mp4`, and their review copies → `archive/renders/review/`. The end card now counts 67 interventions (`overlay_cues.py`; `renders/screens/end_card/` re-rendered). Both cuts were reassembled into `deliverables/` with it (log `renders/m8/final_v6.log`).
+- **Thumbnails (new `scripts/thumbnail_recast.py`, the human: "Suggest new thumbnails with the edit in mind"):** the approved B (S42's waveform face on the approved rapper alone) predates the recast. Three options, in the captions' type and on tape stills:
+  - **D, the lineup:** the seven men in S42's medium shot side by side, "I'M THE BOT".
+  - **E, the splice:** one S43 close-up made of three men in bands (d's hair and brow, f's eyes, a's nose and mouth), joined by VHS tracking bars, "WHICH ONE'S SINGING NOW?".
+  - **F, the index:** a 4×2 grid of the seven close-ups with the waveform face among them, "WHO'S RAPPIN' THIS?".
+  - S43 frame 6 is used for every man: all mid-word, none glitched. The v1 drafts of E and F → `archive/renders/m8/thumbs_v1/`: E's eyes band caught b mid-blink, F's waveform tile was frame 0 (it only tears), and F's headline hid the top row's mouths.
+  - **Command:** `.venv/bin/python -I scripts/thumbnail_recast.py renders/m8/thumbs [--only ef]` → `renders/m8/thumbs/thumb_{d,e,f}.jpg` (1280×720), for the human to choose (R1).

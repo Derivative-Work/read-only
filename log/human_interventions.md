@@ -352,3 +352,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "Hm add VHS and similar era appropriate glitch transitions between the faces (masked to just the parts that change)".
 - **Why:** The M8 gate, on the recast v1 cuts.
 - **Rule:** R1.
+
+## 2026-11-03 — M8: the recast approved — R1
+- **What:** "*Much* better, and it passes human review. Suggest new thumbnails with the edit in mind".
+- **Why:** The M8 gate, on the recast v2 cuts (VHS transitions between the faces), after outside review.
+- **Rule:** R1. The recast v2 cuts become the deliverables.
