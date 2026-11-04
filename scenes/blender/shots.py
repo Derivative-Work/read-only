@@ -615,19 +615,27 @@ def stage(S):
     gb.keys(S["brickwall"], "scale", [(0, 0.0), (F(a), 0.0), (F(b), 1.0)], index=2)
     cam("S24", [(0, (9, 1.0, 1.7), (9, 10.5, 1.6)), (1, (9, 2.5, 1.7), (9, 10.5, 1.6))], lens=30)
     # S25 (2 s, "so I sold 'em the whole lot"): the CEO has stepped out of the little door, which stands open behind
-    # him. Face to face, seen side-on: the VIP bot holds out the briefcase on its raised arm, the CEO takes it in his
-    # left hand and holds out the keys in his right; the bot takes the keys and lowers its arm. Hard stop.
+    # them. Side by side, each turned toward the other and toward the camera (seen side-on, face to face, the bot
+    # was cut off at the frame's edge and the exchange didn't read: the human, on the final cut, "face them towards the camera"): the VIP bot holds out the briefcase
+    # on its raised arm, the CEO takes it in his left hand and holds out the keys in his right; the bot takes the keys
+    # and lowers its arm. Hard stop.
     a, b = SP["S25"]
     gb.keys(S["littledoor"], "rotation_euler", [(F(a) - 1, 0.0, "CONSTANT"), (F(a), -1.9, "CONSTANT")], index=2)
     for o in (S["littledoor"], S["littlehole"]):
         gb.show_from(o, SP["S24"][0])  # they belong to the wall: unseen until the wall goes up
-    c25 = only(B.ceo((9.8, 9.3, 0.16), name="ceo25"), "S25")
-    v25 = only(B.vip((9.8, 8.0, 0.16), 30, rot_z=math.pi), "S25")
+    # the camera is v7's, looking down the sidewalk with the wall on the right and the night street on the left (a
+    # frontal camera lost the street and read as daytime: the human, "doesn't convey 'shady night deal'"); they stand
+    # across its view, each facing it (PHI) turned TURN toward the other: the bot by the wall, past the little door,
+    # the CEO on its arm side (its -x), toward the street
+    PHI, TURN, MID = math.pi / 2, 0.6, (10.35, 8.8)
+    lat = (math.cos(PHI), math.sin(PHI))
+    c25 = only(B.ceo((MID[0] - 0.75 * lat[0], MID[1] - 0.75 * lat[1], 0.16), name="ceo25", rot_z=PHI + TURN), "S25")
+    v25 = only(B.vip((MID[0] + 0.75 * lat[0], MID[1] + 0.75 * lat[1], 0.16), 30, rot_z=PHI - TURN), "S25")
     for n in ("vip30.case", "vip30.latch-1", "vip30.latch1"):  # its own case at its side: this one is the deal's
         o = bpy.data.objects.get(n)
         if o:
             o.data = bpy.data.meshes.new(f"{n}.none")
-    arm = bpy.data.objects.get("vip30.arm-1")  # the camera side (the bot faces +Y)
+    arm = bpy.data.objects.get("vip30.arm-1")  # the CEO's side
     if arm:  # pivot at the shoulder; raised to hold the case out, lowered once it has the keys
         top = max(v.co.z for v in arm.data.vertices)
         arm.data = arm.data.copy()
@@ -639,24 +647,26 @@ def stage(S):
     # the shoulder from the bot's own placement (its matrix_world isn't evaluated yet here: it read as the origin)
     from mathutils import Matrix, Vector
     sh = Vector(v25.location) + Matrix.Rotation(v25.rotation_euler.z, 3, "Z") @ Vector(arm.location)
-    def vhand(rx):  # the bot's hand (the arm's lower end), for the arm raised rx
+    def vhand(rx):  # the bot's hand (the arm's lower end), for the arm raised rx, turned with the bot
         L = 0.62
-        return (sh.x, sh.y + L * math.sin(-rx), sh.z - L * math.cos(rx))
+        d = Matrix.Rotation(v25.rotation_euler.z, 3, "Z") @ Vector((0.0, L * math.sin(rx), -L * math.cos(rx)))
+        return tuple(sh + d)
     hr = bpy.data.objects.get("ceo25.hand1")
     hl = bpy.data.objects.get("ceo25.hand-1")
     pr = hr.matrix_world.translation.copy() if hr else (10.0, 8.88, 1.3)
     pl = hl.matrix_world.translation.copy() if hl else (9.6, 8.92, 1.1)
     up, down = vhand(-1.1), vhand(-0.3)
     case = only(gb.box("case25", (9.8, 8.6, 0.9), (0.4, 0.1, 0.3), B.M("ink")), "S25")
-    case.rotation_euler.z = math.pi / 2  # its long side along the line between them, so the side camera sees it
+    case.rotation_euler.z = math.pi / 2  # its broad side to the camera, which looks along -x
     gb.key_vec(case, "location", [(F(a), (up[0], up[1], up[2] - 0.17)), (F(a + 0.35), (up[0], up[1], up[2] - 0.17)),
                                   (F(a + 0.8), (pl[0], pl[1], pl[2] - 0.17)), (F(b) + 2, (pl[0], pl[1], pl[2] - 0.17))],
                interp="BEZIER")
     keys25 = only(gb.box("keys25", (0, 0, 0), (0.1, 0.02, 0.2), B.M("gold")), "S25")
+    keys25.rotation_euler.z = math.pi / 2  # the ring and keys face-on to the camera
     gb.key_vec(keys25, "location", [(F(a), (pr[0], pr[1], pr[2] - 0.1)), (F(a + 0.85), (pr[0], pr[1], pr[2] - 0.1)),
                                     (F(a + 1.3), (up[0], up[1], up[2] - 0.1)), (F(a + 1.45), (up[0], up[1], up[2] - 0.1)),
                                     (F(a + 1.85), (down[0], down[1], down[2] - 0.1))], interp="BEZIER")
-    cam("S25", [(0, (13.4, 8.45, 1.45), (9.8, 8.7, 1.0)), (1, (12.8, 8.5, 1.4), (9.8, 8.7, 1.0))], lens=35)
+    cam("S25", [(0, (13.9, 8.55, 1.3), (10.35, 8.85, 1.15)), (1, (13.4, 8.6, 1.25), (10.35, 8.85, 1.15))], lens=32)
 
     # ---- hook 2 (S26): S14-S17's cameras, padlocked and "under new management"; per line of the hook
     lines = [ln for ln in TM["lines"] if ln["section"] == "Hook 2"]
@@ -771,14 +781,17 @@ def stage(S):
     # 1.2 s, as a stretch; as a roll paying out it reads at 1.5)
     gb.keys(S["banner"], "scale", UNROLL, index=2)
     gb.keys(S["ticker"], '["on"]', [(0, 0.0, "CONSTANT"), (F(a + 0.4), 1.0, "CONSTANT")], interp="CONSTANT")
-    gb.text("banner.t", "IPO", 1.5, B.M("ink"), (B.LOBBY_DOOR_X, 10.5 - 2.6, 5.6), facing="-Y")
+    # in the sheet's upper half (it was at 5.6, in the frame's bottom fifth, under the captions: the human, on the
+    # final cut, "the 'IPO' banner is covered by the closed captions")
+    gb.text("banner.t", "IPO", 1.5, B.M("ink"), (B.LOBBY_DOOR_X, 10.5 - 2.6, 6.4), facing="-Y")
     ipo = bpy.data.objects["banner.t"]
     only(ipo, "S30", t1=TM["duration_s"])
     # printed on the banner, revealed as the roll passes it (props.banner_roll): it used to be parented to the banner
     # and squashed with it, so the banner read as a blind stretching, not a roll paying out (the human, on the M7
     # cut: "the 'IPO' doesn't look like it's rolling out"); before that it hung in the air (the human, M4 v6)
     S["banner_unroll"] = UNROLL
-    cam("S30", [(0, (10, -3.5, 1.8), (12, 9, 10.2)), (1, (9, -5.0, 1.6), (9, 9, 13.0))], lens=24)
+    # aimed lower than at v7 (targets z 10.2 and 13.0; now 9.0 and 10.6), so the banner stays above the captions to the end
+    cam("S30", [(0, (10, -3.5, 1.8), (12, 9, 9.0)), (1, (9, -5.0, 1.6), (9, 9, 10.6))], lens=24)
     # S31: the notes are on PAWN's shutter (down since S14) at eye height, close enough to read; they hold 1.2 s,
     # peel one at a time 0.22 s apart and arc into the funnel on the truck in the near lane, the camera following;
     # then up to the billboard, zooming in so its line reads

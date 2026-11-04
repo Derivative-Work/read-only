@@ -2114,3 +2114,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - upload to YouTube with `METADATA.md`;
   - fill in the links (README, METADATA's vertical footer, the release notes);
   - make the repository public and publish the release.
+
+## 2026-11-03T20:20:00-05:00 — Release: final cuts v8 (S30's IPO clear of the captions; S25 faces the camera)
+- **The human's notes (R1, logged):** S30's "IPO" was under the captions; S25's exchange didn't read ("face them towards the camera"). A first restaging of S25, with a frontal camera on the wall, lost the night street; the human: it "doesn't convey 'shady night deal'".
+- **S30** (`scenes/blender/shots.py`): the lettering moved up the banner from z 5.6 to 6.4. The camera is aimed lower, at targets z 9.0 and 10.6 instead of 10.2 and 13.0, so the banner stays in the frame's upper four-fifths, clear of the captions, through the shot. This was checked on stills against the caption band.
+- **S25:** v7's camera axis is kept: down the sidewalk, the wall on the right and the night street on the left (`(13.9, 8.55, 1.3)` → `(13.4, 8.6, 1.25)`, lens 32). The CEO and the bot now stand across its view, each facing it and turned 0.6 rad toward the other: the bot by the wall, the CEO on its arm side toward the street. The bot's hand is computed with its turn, and the briefcase and keys are face-on to the camera.
+- **Renders:** `renders/final/fix_s25_s30/` (S25, S30, S31; logs `renders/final/render_s25.log`, `render_s30.log`, `render_s31.log`). A probe of every 12th frame from S31 to the end of Act 1 (`renders/final/fix_s25_s30_probe/`) changes by at most one level out of 255 outside S31, which is noise. Frames whose change exceeded that were copied over `renders/final/act1/`: 223 frames, in three runs (2535–2582, S25; 3023–3155, S30; 3222–3263, S31 where the banner is in view).
+- **End card:** 70 interventions (`overlay_cues.py`; `renders/screens/end_card/` re-rendered; checked on frame).
+- **Assembled:** `renders/m8/read_only_v8.mp4` (268.21 s) and `renders/m8/read_only_vertical_v8.mp4` (52.75 s), log `renders/m8/final_v8.log`. The SRTs are byte-identical to the deliverables'.
+- **Deliverables:** the v7 cuts → `archive/deliverables/*_m8_v7.mp4`, the v8 cuts → `deliverables/`, the v7 review copies → `archive/renders/review/`. New review copies: `renders/review/m8_final_v8_review_small.mp4`, `m8_final_v8_vertical_review_small.mp4`. Manifest updated.
+- **Draft release v1.0:** both cuts and `SHA256SUMS.txt` replaced (`gh release upload --clobber`). GitHub's digests match the local files.

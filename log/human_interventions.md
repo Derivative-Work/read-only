@@ -362,3 +362,13 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "Let's do D. I'm planning on publishing this tomorrow morning, so check the facts and prepare the repo much like the others".
 - **Why:** The M8 gate: the thumbnail options for the recast (D, the lineup; E, the splice; F, the index; or the earlier A). Release planned for the morning of 2026-11-04.
 - **Rule:** R1.
+
+## 2026-11-03 — Release: the IPO banner and S25's exchange — R1
+- **What:** "hm two last things: * the "IPO" banner is covered by the closed captions * the key exchange is not reading correctly -- face them towards the camera".
+- **Why:** Review of the final v7 cut: in S30 the banner's "IPO" sat in the frame's bottom fifth, under the captions; in S25 the exchange was seen side-on, with the bot cut off at the frame's edge.
+- **Rule:** R1 (reject, with notes).
+
+## 2026-11-03 — Release: S25's mood — R1
+- **What:** "that shot of S25 doesn't convey "shady night deal" quite as well as the previous version though".
+- **Why:** On the agent's first restaging of S25 (a frontal camera facing the wall).
+- **Rule:** R1 (reject, with notes).
