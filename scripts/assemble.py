@@ -9,8 +9,9 @@ Picture, by video frame (song time t is at video time PRE + t; timing/timing_map
   overlay (renders/overlays/act1, 1080p RGBA, scaled), as the M4 cut; over S02's start the timecard "Five years later"
   (TIMECARD), set like S01a's location caption.
 - S40-S48b: Act 2 (act2_assemble.Act2: the rewind from the same Act 1 frames, the takes, the login prompt).
-- S49: the photoreal take with its sign and screen (takes/fx/S49/S49_overlay.mp4), scaled to cover the frame like
-  Act 2's takes (the M6 cut stretched its 1280x704 to 720 high; this crops 8 px top and bottom instead).
+- S49: the photoreal take with its sign and screen, its push at twice the speed and then a zoom held on the phone's
+  notice (takes/fx/S49/S49_hold.mp4, scripts/s49_hold.py: 1920x1080; the approved overlay comp,
+  takes/fx/S49/S49_overlay.mp4, scaled to cover the frame, before the human's note on the v8 cut).
 - S50: the end card (renders/screens/end_card).
 - Captions over all of it (scripts/captions.py: closed captions as a VCR taped them), but not over the end card.
 
@@ -47,7 +48,7 @@ import captions  # noqa: E402
 FPS = aa.FPS
 W, H = ba.W, ba.H  # set from the Act 1 frames' size (sizes(): the final's 1920x1080, the review cuts' 1280x720)
 OVERLAY = Path("renders/overlays/act1")
-S49 = Path("takes/fx/S49/S49_overlay.mp4")
+S49 = Path("takes/fx/S49/S49_hold.mp4")  # was S49_overlay.mp4 until v8
 END_CARD = Path("renders/screens/end_card")
 # the time jump at the cut (the human, on the M7 cut: 'This needs a "five years later" or similar at the cut to the start
 # of the music'): the opener is 2018 (S01a's "San Francisco, 2018"), the song 2023; set as S01a's caption is (lower

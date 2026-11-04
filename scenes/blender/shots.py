@@ -285,13 +285,25 @@ def stage(S):
         gb.keys(part, "hide_render", [(0, 0.0, "CONSTANT"), (F(a), 1.0, "CONSTANT"), (F(b), 0.0, "CONSTANT")],
                 interp="CONSTANT")
     cam("S01b", [(0, (tx + 0.05, ty - 0.46, tz + 0.33), (tx + 0.08, ty - 0.08, tz))], lens=26)
-    cam("S01c", [(0, (tx + 0.25, ty - 0.55, tz + 0.45), (tx, ty - 0.1, tz)),
-                 (1, (tx - 0.35, ty - 0.4, tz + 0.35), (tx - 0.22, ty + 0.12, tz))], lens=35)
+    # S01c: close on the badge, then a quick move to the schedule and a long hold on it, each square to the camera and
+    # big enough to read on a phone (the human, on the v8 cut: "the bookends need to zoom in and hold on the phone and
+    # schedule more so that they are legible on mobile -- it's okay if the camera moves to get there faster"). It
+    # drifted across the whole table for 4 s and ended with the schedule a third of the frame. The badge lies at
+    # (tx - 0.29, ty - 0.02) turned 0.18 rad, the schedule's rows centre on (tx - 0.193, ty + 0.16) turned -0.22 rad
+    # (props.bookend_props): each camera sits back along the print's own "down" so the text runs level.
+    def over(c, turn, back, up):
+        d = (-math.sin(turn), math.cos(turn))  # the print's "up" on the table
+        return (c[0] - back * d[0], c[1] - back * d[1], tz + up), (c[0], c[1], tz + 0.003)
+    bdg = over((tx - 0.29, ty - 0.02), 0.18, 0.07, 0.25)
+    sch = over((tx - 0.193, ty + 0.16), -0.22, 0.12, 0.40)
+    cam("S01c", [(0, *bdg), (0.3, *bdg), (0.42, *sch), (1, sch[0], sch[1])], lens=50)
     # S01d: the phone in hand, seen down its screen's normal (the screen faces local -Y; the phone is tilted -35
     # degrees about X), close enough that it fills most of the frame; the hand lowers it to pocket at the end
     n = (0.0, -math.cos(math.radians(35)), math.sin(math.radians(35)))
-    eye = tuple(h + 0.42 * k for h, k in zip(held, n))
-    cam("S01d", [(0, eye, held), (0.8, (eye[0], eye[1] - 0.02, eye[2] + 0.01), held),
+    # closer than at v8 (0.42 m; the screen two-thirds of the frame's height), so the thread reads on a phone, and
+    # held until the hand pockets it (the human, on the v8 cut)
+    eye = tuple(h + 0.3 * k for h, k in zip(held, n))
+    cam("S01d", [(0, eye, held), (0.84, eye, held),
                  (1, (eye[0], eye[1] - 0.05, eye[2] + 0.03), (held[0] - 0.1, held[1] - 0.1, held[2] - 0.12))], lens=40)
 
     # lobby screen and rooftop billboard: one text object per shot that shows something
@@ -867,7 +879,8 @@ def stage(S):
     a, b = SP["S39a"]
     for k, n in enumerate(S["notes"]):
         during(n, a + 0.15 + k * (b - a - 0.6) / 10, 1e5)
-    cam("S39a", [(0, (-21, 12.2, 1.0), (-21, 13.8, 0.7)), (1, (-21, 9.5, 6.0), (-21, 20, 0.5))], lens=30)
+    # it opens higher, looking down into the box, so the tiny bot reads (it opened at z 1.0, level with the rim)
+    cam("S39a", [(0, (-21, 12.5, 1.45), (-21, 13.85, 0.68)), (1, (-21, 9.5, 6.0), (-21, 20, 0.5))], lens=30)
     st = S["stones"]
     cam("S39b", [(0, (-31.3, 16.6, 1.3), (-29.7, 18.8, 0.7)), (1, (-28.3, 16.6, 1.3), (-26.5, 18.8, 0.7))], lens=26)
     cam("S39c", [(0, (-28.0, 18.4, 2.4), (-28.0, 21.0, 0.7)), (0.45, (-27.6, 18.4, 2.4), (-28.0, 21.0, 0.7)),

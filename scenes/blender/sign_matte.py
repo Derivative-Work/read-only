@@ -11,7 +11,8 @@ alpha = coverage).
 
 --own keeps the kept objects' own materials and the look's view transform (an overlay pass: S48's signs, neon,
 keypad screens and REC lights in their Act 1 colours, to lay over the take). --objects takes glob patterns.
---subdir names the output folder (default sign).
+--subdir names the output folder (default sign). --frames renders only those frames; --scale multiplies the
+resolution (S49's hold: the last frame at 3x, so the notice stays sharp under the hold's zoom).
 
 Usage: blender -b --factory-startup --python scenes/blender/sign_matte.py -- S41 [--objects shop0.sign]
        blender -b --factory-startup --python scenes/blender/sign_matte.py -- S45 --materials int.atlas.shops
@@ -65,8 +66,10 @@ def main():
     ap.add_argument("--own", action="store_true")
     ap.add_argument("--subdir", default="sign")
     ap.add_argument("--out", default=str(ROOT / "renders/m5/plates"))
+    ap.add_argument("--frames", nargs="+", type=int)
+    ap.add_argument("--scale", type=int, default=1)
     a = ap.parse_args(sys.argv[sys.argv.index("--") + 1:])
-    sc, SP = animatic.build(tuple(VCFG["size"]), 16, "final", 1)
+    sc, SP = animatic.build(tuple(v * a.scale for v in VCFG["size"]), 16, "final", 1)
     sc.render.film_transparent = True
     sc.render.use_motion_blur = False
     if not a.own:
@@ -104,7 +107,7 @@ def main():
         t0, t1 = SP[sid]
         out = Path(a.out) / sid / a.subdir
         out.mkdir(parents=True, exist_ok=True)
-        for f in range(gb.F(t0), gb.F(t1)):
+        for f in (a.frames or range(gb.F(t0), gb.F(t1))):
             sc.frame_set(f)
             sc.render.filepath = str(out / f"{f:05d}.png")
             bpy.ops.render.render(write_still=True)

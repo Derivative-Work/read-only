@@ -558,7 +558,10 @@ def vehicle(name, L, W, H, colour, kind="van", front=-1, open_side=False, roof_h
         for s in (-1, 1):
             m.cyl((x, s * (W / 2 - 0.12), g + wr), wr, 0.26, tyre, axis="Y", n=20)
             m.cyl((x, s * (W / 2 - 0.0), g + wr), wr * 0.55, 0.02, rim, axis="Y", n=16)
-            m.box((x, s * (W / 2 + 0.01), g + wr + 0.08), (wr * 2.4, 0.04, wr * 1.3), trim)  # the wheel arch
+            # the wheel arch: a fender lip curving over the tyre (a flat block over the wheel's top read as a
+            # rectangle on the wheel: the human, on the v8 cut)
+            m.torus((x, s * (W / 2 + 0.02), g + wr), wr * 1.14, 0.045, trim, rot=(math.pi / 2, 0, 0), n=14, k=6,
+                    arc=math.pi)
     for x in (nose_x, -nose_x):
         m.box((x, 0, g + clear + 0.05), (0.12, W + 0.04, 0.22), trim, bevel=0.03)
     for s in (-1, 1):
@@ -675,23 +678,40 @@ def briefcase():
 
 def keys25():
     """S25: the keys the CEO hands back, oversized (it's a cartoon deal; at 720p, side-on, real ones are a few pixels):
-    a ring, three keys of different cuts hanging from it, and a brass tag."""
+    a ring, three keys of different cuts hanging from it, and a brass tag on its own small ring. Each key is built
+    along its own hanging line from the ring (bow over the ring's wire, shaft, bit and teeth on the shaft's side), so
+    nothing floats free (the human, on the v8 cut: "the keys are disjoint": the teeth were placed off the shaft and
+    the tag hung beside the ring)."""
     o = obj("keys25")
     if not o:
         return
     brass = mat("keys.brass", gb.LOOK["palette"]["gold"], metal=0.9, rough=0.25)
     steel = mat("keys.steel", "#b8bcc2", metal=0.9, rough=0.3)
     m = mk.MK()
-    m.torus((0, 0, 0.06), 0.045, 0.006, steel, rot=(math.pi / 2, 0, 0), n=24, k=8)  # the ring, face to the side
-    for k, (dx, ang, mt) in enumerate(((-0.03, 0.35, brass), (0.0, 0.0, steel), (0.03, -0.35, brass))):
-        c = (dx, 0, -0.02)
-        rot = (0, ang, 0)
-        m.torus((dx + 0.02 * math.sin(ang), 0, 0.02), 0.022, 0.006, mt, rot=(math.pi / 2, ang, 0), n=16, k=6)  # bow
-        m.box((dx - 0.06 * math.sin(ang), 0, -0.05), (0.014, 0.008, 0.12), mt, rot=rot)  # shaft
-        for j in range(3):  # the cut
-            m.box((dx - (0.09 + j * 0.02) * math.sin(ang) + 0.012 * math.cos(ang), 0,
-                   -0.085 - j * 0.02 * math.cos(ang)), (0.014, 0.008, 0.01 + 0.006 * ((j + k) % 2)), mt, rot=rot)
-    m.box((0.06, 0, 0.0), (0.05, 0.006, 0.08), brass, rot=(0, -0.5, 0), bevel=0.004, seg=1)  # the tag
+    RC, RR = (0.0, 0.06), 0.045  # the ring's centre (x, z) and radius, in the XZ plane (face to the camera)
+    m.torus((RC[0], 0, RC[1]), RR, 0.006, steel, rot=(math.pi / 2, 0, 0), n=32, k=8)
+
+    def hang(th):  # the point on the ring's wire at th from the bottom, and the key's down and side axes
+        a = (RC[0] + RR * math.sin(th), RC[1] - RR * math.cos(th))
+        return a, (math.sin(th), -math.cos(th)), (math.cos(th), math.sin(th))
+
+    def at(a, u, v, d, w):  # d along the key (down), w across it
+        return (a[0] + d * u[0] + w * v[0], 0.0, a[1] + d * u[1] + w * v[1])
+
+    for k, (th, mt) in enumerate(((-0.4, brass), (0.0, steel), (0.4, brass))):
+        a, u, v = hang(th)
+        rot = (0, -th, 0)
+        m.torus(at(a, u, v, 0.016, 0), 0.022, 0.006, mt, rot=(math.pi / 2, 0, 0), n=20, k=6)  # the bow, over the wire
+        m.box(at(a, u, v, 0.044, 0), (0.03, 0.01, 0.012), mt, rot=rot, bevel=0.002, seg=1)  # the collar
+        m.box(at(a, u, v, 0.1, 0), (0.014, 0.008, 0.11), mt, rot=rot)  # the shaft
+        L = 0.13 + 0.012 * k
+        m.box(at(a, u, v, L, 0.012), (0.012, 0.008, 0.05), mt, rot=rot)  # the bit, on the shaft's side
+        for j in range(3):  # its teeth, of different lengths, against the bit
+            m.box(at(a, u, v, L - 0.018 + j * 0.018, 0.022 + 0.004 * ((j + k) % 2)),
+                  (0.012 + 0.008 * ((j + k) % 2), 0.008, 0.01), mt, rot=rot)
+    a, u, v = hang(1.0)  # the tag, on a small ring through the big one
+    m.torus(at(a, u, v, 0.008, 0), 0.012, 0.003, brass, rot=(math.pi / 2, 0, 0), n=16, k=6)
+    m.box(at(a, u, v, 0.05, 0), (0.045, 0.006, 0.065), brass, rot=(0, -1.0, 0), bevel=0.004, seg=1)
     me = m.mesh("prop.keys25")
     me.transform(__import__("mathutils").Matrix.Scale(2.8, 4))
     kit.mesh_swap(o, me)
@@ -980,33 +1000,93 @@ def chalk(S, SP):
 # ---------------------------------------------------------------- the eulogy
 
 def coffin():
+    """The shoebox coffin and the tiny good bot in it (S34-S39a). The human, on the v8 cut: "the 'good bot' in the box
+    needs more detail (and so does the box)": the bot is the park's good bots in miniature, lying on its back with
+    its arms folded over a daisy, eyes closed; the box has rolled rims, a printed band, an end label, tissue draped
+    over its sides, and its lid propped against the crates."""
     cardboard, tissue = mat("shoebox", "#c9a46e", rough=0.85), mat("tissue", "#f3efe8", rough=0.95)
+    inner = mat("shoebox.in", "#b8925c", rough=0.9)
+    band = mat("shoebox.band", "#7a5634", rough=0.8)
+    label, ink = mat("shoebox.label", "#f4f1ea", rough=0.7), mat("shoebox.ink", "#1a1a1a", rough=0.6)
     o = obj("coffin")
     m = mk.MK()
     w, d, h, t = 0.7, 0.35, 0.16, 0.008
     m.box((0, 0, -h / 2 + t / 2), (w, d, t), cardboard)
-    for s in (-1, 1):
-        m.box((0, s * (d / 2 - t / 2), 0), (w, t, h), cardboard)
-        m.box((s * (w / 2 - t / 2), 0, 0), (t, d, h), cardboard)
+    for sg in (-1, 1):
+        m.box((0, sg * (d / 2 - t / 2), 0), (w, t, h), cardboard)
+        m.box((sg * (w / 2 - t / 2), 0, 0), (t, d, h), cardboard)
+        m.box((0, sg * (d / 2 - t - 0.001), 0.0), (w - 2 * t, 0.002, h - 0.01), inner)  # the inside faces
+        m.box((sg * (w / 2 - t - 0.001), 0, 0.0), (0.002, d - 2 * t, h - 0.01), inner)
+        m.box((0, sg * (d / 2), h / 2), (w + 0.004, 0.016, 0.008), cardboard, bevel=0.003, seg=1)  # rolled rims
+        m.box((sg * (w / 2), 0, h / 2), (0.016, d + 0.004, 0.008), cardboard, bevel=0.003, seg=1)
+        m.box((0, sg * (d / 2 + 0.0015), h / 2 - 0.035), (w + 0.002, 0.002, 0.03), band)  # the printed band
+        m.box((sg * (w / 2 + 0.0015), 0, h / 2 - 0.035), (0.002, d + 0.002, 0.03), band)
+    # the end label: a white sticker with a barcode and two lines of print (no brand)
+    m.box((w / 2 + 0.003, 0.06, -0.03), (0.002, 0.12, 0.07), label)
+    r = random.Random(7)
+    y = 0.01
+    while y < 0.11:
+        bw = r.choice((0.002, 0.003, 0.005))
+        m.box((w / 2 + 0.0045, y, -0.045), (0.001, bw, 0.03), ink)
+        y += bw + r.choice((0.002, 0.003))
+    for zz, ln in ((-0.01, 0.08), (-0.02, 0.05)):
+        m.box((w / 2 + 0.0045, 0.05, zz), (0.001, ln, 0.004), ink)
     r = random.Random(33)
-    for k in range(14):  # crumpled tissue paper
-        m.sphere((r.uniform(-0.3, 0.3), r.uniform(-0.13, 0.13), -0.03), r.uniform(0.04, 0.07), tissue,
-                 s=(1.4, 1.0, 0.45), u=8, v=5)
-    # the lid, leaning on the crates' front
-    m.box((0.0, -0.32, -0.32), (0.74, 0.012, 0.4), cardboard, rot=(0.25, 0, 0))
-    m.box((0.0, -0.3, -0.13), (0.74, 0.05, 0.012), cardboard, rot=(0.25, 0, 0))
+    for k in range(22):  # crumpled tissue paper round the bot, inside the walls
+        rr = r.uniform(0.03, 0.05)
+        m.sphere((r.uniform(-0.3 + rr, 0.3 - rr), r.choice((-1, 1)) * r.uniform(0.07, d / 2 - t - rr - 0.005),
+                  -0.03 + r.uniform(-0.01, 0.02)), rr, tissue, s=(1.4, 1.0, 0.5), u=10, v=6)
+    m.sphere((-0.14, 0.03, -0.035), 0.07, tissue, s=(1.0, 1.1, 0.5), u=12, v=8)  # the pillow under its head
+    for k, x in enumerate((-0.22, 0.02, 0.24)):  # sheets draped over the back side (the front has the notes)
+        for sg in (1,):
+            a = r.uniform(-0.12, 0.12)
+            m.box((x + r.uniform(-0.03, 0.03), sg * (d / 2 + 0.006), h / 2 - 0.03), (0.13, 0.002, 0.07), tissue,
+                  rot=(0, a, 0))
+            m.box((x, sg * (d / 2 - 0.02), h / 2 + 0.004), (0.13, 0.05, 0.002), tissue, rot=(0, a, 0))
+    # the lid, leaning on the crates' front, with its rims and band
+    lid_rot = (0.25, 0, 0)
+    m.box((0.0, -0.32, -0.32), (0.74, 0.012, 0.4), cardboard, rot=lid_rot)
+    m.box((0.0, -0.3, -0.13), (0.74, 0.05, 0.012), cardboard, rot=lid_rot)
+    m.box((0.0, -0.327, -0.2), (0.742, 0.002, 0.04), band, rot=lid_rot)
     kit.mesh_swap(o, m.mesh("prop.coffin"))
     bot = obj("coffin.bot")
     m = mk.MK()
-    cream, blue, dark = mat("tiny.body", "#e9e1cf", rough=0.5), mat("tiny.head", "#9fc3d6", rough=0.5), \
-        mat("tiny.eye", "#101012")
-    m.sphere((0.03, 0, 0), 0.06, cream, s=(1.6, 1.0, 0.7))
-    m.box((-0.12, 0, 0.005), (0.07, 0.08, 0.06), blue, bevel=0.01)
-    for s in (-1, 1):
-        m.box((-0.12, s * 0.02, 0.037), (0.012, 0.012, 0.004), dark)  # eyes closed: two short dashes
-        m.cyl((0.04, s * 0.06, 0.0), 0.01, 0.1, mat("tiny.arm", "#8a8a8a", metal=0.7), axis="X")
-    m.cyl((-0.17, 0, 0.005), 0.003, 0.05, mat("tiny.arm", "#8a8a8a", metal=0.7), axis="X")
-    kit.mesh_swap(bot, m.mesh("prop.tinybot"))
+    cream, blue = mat("tiny.body", "#e9e1cf", rough=0.5), mat("tiny.head", "#9fc3d6", rough=0.5)
+    dark, grey = mat("tiny.eye", "#101012"), mat("tiny.arm", "#8a8a8a", metal=0.7, rough=0.35)
+    rubber, green = mat("tiny.wheel", "#222224", rough=0.8), mat("tiny.stem", "#3f7a3a", rough=0.7)
+    petal, yolk = mat("tiny.petal", "#fbfaf5", rough=0.6), mat("tiny.yolk", "#f2c230", rough=0.6)
+    # lying on its back along x, head at -x, face up (+z); origin as before (0.78 above the ground)
+    m.sphere((0.02, 0, -0.025), 0.065, cream, s=(1.5, 1.05, 0.65), u=20, v=12)  # the round body
+    m.box((0.035, 0, 0.012), (0.075, 0.055, 0.008), blue, bevel=0.003, seg=1)  # the chest panel
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            m.cyl((0.035 + sx * 0.03, sy * 0.021, 0.017), 0.004, 0.003, grey, n=8)  # its screws
+    m.box((0.07, -0.035, 0.006), (0.03, 0.022, 0.004), blue, rot=(0, 0, 0.4))  # a mismatched patch
+    m.box((-0.115, 0, -0.012), (0.075, 0.09, 0.065), blue, bevel=0.012, seg=2)  # the head
+    for sy in (-1, 1):
+        m.torus((-0.112, sy * 0.022, 0.0215), 0.01, 0.0025, dark, rot=(0, 0, -math.pi / 2), n=8, k=4,
+                arc=math.pi)  # eyes closed: two arcs
+        m.cyl((-0.115, sy * 0.049, -0.012), 0.013, 0.008, grey, axis="Y", n=12)  # ear bolts
+        m.cyl((0.1, sy * 0.045, -0.04), 0.026, 0.018, rubber, axis="Y", n=16)  # wheels at its feet
+        m.cyl((0.1, sy * 0.055, -0.04), 0.01, 0.004, grey, axis="Y", n=10)
+    m.cyl((-0.175, 0, -0.008), 0.003, 0.05, grey, axis="X", n=8)  # the antenna, its bulb out
+    m.sphere((-0.202, 0, -0.008), 0.009, mat("tiny.bulb", "#b9b2a0", rough=0.3), u=10, v=6)
+    # arms folded over the chest (one plain, one with a claw), holding a daisy
+    m.tube([(-0.05, 0.068, -0.012), (-0.01, 0.06, 0.02), (0.035, 0.0, 0.032)], 0.009, grey, k=8)
+    m.tube([(-0.05, -0.068, -0.012), (-0.005, -0.06, 0.022), (0.045, 0.012, 0.036)], 0.012, blue, k=8)
+    m.box((0.05, 0.016, 0.038), (0.022, 0.014, 0.012), grey, bevel=0.003, seg=1)  # the claw
+    m.tube([(0.05, 0.008, 0.04), (-0.02, 0.004, 0.046), (-0.07, 0.0, 0.044)], 0.0025, green, k=6)  # the stem
+    for k in range(7):
+        an = 2 * math.pi * k / 7
+        m.sphere((-0.078 + 0.012 * math.cos(an), 0.012 * math.sin(an), 0.046), 0.008, petal, s=(1.4, 0.8, 0.4),
+                 rot=(0, 0, an), u=8, v=5)
+    m.sphere((-0.078, 0, 0.049), 0.006, yolk, u=8, v=5)
+    me = m.mesh("prop.tinybot")
+    # propped on its pillow, its face tipped toward the front (the cameras are on the box's -y side)
+    me.transform(__import__("mathutils").Matrix.Translation((0, 0, -0.035)) @
+                 __import__("mathutils").Matrix.Rotation(0.3, 4, "X") @
+                 __import__("mathutils").Matrix.Rotation(-0.12, 4, "Y"))
+    kit.mesh_swap(bot, me)
     st = obj("coffin.stand")
     m = mk.MK()
     wood = gb.tex_mat("crate_wood", "plywood")

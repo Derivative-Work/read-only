@@ -372,3 +372,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "that shot of S25 doesn't convey "shady night deal" quite as well as the previous version though".
 - **Why:** On the agent's first restaging of S25 (a frontal camera facing the wall).
 - **Rule:** R1 (reject, with notes).
+
+## 2026-11-03 — Release: notes on v8 — R1
+- **What:** "* the keys are disjoint * the trucks have rectangles on top of the wheels * the "good bot" in the box needs more detail (and so does the box) * the bookends need to zoom in and hold on the phone and schedule more so that they are legible on mobile -- it's okay if the camera moves to get there are faster so that there is more time to read".
+- **Why:** Review of the final v8 cut.
+- **Rule:** R1 (reject, with notes).
