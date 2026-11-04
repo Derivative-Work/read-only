@@ -2136,3 +2136,6 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **End card:** 71 interventions (checked on frame).
 - **Assembled:** `renders/m8/read_only_v9.mp4` (268.21 s) and `renders/m8/read_only_vertical_v9.mp4` (52.75 s), log `renders/m8/final_v9.log`, with the deliverables' SRTs. Checked on frames from the files: badge, schedule and phone thread legible; one key ring; arched wheel wells; the bot's face, daisy and the epitaph in S39a, in both cuts; S49's notice large and sharp; the end card.
 - **Deliverables:** the v8 cuts → `archive/deliverables/*_m8_v8.mp4`, the v9 cuts → `deliverables/`, the v8 review copies → `archive/renders/review/`. New review copies: `renders/review/m8_final_v9_review_small.mp4`, `m8_final_v9_vertical_review_small.mp4`. Manifest updated.
+
+## 2026-11-04T00:30:00-05:00 — Log: draft release v1.0 updated to v9
+- Both cuts and `SHA256SUMS.txt` replaced (`gh release upload --clobber`). GitHub's digests match the local files.
