@@ -2152,7 +2152,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-11-04T03:15:00-05:00 — Log: draft release v1.0 updated to v10
 - The main cut and `SHA256SUMS.txt` replaced (`gh release upload --clobber`); the vertical cut unchanged. GitHub's digests match the local files.
 
-## 2026-11-04T08:00:00-05:00 — Release: the main video's YouTube link
+## 2026-11-04T04:05:00-05:00 — Release: the main video's YouTube link
 - **The human (R4, logged):** the main video (v10) is uploaded: https://www.youtube.com/watch?v=DsjWj7C0g1k. YouTube's oEmbed returns 403 for it for now (private or scheduled).
 - **Linked:** `README.md` (Watch), `METADATA.md` (the vertical cut's description footer), and the draft release v1.0's notes (`gh release edit --notes-file`). The vertical cut's link waits for its upload.
 - The interventions log now counts 73; the uploaded video's end card reads 72, the count when it was rendered (as `METADATA.md` notes).
