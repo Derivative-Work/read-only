@@ -387,3 +387,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** The human uploaded the main video (v10) to YouTube and shared the link: "here is the YouTube link https://www.youtube.com/watch?v=DsjWj7C0g1k".
 - **Why:** The release; YouTube is an interface the agent has no access to.
 - **Rule:** R4.
+
+## 2026-11-04 — Vertical cut uploaded to YouTube — R4
+- **What:** The human uploaded the vertical cut as a Short and shared the link: "here's the one for the vertical cut too https://youtube.com/shorts/YpuD6DVpeC4".
+- **Why:** The release; YouTube is an interface the agent has no access to.
+- **Rule:** R4.

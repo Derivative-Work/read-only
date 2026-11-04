@@ -24,7 +24,7 @@ made in response.
 
 ## Watch
 
-- **YouTube:** [the main video](https://www.youtube.com/watch?v=DsjWj7C0g1k); the vertical cut (link added at upload).
+- **YouTube:** [the main video](https://www.youtube.com/watch?v=DsjWj7C0g1k); [the vertical cut](https://youtube.com/shorts/YpuD6DVpeC4).
 - **Files:** the videos, captions, thumbnail, music and stems are in the v1.0 release.
 
 ## The making-of record

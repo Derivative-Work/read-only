@@ -2156,3 +2156,7 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **The human (R4, logged):** the main video (v10) is uploaded: https://www.youtube.com/watch?v=DsjWj7C0g1k. YouTube's oEmbed returns 403 for it for now (private or scheduled).
 - **Linked:** `README.md` (Watch), `METADATA.md` (the vertical cut's description footer), and the draft release v1.0's notes (`gh release edit --notes-file`). The vertical cut's link waits for its upload.
 - The interventions log now counts 73; the uploaded video's end card reads 72, the count when it was rendered (as `METADATA.md` notes).
+
+## 2026-11-04T04:24:00-05:00 — Release: the vertical cut's YouTube link
+- **The human (R4, logged):** the vertical cut is uploaded as a Short: https://youtube.com/shorts/YpuD6DVpeC4 (oEmbed 403 for now: private or scheduled).
+- **Linked:** `README.md` (Watch) and the draft release v1.0's notes. Every link placeholder is now filled. The interventions log counts 74.
