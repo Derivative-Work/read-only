@@ -382,3 +382,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** ""when free access to the API ended" is *far* too nice to Reddit. Let's go with something like "when Reddit made access to the API prohibitively expensive" instead".
 - **Why:** Review of the final v9 cut: the S49 app notice's wording (from the M8 audit fix).
 - **Rule:** R1 (reject, with notes).
+
+## 2026-11-04 — Main video uploaded to YouTube — R4
+- **What:** The human uploaded the main video (v10) to YouTube and shared the link: "here is the YouTube link https://www.youtube.com/watch?v=DsjWj7C0g1k".
+- **Why:** The release; YouTube is an interface the agent has no access to.
+- **Rule:** R4.

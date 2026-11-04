@@ -137,7 +137,7 @@ thumbnail only through the mobile app's upload flow; otherwise pick a frame from
 ```
 AI-generated satire about real events. In 2023 Reddit started charging for its API, and BotDefense, a volunteer bot that had banned 144,926 spam accounts, shut down. Reddit now licenses its users' posts to AI companies. The Verse 4 rappers are generated people; the lyrics were drafted by Claude, whose maker Reddit is suing over scraping (Anthropic disputes the claims; no ruling on the merits). From Read-Only, an AI-made music video.
 
-Full video, facts and sources: [main video link]
+Full video, facts and sources: https://www.youtube.com/watch?v=DsjWj7C0g1k
 Production log, with every prompt and every human intervention: https://github.com/Derivative-Work/read-only
 Music: Suno · Lyrics: Claude · Video: Claude Code
 Video and assets CC BY-NC-SA 4.0. Satire; not affiliated with any company named.
