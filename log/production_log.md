@@ -2148,3 +2148,6 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **Assembled:** `renders/m8/read_only_v10.mp4` (268.21 s) and `renders/m8/read_only_vertical_v10.mp4` (52.75 s), log `renders/m8/final_v10.log`. Frame hashes against v9: only frames 5236–5571 differ (S49 and the end card's first page). The vertical cut is byte-identical to v9's, so its deliverable stays.
 - **Deliverables:** the v9 main cut → `archive/deliverables/read_only_m8_v9.mp4`, v10 → `deliverables/read_only.mp4`; its v9 review copy → `archive/renders/review/`, new `renders/review/m8_final_v10_review_small.mp4`. Manifest updated.
 - `docs/brief.md` (the planning brief) keeps its description of the notice.
+
+## 2026-11-04T03:15:00-05:00 — Log: draft release v1.0 updated to v10
+- The main cut and `SHA256SUMS.txt` replaced (`gh release upload --clobber`); the vertical cut unchanged. GitHub's digests match the local files.
