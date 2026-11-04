@@ -2139,3 +2139,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 
 ## 2026-11-04T00:30:00-05:00 — Log: draft release v1.0 updated to v9
 - Both cuts and `SHA256SUMS.txt` replaced (`gh release upload --clobber`). GitHub's digests match the local files.
+
+## 2026-11-04T03:10:00-05:00 — Release: final cut v10 (S49's notice; end card 72)
+- **The human (R1, logged):** "when free access to the API ended" (the M8 audit's fix) is "*far* too nice to Reddit"; something like "when Reddit made access to the API prohibitively expensive" instead.
+- **S49's notice** (`overlays/screens.html` `phone_s49`): "It stopped working on June 30, 2023, / when Reddit made access to the API / prohibitively expensive. / Thanks for reading with us." The card is 36 px taller for the third line. Re-rendered `renders/screens/phone_s49/` (log `renders/screens/phone_s49_v10.log`).
+- **S49:** v9's `S49_overlay.mp4`, its audio copy and `S49_hold.mp4` → `archive/takes/S49_v9_fx/`. The overlay pass re-rendered (`sign_matte.py -- S49 --own --objects screen.phone_s49.face eat.badge.exp --subdir overlay`, 192 frames; and `--subdir overlay_hold3x --frames 5427 --scale 3`; logs `renders/m5/plates/S49/*_v10.log`), then `overlay_add.py S49 takes/fx/S49/S49_sign.mp4 --bloom 0 --bezel 9 --halo 30` and `scripts/s49_hold.py` → `takes/fx/S49/`. The notice reads in the push and the hold.
+- **End card:** 72 interventions (log `renders/screens/end_card_72.log`).
+- **Assembled:** `renders/m8/read_only_v10.mp4` (268.21 s) and `renders/m8/read_only_vertical_v10.mp4` (52.75 s), log `renders/m8/final_v10.log`. Frame hashes against v9: only frames 5236–5571 differ (S49 and the end card's first page). The vertical cut is byte-identical to v9's, so its deliverable stays.
+- **Deliverables:** the v9 main cut → `archive/deliverables/read_only_m8_v9.mp4`, v10 → `deliverables/read_only.mp4`; its v9 review copy → `archive/renders/review/`, new `renders/review/m8_final_v10_review_small.mp4`. Manifest updated.
+- `docs/brief.md` (the planning brief) keeps its description of the notice.

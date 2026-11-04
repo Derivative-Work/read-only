@@ -283,15 +283,17 @@ function phone_s01d(t) {
 function phone_s49(t) {
   reader(S.scroll_px_end, true); statusbar(false, "11:47");
   g.fillStyle = "rgba(10,12,14,0.55)"; g.fillRect(0, 0, W, H);
-  const cw = W - 80, ch = 330, cx = 40, cy = (H - ch) / 2;
+  // release (the human, on v9): "when free access to the API ended" was "*far* too nice to Reddit"; a third line
+  const cw = W - 80, ch = 366, cx = 40, cy = (H - ch) / 2;
   g.fillStyle = "#ffffff"; rrect(cx, cy, cw, ch, 22); g.fill();
   g.fillStyle = "#16191d"; g.font = `600 34px "Inter"`; g.textAlign = "center"; g.fillText("This app has shut down", W / 2, cy + 74);
   g.fillStyle = "#4a5260"; g.font = `26px "Inter"`;
   g.fillText("It stopped working on June 30, 2023,", W / 2, cy + 132);
-  g.fillText("when free access to the API ended.", W / 2, cy + 168);
-  g.fillText("Thanks for reading with us.", W / 2, cy + 220);
-  g.fillStyle = "#c3c8cf"; g.fillRect(cx, cy + 258, cw, 2);
-  g.fillStyle = "#9aa2ac"; g.font = `600 28px "Inter"`; g.fillText("OK", W / 2, cy + 303);
+  g.fillText("when Reddit made access to the API", W / 2, cy + 168);
+  g.fillText("prohibitively expensive.", W / 2, cy + 204);
+  g.fillText("Thanks for reading with us.", W / 2, cy + 256);
+  g.fillStyle = "#c3c8cf"; g.fillRect(cx, cy + 294, cw, 2);
+  g.fillStyle = "#9aa2ac"; g.font = `600 28px "Inter"`; g.fillText("OK", W / 2, cy + 339);
   g.textAlign = "left";
 }
 

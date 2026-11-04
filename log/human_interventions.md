@@ -377,3 +377,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "* the keys are disjoint * the trucks have rectangles on top of the wheels * the "good bot" in the box needs more detail (and so does the box) * the bookends need to zoom in and hold on the phone and schedule more so that they are legible on mobile -- it's okay if the camera moves to get there are faster so that there is more time to read".
 - **Why:** Review of the final v8 cut.
 - **Rule:** R1 (reject, with notes).
+
+## 2026-11-04 — Release: S49's notice — R1
+- **What:** ""when free access to the API ended" is *far* too nice to Reddit. Let's go with something like "when Reddit made access to the API prohibitively expensive" instead".
+- **Why:** Review of the final v9 cut: the S49 app notice's wording (from the M8 audit fix).
+- **Rule:** R1 (reject, with notes).
