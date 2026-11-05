@@ -24,15 +24,21 @@ code MIT, as the earlier videos (`LICENSE`, `LICENSE-media.md`).
 
 ### Title
 
-Recommended (62 characters):
+In use since 2026-11-04 (59 characters; the human, R1, after the first title underperformed):
 
 ```
-Read-Only — an AI-made diss track about Reddit's API changes
+Reddit sold your posts to AI, so AI wrote a diss track back
 ```
+
+The title at upload: `Read-Only — an AI-made diss track about Reddit's API changes`.
 
 Alternatives:
 - `Read-Only (I'm the Bot) — AI-generated '90s boom-bap about Reddit`
 - `Read-Only: good bot, bad bot — an AI diss track about Reddit`
+- `Reddit is suing the company whose AI wrote this diss track`
+- `Reddit wants you logged in. Here's a diss track about why.`
+- `Remember Apollo? A '90s diss track about Reddit, made by AI`
+- `Good bot: a '90s diss track about what Reddit did to its bots`
 
 ### Description
 
@@ -110,7 +116,7 @@ Read-Only, AI music video, AI generated, AI satire, diss track, boom bap, 90s hi
 | Language / caption language | English / English |
 | Captions | Upload `deliverables/read_only.srt` as English subtitles. The video also has burned-in captions; the SRT gives search text and lets viewers restyle them. |
 | License | Standard YouTube License. YouTube's only Creative Commons option is CC BY, which would drop the NC-SA terms; the description states the licence instead. |
-| Thumbnail | `deliverables/read_only_thumbnail.jpg` (1280×720, `scripts/thumbnail_recast.py`): D, the lineup, the seven Verse 4 rappers side by side with "I'M THE BOT" (human, R1, 2026-11-03). |
+| Thumbnail | `deliverables/read_only_thumbnail.jpg` (1280×720, `scripts/thumbnail_release.py`): G, the photoreal "Logged-out Reddit 2005 –" grave with "LOG IN TO CONTINUE / a diss track for Reddit" (human, R1, 2026-11-04). It replaced D, the lineup (`archive/deliverables/read_only_thumbnail_d.jpg`), used at upload. |
 | Chapters | From the description (first at 0:00; each over 10 s). |
 | End screen | From 4:18 to the end (10 s), over the end card's last page, whose text sits in the top two-thirds: elements in the bottom corners (the vertical cut or another video bottom left, Subscribe bottom right). Earlier would cover the fact pages. |
 | Comments | Open. |

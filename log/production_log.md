@@ -2169,3 +2169,10 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **I:** S49's notice on the phone, "REMEMBER / APOLLO?", "June 30, 2023".
   - **J:** the good bot in its box, "GOOD BOT", "it worked for free".
 - **Titles:** the three from `METADATA.md` and six new, each 58–65 characters (in the reply to the human).
+
+## 2026-11-04T20:15:00-05:00 — Release: thumbnail G and the new title
+- **Chosen (R1, logged):** thumbnail G and title #4, "Reddit sold your posts to AI, so AI wrote a diss track back".
+- **Thumbnail:** new `scripts/thumbnail_release.py` (G as drafted, from the clean S48a frame at song 191.0 via `act2_assemble.Act2`) → `deliverables/read_only_thumbnail.jpg` (1280×720), identical to the draft `renders/m8/thumbs_release/thumb_g.jpg`. D → `archive/deliverables/read_only_thumbnail_d.jpg`. Inter's variable font copied from Not Yet into `assets/fonts/` (same OFL; `SHA256SUMS` updated).
+- **METADATA.md:** the title in use (the upload's title and the alternatives kept), the thumbnail row. **README.md:** the assembly step names `thumbnail_release.py`.
+- **Release v1.0** (published by the human since the last entry): the thumbnail and `SHA256SUMS.txt` replaced, the notes' file table updated; GitHub's digests match the local files.
+- The human changes the title and thumbnail in YouTube Studio (R4).

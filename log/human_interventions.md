@@ -397,3 +397,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "I uploaded early as an experiment to see if I could catch the SF evening commute window (as opposed to the NYC morning commute window, which is where my videos have historically performed the best), but it seems to be underperforming regardless. Suggest other thumbnails and titles (including the alternatives you've suggested before)".
 - **Why:** After release (the main video was published early, on 2026-11-03 Pacific evening).
 - **Rule:** R1 (a correction after release, as Not Yet's 2026-10-28 thumbnail note).
+
+## 2026-11-04 — Release: thumbnail G and title #4 — R1
+- **What:** "Let's go with G and #4".
+- **Why:** The options after the underperforming upload: thumbnail G (the "Logged-out Reddit" grave, "LOG IN TO CONTINUE") and title #4 ("Reddit sold your posts to AI, so AI wrote a diss track back").
+- **Rule:** R1.
