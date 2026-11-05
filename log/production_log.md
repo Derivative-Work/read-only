@@ -2176,3 +2176,13 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 - **METADATA.md:** the title in use (the upload's title and the alternatives kept), the thumbnail row. **README.md:** the assembly step names `thumbnail_release.py`.
 - **Release v1.0** (published by the human since the last entry): the thumbnail and `SHA256SUMS.txt` replaced, the notes' file table updated; GitHub's digests match the local files.
 - The human changes the title and thumbnail in YouTube Studio (R4).
+
+## 2026-11-04T20:42:00-05:00 — Release: mobile-first thumbnail drafts K–N
+- **The human (R1, logged):** more thumbnails that read quickly on mobile.
+- **Approach:** one subject filling the frame, one to three words in Inter Black at 150–230 px (one word yellow), no handwritten line (illegible small), nothing bottom right (YouTube's duration badge). Each checked at a phone's home-feed width (390 px) and in the up-next list (168×94) by `mobile_preview.py`; there G's line and stone are lost, which K–N avoid.
+- **Sharp sources:** Act 1 stills at 3x (5760×3240, no motion blur; `mobile_stills3x.py` drives `animatic.build`): video frames 3814 (S39a, the good bot) and 2560 (S25, the keys) → `renders/m8/thumbs_release/stills3x/`. S43's clean close-up of identity a at frame 6 (`takes/l/S43/S43_s2.mp4`, as `thumbnail_recast.py`'s `clean`). S48a's grave from `act2_assemble.Act2` at song 191.0.
+- **Drafts** (`renders/m8/thumbs_release/thumb_{k,l,m,n}.jpg`, 1280×720; `mobile_mob.py`, `mobile_make1.py`, `mobile_make2.py`):
+  - **K:** the Verse 4 rapper's face, "I'M THE / BOT".
+  - **L:** G tightened on the stone ("Logged-out Reddit 2005 –" legible), "LOG IN".
+  - **M:** the good bot in its box (closed eyes, daisy), "GOOD BOT".
+  - **N:** the CEO handing the bot the keys, "SOLD.".

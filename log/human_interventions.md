@@ -402,3 +402,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "Let's go with G and #4".
 - **Why:** The options after the underperforming upload: thumbnail G (the "Logged-out Reddit" grave, "LOG IN TO CONTINUE") and title #4 ("Reddit sold your posts to AI, so AI wrote a diss track back").
 - **Rule:** R1.
+
+## 2026-11-04 — Release: more thumbnails, for mobile — R1
+- **What:** "hm give me some more thumbnails that ideally read quickly on mobile".
+- **Why:** On thumbnail G, after it was chosen.
+- **Rule:** R1.
