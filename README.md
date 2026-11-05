@@ -89,7 +89,7 @@ command, inputs, outputs and checks (Python runs as `.venv/bin/python -I scripts
 3. **Act 2:** `stills.py` and `keyframes.py` (FLUX.2), `ltx_v.py` (LTX-2.3), `l_batch.py` (LatentSync),
    `glitch_face.py` and `reveal.py`; the recast with `recast.py` and `recast_v.py`.
 4. **Assembly:** `assemble.py` (the main cut, and the vertical cut with `--vertical`) → `deliverables/`;
-   `thumbnail_release.py` for the thumbnail (`thumbnail.py` and `thumbnail_recast.py` made the earlier options).
+   `thumbnail_release.py` (with `scenes/blender/stills3x.py`) for the thumbnail (`thumbnail.py` and `thumbnail_recast.py` made the earlier options).
 
 Generated stills and clips depend on model weights and GPU kernels, so a rebuild matches the manifest's hashes only
 for the deterministic steps; the takes themselves are in the manifest.

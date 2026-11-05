@@ -116,7 +116,7 @@ Read-Only, AI music video, AI generated, AI satire, diss track, boom bap, 90s hi
 | Language / caption language | English / English |
 | Captions | Upload `deliverables/read_only.srt` as English subtitles. The video also has burned-in captions; the SRT gives search text and lets viewers restyle them. |
 | License | Standard YouTube License. YouTube's only Creative Commons option is CC BY, which would drop the NC-SA terms; the description states the licence instead. |
-| Thumbnail | `deliverables/read_only_thumbnail.jpg` (1280×720, `scripts/thumbnail_release.py`): G, the photoreal "Logged-out Reddit 2005 –" grave with "LOG IN TO CONTINUE / a diss track for Reddit" (human, R1, 2026-11-04). It replaced D, the lineup (`archive/deliverables/read_only_thumbnail_d.jpg`), used at upload. |
+| Thumbnail | `deliverables/read_only_thumbnail.jpg` (1280×720, `scripts/thumbnail_release.py m`): M, the good bot in its box, "GOOD BOT", made to read on mobile (human, R1, 2026-11-04). Earlier: D, the lineup, at upload (`archive/deliverables/read_only_thumbnail_d.jpg`); then G, the grave, "LOG IN TO CONTINUE" (`archive/deliverables/read_only_thumbnail_g.jpg`). |
 | Chapters | From the description (first at 0:00; each over 10 s). |
 | End screen | From 4:18 to the end (10 s), over the end card's last page, whose text sits in the top two-thirds: elements in the bottom corners (the vertical cut or another video bottom left, Subscribe bottom right). Earlier would cover the fact pages. |
 | Comments | Open. |

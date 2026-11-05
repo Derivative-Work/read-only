@@ -407,3 +407,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** "hm give me some more thumbnails that ideally read quickly on mobile".
 - **Why:** On thumbnail G, after it was chosen.
 - **Rule:** R1.
+
+## 2026-11-04 — Release: thumbnail M — R1
+- **What:** "let's go with M".
+- **Why:** The mobile-first drafts K–N: M, the good bot in its box, "GOOD BOT".
+- **Rule:** R1.

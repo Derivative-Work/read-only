@@ -2186,3 +2186,10 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
   - **L:** G tightened on the stone ("Logged-out Reddit 2005 –" legible), "LOG IN".
   - **M:** the good bot in its box (closed eyes, daisy), "GOOD BOT".
   - **N:** the CEO handing the bot the keys, "SOLD.".
+
+## 2026-11-04T20:48:00-05:00 — Release: thumbnail M
+- **Chosen (R1, logged):** M, the good bot in its box, "GOOD BOT". The title stays #4.
+- **Scripts:** the draft still driver becomes `scenes/blender/stills3x.py` (3x final, no motion blur); `scripts/thumbnail_release.py` now takes the option (`g` or `m`) and reproduces both G and the M draft pixel for pixel.
+- **Thumbnail:** G → `archive/deliverables/read_only_thumbnail_g.jpg`; `thumbnail_release.py m` → `deliverables/read_only_thumbnail.jpg` (1280×720).
+- **METADATA.md** (thumbnail row, with D and G as earlier ones), **README.md** (the assembly step), **release v1.0** (the thumbnail and `SHA256SUMS.txt` replaced, the notes' file table): GitHub's digests match the local files.
+- The human sets it in YouTube Studio (R4).
