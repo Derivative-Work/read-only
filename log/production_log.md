@@ -2160,3 +2160,12 @@ Append-only. One entry per action: timestamp, step (shot ID where relevant), wha
 ## 2026-11-04T04:24:00-05:00 — Release: the vertical cut's YouTube link
 - **The human (R4, logged):** the vertical cut is uploaded as a Short: https://youtube.com/shorts/YpuD6DVpeC4 (oEmbed 403 for now: private or scheduled).
 - **Linked:** `README.md` (Watch) and the draft release v1.0's notes. Every link placeholder is now filled. The interventions log counts 74.
+
+## 2026-11-04T20:09:00-05:00 — Release: thumbnail and title options after an early, underperforming upload
+- **The human (R1, logged):** the main video went up early and is underperforming; suggest other thumbnails and titles, including the earlier alternatives.
+- **Draft thumbnails** (`renders/m8/thumbs_release/thumb_{g,h,i,j}.jpg`, 1280×720): in Not Yet's approved style (one subject, a vignette, an Inter Black headline and an Oooh Baby line, white with a soft shadow, one word in yellow), not the captions' VT323 boxes of A–F. Clean frames from `act2_assemble.Act2` (`grab_draft.py`: song 160.3 and 191.0), S49's hold (7.0 s) and `renders/final/act1/f_03814.png`; composed by `mock_draft.py` (fonts from Not Yet's `assets/fonts/`). Drafts: the chosen one gets a proper script, and the good bot a dedicated close render if chosen.
+  - **G:** the photoreal "Logged-out Reddit 2005 –" grave, "LOG IN / TO CONTINUE", "a diss track for Reddit" (Reddit's Oct 29, 2026 logged-in announcement).
+  - **H:** the rapper at the payphone mid-word, "REDDIT SOLD / YOUR POSTS", "so the bots wrote back".
+  - **I:** S49's notice on the phone, "REMEMBER / APOLLO?", "June 30, 2023".
+  - **J:** the good bot in its box, "GOOD BOT", "it worked for free".
+- **Titles:** the three from `METADATA.md` and six new, each 58–65 characters (in the reply to the human).

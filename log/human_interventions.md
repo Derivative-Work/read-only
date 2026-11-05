@@ -392,3 +392,8 @@ Every human action: timestamp, what, why, and which production rule allows it. R
 - **What:** The human uploaded the vertical cut as a Short and shared the link: "here's the one for the vertical cut too https://youtube.com/shorts/YpuD6DVpeC4".
 - **Why:** The release; YouTube is an interface the agent has no access to.
 - **Rule:** R4.
+
+## 2026-11-04 — Release: the main video underperforming; new thumbnails and titles asked for — R1
+- **What:** "I uploaded early as an experiment to see if I could catch the SF evening commute window (as opposed to the NYC morning commute window, which is where my videos have historically performed the best), but it seems to be underperforming regardless. Suggest other thumbnails and titles (including the alternatives you've suggested before)".
+- **Why:** After release (the main video was published early, on 2026-11-03 Pacific evening).
+- **Rule:** R1 (a correction after release, as Not Yet's 2026-10-28 thumbnail note).
